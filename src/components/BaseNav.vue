@@ -42,7 +42,7 @@
     props: {
       type: {
         type: String,
-        default: "primary",
+        default: "",
         description: "Navbar type (e.g default, primary etc)"
       },
       title: {

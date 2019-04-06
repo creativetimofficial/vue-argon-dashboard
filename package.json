@@ -9,11 +9,14 @@
   },
   "dependencies": {
     "bootstrap": "^4.3.1",
+    "chart.js": "^2.8.0",
     "core-js": "^2.6.5",
+    "element-ui": "^2.7.2",
     "flatpickr": "^4.5.7",
     "nouislider": "^13.1.4",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
+    "vue-chartjs": "^3.4.2",
     "vue-router": "^3.0.1",
     "vue2-transitions": "^0.3.0"
   },
