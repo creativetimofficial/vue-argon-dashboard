@@ -139,8 +139,6 @@
   import LineChart from '@/components/Charts/LineChart';
   import BarChart from '@/components/Charts/BarChart';
 
-  // Components
-  import BaseHeader from '@/components/BaseHeader';
   // Tables
   import SocialTrafficTable from './Dashboard/SocialTrafficTable';
   import PageVisitsTable from './Dashboard/PageVisitsTable';
@@ -149,7 +147,6 @@
     components: {
       LineChart,
       BarChart,
-      BaseHeader,
       PageVisitsTable,
       SocialTrafficTable,
     },

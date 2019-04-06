@@ -4,13 +4,12 @@
        {'input-group': hasIcon},
        {'has-danger': error},
        {'focused': focused},
-       {'input-group-alternative': alternative},
        {'has-label': label || $slots.label},
        {'has-success': valid === true},
        {'has-danger': valid === false}
        ]">
         <slot name="label">
-            <label v-if="label" :class="labelClasses">
+            <label v-if="label" class="form-control-label" :class="labelClasses">
                 {{label}}
                 <span v-if="required">*</span>
             </label>
@@ -30,7 +29,9 @@
                     v-on="listeners"
                     v-bind="$attrs"
                     class="form-control"
-                    :class="[{'is-valid': valid === true}, {'is-invalid': valid === false}, inputClasses]"
+                    :class="[
+                     {'is-valid': valid === true},
+                     {'is-invalid': valid === false}, inputClasses]"
                     aria-describedby="addon-right addon-left">
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
@@ -61,10 +62,6 @@ export default {
       type: Boolean,
       description: "Whether is valid",
       default: undefined
-    },
-    alternative: {
-      type: Boolean,
-      description: "Whether input is of alternative layout"
     },
     label: {
       type: String,

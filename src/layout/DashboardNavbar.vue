@@ -7,6 +7,7 @@
         <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
             <div class="form-group mb-0">
                 <base-input placeholder="Search"
+                            class="input-group-alternative"
                             alternative=""
                             addon-right-icon="fas fa-search">
                 </base-input>
@@ -56,41 +57,20 @@
     </base-nav>
 </template>
 <script>
-  import { CollapseTransition } from 'vue2-transitions';
   import SidebarToggleButton from './SidebarToggleButton';
 
   export default {
     components: {
-      SidebarToggleButton,
-      CollapseTransition,
-    },
-    computed: {
-      routeName() {
-        const { name } = this.$route;
-        return this.capitalizeFirstLetter(name);
-      },
-      isRTL() {
-        return this.$rtl.isRTL;
-      }
+      SidebarToggleButton
     },
     data() {
       return {
         activeNotifications: false,
         showMenu: false,
-        searchModalVisible: false,
         searchQuery: ''
       };
     },
     methods: {
-      capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-      },
-      toggleNotificationDropDown() {
-        this.activeNotifications = !this.activeNotifications;
-      },
-      closeDropDown() {
-        this.activeNotifications = false;
-      },
       toggleSidebar() {
         this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
       },
@@ -103,8 +83,3 @@
     }
   };
 </script>
-<style scoped>
-    .top-navbar {
-        top: 0px;
-    }
-</style>

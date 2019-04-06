@@ -16,6 +16,9 @@
           }"
         />
 
+        <sidebar-item :link="{name: 'Icons', icon: 'ni ni-planet text-blue', path: '/icons'}"/>
+        <sidebar-item :link="{name: 'User Profile', icon: 'ni ni-pin-3 text-orange', path: '/profile'}"/>
+
       </template>
     </side-bar>
     <div class="main-content" :data="sidebarBackground">
