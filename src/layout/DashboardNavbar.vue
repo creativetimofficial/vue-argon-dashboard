@@ -1,9 +1,8 @@
 <template>
-    <base-nav
-            v-model="showMenu"
-            class="navbar-top navbar-dark"
-            id="navbar-main"
-            expand>
+    <base-nav class="navbar-top navbar-dark"
+              id="navbar-main"
+              :show-toggle-button="false"
+              expand>
         <form class="navbar-search navbar-search-dark form-inline mr-3 d-none d-md-flex ml-lg-auto">
             <div class="form-group mb-0">
                 <base-input placeholder="Search"
@@ -57,12 +56,7 @@
     </base-nav>
 </template>
 <script>
-  import SidebarToggleButton from './SidebarToggleButton';
-
   export default {
-    components: {
-      SidebarToggleButton
-    },
     data() {
       return {
         activeNotifications: false,

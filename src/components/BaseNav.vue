@@ -6,25 +6,25 @@
             {[`bg-${type}`]: type}
          ]">
         <div :class="containerClasses">
-            <slot name="container-pre"></slot>
             <slot name="brand">
                 <router-link :to="$route.path"
                              class="h4 mb-0 text-white text-uppercase d-none d-lg-inline-block">
                     {{$route.name}}
                 </router-link>
             </slot>
-            <navbar-toggle-button :toggled="toggled"
+            <navbar-toggle-button v-if="showToggleButton"
+                                  :toggled="toggled"
                                   :target="contentId"
                                   @click.native.stop="toggled = !toggled">
+                <span class="navbar-toggler-icon"></span>
             </navbar-toggle-button>
 
-            <slot name="container-after"></slot>
-            <slot :close-menu="closeMenu"></slot>
-            <div v-if="false" class="collapse navbar-collapse" :class="{show: toggled}" :id="contentId" v-click-outside="closeMenu">
-                <div class="navbar-collapse-header">
-                    <slot name="content-header" :close-menu="closeMenu"></slot>
-                </div>
+            <div class="collapse navbar-collapse"
+                 :class="{show: toggled}"
+                 :id="contentId"
+                 v-click-outside="closeMenu">
 
+                <slot :close-menu="closeMenu"></slot>
             </div>
         </div>
     </nav>
@@ -58,11 +58,6 @@
         type: [String, Object, Array],
         default: 'container-fluid'
       },
-      round: {
-        type: Boolean,
-        default: false,
-        description: "Whether nav has rounded corners"
-      },
       transparent: {
         type: Boolean,
         default: false,
@@ -72,6 +67,10 @@
         type: Boolean,
         default: false,
         description: "Whether navbar should contain `navbar-expand-lg` class"
+      },
+      showToggleButton: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -80,9 +79,6 @@
       };
     },
     methods: {
-      onTitleClick(evt) {
-        this.$emit("title-click", evt);
-      },
       closeMenu() {
         this.toggled = false;
       }
