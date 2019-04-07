@@ -7,7 +7,9 @@
                     <stats-card title="Total traffic"
                                 type="gradient-red"
                                 sub-title="350,897"
-                                icon="ni ni-active-40">
+                                icon="ni ni-active-40"
+                                class="mb-4 mb-xl-0"
+                    >
 
                         <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>
@@ -19,7 +21,9 @@
                     <stats-card title="Total traffic"
                                 type="gradient-orange"
                                 sub-title="2,356"
-                                icon="ni ni-chart-pie-35">
+                                icon="ni ni-chart-pie-35"
+                                class="mb-4 mb-xl-0"
+                    >
 
                         <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 12.18%</span>
@@ -31,7 +35,9 @@
                     <stats-card title="Sales"
                                 type="gradient-green"
                                 sub-title="924"
-                                icon="ni ni-money-coins">
+                                icon="ni ni-money-coins"
+                                class="mb-4 mb-xl-0"
+                    >
 
                         <template slot="footer">
                             <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 5.72%</span>
@@ -44,7 +50,9 @@
                     <stats-card title="Performance"
                                 type="gradient-info"
                                 sub-title="49,65%"
-                                icon="ni ni-chart-bar-32">
+                                icon="ni ni-chart-bar-32"
+                                class="mb-4 mb-xl-0"
+                    >
 
                         <template slot="footer">
                             <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 54.8%</span>
