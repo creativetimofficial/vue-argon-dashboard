@@ -5,6 +5,7 @@ import AuthLayout from '@/layout/AuthLayout'
 Vue.use(Router)
 
 export default new Router({
+  linkExactActiveClass: 'active',
   routes: [
     {
       path: '/',
