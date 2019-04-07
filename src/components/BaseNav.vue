@@ -2,12 +2,10 @@
     <nav class="navbar"
          :class="[
             {'navbar-expand-md': expand},
-            {[`navbar-${effect}`]: effect},
             {'navbar-transparent': transparent},
-            {[`bg-${type}`]: type},
-            {'rounded': round}
+            {[`bg-${type}`]: type}
          ]">
-        <div class="container-fluid">
+        <div :class="containerClasses">
             <slot name="container-pre"></slot>
             <slot name="brand">
                 <router-link :to="$route.path"
@@ -56,10 +54,9 @@
         description:
           "Explicit id for the menu. By default it's a generated random number"
       },
-      effect: {
-        type: String,
-        default: "dark",
-        description: "Effect of the navbar (light|dark)"
+      containerClasses: {
+        type: [String, Object, Array],
+        default: 'container-fluid'
       },
       round: {
         type: Boolean,
