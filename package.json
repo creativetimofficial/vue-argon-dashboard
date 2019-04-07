@@ -17,6 +17,7 @@
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
     "vue-chartjs": "^3.4.2",
+    "vue-clipboard2": "^0.3.0",
     "vue-router": "^3.0.1",
     "vue2-transitions": "^0.3.0"
   },
@@ -26,6 +27,7 @@
     "@vue/cli-plugin-pwa": "^3.5.0",
     "@vue/cli-service": "^3.5.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-component": "^1.1.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.9.0",
