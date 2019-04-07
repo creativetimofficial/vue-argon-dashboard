@@ -27,6 +27,11 @@ export default new Router({
           path: '/profile',
           name: 'profile',
           component: () => import(/* webpackChunkName: "demo" */ './views/UserProfile.vue')
+        },
+        {
+          path: '/tables',
+          name: 'tables',
+          component: () => import(/* webpackChunkName: "demo" */ './views/Tables.vue')
         }
       ]
     }

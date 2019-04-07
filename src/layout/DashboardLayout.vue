@@ -18,6 +18,7 @@
 
         <sidebar-item :link="{name: 'Icons', icon: 'ni ni-planet text-blue', path: '/icons'}"/>
         <sidebar-item :link="{name: 'User Profile', icon: 'ni ni-pin-3 text-orange', path: '/profile'}"/>
+        <sidebar-item :link="{name: 'Tables', icon: 'ni ni-bullet-list-67 text-red', path: '/tables'}"/>
 
       </template>
     </side-bar>
@@ -37,18 +38,15 @@
 <script>
   import DashboardNavbar from './DashboardNavbar.vue';
   import ContentFooter from './ContentFooter.vue';
-  import DashboardContent from './Content.vue';
   import SidebarFixedToggleButton from './SidebarFixedToggleButton.vue';
-  import { FadeTransition, ZoomCenterTransition } from 'vue2-transitions';
+  import { FadeTransition } from 'vue2-transitions';
 
   export default {
     components: {
       DashboardNavbar,
       ContentFooter,
       SidebarFixedToggleButton,
-      DashboardContent,
-      FadeTransition,
-      ZoomCenterTransition
+      FadeTransition
     },
     data() {
       return {
