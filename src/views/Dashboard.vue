@@ -166,7 +166,10 @@
             [0, 20, 5, 25, 10, 30, 15, 40, 40]
           ],
           activeIndex: 0,
-          chartData: null,
+          chartData: {
+            datasets: [],
+            labels: [],
+          },
           extraOptions: chartConfigs.blueChartOptions,
         },
         redBarChart: {

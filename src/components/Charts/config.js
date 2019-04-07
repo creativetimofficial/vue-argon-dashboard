@@ -142,7 +142,7 @@ function chartOptions(Chart) {
   });
 
   return options;
-};
+}
 
 export function initGlobalOptions(Chart) {
   parseOptions(Chart, chartOptions(Chart));
@@ -161,6 +161,13 @@ export let blueChartOptions = {
       gridLines: {
         color: Charts.colors.gray[700],
         zeroLineColor: Charts.colors.gray[700]
+      },
+      ticks: {
+        callback: function(value) {
+          if (!(value % 10)) {
+            return '$' + value + 'k';
+          }
+        }
       }
     }]
   }

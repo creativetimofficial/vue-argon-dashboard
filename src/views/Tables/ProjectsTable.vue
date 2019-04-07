@@ -103,10 +103,6 @@
   </div>
 </template>
 <script>
-  import BaseTable from '@/components/BaseTable';
-  import BaseProgress from '@/components/BaseProgress';
-  import Badge from '@/components/Badge';
-
   export default {
     name: 'projects-table',
     props: {
@@ -114,11 +110,6 @@
         type: String
       },
       title: String
-    },
-    components: {
-      Badge,
-      BaseTable,
-      BaseProgress
     },
     data() {
       return {

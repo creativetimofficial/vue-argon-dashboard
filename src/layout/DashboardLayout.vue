@@ -1,7 +1,5 @@
 <template>
   <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
-    <notifications></notifications>
-    <sidebar-fixed-toggle-button/>
     <side-bar
       :background-color="sidebarBackground"
       short-title="Argon"
@@ -40,14 +38,12 @@
 <script>
   import DashboardNavbar from './DashboardNavbar.vue';
   import ContentFooter from './ContentFooter.vue';
-  import SidebarFixedToggleButton from './SidebarFixedToggleButton.vue';
   import { FadeTransition } from 'vue2-transitions';
 
   export default {
     components: {
       DashboardNavbar,
       ContentFooter,
-      SidebarFixedToggleButton,
       FadeTransition
     },
     data() {
@@ -59,19 +55,6 @@
       toggleSidebar() {
         if (this.$sidebar.showSidebar) {
           this.$sidebar.displaySidebar(false);
-        }
-      },
-      initScrollbar() {
-        let docClasses = document.body.classList;
-        let isWindows = navigator.platform.startsWith('Win');
-        if (isWindows) {
-          // if we are on windows OS we activate the perfectScrollbar function
-          initScrollbar('sidebar');
-          initScrollbar('sidebar-wrapper');
-
-          docClasses.add('perfect-scrollbar-on');
-        } else {
-          docClasses.add('perfect-scrollbar-off');
         }
       }
     }
