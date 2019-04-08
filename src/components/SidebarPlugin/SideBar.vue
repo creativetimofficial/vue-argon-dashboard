@@ -87,19 +87,19 @@
                 <ul class="navbar-nav mb-md-3">
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://demos.creative-tim.com/argon-dashboard/docs/getting-started/overview.html">
+                           href="https://demos.creative-tim.com/vue-argon-dashboard/documentation">
                             <i class="ni ni-spaceship"></i> Getting started
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://demos.creative-tim.com/argon-dashboard/docs/foundation/colors.html">
+                           href="https://demos.creative-tim.com/vue-argon-dashboard/documentation/foundation/colors.html">
                             <i class="ni ni-palette"></i> Foundation
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link"
-                           href="https://demos.creative-tim.com/argon-dashboard/docs/components/alerts.html">
+                           href="https://demos.creative-tim.com/vue-argon-dashboard/documentation/components/alerts.html">
                             <i class="ni ni-ui-04"></i> Components
                         </a>
                     </li>

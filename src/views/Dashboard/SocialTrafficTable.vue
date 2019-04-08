@@ -31,6 +31,8 @@
             <div class="d-flex align-items-center">
               <span class="mr-2">{{row.progress}}%</span>
               <base-progress :type="row.progressType"
+                             class="pt-0"
+                             :show-percentage="false"
                              :value="row.progress"
               />
             </div>

@@ -74,18 +74,17 @@
                             <div class="row icon-examples">
                                 <div class="col-lg-3 col-md-6"
                                      v-for="(icon, index) in icons" :key="icon.name + index">
-                                    <el-tooltip placement="top-start" :content="icon.name">
-                                        <button type="button"
-                                                v-clipboard:copy="icon.name"
-                                                v-clipboard:success="onCopy"
-                                                class="btn-icon-clipboard" data-clipboard-text="air-baloon"
-                                                title="Copy to clipboard">
-                                            <div>
-                                                <i :class="icon.name"></i>
-                                                <span>{{icon.name.substring(6)}}</span>
-                                            </div>
-                                        </button>
-                                    </el-tooltip>
+                                    <button type="button"
+                                            v-b-tooltip.hover.top
+                                            :title="icon.name"
+                                            v-clipboard:copy="icon.name"
+                                            v-clipboard:success="onCopy"
+                                            class="btn-icon-clipboard" data-clipboard-text="air-baloon">
+                                        <div>
+                                            <i :class="icon.name"></i>
+                                            <span>{{icon.name.substring(6)}}</span>
+                                        </div>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -97,13 +96,13 @@
     </div>
 </template>
 <script>
-  import { Tooltip, Notification } from 'element-ui'
   import Vue from 'vue'
   import VueClipboard from 'vue-clipboard2'
+  import BTooltipDirective from 'bootstrap-vue/es/directives/tooltip'
   Vue.use(VueClipboard)
   export default {
-    components: {
-      [Tooltip.name]: Tooltip
+    directives: {
+      'b-tooltip': BTooltipDirective
     },
     data() {
       return {
@@ -214,7 +213,8 @@
     },
     methods: {
       onCopy() {
-        Notification.success({
+        this.$notify({
+          type: 'success',
           title: 'Copied to clipboard'
         })
       }
