@@ -71,14 +71,18 @@
             <div class="d-flex align-items-center">
               <span class="completion mr-2">{{row.completion}}%</span>
               <div>
-                <base-progress :type="row.statusType" :value="row.completion"/>
+                <base-progress :type="row.statusType"
+                               :show-percentage="false"
+                               class="pt-0"
+                               :value="row.completion"/>
               </div>
             </div>
           </td>
 
           <td class="text-right">
-            <base-dropdown class="dropdown" position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <base-dropdown class="dropdown"
+                           position="right">
+              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i>
               </a>
 

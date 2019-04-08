@@ -16,6 +16,7 @@
             </a>
         </slot>
         <ul class="dropdown-menu"
+            ref="menu"
             :class="[{'dropdown-menu-right': position === 'right'}, {show: isOpen}, menuClasses]">
             <slot></slot>
         </ul>
@@ -48,6 +49,11 @@ export default {
     hideArrow: {
       type: Boolean,
       description: "Whether dropdown arrow should be hidden"
+    },
+    appendToBody: {
+      type: Boolean,
+      default: true,
+      description: "Whether dropdown should be appended to document body"
     },
     tag: {
       type: String,
