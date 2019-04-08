@@ -56,8 +56,8 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/js/app.5040ab29.js"
   },
   {
-    "revision": "e0ea3f1916671872498288dc2bd40f06",
-    "url": "/vue-argon-dashboard/img/brand/white.png"
+    "revision": "a794a15f6e45b941d8a521e7965221a8",
+    "url": "/vue-argon-dashboard/img/brand/favicon.png"
   },
   {
     "revision": "14a08198ec7d1eb96d515362293fed36",
@@ -80,12 +80,12 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.c1733565.eot"
   },
   {
-    "revision": "70e65a7d34902f2c350816ecfe2f6492",
-    "url": "/vue-argon-dashboard/fonts/fa-solid-900.70e65a7d.eot"
-  },
-  {
     "revision": "f82ec6ba2dc4181db2af35c499462840",
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.f82ec6ba.ttf"
+  },
+  {
+    "revision": "70e65a7d34902f2c350816ecfe2f6492",
+    "url": "/vue-argon-dashboard/fonts/fa-solid-900.70e65a7d.eot"
   },
   {
     "revision": "b5472631dbace30d549357ec325b9c62",
@@ -100,16 +100,16 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/img/nucleo-icons.0b8a30b1.svg"
   },
   {
-    "revision": "a794a15f6e45b941d8a521e7965221a8",
-    "url": "/vue-argon-dashboard/img/brand/favicon.png"
-  },
-  {
-    "revision": "ab904daa548967670847fc3929bf50f4",
-    "url": "/vue-argon-dashboard/img/theme/bootstrap.jpg"
+    "revision": "e0ea3f1916671872498288dc2bd40f06",
+    "url": "/vue-argon-dashboard/img/brand/white.png"
   },
   {
     "revision": "368685db949cddcd901ba54559a727d9",
     "url": "/vue-argon-dashboard/img/theme/angular.jpg"
+  },
+  {
+    "revision": "ab904daa548967670847fc3929bf50f4",
+    "url": "/vue-argon-dashboard/img/theme/bootstrap.jpg"
   },
   {
     "revision": "59d7c2b119ab46fc7b5f853f04324c89",
