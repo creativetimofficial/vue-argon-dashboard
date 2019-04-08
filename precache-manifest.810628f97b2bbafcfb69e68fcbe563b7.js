@@ -48,12 +48,12 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/robots.txt"
   },
   {
-    "revision": "bea1a69fc69e025263dd5d7a260ff17f",
+    "revision": "b224e23472410187011c323bd0f4a685",
     "url": "/vue-argon-dashboard/index.html"
   },
   {
-    "revision": "5ba61134dde4b01a23f1",
-    "url": "/vue-argon-dashboard/js/app.e51360ec.js"
+    "revision": "a2c7d66da5094c5e4d18",
+    "url": "/vue-argon-dashboard/js/app.5040ab29.js"
   },
   {
     "revision": "e0ea3f1916671872498288dc2bd40f06",
@@ -76,16 +76,16 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.2569aaea.woff"
   },
   {
-    "revision": "f82ec6ba2dc4181db2af35c499462840",
-    "url": "/vue-argon-dashboard/fonts/nucleo-icons.f82ec6ba.ttf"
-  },
-  {
     "revision": "c1733565b32b585676302d4233c39da8",
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.c1733565.eot"
   },
   {
     "revision": "70e65a7d34902f2c350816ecfe2f6492",
     "url": "/vue-argon-dashboard/fonts/fa-solid-900.70e65a7d.eot"
+  },
+  {
+    "revision": "f82ec6ba2dc4181db2af35c499462840",
+    "url": "/vue-argon-dashboard/fonts/nucleo-icons.f82ec6ba.ttf"
   },
   {
     "revision": "b5472631dbace30d549357ec325b9c62",
@@ -152,7 +152,7 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/fonts/fa-brands-400.48461ea4.woff2"
   },
   {
-    "revision": "5ba61134dde4b01a23f1",
+    "revision": "a2c7d66da5094c5e4d18",
     "url": "/vue-argon-dashboard/css/app.2289a3b2.css"
   }
 ];
