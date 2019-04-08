@@ -12,8 +12,8 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/js/chunk-vendors.1d9a3a23.js"
   },
   {
-    "revision": "7a26688bd775fd2885fa",
-    "url": "/vue-argon-dashboard/js/demo.0d5c19df.js"
+    "revision": "69f1c7ec0af07dbe54bb",
+    "url": "/vue-argon-dashboard/js/demo.47eeed83.js"
   },
   {
     "revision": "dcfcf3b77210fe85b0abc8260e6fa70e",
@@ -48,12 +48,12 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/robots.txt"
   },
   {
-    "revision": "f5e2bc60efbc487cbcc09614be8b32c1",
+    "revision": "bea1a69fc69e025263dd5d7a260ff17f",
     "url": "/vue-argon-dashboard/index.html"
   },
   {
-    "revision": "3d5dc991bfb3ceb6dbc9",
-    "url": "/vue-argon-dashboard/js/app.da9c016e.js"
+    "revision": "5ba61134dde4b01a23f1",
+    "url": "/vue-argon-dashboard/js/app.e51360ec.js"
   },
   {
     "revision": "e0ea3f1916671872498288dc2bd40f06",
@@ -76,16 +76,16 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.2569aaea.woff"
   },
   {
+    "revision": "f82ec6ba2dc4181db2af35c499462840",
+    "url": "/vue-argon-dashboard/fonts/nucleo-icons.f82ec6ba.ttf"
+  },
+  {
     "revision": "c1733565b32b585676302d4233c39da8",
     "url": "/vue-argon-dashboard/fonts/nucleo-icons.c1733565.eot"
   },
   {
     "revision": "70e65a7d34902f2c350816ecfe2f6492",
     "url": "/vue-argon-dashboard/fonts/fa-solid-900.70e65a7d.eot"
-  },
-  {
-    "revision": "f82ec6ba2dc4181db2af35c499462840",
-    "url": "/vue-argon-dashboard/fonts/nucleo-icons.f82ec6ba.ttf"
   },
   {
     "revision": "b5472631dbace30d549357ec325b9c62",
@@ -104,12 +104,12 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/img/brand/favicon.png"
   },
   {
-    "revision": "368685db949cddcd901ba54559a727d9",
-    "url": "/vue-argon-dashboard/img/theme/angular.jpg"
-  },
-  {
     "revision": "ab904daa548967670847fc3929bf50f4",
     "url": "/vue-argon-dashboard/img/theme/bootstrap.jpg"
+  },
+  {
+    "revision": "368685db949cddcd901ba54559a727d9",
+    "url": "/vue-argon-dashboard/img/theme/angular.jpg"
   },
   {
     "revision": "59d7c2b119ab46fc7b5f853f04324c89",
@@ -152,7 +152,7 @@ self.__precacheManifest = [
     "url": "/vue-argon-dashboard/fonts/fa-brands-400.48461ea4.woff2"
   },
   {
-    "revision": "3d5dc991bfb3ceb6dbc9",
+    "revision": "5ba61134dde4b01a23f1",
     "url": "/vue-argon-dashboard/css/app.2289a3b2.css"
   }
 ];
