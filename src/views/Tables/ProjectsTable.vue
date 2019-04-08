@@ -53,16 +53,16 @@
           <td>
             <div class="avatar-group">
               <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
-                <img alt="Image placeholder" src="/img/theme/team-1-800x800.jpg">
+                <img alt="Image placeholder" src="img/theme/team-1-800x800.jpg">
               </a>
               <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Romina Hadid">
-                <img alt="Image placeholder" src="/img/theme/team-2-800x800.jpg">
+                <img alt="Image placeholder" src="img/theme/team-2-800x800.jpg">
               </a>
               <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Alexander Smith">
-                <img alt="Image placeholder" src="/img/theme/team-3-800x800.jpg">
+                <img alt="Image placeholder" src="img/theme/team-3-800x800.jpg">
               </a>
               <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Jessica Doe">
-                <img alt="Image placeholder" src="/img/theme/team-4-800x800.jpg">
+                <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
               </a>
             </div>
           </td>
@@ -119,7 +119,7 @@
       return {
         tableData: [
           {
-            img: '/img/theme/bootstrap.jpg',
+            img: 'img/theme/bootstrap.jpg',
             title: 'Argon Design System',
             budget: '$2500 USD',
             status: 'pending',
@@ -127,7 +127,7 @@
             completion: 60
           },
           {
-            img: '/img/theme/angular.jpg',
+            img: 'img/theme/angular.jpg',
             title: 'Angular Now UI Kit PRO',
             budget: '$1800 USD',
             status: 'completed',
@@ -135,7 +135,7 @@
             completion: 100
           },
           {
-            img: '/img/theme/sketch.jpg',
+            img: 'img/theme/sketch.jpg',
             title: 'Black Dashboard',
             budget: '$3150 USD',
             status: 'delayed',
@@ -143,7 +143,7 @@
             completion: 72
           },
           {
-            img: '/img/theme/react.jpg',
+            img: 'img/theme/react.jpg',
             title: 'React Material Dashboard',
             budget: '$4400 USD',
             status: 'on schedule',
@@ -151,7 +151,7 @@
             completion: 90
           },
           {
-            img: '/img/theme/vue.jpg',
+            img: 'img/theme/vue.jpg',
             title: 'Vue Paper UI Kit PRO',
             budget: '$2200 USD',
             status: 'completed',
