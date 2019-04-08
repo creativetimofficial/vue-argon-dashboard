@@ -1,5 +1,5 @@
 <template>
-    <base-nav class="main-nav flex-row align-items-md-center" type="" effect="light" expand>
+    <base-nav class="main-nav flex-row align-items-md-center navbar-horizontal" type="" effect="light" expand>
         <a slot="brand" class="navbar-brand mr-0 mr-md-2" href="/"
            aria-label="Bootstrap">
             <img src="https://demos.creative-tim.com/vue-argon-dashboard/img/brand/white.png">
