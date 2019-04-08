@@ -2,7 +2,7 @@ const markdownParser = require('./markdownParser')
 const path = require('path');
 
 module.exports = {
-  base: process.env.NODE_ENV ? '/vue-argon-design-system/documentation/' : '',
+  base: process.env.NODE_ENV ? '/vue-argon-dashboard/documentation/' : '',
   markdown: {
     config: markdownParser
   },
@@ -71,6 +71,7 @@ module.exports = {
       collapsable: false,
       children: [
         '/components/plugin_datepicker',
+        '/components/plugin_charts',
         '/components/plugin_slider',
       ]
     }
