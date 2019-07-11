@@ -1,5 +1,5 @@
 import { Bar, mixins } from 'vue-chartjs';
-import globalOptionsMixin from "@/components/Charts/globalOptionsMixin";
+import globalOptionsMixin from "./globalOptionsMixin";
 
 export default {
   name: 'bar-chart',

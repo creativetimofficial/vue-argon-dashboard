@@ -1,4 +1,4 @@
-import { parseOptions } from "@/components/Charts/optionHelpers";
+import { parseOptions } from "./optionHelpers";
 
 export const Charts = {
   mode: 'light',//(themeMode) ? themeMode : 'light';

@@ -143,9 +143,9 @@
 </template>
 <script>
   // Charts
-  import * as chartConfigs from '@/components/Charts/config';
-  import LineChart from '@/components/Charts/LineChart';
-  import BarChart from '@/components/Charts/BarChart';
+  import * as chartConfigs from '../components/Charts/config';
+  import LineChart from '../components/Charts/LineChart';
+  import BarChart from '../components/Charts/BarChart';
 
   // Tables
   import SocialTrafficTable from './Dashboard/SocialTrafficTable';
