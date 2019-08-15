@@ -30,6 +30,11 @@
           'Sidebar link. Can contain name, path, icon and other attributes. See examples for more info'
       }
     },
+    inject: {
+      autoClose: {
+        default: true
+      }
+    },
     data() {
       return {
         children: [],

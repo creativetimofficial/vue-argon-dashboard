@@ -125,8 +125,7 @@
       autoClose: {
         type: Boolean,
         default: true,
-        description:
-          'Whether sidebar should autoclose on mobile when clicking an item'
+        description: 'Whether sidebar should autoclose on mobile when clicking an item'
       }
     },
     provide() {
