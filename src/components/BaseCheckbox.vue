@@ -1,6 +1,6 @@
 <template>
   <div class="custom-control custom-checkbox"
-       :class="[{disabled: disabled}, inlineClass]">
+       :class="{'disabled': disabled, 'form-check-inline': inline}">
     <input :id="cbId"
            class="custom-control-input"
            type="checkbox"
@@ -52,12 +52,6 @@ export default {
         }
         this.$emit("input", check);
       }
-    },
-    inlineClass () {
-      if (this.inline) {
-        return `form-check-inline`;
-      }
-      return ''
     }
   },
   mounted() {
