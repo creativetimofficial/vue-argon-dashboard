@@ -12,8 +12,9 @@
     </div>
 
     <div class="table-responsive">
-      <base-table thead-classes="thead-light"
-                  :data="tableData">
+      <base-table
+        thead-classes="thead-light"
+        :data="tableData">
         <template slot="columns">
           <th>Page name</th>
           <th>Visitors</th>
@@ -32,8 +33,9 @@
             {{row.unique}}
           </td>
           <td>
-            <i class="fas fa-arrow-up text-success mr-3"
-               :class="row.bounceRateDirection === 'up' ? 'text-success': 'text-danger'">
+            <i
+              class="fas fa-arrow-up text-success mr-3"
+              :class="row.bounceRateDirection === 'up' ? 'text-success': 'text-danger'">
             </i>
             {{row.bounceRate}}
           </td>

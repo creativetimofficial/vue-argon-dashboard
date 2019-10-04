@@ -1,8 +1,10 @@
 <template>
-  <div class="card shadow"
-       :class="type === 'dark' ? 'bg-default': ''">
-    <div class="card-header border-0"
-         :class="type === 'dark' ? 'bg-transparent': ''">
+  <div
+    class="card shadow"
+    :class="type === 'dark' ? 'bg-default': ''">
+    <div
+      class="card-header border-0"
+      :class="type === 'dark' ? 'bg-transparent': ''">
       <div class="row align-items-center">
         <div class="col">
           <h3 class="mb-0" :class="type === 'dark' ? 'text-white': ''">
@@ -16,11 +18,12 @@
     </div>
 
     <div class="table-responsive">
-      <base-table class="table align-items-center table-flush"
-                  :class="type === 'dark' ? 'table-dark': ''"
-                  :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
-                  tbody-classes="list"
-                  :data="tableData">
+      <base-table
+        class="table align-items-center table-flush"
+        :class="type === 'dark' ? 'table-dark': ''"
+        :thead-classes="type === 'dark' ? 'thead-dark': 'thead-light'"
+        tbody-classes="list"
+        :data="tableData">
         <template slot="columns">
           <th>Project</th>
           <th>Budget</th>
@@ -52,16 +55,32 @@
           </td>
           <td>
             <div class="avatar-group">
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Ryan Tompson">
+              <a
+                href="#"
+                class="avatar avatar-sm rounded-circle"
+                data-toggle="tooltip"
+                data-original-title="Ryan Tompson">
                 <img alt="Image placeholder" src="img/theme/team-1-800x800.jpg">
               </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Romina Hadid">
+              <a
+                href="#"
+                class="avatar avatar-sm rounded-circle"
+                data-toggle="tooltip"
+                data-original-title="Romina Hadid">
                 <img alt="Image placeholder" src="img/theme/team-2-800x800.jpg">
               </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Alexander Smith">
+              <a
+                href="#"
+                class="avatar avatar-sm rounded-circle"
+                data-toggle="tooltip"
+                data-original-title="Alexander Smith">
                 <img alt="Image placeholder" src="img/theme/team-3-800x800.jpg">
               </a>
-              <a href="#" class="avatar avatar-sm rounded-circle" data-toggle="tooltip" data-original-title="Jessica Doe">
+              <a
+                href="#"
+                class="avatar avatar-sm rounded-circle"
+                data-toggle="tooltip"
+                data-original-title="Jessica Doe">
                 <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
               </a>
             </div>
@@ -71,18 +90,26 @@
             <div class="d-flex align-items-center">
               <span class="completion mr-2">{{row.completion}}%</span>
               <div>
-                <base-progress :type="row.statusType"
-                               :show-percentage="false"
-                               class="pt-0"
-                               :value="row.completion"/>
+                <base-progress
+                  :type="row.statusType"
+                  :show-percentage="false"
+                  class="pt-0"
+                  :value="row.completion"/>
               </div>
             </div>
           </td>
 
           <td class="text-right">
-            <base-dropdown class="dropdown"
-                           position="right">
-              <a slot="title" class="btn btn-sm btn-icon-only text-light" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <base-dropdown
+              class="dropdown"
+              position="right">
+              <a
+                slot="title"
+                class="btn btn-sm btn-icon-only text-light"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
                 <i class="fas fa-ellipsis-v"></i>
               </a>
 
@@ -99,8 +126,9 @@
       </base-table>
     </div>
 
-    <div class="card-footer d-flex justify-content-end"
-         :class="type === 'dark' ? 'bg-transparent': ''">
+    <div
+      class="card-footer d-flex justify-content-end"
+      :class="type === 'dark' ? 'bg-transparent': ''">
       <base-pagination total="30"></base-pagination>
     </div>
 

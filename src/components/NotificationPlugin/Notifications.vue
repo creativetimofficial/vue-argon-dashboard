@@ -1,8 +1,9 @@
 <template>
   <div class="notifications">
-    <slide-y-up-transition :duration="transitionDuration"
-                             group
-                             mode="out-in">
+    <slide-y-up-transition
+      :duration="transitionDuration"
+      group
+      mode="out-in">
       <notification
         v-for="notification in notifications"
         v-bind="notification"

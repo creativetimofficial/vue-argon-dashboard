@@ -1,22 +1,23 @@
 <template>
-    <component :is="tag"
-               :type="tag === 'button' ? nativeType: ''"
-               @click="handleClick"
-               class="btn"
-               :class="classes">
+  <component
+    :is="tag"
+    :type="tag === 'button' ? nativeType: ''"
+    @click="handleClick"
+    class="btn"
+    :class="classes">
     <span class="btn-inner--icon" v-if="$slots.icon || icon && $slots.default">
       <slot name="icon">
         <i :class="icon"></i>
       </slot>
     </span>
-        <i v-if="!$slots.default" :class="icon"></i>
-        <span class="btn-inner--text" v-if="$slots.icon || icon && $slots.default">
-          <slot>
-            {{text}}
-          </slot>
+    <i v-if="!$slots.default" :class="icon"></i>
+    <span class="btn-inner--text" v-if="$slots.icon || icon && $slots.default">
+      <slot>
+        {{text}}
+      </slot>
     </span>
-        <slot v-if="!$slots.icon && !icon"></slot>
-    </component>
+    <slot v-if="!$slots.icon && !icon"></slot>
+  </component>
 </template>
 <script>
 export default {

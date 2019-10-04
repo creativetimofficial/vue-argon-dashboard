@@ -44,7 +44,12 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "vue/max-attributes-per-line": ["error", {
+        "singleline": 2
+      }],
+      "vue/html-indent": ["error"]
+      },
     "parserOptions": {
       "parser": "babel-eslint"
     }

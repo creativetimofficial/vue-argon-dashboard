@@ -11,8 +11,9 @@
 
       <div class="col-auto" v-if="$slots.icon || icon">
         <slot name="icon">
-          <div class="icon icon-shape text-white rounded-circle shadow"
-               :class="[`bg-${type}`, iconClasses]">
+          <div
+            class="icon icon-shape text-white rounded-circle shadow"
+            :class="[`bg-${type}`, iconClasses]">
             <i :class="icon"></i>
           </div>
         </slot>

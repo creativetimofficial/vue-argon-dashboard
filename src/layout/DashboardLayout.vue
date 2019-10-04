@@ -27,7 +27,10 @@
       <dashboard-navbar></dashboard-navbar>
 
       <div @click="toggleSidebar">
-        <fade-transition :duration="200" origin="center top" mode="out-in">
+        <fade-transition
+          :duration="200"
+          origin="center top"
+          mode="out-in">
           <!-- your content here -->
           <router-view></router-view>
         </fade-transition>

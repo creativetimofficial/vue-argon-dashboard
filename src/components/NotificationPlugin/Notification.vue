@@ -15,9 +15,9 @@
   >
     <template v-if="icon || $slots.icon">
       <slot name="icon">
-            <span class="alert-icon" data-notify="icon">
-              <i :class="icon"></i>
-            </span>
+        <span class="alert-icon" data-notify="icon">
+          <i :class="icon"></i>
+        </span>
       </slot>
     </template>
 
@@ -34,11 +34,12 @@
     </span>
 
     <slot name="dismiss-icon">
-      <button type="button"
-              class="close"
-              data-dismiss="alert"
-              aria-label="Close"
-              @click="close">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+        @click="close">
         <span aria-hidden="true">×</span>
       </button>
     </slot>
