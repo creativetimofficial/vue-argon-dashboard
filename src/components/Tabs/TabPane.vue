@@ -10,7 +10,7 @@
 <script>
 export default {
   name: "tab-pane",
-  props: ["label", "id", "title"],
+  props: ["label", "id", "title", "active"],
   inject: ["addTab", "removeTab"],
   data() {
     return {
