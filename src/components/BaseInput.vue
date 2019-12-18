@@ -16,11 +16,11 @@
 
         <div :class="{'input-group': hasIcon}">
           <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
-          <span class="input-group-text">
             <slot name="addonLeft">
-              <i :class="addonLeftIcon"></i>
+              <span class="input-group-text">
+                  <i :class="addonLeftIcon"></i>
+              </span>
             </slot>
-          </span>
           </div>
           <slot v-bind="slotData">
               <input
@@ -35,11 +35,11 @@
                       aria-describedby="addon-right addon-left">
           </slot>
           <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
-            <span class="input-group-text">
-                <slot name="addonRight">
-                    <i :class="addonRightIcon"></i>
-                </slot>
-            </span>
+            <slot name="addonRight">
+              <span class="input-group-text">
+                <i :class="addonRightIcon"></i>
+              </span>
+            </slot>
           </div>
         </div>
 
