@@ -15,7 +15,7 @@ Every element has multiple states for colors, styles, hover, focus, that you can
 
 **Complex Documentation**
 
-Each element is well presented in a very complex documentation. You can read more about the idea behind this [dashboard here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/tutorial?ref=ada-github-readme). You can check the [components here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/alerts?ref=ada-github-readme) and the [foundation here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/colors?ref=ada-github-readme).
+Each element is well presented in a very complex documentation. You can read more about the idea behind this [dashboard here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/#/tutorial?ref=ada-github-readme). You can check the [components here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/#/alerts?ref=ada-github-readme) and the [foundation here](https://demos.creative-tim.com/vue-argon-dashboard/documentation/#/colors?ref=ada-github-readme).
 
 **Example Pages**
 
@@ -55,7 +55,7 @@ If you want to get inspiration or just show something directly to your clients, 
 | --- | --- | ---  | --- | --- | ---  |
 | [![Dashboard Page](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/vue-argon-dashboard/dashboard.png)](https://demos.creative-tim.com/vue-argon-dashboard/#/dashboard?ref=ada-github-readme)  | [![Icons Page](https://github.com/creativetimofficial/public-assets/blob/master/vue-argon-dashboard/icons.png?raw=true)](https://demos.creative-tim.com/vue-argon-dashboard/#/icons?ref=ada-github-readme)  | [![User Profile Page](https://github.com/creativetimofficial/public-assets/blob/master/vue-argon-dashboard/user.png?raw=true)](https://demos.creative-tim.com/vue-argon-dashboard/#/profile?ref=ada-github-readme)  | [![Tables Page](https://raw.githubusercontent.com/creativetimofficial/public-assets/master/vue-argon-dashboard/tables.png)](https://demos.creative-tim.com/vue-argon-dashboard/#/tables?ref=ada-github-readme)  | [![Login Page](https://github.com/creativetimofficial/public-assets/blob/master/vue-argon-dashboard/login.png?raw=true)](https://demos.creative-tim.com/vue-argon-dashboard/#/login?ref=ada-github-readme)  | [![Register Page](https://github.com/creativetimofficial/public-assets/blob/master/vue-argon-dashboard/register.png?raw=true)](https://demos.creative-tim.com/vue-argon-dashboard/#/register?ref=ada-github-readme)  
 
-[View More](https://demos.creative-tim.com/vue-argon-dashboard/dashboard)
+[View More](https://demos.creative-tim.com/vue-argon-dashboard/#/dashboard)
 
 
 ## Quick start
@@ -66,7 +66,7 @@ If you want to get inspiration or just show something directly to your clients, 
 
 
 ## Documentation
-The documentation for the Vue Argon Dashboard is hosted at our [website](https://demos.creative-tim.com/vue-argon-dashboard/documentation/tutorial?ref=ada-github-readme).
+The documentation for the Vue Argon Dashboard is hosted at our [website](https://demos.creative-tim.com/vue-argon-dashboard/documentation/#/tutorial?ref=ada-github-readme).
 
 
 ## File Structure
@@ -176,9 +176,9 @@ At present, we officially aim to support the last two versions of the following 
 
 
 ## Resources
-- Demo: <https://demos.creative-tim.com/vue-argon-dashboard/dashboard?ref=ada-github-readme>
+- Demo: <https://demos.creative-tim.com/vue-argon-dashboard/#/dashboard?ref=ada-github-readme>
 - Download Page: <https://www.creative-tim.com/product/vue-argon-dashboard?ref=ada-github-readme>
-- Documentation: <https://demos.creative-tim.com/vue-argon-dashboard/documentation/tutorial?ref=ada-github-readme>
+- Documentation: <https://demos.creative-tim.com/vue-argon-dashboard/documentation/#/tutorial?ref=ada-github-readme>
 - License Agreement: <https://www.creative-tim.com/license?ref=ada-github-readme>
 - Support: <https://www.creative-tim.com/contact-us?ref=ada-github-readme>
 - Issues: [Github Issues Page](https://github.com/creativetimofficial/vue-argon-dashboard/issues?ref=ada-github-readme)
