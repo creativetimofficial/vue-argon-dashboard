@@ -76,7 +76,7 @@
     </base-nav>
 </template>
 <script>
-  import SearchBox from '../../node_modules/vuepress/lib/default-theme/SearchBox.vue';
+  import SearchBox from '@SearchBox'
 
   export default {
     components: {

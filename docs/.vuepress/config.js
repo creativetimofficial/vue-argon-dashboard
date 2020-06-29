@@ -8,7 +8,9 @@ module.exports = {
   },
   configureWebpack: (config, isServer) => {
     config.resolve.alias['@'] = path.resolve(__dirname, '../../src')
+    config.resolve.alias['src'] = path.resolve(__dirname, '../../src')
     config.resolve.alias['assets'] = path.resolve(__dirname, '../../src/assets')
+    config.resolve.alias['@theme'] = path.resolve(__dirname, '../node_modules/@vuepress/theme-default')
   },
   chainWebpack: config => {
     config.module
@@ -23,6 +25,11 @@ module.exports = {
   head: [
     ['link', { rel: 'stylesheet', href: "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" }],
     ['script', { href: "https://maps.googleapis.com/maps/api/js?key=AIzaSyDTTfWur0PDbZWPr7Pmq8K3jiDp0_xUziI" }],
+  ],
+  plugins: [
+    ['@vuepress/search', {
+      searchMaxSuggestions: 10
+    }]
   ],
   themeConfig: {
     sidebarDepth: 1,

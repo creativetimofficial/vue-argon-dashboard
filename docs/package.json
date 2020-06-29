@@ -10,17 +10,32 @@
     "build:docs": "vuepress build && npm run copy:docs"
   },
   "devDependencies": {
+    "@vuepress/plugin-search": "^1.0.0-alpha.0",
     "cheerio": "^1.0.0-rc.2",
     "gh-pages": "^1.1.0",
     "markdown-it-container": "^2.0.0",
     "ncp": "^2.0.0",
     "prismjs": "^1.15.0",
-    "vuepress": "^0.13.0"
+    "vuepress": "^1.0.0-alpha.37",
+    "sass-loader": "^8.0.2"
   },
   "author": "tagup@tagup.io",
   "description": "Tagup component docs",
   "dependencies": {
+    "bootstrap": "4.5.0",
+    "bootstrap-vue": "2.15.0",
+    "chart.js": "2.9.3",
     "element-ui": "^2.4.0",
-    "lodash": "^4.17.11"
+    "flatpickr": "4.6.3",
+    "lodash": "^4.17.11",
+    "nouislider": "14.6.0",
+    "popper.js": "^1.16.1",
+    "portal-vue": "^2.1.7",
+    "toast": "^0.2.7",
+    "vue": "2.6.11",
+    "vue-chartjs": "3.5.0",
+    "vue-flatpickr-component": "8.1.5",
+    "vue-functional-data-merge": "^3.1.0",
+    "vue2-transitions": "0.3.0"
   }
 }
