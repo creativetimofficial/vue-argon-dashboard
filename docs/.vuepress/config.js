@@ -6,6 +6,7 @@ module.exports = {
   markdown: {
     config: markdownParser
   },
+  extendMarkdown: markdownParser,
   configureWebpack: (config, isServer) => {
     config.resolve.alias['@'] = path.resolve(__dirname, '../../src')
     config.resolve.alias['src'] = path.resolve(__dirname, '../../src')

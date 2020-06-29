@@ -91,6 +91,7 @@
             background-color: #41B883;
             box-shadow: rgba(116, 129, 141, .1) 0 1px 1px 0;
             position: fixed;
+            width: 100%;
             .container {
                 max-width: 100%;
                 width: 100%;
