@@ -50,7 +50,8 @@
 
 
 html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
-    left: auto;
+    left: 100%;
+    width: 10%;
     right: 0;
 }
 
@@ -98,7 +99,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-origin {
 }
 
 html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
-    right: -17px;
     left: auto;
 }
 
@@ -309,9 +309,6 @@ html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
     height: $noui-target-thickness;
 }
 
-html:not([dir="rtl"]) .noUi-horizontal .noUi-handle {
-    right: -10px;
-}
 
 .noUi-vertical {
     width: $noui-target-thickness;
