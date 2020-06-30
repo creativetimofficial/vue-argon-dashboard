@@ -36,7 +36,9 @@
     "eslint-plugin-vue": "^6.2.2",
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
-    "vue-template-compiler": "2.6.11"
+    "vue-template-compiler": "2.6.11",
+    "gulp": "4.0.2",
+    "gulp-append-prepend": "1.0.8"
   },
   "eslintConfig": {
     "root": true,
