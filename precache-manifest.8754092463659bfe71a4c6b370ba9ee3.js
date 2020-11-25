@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "11f9809810ac84289e5b",
-    "url": "/vue-argon-dashboard/css/app.da2e7d67.css"
+    "revision": "f39aed6ee7cdc566073e",
+    "url": "/vue-argon-dashboard/css/app.c275e4f2.css"
   },
   {
     "revision": "2569aaea6eaaf8cd210db7f2fa016743",
@@ -76,12 +76,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/vue-argon-dashboard/img/theme/vue.jpg"
   },
   {
-    "revision": "035de0db1549242305a38768edc62b10",
+    "revision": "e952c36b88a4ffaa2622c0e5de92d83b",
     "url": "/vue-argon-dashboard/index.html"
   },
   {
-    "revision": "11f9809810ac84289e5b",
-    "url": "/vue-argon-dashboard/js/app.30be5aad.js"
+    "revision": "f39aed6ee7cdc566073e",
+    "url": "/vue-argon-dashboard/js/app.fafbefbe.js"
   },
   {
     "revision": "72304e184024e8f7adab",

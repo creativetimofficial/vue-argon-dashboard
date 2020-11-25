@@ -1,6 +1,6 @@
 /*!
   =========================================================
-  * Vue Argon Dashboard - v1.1.0
+  * Vue Argon Dashboard - v1.1.1
   =========================================================
   * Product Page: https://www.creative-tim.com/product/vue-argon-dashboard
   * Copyright 2020 Creative Tim (https://www.creative-tim.com)
