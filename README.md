@@ -207,7 +207,7 @@ We use GitHub Issues as the official bug tracker for the Material Kit. Here are 
 
 - [Tutorials](https://www.youtube.com/channel/UCVyTG4sCw-rOvB9oHkzZD1w?ref=creativetim)
 - [Affiliate Program](https://www.creative-tim.com/affiliates/new?ref=ada-github-readme) (earn money)
-- [Blog Creative Tim](http://blog.creative-tim.com/?ref=ada-github-readme)
+- [Blog Creative Tim](https://www.creative-tim.com/blog/?ref=ada-github-readme)
 - [Free Products](https://www.creative-tim.com/bootstrap-themes/free?ref=ada-github-readme) from Creative Tim
 - [Premium Products](https://www.creative-tim.com/bootstrap-themes/premium?ref=ada-github-readme) from Creative Tim
 - [React Products](https://www.creative-tim.com/bootstrap-themes/react-themes?ref=ada-github-readme) from Creative Tim
