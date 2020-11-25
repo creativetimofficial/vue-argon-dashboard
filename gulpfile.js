@@ -3,7 +3,7 @@
 const gulp = require("gulp"),
   gap = require("gulp-append-prepend"),
   product_name = "Vue Argon Dashboard",
-  product_version = "1.1.0",
+  product_version = "1.1.1",
   year = "2020",
   product_link = "https://www.creative-tim.com/product/vue-argon-dashboard",
   product_copyright_template =
