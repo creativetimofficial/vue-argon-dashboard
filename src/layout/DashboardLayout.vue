@@ -5,7 +5,9 @@
       short-title="Argon"
       title="Argon"
     >
+
       <template v-slot:links>
+
         <sidebar-item
           :link="{
             name: 'Dashboard',

@@ -3,7 +3,7 @@
         <div class="container-fluid">
 
             <!--Toggler-->
-            <navbar-toggle-button @click.native="showSidebar">
+            <navbar-toggle-button @click="showSidebar">
                 <span class="navbar-toggler-icon"></span>
             </navbar-toggle-button>
             <router-link class="navbar-brand" to="/">
@@ -13,7 +13,7 @@
             <slot name="mobile-right">
                 <ul class="nav align-items-center d-md-none">
                     <base-dropdown class="nav-item" position="right">
-                        <a slot="title" class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown"
+                        <a class="nav-link nav-link-icon" href="#" role="button" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
                             <i class="ni ni-bell-55"></i>
                         </a>
@@ -24,7 +24,7 @@
                         <a class="dropdown-item" href="#">Something else here</a>
                     </base-dropdown>
                     <base-dropdown class="nav-item" position="right">
-                        <a slot="title" class="nav-link" href="#" role="button">
+                        <a class="nav-link" href="#" role="button">
                             <div class="media align-items-center">
                               <span class="avatar avatar-sm rounded-circle">
                                 <img alt="Image placeholder" src="img/theme/team-1-800x800.jpg">
@@ -60,8 +60,7 @@
                 </ul>
             </slot>
             <slot></slot>
-            <div v-show="$sidebar.showSidebar" class="navbar-collapse collapse show" id="sidenav-collapse-main">
-
+            <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
@@ -70,7 +69,7 @@
                             </router-link>
                         </div>
                         <div class="col-6 collapse-close">
-                            <navbar-toggle-button @click.native="closeSidebar"></navbar-toggle-button>
+                            <navbar-toggle-button @click="closeSidebar"></navbar-toggle-button>
                         </div>
                     </div>
                 </div>
@@ -141,7 +140,7 @@
         this.$sidebar.displaySidebar(true)
       }
     },
-    beforeDestroy() {
+    beforeUnmount() {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.showSidebar = false;
       }
