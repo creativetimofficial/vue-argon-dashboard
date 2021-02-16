@@ -15,7 +15,7 @@
         <ul class="navbar-nav align-items-center d-none d-md-flex">
             <li class="nav-item dropdown">
                 <base-dropdown class="nav-link pr-0">
-                    <div class="media align-items-center" slot="title">
+                    <div class="media align-items-center" v-slot:title>
                 <span class="avatar avatar-sm rounded-circle">
                   <img alt="Image placeholder" src="img/theme/team-4-800x800.jpg">
                 </span>
