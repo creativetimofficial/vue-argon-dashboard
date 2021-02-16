@@ -10,10 +10,12 @@
   "dependencies": {
     "bootstrap": "4.5.0",
     "bootstrap-vue": "2.15.0",
+    "chart.js": "2.9.4",
     "core-js": "^3.6.5",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
-    "vue2-transitions": "0.3.0"
+    "vue2-transitions": "0.3.0",
+    "vue-chartjs": "3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

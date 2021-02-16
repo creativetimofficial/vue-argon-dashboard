@@ -3,8 +3,8 @@ import StatsCard from "../components/StatsCard";
 
 const GlobalComponents = {
   install(app) {
-    app.use(Card);
-    app.use(StatsCard);
+    app.component("card", Card);
+    app.component("stats-card", StatsCard);
   },
 };
 
