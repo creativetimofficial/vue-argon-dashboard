@@ -1,11 +1,11 @@
 <template>
-  <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
+  <div class="wrapper">
     <side-bar
       :background-color="sidebarBackground"
       short-title="Argon"
       title="Argon"
     >
-      <template slot="links">
+      <template v-slot:links>
         <sidebar-item
           :link="{
             name: 'Dashboard',
@@ -39,13 +39,13 @@
 <script>
   import DashboardNavbar from './DashboardNavbar.vue';
   import ContentFooter from './ContentFooter.vue';
-  import { FadeTransition } from 'vue2-transitions';
+  // import { FadeTransition } from 'vue2-transitions';
 
   export default {
     components: {
       DashboardNavbar,
       ContentFooter,
-      FadeTransition
+      // FadeTransition
     },
     data() {
       return {

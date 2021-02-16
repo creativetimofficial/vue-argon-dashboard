@@ -4,9 +4,9 @@
         <base-nav class="navbar-top navbar-horizontal navbar-dark"
                   containerClasses="px-4 container"
                   expand>
-            <router-link slot="brand" class="navbar-brand" to="/">
+            <!-- <router-link slot="brand" class="navbar-brand" to="/">
                 <img src="img/brand/white.png"/>
-            </router-link>
+            </router-link> -->
 
             <template v-slot="{closeMenu}">
                 <!-- Collapse header -->
