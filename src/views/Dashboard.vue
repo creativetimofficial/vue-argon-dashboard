@@ -57,7 +57,7 @@
             sub-title="49,65%"
             icon="ni ni-chart-bar-32"
             class="mb-4 mb-xl-0"
-            >
+          >
             <template v-slot:footer>
               <span class="text-success mr-2">
                 <i class="fa fa-arrow-up"></i> 54.8%
@@ -76,18 +76,15 @@
           <card type="default" header-classes="bg-transparent">
             <div class="row align-items-center">
               <div class="col">
-                  <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                  <h5 class="h3 text-white mb-0">Sales value</h5>
+                <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
+                <h5 class="h3 text-white mb-0">Sales value</h5>
               </div>
             </div>
           </card>
         </div>
-
       </div>
     </div>
   </div>
 </template>
-<script>
-
-</script>
+<script></script>
 <style></style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="header" :class="{[`bg-${type}`]: type}">
+  <div class="header" :class="{ [`bg-${type}`]: type }">
     <div class="container-fluid">
       <div class="header-body">
         <slot></slot>
@@ -8,16 +8,15 @@
   </div>
 </template>
 <script>
-  export default {
-    name: 'base-header',
-    props: {
-      type: {
-        type: String,
-        default: 'primary',
-        description: 'Header background type'
-      }
+export default {
+  name: "base-header",
+  props: {
+    type: {
+      type: String,
+      default: "primary",
+      description: "Header background type"
     }
   }
+};
 </script>
-<style>
-</style>
+<style></style>
