@@ -22,7 +22,7 @@
         </template>
 
         <template v-slot:default="row">
-          <th>
+          <th scope="row">
             {{ row.item.page }}
           </th>
           <td>
