@@ -47,10 +47,10 @@ export const activeUsersChart = {
                 zeroLineColor: 'transparent'
               },
               ticks: {
-                suggestedMin: 60,
-                suggestedMax: 125,
-                padding: 20,
-                fontColor: '#9e9e9e'
+                padding: 0,
+                fontColor: '#8898aa',
+                fontSize: 13,
+                fontFamily: 'Open Sans'
               }
             }
           ],
@@ -59,18 +59,20 @@ export const activeUsersChart = {
               barPercentage: 1.6,
               gridLines: {
                 drawBorder: false,
-                color: 'rgba(29,140,248,0.1)',
+                color: 'rgba(29,140,248,0.0)',
                 zeroLineColor: 'transparent'
               },
               ticks: {
-                padding: 20,
-                fontColor: '#9e9e9e'
+                padding: 10,
+                fontColor: '#8898aa',
+                fontSize: 13,
+                fontFamily: 'Open Sans'
               }
             }
           ]
         },
         layout: {
-          padding: { left: 0, right: 0, top: 15, bottom: 15 },
+          padding:  0
         },
       },
     });

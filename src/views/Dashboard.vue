@@ -105,7 +105,7 @@
               </div>
             </template>
             <div class="chart-area">
-              <canvas :id="activeUsersChartID"></canvas>
+              <canvas :height="350" :id="activeUsersChartID"></canvas>
             </div>
           </card>
         </div>
