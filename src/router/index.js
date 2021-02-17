@@ -4,6 +4,7 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import AuthLayout from "@/layout/AuthLayout";
 
 import Dashboard from "../views/Dashboard.vue";
+import Icons from "../views/Icons.vue";
 
 const routes = [
   {
@@ -15,6 +16,11 @@ const routes = [
         path: "/dashboard",
         name: "dashboard",
         components: { default: Dashboard }
+      },
+      {
+        path: "/icons",
+        name: "icons",
+        components: { default: Icons }
       }
     ]
   },
