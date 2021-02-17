@@ -1,5 +1,6 @@
 import BaseHeader from "../components/BaseHeader";
 import BaseNav from "../components/BaseNav";
+import BaseProgress from "../components/BaseProgress";
 import BaseTable from "../components/BaseTable";
 import Card from "../components/Card";
 import StatsCard from "../components/StatsCard";
@@ -8,6 +9,7 @@ const GlobalComponents = {
   install(app) {
     app.component("base-header", BaseHeader);
     app.component("base-nav", BaseNav);
+    app.component("base-progress", BaseProgress);
     app.component("base-table", BaseTable);
     app.component("card", Card);
     app.component("stats-card", StatsCard);
