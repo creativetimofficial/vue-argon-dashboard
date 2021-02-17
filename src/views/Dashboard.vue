@@ -105,7 +105,23 @@
               </div>
             </template>
             <div class="chart-area">
-              <canvas :height="350" :id="activeUsersChartID"></canvas>
+              <canvas :height="350" :id="salesChartID"></canvas>
+            </div>
+          </card>
+        </div>
+
+        <div class="col-xl-4">
+          <card header-classes="bg-transparent">
+            <template v-slot:header>
+              <div class="row align-items-center">
+                  <div class="col">
+                      <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
+                      <h5 class="h3 mb-0">Total orders</h5>
+                  </div>
+              </div>
+            </template>
+            <div class="chart-area">
+              <canvas :height="350" :id="ordersChartID"></canvas>
             </div>
           </card>
         </div>
@@ -129,7 +145,8 @@
 // Charts
 import * as chartConfigs from '@/components/Charts/config';
 import {
-  activeUsersChart
+  salesChart,
+  ordersChart
 } from "@/components/Charts/LineChart";
 
 import PageVisitsTable from './Dashboard/PageVisitsTable';
@@ -143,7 +160,8 @@ export default {
   },
   data() {
     return {
-      activeUsersChartID: "activeUsersChart",
+      salesChartID: "salesChart",
+      ordersChartID: "ordersChart",
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
@@ -168,7 +186,8 @@ export default {
     };
   },
   mounted() {
-    activeUsersChart.createChart(this.activeUsersChartID);
+    salesChart.createChart(this.salesChartID);
+    ordersChart.createChart(this.ordersChartID);
   },
 }
 </script>
