@@ -5,11 +5,12 @@ import AuthLayout from "@/layout/AuthLayout";
 
 import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
+import Maps from "../views/Maps.vue";
 
 const routes = [
   {
     path: "/",
-    redirect: "dashboard",
+    redirect: "/dashboard",
     component: DashboardLayout,
     children: [
       {
@@ -21,6 +22,11 @@ const routes = [
         path: "/icons",
         name: "icons",
         components: { default: Icons }
+      },
+      {
+        path: "/maps",
+        name: "maps",
+        components: { default: Maps }
       }
     ]
   },
