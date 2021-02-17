@@ -7,6 +7,7 @@ import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
 import Maps from "../views/Maps.vue";
 import Profile from "../views/UserProfile.vue";
+import Tables from "../views/Tables.vue";
 
 const routes = [
   {
@@ -33,6 +34,11 @@ const routes = [
         path: "/profile",
         name: "profile",
         components: { default: Profile }
+      },
+      {
+        path: "/tables",
+        name: "tables",
+        components: { default: Tables }
       }
     ]
   },
