@@ -1,3 +1,4 @@
+import BaseButton from "../components/BaseButton";
 import BaseHeader from "../components/BaseHeader";
 import BaseNav from "../components/BaseNav";
 import BaseProgress from "../components/BaseProgress";
@@ -7,6 +8,7 @@ import StatsCard from "../components/StatsCard";
 
 const GlobalComponents = {
   install(app) {
+    app.component("base-button", BaseButton);
     app.component("base-header", BaseHeader);
     app.component("base-nav", BaseNav);
     app.component("base-progress", BaseProgress);
