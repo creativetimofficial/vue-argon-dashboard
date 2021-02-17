@@ -69,8 +69,8 @@
       </div>
     </base-header>
 
-    <!--Charts-->
     <div class="container-fluid mt--7">
+      <!--Charts-->
       <div class="row">
         <div class="col-xl-8 mb-5 mb-xl-0">
           <card type="default" header-classes="bg-transparent">
@@ -83,8 +83,25 @@
           </card>
         </div>
       </div>
+      <!-- End charts-->
+
+      <!--Tables-->
+      <div class="row mt-5">
+        <div class="col-xl-8 mb-5 mb-xl-0">
+          <page-visits-table></page-visits-table>
+        </div>
+      </div>
+      <!--End tables-->
     </div>
   </div>
 </template>
-<script></script>
+<script>
+import PageVisitsTable from './Dashboard/PageVisitsTable';
+
+export default {
+  components: {
+    PageVisitsTable
+  }
+}
+</script>
 <style></style>
