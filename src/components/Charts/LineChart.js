@@ -92,16 +92,15 @@ export const ordersChart = {
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
           {
-            label: "Performance",
+            label: 'Sales',
             tension: .4,
-            borderWidth: 4,
-            borderColor: "#5e72e4",
+            borderWidth: 0,
             pointRadius: 0,
-            backgroundColor: 'transparent',
-            data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+            backgroundColor: '#fb6340',
+            data: [25, 20, 30, 22, 17, 29]
           },
         ],
       },
@@ -119,40 +118,47 @@ export const ordersChart = {
         scales: {
           yAxes: [
             {
-              barPercentage: 1.6,
               gridLines: {
+                borderDash: [2],
+                borderDashOffset: [2],
                 drawBorder: false,
-                color: 'rgba(29,140,248,0.0)',
-                zeroLineColor: 'transparent'
+                drawTicks: false,
+                lineWidth: 0,
+                zeroLineWidth: 0,
+                zeroLineBorderDash: [2],
+                zeroLineBorderDashOffset: [2]
               },
               ticks: {
-                padding: 0,
-                fontColor: '#8898aa',
+                beginAtZero: true,
+                padding: 10,
                 fontSize: 13,
-                fontFamily: 'Open Sans'
+                fontColor: '#8898aa',
+                fontFamily: 'Open Sans',
+                callback: function (value) {
+                  if (!(value % 10)) {
+                    return value
+                  }
+                }
               }
             }
           ],
           xAxes: [
             {
-              barPercentage: 1.6,
               gridLines: {
                 drawBorder: false,
-                color: 'rgba(29,140,248,0.0)',
-                zeroLineColor: 'transparent'
+                drawOnChartArea: false,
+                drawTicks: false
               },
               ticks: {
-                padding: 10,
-                fontColor: '#8898aa',
+                padding: 20,
                 fontSize: 13,
+                fontColor: '#8898aa',
                 fontFamily: 'Open Sans'
-              }
+              },
+              maxBarThickness: 10
             }
           ]
-        },
-        layout: {
-          padding:  0
-        },
+        }
       },
     });
   },
