@@ -6,6 +6,7 @@ import AuthLayout from "@/layout/AuthLayout";
 import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
 import Maps from "../views/Maps.vue";
+import Profile from "../views/UserProfile.vue";
 
 const routes = [
   {
@@ -27,6 +28,11 @@ const routes = [
         path: "/maps",
         name: "maps",
         components: { default: Maps }
+      },
+      {
+        path: "/profile",
+        name: "profile",
+        components: { default: Profile }
       }
     ]
   },
