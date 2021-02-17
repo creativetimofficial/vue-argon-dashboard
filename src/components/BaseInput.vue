@@ -26,6 +26,7 @@
         <slot v-bind="slotData">
             <input
                     :value="value"
+                    v-on="listeners"
                     v-bind="$attrs"
                     class="form-control"
                     :class="[

@@ -9,6 +9,9 @@ import Maps from "../views/Maps.vue";
 import Profile from "../views/UserProfile.vue";
 import Tables from "../views/Tables.vue";
 
+import Login from "../views/Login.vue";
+
+
 const routes = [
   {
     path: "/",
@@ -46,7 +49,13 @@ const routes = [
     path: "/",
     redirect: "login",
     component: AuthLayout,
-    children: []
+    children: [
+      {
+        path: "/login",
+        name: "login",
+        components: { default: Login }
+      }
+    ]
   }
 ];
 
