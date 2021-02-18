@@ -15,16 +15,18 @@
       <slot name="mobile-right">
         <ul class="nav align-items-center d-md-none">
           <base-dropdown class="nav-item" position="right">
-            <a
-              class="nav-link nav-link-icon"
-              href="#"
-              role="button"
-              data-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="ni ni-bell-55"></i>
-            </a>
+            <template v-slot:title>
+              <a
+                class="nav-link nav-link-icon"
+                href="#"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i class="ni ni-bell-55"></i>
+              </a>
+            </template>
 
             <a class="dropdown-item" href="#">Action</a>
             <a class="dropdown-item" href="#">Another action</a>
@@ -32,16 +34,18 @@
             <a class="dropdown-item" href="#">Something else here</a>
           </base-dropdown>
           <base-dropdown class="nav-item" position="right">
-            <a class="nav-link" href="#" role="button">
-              <div class="media align-items-center">
-                <span class="avatar avatar-sm rounded-circle">
-                  <img
-                    alt="Image placeholder"
-                    src="img/theme/team-1-800x800.jpg"
-                  />
-                </span>
-              </div>
-            </a>
+            <template v-slot:title>
+              <a class="nav-link" href="#" role="button">
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm rounded-circle">
+                    <img
+                      alt="Image placeholder"
+                      src="img/theme/team-1-800x800.jpg"
+                    />
+                  </span>
+                </div>
+              </a>
+            </template>
 
             <div class=" dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
