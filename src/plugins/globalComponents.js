@@ -13,6 +13,7 @@ import BaseSwitch from "../components/BaseSwitch";
 import BaseRadio from "../components/BaseRadio";
 import BaseTable from "../components/BaseTable";
 import Card from "../components/Card";
+import Modal from "../components/Modal";
 import StatsCard from "../components/StatsCard";
 
 const GlobalComponents = {
@@ -32,6 +33,7 @@ const GlobalComponents = {
     app.component("base-radio", BaseRadio);
     app.component("base-table", BaseTable);
     app.component("card", Card);
+    app.component("modal", Modal);
     app.component("stats-card", StatsCard);
   }
 };
