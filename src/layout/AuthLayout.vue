@@ -94,9 +94,7 @@
     </div>
     <!-- Page content -->
     <div class="container mt--8 pb-5">
-      <slide-y-up-transition mode="out-in" origin="center top">
-        <router-view></router-view>
-      </slide-y-up-transition>
+      <router-view></router-view>
     </div>
     <footer class="py-5">
       <div class="container">
