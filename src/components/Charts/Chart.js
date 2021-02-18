@@ -100,7 +100,8 @@ export const ordersChart = {
             borderWidth: 0,
             pointRadius: 0,
             backgroundColor: '#fb6340',
-            data: [25, 20, 30, 22, 17, 29]
+            data: [25, 20, 30, 22, 17, 29],
+            maxBarThickness: 10
           },
         ],
       },
@@ -154,8 +155,7 @@ export const ordersChart = {
                 fontSize: 13,
                 fontColor: '#8898aa',
                 fontFamily: 'Open Sans'
-              },
-              maxBarThickness: 10
+              }
             }
           ]
         }

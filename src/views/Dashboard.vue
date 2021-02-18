@@ -143,11 +143,10 @@
 </template>
 <script>
 // Charts
-import * as chartConfigs from '@/components/Charts/config';
 import {
   salesChart,
   ordersChart
-} from "@/components/Charts/LineChart";
+} from "@/components/Charts/Chart";
 
 import PageVisitsTable from './Dashboard/PageVisitsTable';
 import SocialTrafficTable from './Dashboard/SocialTrafficTable';
@@ -166,12 +165,7 @@ export default {
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
           [0, 20, 5, 25, 10, 30, 15, 40, 40]
         ],
-        activeIndex: 0,
-        chartData: {
-          datasets: [],
-          labels: [],
-        },
-        extraOptions: chartConfigs.blueChartOptions,
+        activeIndex: 0
       }
     };
   },
