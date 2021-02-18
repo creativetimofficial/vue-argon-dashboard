@@ -71,7 +71,7 @@
         </ul>
       </slot>
       <slot></slot>
-      <div class="navbar-collapse collapse show" id="sidenav-collapse-main">
+      <div v-show="$sidebar.showSidebar" class="navbar-collapse collapse show" id="sidenav-collapse-main">
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
             <div class="col-6 collapse-brand">

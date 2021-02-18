@@ -4,7 +4,7 @@ import GlobalDirectives from "./globalDirectives";
 import "../assets/vendor/nucleo/css/nucleo.css";
 import "../assets/vendor/@fortawesome/fontawesome-free/css/all.min.css";
 import "../assets/scss/argon.scss";
-import SidebarPlugin from "../components/SidebarPlugin/index";
+import SidebarPlugin from "../components/SidebarPlugin";
 
 export default {
   install(app) {

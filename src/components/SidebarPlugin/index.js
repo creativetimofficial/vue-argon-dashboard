@@ -1,7 +1,8 @@
 import Sidebar from "./SideBar.vue";
 import SidebarItem from "./SidebarItem.vue";
+import { reactive } from "vue";
 
-const SidebarStore = {
+const SidebarStore = reactive({
   showSidebar: false,
   sidebarLinks: [],
   isMinimized: false,
@@ -21,8 +22,8 @@ const SidebarStore = {
     }, 1000);
 
     this.isMinimized = !this.isMinimized;
-  }
-};
+  },
+});
 
 const SidebarPlugin = {
   install(app, options) {
@@ -30,10 +31,10 @@ const SidebarPlugin = {
       SidebarStore.sidebarLinks = options.sidebarLinks;
     }
 
-    app.config.globalProperties.$sidebar = app.sidebarStore;
+    app.config.globalProperties.$sidebar = SidebarStore;
     app.component("side-bar", Sidebar);
     app.component("sidebar-item", SidebarItem);
-  }
+  },
 };
 
 export default SidebarPlugin;
