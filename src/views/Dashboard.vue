@@ -152,7 +152,6 @@ import {
 import PageVisitsTable from './Dashboard/PageVisitsTable';
 import SocialTrafficTable from './Dashboard/SocialTrafficTable';
 
-
 export default {
   components: {
     PageVisitsTable,
@@ -173,20 +172,17 @@ export default {
           labels: [],
         },
         extraOptions: chartConfigs.blueChartOptions,
-      },
-      redBarChart: {
-        chartData: {
-          labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-          datasets: [{
-            label: 'Sales',
-            data: [25, 20, 30, 22, 17, 29]
-          }]
-        }
       }
     };
   },
+  methods: {
+    initBigChart(index){
+      salesChart.createChart(this.salesChartID, this.bigLineChart.allData[index]);
+      this.bigLineChart.activeIndex = index;
+    }
+  },
   mounted() {
-    salesChart.createChart(this.salesChartID);
+    salesChart.createChart(this.salesChartID, this.bigLineChart.allData[0]);
     ordersChart.createChart(this.ordersChartID);
   },
 }

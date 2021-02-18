@@ -1,7 +1,7 @@
 import Chart from "chart.js";
 
 export const salesChart = {
-  createChart(chartId) {
+  createChart(chartId, chartData) {
     const chartColor = "#FFFFFF";
     const fallBackColor = "#f96332";
     const color = this.color || fallBackColor;
@@ -22,7 +22,7 @@ export const salesChart = {
             borderColor: "#5e72e4",
             pointRadius: 0,
             backgroundColor: 'transparent',
-            data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+            data: chartData,
           },
         ],
       },
