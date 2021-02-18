@@ -14,6 +14,7 @@
     "core-js": "^3.6.5",
     "google-maps": "4.3.3",
     "vue": "^3.0.0",
+    "vue-toastification": "1.7.11",
     "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
