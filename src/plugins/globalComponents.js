@@ -1,5 +1,6 @@
 import BaseButton from "../components/BaseButton";
 import BaseCheckbox from "../components/BaseCheckbox";
+import BaseDropdown from "../components/BaseDropdown";
 import BaseHeader from "../components/BaseHeader";
 import BaseInput from "../components/BaseInput";
 import BaseNav from "../components/BaseNav";
@@ -13,6 +14,7 @@ const GlobalComponents = {
   install(app) {
     app.component("base-button", BaseButton);
     app.component("base-checkbox", BaseCheckbox);
+    app.component("base-dropdown", BaseDropdown);
     app.component("base-header", BaseHeader);
     app.component("base-input", BaseInput);
     app.component("base-nav", BaseNav);
