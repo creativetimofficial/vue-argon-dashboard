@@ -8,6 +8,7 @@ import BaseInput from "../components/BaseInput";
 import BaseNav from "../components/BaseNav";
 import BasePagination from "../components/BasePagination";
 import BaseProgress from "../components/BaseProgress";
+import BaseSlider from "../components/BaseSlider";
 import BaseRadio from "../components/BaseRadio";
 import BaseTable from "../components/BaseTable";
 import Card from "../components/Card";
@@ -25,6 +26,7 @@ const GlobalComponents = {
     app.component("base-nav", BaseNav);
     app.component("base-pagination", BasePagination);
     app.component("base-progress", BaseProgress);
+    app.component("base-slider", BaseSlider);
     app.component("base-radio", BaseRadio);
     app.component("base-table", BaseTable);
     app.component("card", Card);
