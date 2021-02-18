@@ -20,13 +20,13 @@
                             <small>Or sign in with credentials</small>
                         </div>
                         <form role="form">
-                            <base-input class="input-group-alternative mb-3"
+                            <base-input inputClasses="input-group-alternative"
                                         placeholder="Email"
                                         addon-left-icon="ni ni-email-83"
                                         v-model="model.email">
                             </base-input>
 
-                            <base-input class="input-group-alternative"
+                            <base-input inputClasses="input-group-alternative"
                                         placeholder="Password"
                                         type="password"
                                         addon-left-icon="ni ni-lock-circle-open"

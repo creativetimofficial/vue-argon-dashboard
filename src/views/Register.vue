@@ -23,19 +23,19 @@
                     </div>
                     <form role="form">
 
-                        <base-input class="input-group-alternative mb-3"
+                        <base-input inputClasses="input-group-alternative"
                                     placeholder="Name"
                                     addon-left-icon="ni ni-hat-3"
                                     v-model="model.name">
                         </base-input>
 
-                        <base-input class="input-group-alternative mb-3"
+                        <base-input inputClasses="input-group-alternative"
                                     placeholder="Email"
                                     addon-left-icon="ni ni-email-83"
-                                    v-model="model.email">
+                                    v-model="model.email" focused>
                         </base-input>
 
-                        <base-input class="input-group-alternative"
+                        <base-input inputClasses="input-group-alternative"
                                     placeholder="Password"
                                     type="password"
                                     addon-left-icon="ni ni-lock-circle-open"
