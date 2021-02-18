@@ -10,6 +10,7 @@ import Profile from "../views/UserProfile.vue";
 import Tables from "../views/Tables.vue";
 
 import Login from "../views/Login.vue";
+import Register from "../views/Register.vue";
 
 
 const routes = [
@@ -54,6 +55,11 @@ const routes = [
         path: "/login",
         name: "login",
         components: { default: Login }
+      },
+      {
+        path: "/register",
+        name: "register",
+        components: { default: Register }
       }
     ]
   }
