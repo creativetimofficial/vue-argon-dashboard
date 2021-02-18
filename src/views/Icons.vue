@@ -75,12 +75,14 @@
                             <div class="col-lg-3 col-md-6"
                                v-for="(icon, index) in icons" :key="icon.name + index">
                                <button type="button"
-                                   class="btn-icon-clipboard" data-clipboard-text="air-baloon">
+                                    v-on:click="onCopy(icon.name)"
+                                    class="btn-icon-clipboard my-0" data-clipboard-text="air-baloon">
                                    <div>
                                        <i :class="icon.name"></i>
-                                       <span>{{icon.name.substring(6)}}</span>
+                                       <span id="test">{{icon.name.substring(6)}}</span>
                                    </div>
                                </button>
+                               <input class="opacity-0 h-0" :value="icon.name" :id="icon.name" />
                             </div>
                         </div>
                     </div>
@@ -153,7 +155,6 @@ export default {
         { name: "ni ni-headphones" },
         { name: "ni ni-html5" },
         { name: "ni ni-istanbul" },
-        { name: "ni ni-circle-08" },
         { name: "ni ni-key-25" },
         { name: "ni ni-laptop" },
         { name: "ni ni-like-2" },
@@ -199,6 +200,13 @@ export default {
         { name: "ni ni-ui-04" }
       ]
     }
+  },
+  methods: {
+    onCopy(el) {
+      var test = document.getElementById(el);
+      test.select();
+      document.execCommand('copy');
+    },
   }
 };
 </script>
