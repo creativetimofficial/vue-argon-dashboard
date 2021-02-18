@@ -1,3 +1,4 @@
+import Badge from "../components/Badge";
 import BaseButton from "../components/BaseButton";
 import BaseCheckbox from "../components/BaseCheckbox";
 import BaseDropdown from "../components/BaseDropdown";
@@ -12,6 +13,7 @@ import StatsCard from "../components/StatsCard";
 
 const GlobalComponents = {
   install(app) {
+    app.component("badge", Badge);
     app.component("base-button", BaseButton);
     app.component("base-checkbox", BaseCheckbox);
     app.component("base-dropdown", BaseDropdown);
