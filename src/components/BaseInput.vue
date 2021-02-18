@@ -6,8 +6,8 @@
        {'focused': focused},
        {'has-label': label || $slots.label},
        {'has-success': valid === true},
-       {'has-danger': valid === false},
-       inputClasses]">
+       {'has-danger': valid === false}
+       ]">
         <slot name="label">
             <label v-if="label" class="form-control-label" :class="labelClasses">
                 {{label}}
@@ -31,7 +31,7 @@
                     class="form-control"
                     :class="[
                      {'is-valid': valid === true},
-                     {'is-invalid': valid === false}]"
+                     {'is-invalid': valid === false}, inputClasses]"
                     aria-describedby="addon-right addon-left">
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
