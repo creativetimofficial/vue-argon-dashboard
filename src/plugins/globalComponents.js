@@ -16,6 +16,10 @@ import Card from "../components/Card";
 import Modal from "../components/Modal";
 import StatsCard from "../components/StatsCard";
 
+import {
+  ElTooltip
+} from "element-plus";
+
 const GlobalComponents = {
   install(app) {
     app.component("badge", Badge);
@@ -35,6 +39,7 @@ const GlobalComponents = {
     app.component("card", Card);
     app.component("modal", Modal);
     app.component("stats-card", StatsCard);
+    app.use(ElTooltip);
   }
 };
 
