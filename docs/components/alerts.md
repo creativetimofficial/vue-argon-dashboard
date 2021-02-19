@@ -31,7 +31,7 @@ Provide contextual feedback messages for typical user actions with the handful o
 
     <base-alert type="danger">
         <strong>Danger!</strong> This is a danger alert—check it out!
-    </div>
+    </base-alert>
 
     <base-alert type="warning">
         <strong>Warning!</strong> This is a warning alert—check it out!
