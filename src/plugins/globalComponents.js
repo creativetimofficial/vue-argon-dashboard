@@ -15,6 +15,8 @@ import BaseTable from "../components/BaseTable";
 import Card from "../components/Card";
 import Modal from "../components/Modal";
 import StatsCard from "../components/StatsCard";
+import TabPane from "../components/Tabs/TabPane";
+import Tabs from "../components/Tabs/Tabs";
 
 import {
   ElTooltip
@@ -39,6 +41,8 @@ const GlobalComponents = {
     app.component("card", Card);
     app.component("modal", Modal);
     app.component("stats-card", StatsCard);
+    app.component("tab-pane", TabPane);
+    app.component("tabs", Tabs);
     app.use(ElTooltip);
   }
 };
