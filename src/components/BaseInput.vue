@@ -6,7 +6,7 @@
        {'focused': focused},
        {'has-label': label || $slots.label},
        {'has-success': valid === true},
-       {'has-danger': valid === false}
+       {'has-danger': valid === false}, formClasses
        ]">
         <slot name="label">
             <label v-if="label" class="form-control-label" :class="labelClasses">
@@ -26,7 +26,6 @@
         <slot v-bind="slotData">
             <input
                     :value="value"
-                    v-on="listeners"
                     v-bind="$attrs"
                     class="form-control"
                     :class="[
@@ -71,6 +70,10 @@ export default {
       type: String,
       description: "Input error (below input)"
     },
+    formClasses: {
+      type: String,
+      description: "Form css classes"
+    },
     labelClasses: {
       type: String,
       description: "Input label css classes"
@@ -100,6 +103,7 @@ export default {
   computed: {
     listeners() {
       return {
+        ...this,
         input: this.updateValue,
         focus: this.onFocus,
         blur: this.onBlur
