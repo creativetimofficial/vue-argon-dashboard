@@ -74,14 +74,16 @@
                         <div class="row icon-examples">
                             <div class="col-lg-3 col-md-6"
                                v-for="(icon, index) in icons" :key="icon.name + index">
-                               <button type="button"
-                                    v-on:click="onCopy(icon.name)"
-                                    class="btn-icon-clipboard my-0" data-clipboard-text="air-baloon">
-                                   <div>
-                                       <i :class="icon.name"></i>
-                                       <span id="test">{{icon.name.substring(6)}}</span>
-                                   </div>
-                               </button>
+                               <el-tooltip placement="top" :content="icon.name">
+                                 <button type="button"
+                                      v-on:click="onCopy(icon.name)"
+                                      class="btn-icon-clipboard my-0" data-clipboard-text="air-baloon">
+                                     <div>
+                                         <i :class="icon.name"></i>
+                                         <span id="test">{{icon.name.substring(6)}}</span>
+                                     </div>
+                                 </button>
+                               </el-tooltip>
                                <input class="opacity-0 h-0" :value="icon.name" :id="icon.name" />
                             </div>
                         </div>
