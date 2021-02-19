@@ -15,9 +15,10 @@
     "gh-pages": "^1.1.0",
     "markdown-it-container": "^2.0.0",
     "ncp": "^2.0.0",
+    "node-sass": "^4.0.0",
     "prismjs": "^1.15.0",
-    "vuepress": "^1.0.0-alpha.37",
-    "sass-loader": "^8.0.2"
+    "sass-loader": "^8.0.2",
+    "vuepress": "^1.0.0-alpha.37"
   },
   "author": "tagup@tagup.io",
   "description": "Tagup component docs",

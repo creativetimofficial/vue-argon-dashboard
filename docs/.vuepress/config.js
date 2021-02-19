@@ -78,9 +78,7 @@ module.exports = {
       title: 'Plugins',
       collapsable: false,
       children: [
-        '/components/plugin_datepicker',
-        '/components/plugin_charts',
-        '/components/plugin_slider',
+        '/components/plugin_charts'
       ]
     }
     ],
