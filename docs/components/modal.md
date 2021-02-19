@@ -6,28 +6,44 @@ Use Bootstrap’s JavaScript modal plugin to add dialogs to your site for lightb
 
 #### Example
 
-:::demo
+<div>
+  <base-button type="primary" @click="modals.modal0 = true">
+    Launch demo modal
+  </base-button>
+ <modal :show.sync="modals.modal0">
+   <template slot="header">
+      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+   </template>
+   <div>
+    ...
+   </div>
+   <template slot="footer">
+       <base-button type="secondary" @click="modals.modal0 = false">Close</base-button>
+       <base-button type="primary">Save changes</base-button>
+   </template>
+ </modal>
+</div>
+
 ```html
 <div>
-    <base-button type="primary" @click="modals.modal0 = true">
-      Launch demo modal
-    </base-button>
-   <modal :show.sync="modals.modal0">
-     <template slot="header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-     </template>
-     <div>
-      ...
-     </div>
-     <template slot="footer">
-         <base-button type="secondary" @click="modals.modal0 = false">Close</base-button>
-         <base-button type="primary">Save changes</base-button>
-     </template>
-   </modal>
-
+  <base-button type="primary" @click="modals.modal0 = true">
+    Launch demo modal
+  </base-button>
+ <modal v-model:show="modals.modal0">
+   <template v-slot:header>
+      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+   </template>
+   <div>
+    ...
+   </div>
+   <template v-slot:footer>
+       <base-button type="secondary" @click="modals.modal0 = false">Close</base-button>
+       <base-button type="primary">Save changes</base-button>
+   </template>
+ </modal>
 </div>
 ```
-:::
+
 
 #### Variations
 
