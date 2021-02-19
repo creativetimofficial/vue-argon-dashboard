@@ -45,28 +45,28 @@ Use Bootstrap’s custom button styles for actions in forms, dialogs, and more w
 <div>
   <div class="row">
     <div class="col-md-6">
-      <base-input alternative placeholder="name@example.com"></base-input>
+      <base-input formClasses="input-group-alternative" placeholder="name@example.com"></base-input>
     </div>
     <div class="col-md-6">
-      <base-input alternative placeholder="Disabled" disabled></base-input>
+      <base-input formClasses="input-group-alternative" placeholder="Disabled" disabled></base-input>
     </div>
   </div>
-   <div class="row">
-      <div class="col-md-6">
-          <base-input alternative placeholder="Birthday" addon-left-icon="ni ni-zoom-split-in"></base-input>
-      </div>
-      <div class="col-md-6">
-        <base-input alternative placeholder="Birthday" addon-right-icon="ni ni-zoom-split-in"></base-input>
-      </div>
+ <div class="row">
+    <div class="col-md-6">
+        <base-input formClasses="input-group-alternative" placeholder="Birthday" addon-left-icon="ni ni-zoom-split-in"></base-input>
     </div>
-    <div class="row">
-      <div class="col-md-6">
-          <base-input alternative placeholder="Success" :valid="true"></base-input>
-      </div>
-      <div class="col-md-6">
-        <base-input alternative placeholder="Error input" :valid="false"></base-input>
-      </div>
+    <div class="col-md-6">
+      <base-input formClasses="input-group-alternative" placeholder="Birthday" addon-right-icon="ni ni-zoom-split-in"></base-input>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+        <base-input formClasses="input-group-alternative" placeholder="Success" :valid="true"></base-input>
+    </div>
+    <div class="col-md-6">
+      <base-input formClasses="input-group-alternative" placeholder="Error input" :valid="false"></base-input>
+    </div>
+  </div>
 </div>
 ```
 :::
@@ -196,40 +196,6 @@ export default {
 </script>
 ```
 :::
-
-#### Sliders
-
-:::demo
-```html
-<template>
-<div>
-     <base-slider v-model="sliders.slider1">
-    </base-slider>
-    <!-- Range slider -->
-    <div class="mt-5">
-        <!-- Range slider container -->
-        <base-slider v-model="sliders.slider2" :range="{min: 0, max: 500}">
-
-        </base-slider>
-    </div>
-</div>
-</template>
-<script>
-export default {
-    data(){
-        return {
-         sliders: {
-           slider1: 0,
-           slider2: [150, 400]
-         }
-       }
-    }
-}
-</script>
-```
-:::
-
-
 
 <script>
 export default {
