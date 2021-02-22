@@ -81,26 +81,30 @@
                   <h5 class="h3 text-white mb-0">Sales value</h5>
                 </div>
                 <div class="col">
-                    <ul class="nav nav-pills justify-content-end">
-                        <li class="nav-item mr-2 mr-md-0">
-                            <a class="nav-link py-2 px-3"
-                               href="#"
-                               :class="{active: bigLineChart.activeIndex === 0}"
-                               @click.prevent="initBigChart(0)">
-                                <span class="d-none d-md-block">Month</span>
-                                <span class="d-md-none">M</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link py-2 px-3"
-                               href="#"
-                               :class="{active: bigLineChart.activeIndex === 1}"
-                               @click.prevent="initBigChart(1)">
-                                <span class="d-none d-md-block">Week</span>
-                                <span class="d-md-none">W</span>
-                            </a>
-                        </li>
-                    </ul>
+                  <ul class="nav nav-pills justify-content-end">
+                    <li class="nav-item mr-2 mr-md-0">
+                      <a
+                        class="nav-link py-2 px-3"
+                        href="#"
+                        :class="{ active: bigLineChart.activeIndex === 0 }"
+                        @click.prevent="initBigChart(0)"
+                      >
+                        <span class="d-none d-md-block">Month</span>
+                        <span class="d-md-none">M</span>
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a
+                        class="nav-link py-2 px-3"
+                        href="#"
+                        :class="{ active: bigLineChart.activeIndex === 1 }"
+                        @click.prevent="initBigChart(1)"
+                      >
+                        <span class="d-none d-md-block">Week</span>
+                        <span class="d-md-none">W</span>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </template>
@@ -114,10 +118,12 @@
           <card header-classes="bg-transparent">
             <template v-slot:header>
               <div class="row align-items-center">
-                  <div class="col">
-                      <h6 class="text-uppercase text-muted ls-1 mb-1">Performance</h6>
-                      <h5 class="h3 mb-0">Total orders</h5>
-                  </div>
+                <div class="col">
+                  <h6 class="text-uppercase text-muted ls-1 mb-1">
+                    Performance
+                  </h6>
+                  <h5 class="h3 mb-0">Total orders</h5>
+                </div>
               </div>
             </template>
             <div class="chart-area">
@@ -143,18 +149,15 @@
 </template>
 <script>
 // Charts
-import {
-  salesChart,
-  ordersChart
-} from "@/components/Charts/Chart";
+import { salesChart, ordersChart } from "@/components/Charts/Chart";
 
-import PageVisitsTable from './Dashboard/PageVisitsTable';
-import SocialTrafficTable from './Dashboard/SocialTrafficTable';
+import PageVisitsTable from "./Dashboard/PageVisitsTable";
+import SocialTrafficTable from "./Dashboard/SocialTrafficTable";
 
 export default {
   components: {
     PageVisitsTable,
-    SocialTrafficTable
+    SocialTrafficTable,
   },
   data() {
     return {
@@ -163,22 +166,25 @@ export default {
       bigLineChart: {
         allData: [
           [0, 20, 10, 30, 15, 40, 20, 60, 60],
-          [0, 20, 5, 25, 10, 30, 15, 40, 40]
+          [0, 20, 5, 25, 10, 30, 15, 40, 40],
         ],
-        activeIndex: 0
-      }
+        activeIndex: 0,
+      },
     };
   },
   methods: {
-    initBigChart(index){
-      salesChart.createChart(this.salesChartID, this.bigLineChart.allData[index]);
+    initBigChart(index) {
+      salesChart.createChart(
+        this.salesChartID,
+        this.bigLineChart.allData[index]
+      );
       this.bigLineChart.activeIndex = index;
-    }
+    },
   },
   mounted() {
     salesChart.createChart(this.salesChartID, this.bigLineChart.allData[0]);
     ordersChart.createChart(this.ordersChartID);
   },
-}
+};
 </script>
 <style></style>

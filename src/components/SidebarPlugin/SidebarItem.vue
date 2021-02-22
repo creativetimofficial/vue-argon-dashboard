@@ -22,22 +22,22 @@ export default {
         return {
           name: "",
           path: "",
-          children: []
+          children: [],
         };
       },
       description:
-        "Sidebar link. Can contain name, path, icon and other attributes. See examples for more info"
-    }
+        "Sidebar link. Can contain name, path, icon and other attributes. See examples for more info",
+    },
   },
   inject: {
     autoClose: {
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
       children: [],
-      collapsed: true
+      collapsed: true,
     };
   },
   methods: {
@@ -49,7 +49,7 @@ export default {
       ) {
         this.$sidebar.displaySidebar(false);
       }
-    }
-  }
+    },
+  },
 };
 </script>

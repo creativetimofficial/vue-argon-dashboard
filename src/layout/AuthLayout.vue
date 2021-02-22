@@ -154,15 +154,14 @@
   </div>
 </template>
 <script>
-
 export default {
   name: "auth-layout",
   data() {
     return {
       year: new Date().getFullYear(),
-      showMenu: false
+      showMenu: false,
     };
-  }
+  },
 };
 </script>
 <style></style>

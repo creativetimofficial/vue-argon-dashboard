@@ -11,5 +11,5 @@ export default {
     app.use(SidebarPlugin);
     app.use(GlobalComponents);
     app.use(GlobalDirectives);
-  }
+  },
 };

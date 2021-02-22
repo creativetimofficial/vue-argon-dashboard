@@ -10,7 +10,7 @@
           :link="{
             name: 'Dashboard',
             icon: 'ni ni-tv-2 text-primary',
-            path: '/dashboard'
+            path: '/dashboard',
           }"
         />
 
@@ -18,42 +18,42 @@
           :link="{
             name: 'Icons',
             icon: 'ni ni-planet text-blue',
-            path: '/icons'
+            path: '/icons',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Maps',
             icon: 'ni ni-pin-3 text-orange',
-            path: '/maps'
+            path: '/maps',
           }"
         />
         <sidebar-item
           :link="{
             name: 'User Profile',
             icon: 'ni ni-single-02 text-yellow',
-            path: '/profile'
+            path: '/profile',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Tables',
             icon: 'ni ni-bullet-list-67 text-red',
-            path: '/tables'
+            path: '/tables',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Login',
             icon: 'ni ni-key-25 text-info',
-            path: '/login'
+            path: '/login',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Register',
             icon: 'ni ni-circle-08 text-pink',
-            path: '/register'
+            path: '/register',
           }"
         />
       </template>
@@ -62,8 +62,8 @@
       <dashboard-navbar></dashboard-navbar>
 
       <div @click="toggleSidebar">
-          <!-- your content here -->
-          <router-view></router-view>
+        <!-- your content here -->
+        <router-view></router-view>
         <content-footer v-if="!$route.meta.hideFooter"></content-footer>
       </div>
     </div>
@@ -76,11 +76,11 @@ import ContentFooter from "./ContentFooter.vue";
 export default {
   components: {
     DashboardNavbar,
-    ContentFooter
+    ContentFooter,
   },
   data() {
     return {
-      sidebarBackground: "vue" //vue|blue|orange|green|red|primary
+      sidebarBackground: "vue", //vue|blue|orange|green|red|primary
     };
   },
   methods: {
@@ -88,8 +88,8 @@ export default {
       if (this.$sidebar.showSidebar) {
         this.$sidebar.displaySidebar(false);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss"></style>

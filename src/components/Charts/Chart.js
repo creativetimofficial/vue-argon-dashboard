@@ -13,15 +13,15 @@ export const salesChart = {
     new Chart(ctx, {
       type: "line",
       data: {
-        labels: ['May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [
           {
             label: "Performance",
-            tension: .4,
+            tension: 0.4,
             borderWidth: 4,
             borderColor: "#5e72e4",
             pointRadius: 0,
-            backgroundColor: 'transparent',
+            backgroundColor: "transparent",
             data: chartData,
           },
         ],
@@ -34,7 +34,7 @@ export const salesChart = {
         },
         tooltips: {
           enabled: true,
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         scales: {
@@ -43,36 +43,36 @@ export const salesChart = {
               barPercentage: 1.6,
               gridLines: {
                 drawBorder: false,
-                color: 'rgba(29,140,248,0.0)',
-                zeroLineColor: 'transparent'
+                color: "rgba(29,140,248,0.0)",
+                zeroLineColor: "transparent",
               },
               ticks: {
                 padding: 0,
-                fontColor: '#8898aa',
+                fontColor: "#8898aa",
                 fontSize: 13,
-                fontFamily: 'Open Sans'
-              }
-            }
+                fontFamily: "Open Sans",
+              },
+            },
           ],
           xAxes: [
             {
               barPercentage: 1.6,
               gridLines: {
                 drawBorder: false,
-                color: 'rgba(29,140,248,0.0)',
-                zeroLineColor: 'transparent'
+                color: "rgba(29,140,248,0.0)",
+                zeroLineColor: "transparent",
               },
               ticks: {
                 padding: 10,
-                fontColor: '#8898aa',
+                fontColor: "#8898aa",
                 fontSize: 13,
-                fontFamily: 'Open Sans'
-              }
-            }
-          ]
+                fontFamily: "Open Sans",
+              },
+            },
+          ],
         },
         layout: {
-          padding:  0
+          padding: 0,
         },
       },
     });
@@ -92,16 +92,16 @@ export const ordersChart = {
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
         datasets: [
           {
-            label: 'Sales',
-            tension: .4,
+            label: "Sales",
+            tension: 0.4,
             borderWidth: 0,
             pointRadius: 0,
-            backgroundColor: '#fb6340',
+            backgroundColor: "#fb6340",
             data: [25, 20, 30, 22, 17, 29],
-            maxBarThickness: 10
+            maxBarThickness: 10,
           },
         ],
       },
@@ -113,7 +113,7 @@ export const ordersChart = {
         },
         tooltips: {
           enabled: true,
-          mode: 'index',
+          mode: "index",
           intersect: false,
         },
         scales: {
@@ -127,38 +127,38 @@ export const ordersChart = {
                 lineWidth: 0,
                 zeroLineWidth: 0,
                 zeroLineBorderDash: [2],
-                zeroLineBorderDashOffset: [2]
+                zeroLineBorderDashOffset: [2],
               },
               ticks: {
                 beginAtZero: true,
                 padding: 10,
                 fontSize: 13,
-                fontColor: '#8898aa',
-                fontFamily: 'Open Sans',
+                fontColor: "#8898aa",
+                fontFamily: "Open Sans",
                 callback: function (value) {
                   if (!(value % 10)) {
-                    return value
+                    return value;
                   }
-                }
-              }
-            }
+                },
+              },
+            },
           ],
           xAxes: [
             {
               gridLines: {
                 drawBorder: false,
                 drawOnChartArea: false,
-                drawTicks: false
+                drawTicks: false,
               },
               ticks: {
                 padding: 20,
                 fontSize: 13,
-                fontColor: '#8898aa',
-                fontFamily: 'Open Sans'
-              }
-            }
-          ]
-        }
+                fontColor: "#8898aa",
+                fontFamily: "Open Sans",
+              },
+            },
+          ],
+        },
       },
     });
   },
@@ -166,7 +166,7 @@ export const ordersChart = {
 
 const funcs = {
   salesChart() {},
-  ordersChart() {}
+  ordersChart() {},
 };
 
 export default funcs;

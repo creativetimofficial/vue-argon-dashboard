@@ -12,7 +12,6 @@ import Tables from "../views/Tables.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 
-
 const routes = [
   {
     path: "/",
@@ -22,29 +21,29 @@ const routes = [
       {
         path: "/dashboard",
         name: "dashboard",
-        components: { default: Dashboard }
+        components: { default: Dashboard },
       },
       {
         path: "/icons",
         name: "icons",
-        components: { default: Icons }
+        components: { default: Icons },
       },
       {
         path: "/maps",
         name: "maps",
-        components: { default: Maps }
+        components: { default: Maps },
       },
       {
         path: "/profile",
         name: "profile",
-        components: { default: Profile }
+        components: { default: Profile },
       },
       {
         path: "/tables",
         name: "tables",
-        components: { default: Tables }
-      }
-    ]
+        components: { default: Tables },
+      },
+    ],
   },
   {
     path: "/",
@@ -54,21 +53,21 @@ const routes = [
       {
         path: "/login",
         name: "login",
-        components: { default: Login }
+        components: { default: Login },
       },
       {
         path: "/register",
         name: "register",
-        components: { default: Register }
-      }
-    ]
-  }
+        components: { default: Register },
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
   history: createWebHashHistory(),
   linkActiveClass: "active",
-  routes
+  routes,
 });
 
 export default router;

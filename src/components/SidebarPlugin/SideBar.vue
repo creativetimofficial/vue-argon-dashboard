@@ -47,7 +47,7 @@
               </a>
             </template>
 
-            <div class=" dropdown-header noti-title">
+            <div class="dropdown-header noti-title">
               <h6 class="text-overflow m-0">Welcome!</h6>
             </div>
             <router-link to="/profile" class="dropdown-item">
@@ -75,7 +75,11 @@
         </ul>
       </slot>
       <slot></slot>
-      <div v-show="$sidebar.showSidebar" class="navbar-collapse collapse show" id="sidenav-collapse-main">
+      <div
+        v-show="$sidebar.showSidebar"
+        class="navbar-collapse collapse show"
+        id="sidenav-collapse-main"
+      >
         <div class="navbar-collapse-header d-md-none">
           <div class="row">
             <div class="col-6 collapse-brand">
@@ -135,24 +139,24 @@ import NavbarToggleButton from "@/components/NavbarToggleButton";
 export default {
   name: "sidebar",
   components: {
-    NavbarToggleButton
+    NavbarToggleButton,
   },
   props: {
     logo: {
       type: String,
       default: "img/brand/green.png",
-      description: "Sidebar app logo"
+      description: "Sidebar app logo",
     },
     autoClose: {
       type: Boolean,
       default: true,
       description:
-        "Whether sidebar should autoclose on mobile when clicking an item"
-    }
+        "Whether sidebar should autoclose on mobile when clicking an item",
+    },
   },
   provide() {
     return {
-      autoClose: this.autoClose
+      autoClose: this.autoClose,
     };
   },
   methods: {
@@ -161,12 +165,12 @@ export default {
     },
     showSidebar() {
       this.$sidebar.displaySidebar(true);
-    }
+    },
   },
   beforeUnmount() {
     if (this.$sidebar.showSidebar) {
       this.$sidebar.showSidebar = false;
     }
-  }
+  },
 };
 </script>

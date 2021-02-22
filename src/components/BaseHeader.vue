@@ -14,9 +14,9 @@ export default {
     type: {
       type: String,
       default: "primary",
-      description: "Header background type"
-    }
-  }
+      description: "Header background type",
+    },
+  },
 };
 </script>
 <style></style>
