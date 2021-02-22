@@ -25,7 +25,7 @@
         </slot>
       </span>
     </div>
-    <slot v-bind="slotData">
+    <slot>
       <input
         :value="value"
         v-bind="$attrs"
@@ -117,12 +117,6 @@ export default {
         input: this.updateValue,
         focus: this.onFocus,
         blur: this.onBlur,
-      };
-    },
-    slotData() {
-      return {
-        focused: this.focused,
-        ...this.listeners,
       };
     },
     hasIcon() {
