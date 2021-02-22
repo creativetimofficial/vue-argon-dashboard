@@ -1,6 +1,6 @@
 {
-  "name": "vue3-argon-dashboard",
-  "version": "0.1.0",
+  "name": "vue-argon-dashboard",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
