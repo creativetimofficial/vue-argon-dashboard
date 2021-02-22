@@ -1,3 +1,7 @@
+## [2.0.0] - 2021-02-22
+### Vue 3 Update
+- Compatibility with new Vuejs 3
+
 ## [1.1.1] - 2020-11-25
 - Change broken links
 
