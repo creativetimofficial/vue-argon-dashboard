@@ -86,7 +86,7 @@ export const ordersChart = {
 };
 
 const funcs = {
-  ordersChart() {}
+  ordersChart() {},
 };
 
 export default funcs;
