@@ -6,6 +6,7 @@ import ArgonDashboard from '@/plugins/argon-dashboard'
 import './doc_styles.scss'
 import './argon-docs.css'
 import getElements from './utils/get-sidebar-elements';
+import BootstrapVue from '../../node_modules/bootstrap-vue';
 
 let Components = getGlobalComponents()
 export default ({
@@ -16,6 +17,7 @@ export default ({
                 }) => {
   locale.use(lang);
   Vue.use(ArgonDashboard)
+  Vue.use(BootstrapVue)
   Vue.component('demo-block', DemoBlock);
   let componentEntries = Object.entries(Components);
   for(let [name, component] of componentEntries) {
