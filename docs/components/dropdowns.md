@@ -6,8 +6,6 @@ Toggle contextual overlays for displaying lists of links and more with the Boots
 
 #### Examples
 
-:::demo
-```html
 <div>
   <base-dropdown>
     <base-button slot="title" type="secondary" class="dropdown-toggle">
@@ -36,17 +34,52 @@ Toggle contextual overlays for displaying lists of links and more with the Boots
             <img src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/flags/FR.png" /> Français
           </a>
       </li>
-    </base-dropddown>
+    </base-dropdown>
+</div>
+
+```html
+<div>
+  <base-dropdown>
+    <template v-slot:title>
+      <base-button type="secondary" class="dropdown-toggle">
+        Regular
+      </base-button>
+    </template>
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </base-dropdown>
+
+  <base-dropdown>
+    <template v-slot:title>
+      <base-button type="default" class="dropdown-toggle">
+          <img src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/flags/US.png" /> Flags
+       </base-button>
+     </template>
+      <li>
+        <a class="dropdown-item" href="#">
+          <img src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/flags/DE.png" /> Deutsch
+        </a>
+      </li>
+      <li>
+          <a class="dropdown-item" href="#">
+            <img src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/flags/GB.png" /> English(UK)
+          </a>
+      </li>
+      <li>
+          <a class="dropdown-item" href="#">
+            <img src="https://demos.creative-tim.com/argon-design-system/assets/img/icons/flags/FR.png" /> Français
+          </a>
+      </li>
+  </base-dropdown>
 </div>
 ```
-:::
+
 
 #### Colors
 
 The best part is you can do this with any button variant, too:
 
-:::demo
-```html
 <div>
   <base-dropdown>
     <base-button slot="title" type="primary" class="dropdown-toggle">
@@ -109,8 +142,83 @@ The best part is you can do this with any button variant, too:
       <a class="dropdown-item" href="#">Separated link</a>
     </base-dropdown>
 </div>
+
+```html
+<div>
+  <base-dropdown>
+    <template v-slot:title>
+      <base-button type="primary" class="dropdown-toggle">
+        Primary
+      </base-button>
+    </template>
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+    <base-dropdown>
+      <template v-slot:title>
+        <base-button type="secondary" class="dropdown-toggle">
+          Secondary
+        </base-button>
+      </template>
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+    <base-dropdown>
+        <template v-slot:title>
+          <base-button type="success" class="dropdown-toggle">
+            Success
+          </base-button>
+        </template>
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+    <base-dropdown>
+      <template v-slot:title>
+        <base-button  type="info" class="dropdown-toggle">
+          Info
+        </base-button>
+      </template>
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+    <base-dropdown>
+        <template v-slot:title>
+          <base-button type="warning" class="dropdown-toggle">
+            Warning
+          </base-button>
+        </template>
+        <a class="dropdown-item" href="#">Action</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+    <base-dropdown>
+      <template v-slot:title>
+        <base-button type="danger" class="dropdown-toggle">
+          Danger
+        </base-button>
+      </template>
+      <a class="dropdown-item" href="#">Action</a>
+      <a class="dropdown-item" href="#">Another action</a>
+      <a class="dropdown-item" href="#">Something else here</a>
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">Separated link</a>
+    </base-dropdown>
+</div>
 ```
-:::
 
 #### Props
 
