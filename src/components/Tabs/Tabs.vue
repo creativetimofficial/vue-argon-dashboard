@@ -25,6 +25,7 @@
               :aria-selected="tab.active"
               :class="{ active: tab.active }"
             >
+              <i v-if="tab.icon" :class="tab.icon"></i>
               <tab-item-content :tab="tab"> </tab-item-content>
             </a>
           </li>
