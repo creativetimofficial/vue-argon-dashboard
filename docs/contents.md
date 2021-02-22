@@ -133,9 +133,7 @@ Once downloaded, unzip the compressed folder and you’ll see something like thi
         |   |   |   |   |-- _text.scss
         |   |   |   |   |-- _transform.scss
         |   |   |   |-- vendors
-        |   |   |       |-- _bootstrap-datepicker.scss
         |   |   |       |-- _headroom.scss
-        |   |   |       |-- _nouislider.scss
         |   |   |       |-- _scrollbar.scss
         |   |   |-- custom
         |   |       |-- _alert.scss
@@ -188,7 +186,6 @@ Once downloaded, unzip the compressed folder and you’ll see something like thi
         |   |-- BasePagination.vue
         |   |-- BaseProgress.vue
         |   |-- BaseRadio.vue
-        |   |-- BaseSlider.vue
         |   |-- BaseSwitch.vue
         |   |-- BaseTable.vue
         |   |-- Card.vue
@@ -318,20 +315,6 @@ Besides giving the existing Bootstrap elements a new look, we added new ones, so
     <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="p-4 text-center">
-        <h6 class="mb-0">Datepicker</h6>
-      </div>
-    </div>
-    </div>
-    <div class="col-md-3">
-    <div class="card shadow-sm">
-      <div class="p-4 text-center">
-        <h6 class="mb-0">Sliders</h6>
-      </div>
-    </div>
-    </div>
-    <div class="col-md-3">
-    <div class="card shadow-sm">
-      <div class="p-4 text-center">
         <h6 class="mb-0">Checkboxes</h6>
       </div>
     </div>
@@ -343,23 +326,24 @@ Besides giving the existing Bootstrap elements a new look, we added new ones, so
       </div>
     </div>
     </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="p-4 text-center">
+          <h6 class="mb-0">Toggle buttons</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card shadow-sm">
+        <div class="p-4 text-center">
+          <h6 class="mb-0">Font Awesome</h6>
+        </div>
+      </div>
+    </div>
  </div>
 
 <div class="row row-grid">
-  <div class="col-md-3">
-    <div class="card shadow-sm">
-      <div class="p-4 text-center">
-        <h6 class="mb-0">Toggle buttons</h6>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card shadow-sm">
-      <div class="p-4 text-center">
-        <h6 class="mb-0">Font Awesome</h6>
-      </div>
-    </div>
-  </div>
+
   <div class="col-md-3">
     <div class="card shadow-sm">
       <div class="p-4 text-center">

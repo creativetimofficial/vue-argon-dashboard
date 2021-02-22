@@ -18,9 +18,15 @@ project.
 Argon Dashboard is built as Vue plugin so you can simply import it and use it.
 
 ```js
-import Vue from 'vue';
-import ArgonDashboard from '@/plugins/argon-dashboard'
-Vue.use(ArgonDashboard);
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import ArgonDashboard from "./plugins/argon-dashboard";
+
+const appInstance = createApp(App);
+appInstance.use(router);
+appInstance.use(ArgonDashboard);
+appInstance.mount("#app");
 ```
 
 #### Global Components
@@ -40,7 +46,6 @@ Here's the list of global components:
 - **BasePagination**
 - **BaseProgress**
 - **BaseRadio**
-- **BaseSlider**
 - **BaseSwitch**
 - **BaseTable**
 - **BaseHeader**
@@ -70,7 +75,7 @@ To get started faster, we provide a starter template inside the project. It's a 
 layout with nav, footer and a hello world. To enable it go to **main.js** and change line 3
 
 ```js{3}
-import Vue from "vue";
+import { createApp } from "vue";
 import App from "./App.vue";
-import router from "./starterRouter";
+import router from "./router";
 ```
