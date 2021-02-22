@@ -6,8 +6,6 @@ Documentation and examples for Bootstrap’s powerful, responsive navigation hea
 
 #### Examples
 
-:::demo
-```html
 <div>
   <base-button size="sm" type="primary" class="btn-tooltip"
                v-b-tooltip.hover.left title="Tooltip on left">On left
@@ -22,11 +20,35 @@ Documentation and examples for Bootstrap’s powerful, responsive navigation hea
                v-b-tooltip.hover.right title="Tooltip on right">On right
   </base-button>
 </div>
+
+```html
+<el-tooltip placement="left" content="Tooltip on left">
+  <base-button size="sm" type="primary">
+    On left
+  </base-button>
+</el-tooltip>
+
+<el-tooltip placement="top" content="Tooltip on top">
+  <base-button size="sm" type="primary">
+    On top
+  </base-button>
+</el-tooltip>
+
+<el-tooltip placement="bottom" content="Tooltip on bottom">
+  <base-button size="sm" type="primary">
+    On bottom
+  </base-button>
+</el-tooltip>
+
+<el-tooltip placement="right" content="Tooltip on right">
+  <base-button size="sm" type="primary">
+    On right
+  </base-button>
+</el-tooltip>
 ```
-:::
 
 
 #### Props
 
-We used [Bootstrap Vue tooltips](https://bootstrap-vue.js.org/docs/components/tooltip).
+We used [Element Plus](https://element-plus.org/#/en-US/component/tooltip).
 For more info check out their docs on how to use tooltips.
