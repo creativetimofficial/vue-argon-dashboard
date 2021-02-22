@@ -6,14 +6,7 @@ Documentation and examples for Bootstrap’s powerful, responsive navigation hea
 
 #### Examples
 
-:::demo
-```html
 <div>
-  <base-button size="sm" type="default"
-               v-b-popover.hover.left="'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.'"
-               title="Popover On Left">On left
-  </base-button>
-
   <base-button size="sm" type="default"
                v-b-popover.hover.left="'Vivamus sagittis lacus vel augue laoreet rutrum faucibus.'"
                title="Popover On Left">On left
@@ -32,8 +25,45 @@ Documentation and examples for Bootstrap’s powerful, responsive navigation hea
                title="Popover On bottom">On bottom
   </base-button>
 </div>
+
+```html
+<el-popover
+ placement="top"
+ title="Popover On Top"
+ :width="200"
+ trigger="click"
+ content="Popover top"
+>
+ <template #reference>
+   <el-button class="btn btn-default btn-sm">On top</el-button>
+ </template>
+</el-popover>
+
+<el-popover
+placement="right"
+title="Popover On Right"
+:width="200"
+trigger="click"
+content="Popover right"
+>
+<template #reference>
+  <el-button class="btn btn-default btn-sm">On right</el-button>
+</template>
+</el-popover>
+
+<el-popover
+ placement="bottom"
+ title="Popover On Bottom"
+ :width="200"
+ trigger="click"
+ content="Popover bottom"
+>
+ <template #reference>
+   <el-button class="btn btn-default btn-sm">On bottom</el-button>
+ </template>
+</el-popover>
 ```
-:::
+
 
 
 #### Props
