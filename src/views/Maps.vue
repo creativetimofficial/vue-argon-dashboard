@@ -88,8 +88,8 @@
   </div>
 </template>
 <script>
-import { Loader } from "google-maps";
-const loader = new Loader("YOUR_API_KEY");
+import { Loader } from "@googlemaps/js-api-loader";
+const loader = new Loader({apiKey: "YOUR_API_KEY"});
 export default {
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
     };
   },
   mounted() {
-    loader.load().then(function (google) {
+    loader.load().then(function () {
       // Regular Map
       const myLatlng = new google.maps.LatLng(40.748817, -73.985428);
       const mapOptions = {
