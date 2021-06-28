@@ -35,9 +35,27 @@
         <!-- Navbar items -->
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <router-link class="nav-link nav-link-icon" to="/">
+            <router-link class="nav-link nav-link-icon" to="/dashboard">
               <i class="ni ni-planet"></i>
               <span class="nav-link-inner--text">Dashboard</span>
+            </router-link>
+          </li>
+           <li class="nav-item">
+            <router-link class="nav-link nav-link-icon" to="/admin/dashboardAdmin">
+              <i class="ni ni-planet"></i>
+              <span class="nav-link-inner--text">Dashboard Admin</span>
+            </router-link>
+          </li>
+           <li class="nav-item">
+            <router-link class="nav-link nav-link-icon" to="/driver/dashboardDriver">
+              <i class="ni ni-planet"></i>
+              <span class="nav-link-inner--text">Dashboard Driver</span>
+            </router-link>
+          </li>
+           <li class="nav-item">
+            <router-link class="nav-link nav-link-icon" to="/cust/dashboardCust">
+              <i class="ni ni-planet"></i>
+              <span class="nav-link-inner--text">Dashboard Customer</span>
             </router-link>
           </li>
           <li class="nav-item">
@@ -52,12 +70,12 @@
               <span class="nav-link-inner--text">Login</span>
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link class="nav-link nav-link-icon" to="/profile">
               <i class="ni ni-single-02"></i>
               <span class="nav-link-inner--text">Profile</span>
             </router-link>
-          </li>
+          </li> -->
         </ul>
       </template>
     </base-nav>
@@ -69,8 +87,7 @@
             <div class="col-lg-5 col-md-6">
               <h1 class="text-white">Welcome!</h1>
               <p class="text-lead text-white">
-                Use these awesome forms to login or create new account in your
-                project for free.
+                Log-in or Create acccount to use the services on Go-Far
               </p>
             </div>
           </div>

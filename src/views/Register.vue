@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
-        <div class="card-header bg-transparent pb-5">
+        <!-- <div class="card-header bg-transparent pb-5">
           <div class="text-muted text-center mt-2 mb-3">
             <small>Sign up with</small>
           </div>
@@ -20,10 +20,10 @@
               <span class="btn-inner--text">Google</span>
             </a>
           </div>
-        </div>
+        </div> -->
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
-            <small>Or sign up with credentials</small>
+            <small>Sign Up Form</small>
           </div>
           <form role="form">
             <base-input
@@ -52,11 +52,23 @@
             >
             </base-input>
 
-            <div class="text-muted font-italic">
+            <!-- <div class="text-muted font-italic">
               <small
                 >password strength:
                 <span class="text-success font-weight-700">strong</span></small
               >
+            </div> -->
+
+             <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary" type="button">
+                  Register as
+                </button>
+              </div>
+              <select class="custom-select" id="inputGroupSelect03">
+                <option value="1">Customer</option>
+                <option value="2">Driver</option>
+              </select>
             </div>
 
             <div class="row my-4">

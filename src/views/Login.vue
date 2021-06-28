@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
-        <div class="card-header bg-transparent pb-5">
+        <!-- <div class="card-header bg-transparent pb-5">
           <div class="text-muted text-center mt-2 mb-3">
             <small>Sign in with</small>
           </div>
@@ -20,10 +20,10 @@
               <span class="btn-inner--text">Google</span>
             </a>
           </div>
-        </div>
+        </div> -->
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
-            <small>Or sign in with credentials</small>
+            <small>Log In Form</small>
           </div>
           <form role="form">
             <base-input
@@ -42,12 +42,34 @@
               v-model="model.password"
             >
             </base-input>
+            <base-input
+              formClasses="input-group-alternative mb-3"
+              placeholder="Password Verification"
+              type="password"
+              addon-left-icon="ni ni-lock-circle-open"
+              v-model="model.passwordVerification"
+            >
+            </base-input>
+
+
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <button class="btn btn-outline-primary" type="button">
+                  Login as
+                </button>
+              </div>
+              <select class="custom-select" id="inputGroupSelect03"  v-model= "model.role">
+                <option value="Customer">Customer</option>
+                <option value="Driver">Driver</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
 
             <base-checkbox class="custom-control-alternative">
               <span class="text-muted">Remember me</span>
             </base-checkbox>
             <div class="text-center">
-              <base-button type="primary" class="my-4">Sign in</base-button>
+              <base-button type="primary" class="my-4" v-on:click= "doLogin" >Log in</base-button>
             </div>
           </form>
         </div>
@@ -66,16 +88,32 @@
   </div>
 </template>
 <script>
+
+// import router from "../routes/routes";
+
 export default {
+  components: {},
   name: "login",
   data() {
     return {
       model: {
         email: "",
         password: "",
+        role: "Customer"
       },
     };
   },
+    methods: {
+    doLogin: function() {
+      if(this.model.role == "Admin"){
+        this.$router.push('/admin')
+      }else if(this.model.role == "Customer"){
+        this.$router.push('/cust')
+      }else{
+        this.$router.push('/driver')
+      }
+    }
+  }
 };
 </script>
 <style></style>
