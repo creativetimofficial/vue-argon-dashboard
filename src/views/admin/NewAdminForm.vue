@@ -137,11 +137,11 @@ export default {
         const jsonData = JSON.stringify(formData);
 
         const url = "admin/add/newadmin";
-        // alert(jsonData);
+    
         http.post(url, jsonData).then((response) => {
-          const res = JSON.stringify(response);
-          console.log(res);
-          if (response.data.status == "200") {
+          // const res = JSON.stringify(response);
+          console.log(response);
+          if (response.status == 201) {
             alert("Succesfully add admin");
           } else {
             alert("Failed to add admin");
