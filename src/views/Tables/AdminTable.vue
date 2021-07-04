@@ -46,7 +46,7 @@
             <div class="media align-items-center">
 
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{ row.item.name }}</span>
+                <span class="name mb-0 text-sm">{{ row.item.admin_name }}</span>
               </div>
             </div>
           </th>
@@ -87,6 +87,7 @@
   <a href="/?#/admin/newAdmin" class="btn btn-info">Create New Admin Account</a>
 </div>
 </template>
+
 <script>
 import http from '../../http.js';
 

@@ -234,7 +234,7 @@ export default {
   data() {
     return {
       model: {
-        username: "",
+        username: "aa",
         email: "",
         firstName: "",
         lastName: "",

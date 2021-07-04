@@ -9,7 +9,6 @@
       <!-- <router-link slot="brand" class="navbar-brand" to="/">
                 <img src="img/brand/white.png"/>
             </router-link> -->
-
       <template v-slot="{ closeMenu }">
         <!-- Collapse header -->
         <div class="navbar-collapse-header d-md-none">
@@ -40,20 +39,29 @@
               <span class="nav-link-inner--text">Dashboard</span>
             </router-link>
           </li>
-           <li class="nav-item">
-            <router-link class="nav-link nav-link-icon" to="/admin/dashboardAdmin">
+          <li class="nav-item">
+            <router-link
+              class="nav-link nav-link-icon"
+              to="/admin/dashboardAdmin"
+            >
               <i class="ni ni-planet"></i>
               <span class="nav-link-inner--text">Dashboard Admin</span>
             </router-link>
           </li>
-           <li class="nav-item">
-            <router-link class="nav-link nav-link-icon" to="/driver/dashboardDriver">
+          <li class="nav-item">
+            <router-link
+              class="nav-link nav-link-icon"
+              to="/driver/dashboardDriver"
+            >
               <i class="ni ni-planet"></i>
               <span class="nav-link-inner--text">Dashboard Driver</span>
             </router-link>
           </li>
-           <li class="nav-item">
-            <router-link class="nav-link nav-link-icon" to="/cust/dashboardCust">
+          <li class="nav-item">
+            <router-link
+              class="nav-link nav-link-icon"
+              to="/cust/dashboardCust"
+            >
               <i class="ni ni-planet"></i>
               <span class="nav-link-inner--text">Dashboard Customer</span>
             </router-link>
