@@ -115,6 +115,7 @@ export default {
         password: "",
         passwordVerification: "",
       },
+      post_status :false
     };
   },
   methods: {
@@ -137,19 +138,23 @@ export default {
         const jsonData = JSON.stringify(formData);
 
         const url = "admin/add/newadmin";
-    
+
         http.post(url, jsonData).then((response) => {
           // const res = JSON.stringify(response);
-          console.log(response);
+           console.log(response);
           if (response.status == 201) {
-            alert("Succesfully add admin");
-          } else {
-            alert("Failed to add admin");
-          }
+              this.post_status = true;
+          } 
         });
       }
-    },
-  },
+
+      if (this.post_status){
+          alert("Succesfully add admin"); 
+        }else{
+          alert("Failed to add admin");
+        }
+    }
+  }
 };
 </script>
 <style></style>
