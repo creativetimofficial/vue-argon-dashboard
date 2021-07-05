@@ -10,7 +10,8 @@
             {{ title }}
           </h3>
         </div>
-           <div class="form-group mb-0 mr-6">
+        <!-- BUAT SEARCH  -->
+           <!-- <div class="form-group mb-0 mr-6">
           <base-input
             placeholder="Search"
             class="input-group-alternative"
@@ -18,9 +19,6 @@
             addon-right-icon="fas fa-search"
           >
           </base-input>
-        </div>
-        <!-- <div class="col text-right">
-          <base-button type="primary" size="sm">See all</base-button>
         </div> -->
       </div>
     </div>
@@ -74,14 +72,6 @@
         </template>
       </base-table>
     </div>
-
-    <div
-      class="card-footer d-flex justify-content-end"
-      :class="type === 'dark' ? 'bg-transparent' : ''"
-    >
-      <base-pagination total="30"></base-pagination>
-    </div>
-    
   </div>
 <div class="pb-6 pb-8 pt-5 pt-md-4">
   <a href="/?#/admin/newAdmin" class="btn btn-info">Create New Admin Account</a>

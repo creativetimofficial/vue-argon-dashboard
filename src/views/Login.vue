@@ -7,33 +7,27 @@
             <small>Log In Form</small>
           </div>
           <form role="form">
-            <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Email"
-              addon-left-icon="ni ni-email-83"
-              v-model= "model.email"
-            >
-            </base-input>
+            <div class="col-lg-14 mt-2">
+                    <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Email"
+                      v-model="model.email"
+                    />
+                  </div>
+         
 
-            <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Password"
-              type="password"
-              addon-left-icon="ni ni-lock-circle-open"
-              v-model= "model.password"
-            >
-            </base-input>
-            <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Password Verification"
-              type="password"
-              addon-left-icon="ni ni-lock-circle-open"
-              v-model= "model.passwordVerification"
-            >
-            </base-input>
+            <div class="col-lg-14 mt-2">
+                    <input
+                      type="password"
+                      class="form-control"
+                      placeholder="Password"
+                      v-model="model.password"
+                    />
+                  </div>
 
 
-            <div class="input-group mb-3">
+            <div class="input-group mb-3 mt-2">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-primary" type="button">
                   Login as
@@ -71,6 +65,7 @@
 <script>
 
 // import router from "../routes/routes";
+import http from "../http.js";
 
 export default {
   components: {},
@@ -78,21 +73,89 @@ export default {
   data() {
     return {
       model: {
-        email: "aaa",
+        email: "",
         password: "",
         role: "Customer"
       },
     };
   },
     methods: {
-    doLogin: function() {
+    doLogin: function(){
+
       if(this.model.role == "Admin"){
-        this.$router.push('/admin')
+        let formData = {
+          admin_email: this.model.email,
+          admin_password: this.model.password
+        };
+      
+        const jsonData = JSON.stringify(formData);
+        const url = "auth/admin";
+        http.post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              const email = JSON.stringify(response.data.result[0].admin_email);
+              const id = JSON.stringify(response.data.result[0]._id);
+              localStorage.setItem("admin_email",email);
+              localStorage.setItem("admin_id",id);
+              this.$router.push('/admin')
+            }
+          })
+          .catch((error) => {
+            alert("Login Err \n" + error);
+          });
+
+        
+
       }else if(this.model.role == "Customer"){
-        this.$router.push('/cust')
+        let formData = {
+          customer_email: this.model.email,
+          customer_password: this.model.password
+        };
+      
+        const jsonData = JSON.stringify(formData);
+        const url = "auth/cust";
+        http.post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              const email = JSON.stringify(response.data.result[0].customer_email);
+              const id = JSON.stringify(response.data.result[0]._id);
+              localStorage.setItem("customer_email",email);
+              localStorage.setItem("customer_id",id);
+
+              this.$router.push('/customer')
+            }
+            
+          })
+          .catch((error) => {
+            alert("Login Err \n" + error);
+          });
+
       }else{
-        this.$router.push('/driver')
+        let formData = {
+          admin_email: this.model.email,
+          admin_password: this.model.password
+        };
+      
+        const jsonData = JSON.stringify(formData);
+        const url = "auth/driver";
+        http.post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              const email = JSON.stringify(response.data.result[0].driver_email);
+              const id = JSON.stringify(response.data.result[0]._id);
+              localStorage.setItem("driver_email",email);
+              localStorage.setItem("driver_id",id);
+
+              this.$router.push('/driver')
+            }
+            
+          })
+          .catch((error) => {
+            alert("Login Err \n" + error);
+          });
+
       }
+
     }
   }
 };

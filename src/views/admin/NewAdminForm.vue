@@ -120,39 +120,39 @@ export default {
   },
   methods: {
     submitAction() {
-      console.log(this.model.username);
       if (
         this.model.username != "" &&
         this.model.email != "" &&
         this.model.password != "" &&
         this.model.password_verification != ""
       ) {
-        console.log("masuk");
         let formData = {
           admin_name: this.model.username, 
           admin_email: this.model.email, 
           admin_password: this.model.password, 
           password_verification: this.model.password_verification
         };
-
+        
         const jsonData = JSON.stringify(formData);
 
         const url = "admin/add/newadmin";
 
         http.post(url, jsonData).then((response) => {
-          // const res = JSON.stringify(response);
-           console.log(response);
           if (response.status == 201) {
-              this.post_status = true;
-          } 
-        });
+            alert("Succesfully add admin"); 
+            this.post_status = true;
+            this.$router.push('/admin/adminList');
+          }
+        })
+        .catch((error) => {
+            alert("Failed to add admin \n" + error);
+          });;
+        
+      }else{
+        alert("Failed to add admin");
       }
 
-      if (this.post_status){
-          alert("Succesfully add admin"); 
-        }else{
-          alert("Failed to add admin");
-        }
+      
     }
   }
 };

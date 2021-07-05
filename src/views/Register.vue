@@ -52,6 +52,15 @@
             >
             </base-input>
 
+             <base-input
+              formClasses="input-group-alternative mb-3"
+              placeholder="Password Verification"
+              type="password"
+              addon-left-icon="ni ni-lock-circle-open"
+              v-model= "model.passwordVerification"
+            >
+            </base-input>
+
             <!-- <div class="text-muted font-italic">
               <small
                 >password strength:
@@ -112,6 +121,7 @@ export default {
         name: "",
         email: "",
         password: "",
+        passwordVerification:""
       },
     };
   },
