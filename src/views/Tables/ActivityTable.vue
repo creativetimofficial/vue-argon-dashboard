@@ -10,6 +10,16 @@
             {{ title }}
           </h3>
         </div>
+        <!-- BUAT SEARCH  -->
+           <!-- <div class="form-group mb-0 mr-6">
+          <base-input
+            placeholder="Search"
+            class="input-group-alternative"
+            alternative=""
+            addon-right-icon="fas fa-search"
+          >
+          </base-input>
+        </div> -->
       </div>
     </div>
 
@@ -57,7 +67,7 @@
           </td>
 
           <td class="text-left">
-              <div class="btn btn-danger" @click= "deleteAction(row.item._id)" >Delete</div>
+              <div class="btn btn-danger" @click= "deleteAction(item)" >Delete</div>
           </td>
         </template>
       </base-table>
@@ -72,7 +82,7 @@
 import http from '../../http.js';
 
 export default {
-  name: "admin-table",
+  name: "activity-table",
   props: {
     type: {
       type: String,
@@ -92,17 +102,24 @@ export default {
   },
    methods: {
     deleteAction(i) {
-        const url = "admin/delete/admin/"+i;
+      alert("i = " + i);
+      alert(JSON.stringify(this.list_admin[i]));
+
+
+
+
+
+        const url = "admin/delete/admin/";
 
         http.delete(url).then((response) => {
           if (response.status == 201) {
             alert("Succesfully delete admin"); 
+            this.$router.push('/admin/adminList');
           }
         })
         .catch((error) => {
-            alert("Failed to delete admin \n" + error);
+            alert("Failed to add admin \n" + error);
           });;
-      this.$router.push('/admin/adminList');
     }
    }
 

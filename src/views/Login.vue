@@ -95,8 +95,11 @@ export default {
             if (response.status == 201) {
               const email = JSON.stringify(response.data.result[0].admin_email);
               const id = JSON.stringify(response.data.result[0]._id);
-              localStorage.setItem("admin_email",email);
-              localStorage.setItem("admin_id",id);
+              const name = JSON.stringify(response.data.result[0].admin_name);
+              localStorage.setItem("admin_email",email.replaceAll("\"", ""));
+              localStorage.setItem("admin_id",id.replaceAll("\"", ""));
+              localStorage.setItem("admin_name",name.replaceAll("\"", ""));
+              alert("Login Succesful");
               this.$router.push('/admin')
             }
           })
@@ -119,9 +122,11 @@ export default {
             if (response.status == 201) {
               const email = JSON.stringify(response.data.result[0].customer_email);
               const id = JSON.stringify(response.data.result[0]._id);
-              localStorage.setItem("customer_email",email);
-              localStorage.setItem("customer_id",id);
-
+              const name = JSON.stringify(response.data.result[0].customer_name);
+              localStorage.setItem("customer_email",email.replaceAll("\"", ""));
+              localStorage.setItem("customer_id",id.replaceAll("\"", ""));
+              localStorage.setItem("customer_name",name.replaceAll("\"", ""));
+              alert("Login Succesful");
               this.$router.push('/customer')
             }
             
@@ -143,9 +148,11 @@ export default {
             if (response.status == 201) {
               const email = JSON.stringify(response.data.result[0].driver_email);
               const id = JSON.stringify(response.data.result[0]._id);
-              localStorage.setItem("driver_email",email);
-              localStorage.setItem("driver_id",id);
-
+              const name = JSON.stringify(response.data.result[0].driver_name);
+              localStorage.setItem("driver_email",email.replaceAll("\"", ""));
+              localStorage.setItem("driver_id",id.replaceAll("\"", ""));
+              localStorage.setItem("driver_name",name.replaceAll("\"", ""));
+              alert("Login Succesful");
               this.$router.push('/driver')
             }
             

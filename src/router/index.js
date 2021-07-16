@@ -20,6 +20,11 @@ import Register from "../views/Register.vue";
 import AdminDataTable from "../views/admin/AdminDataTable";
 import DriverDataTable from "../views/admin/DriverDataTable";
 import NewAdminForm from "../views/admin/NewAdminForm";
+import AdminProfile from "../views/admin/AdminProfile";
+import CustomerDataTable from "../views/admin/CustomerDataTable";
+import CustomerDetailProfile from "../views/admin/CustomerDetailProfile";
+import ActivityDataTable from "../views/admin/ActivityDataTable";
+import DriverDetailProfile from "../views/admin/DriverDetailProfile";
 
 // DRIVER LAYOUT
 
@@ -97,14 +102,14 @@ const routes = [
         components: { default: DriverDataTable },
       },
       {
+        path: "orderList",
+        name: "Activity History",
+        components: { default: ActivityDataTable },
+      },
+      {
         path: "newAdmin",
         name: "Create New Admin Account",
         components: { default: NewAdminForm },
-      },
-      {
-        path: "adminList",
-        name: "Data Admin",
-        components: { default: AdminDataTable },
       },
       {
         path: "/icons",
@@ -117,14 +122,24 @@ const routes = [
         components: { default: Maps },
       },
       {
-        path: "/profile",
-        name: "profile",
-        components: { default: Profile },
+        path: "profile",
+        name: "Profile",
+        components: { default: AdminProfile },
       },
       {
-        path: "/tables",
-        name: "tables",
-        components: { default: Tables },
+        path: "customerList",
+        name: "Data Customer",
+        components: { default: CustomerDataTable },
+      },
+      {
+        path: "customerDetail/:id",
+        name: "Customer Profile",
+        components: { default: CustomerDetailProfile },
+      },
+      {
+        path: "driverDetail/:id",
+        name: "Driver Profile",
+        components: { default: DriverDetailProfile },
       },
     ],
   },

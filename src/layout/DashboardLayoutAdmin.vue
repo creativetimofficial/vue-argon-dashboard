@@ -17,14 +17,14 @@
           :link="{
             name: 'User Profile',
             icon: 'ni ni-single-02 text-yellow',
-            path: '/profile',
+            path: '/admin/profile',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Data Activities',
             icon: 'ni ni-delivery-fast text-primary',
-            path: '/tables',
+            path: '/admin/orderList',
           }"
         />
         <sidebar-item
@@ -45,7 +45,7 @@
           :link="{
             name: 'Data Customer',
             icon: 'ni ni-mobile-button text-red',
-            path: '/admin/tables',
+            path: '/admin/customerList',
           }"
         />
 
