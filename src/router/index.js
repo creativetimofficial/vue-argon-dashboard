@@ -25,6 +25,8 @@ import CustomerDataTable from "../views/admin/CustomerDataTable";
 import CustomerDetailProfile from "../views/admin/CustomerDetailProfile";
 import ActivityDataTable from "../views/admin/ActivityDataTable";
 import DriverDetailProfile from "../views/admin/DriverDetailProfile";
+import ActivityDetail from "../views/admin/ActivityDetail";
+import FeedbackDetail from "../views/admin/FeedbackDetail";
 
 // DRIVER LAYOUT
 
@@ -140,6 +142,16 @@ const routes = [
         path: "driverDetail/:id",
         name: "Driver Profile",
         components: { default: DriverDetailProfile },
+      },
+      {
+        path: "activityDetail/:id",
+        name: "Activity Detail",
+        components: { default: ActivityDetail },
+      },
+      {
+        path: "feedbackDetail/:id",
+        name: "Feedback Detail",
+        components: { default: FeedbackDetail },
       },
     ],
   },

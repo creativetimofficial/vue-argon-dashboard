@@ -39,24 +39,21 @@
             </div>
             <div
               class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-            >
-          
-            </div>
+            ></div>
             <div class="card-body pt-0 pt-md-4">
               <div class="row">
                 <div class="col">
                   <div
                     class="card-profile-stats d-flex justify-content-center mt-md-5"
-                  >
-                  </div>
+                  ></div>
                 </div>
               </div>
               <div class="text-center">
                 <h3>
-                  {{model.username}}
+                  {{ model.username }}
                 </h3>
                 <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>{{model.email}}
+                  <i class="ni location_pin mr-2"></i>{{ model.email }}
                 </div>
               </div>
             </div>
@@ -120,8 +117,9 @@
                 </div>
               </div>
 
-              <div class="btn btn-info mt-3" @click="updateAction">Edit Profile</div>
-
+              <div class="btn btn-info mt-3" @click="updateAction">
+                Edit Profile
+              </div>
             </form>
           </card>
         </div>
@@ -137,17 +135,17 @@ export default {
   data() {
     return {
       model: {
-        username:"",
+        username: "",
         email: "",
         curr_password: "",
-        new_password: ""
-      }
+        new_password: "",
+      },
     };
   },
 
-  mounted(){
-    this.model.username = localStorage.getItem("admin_name"),
-    this.model.email = localStorage.getItem("admin_email")
+  mounted() {
+    (this.model.username = localStorage.getItem("admin_name")),
+      (this.model.email = localStorage.getItem("admin_email"));
   },
 
   methods: {
@@ -159,34 +157,33 @@ export default {
         this.model.new_password != ""
       ) {
         let formData = {
-          admin_name: this.model.username, 
-          admin_email: this.model.email, 
-          admin_curr_password: this.model.curr_password, 
-          admin_new_password: this.model.admin_new_password
+          admin_name: this.model.username,
+          admin_email: this.model.email,
+          admin_curr_password: this.model.curr_password,
+          admin_new_password: this.model.admin_new_password,
         };
-        
+
         const jsonData = JSON.stringify(formData);
 
         const url = "admin/update/admin/" + localStorage.getItem("admin_id");
 
-        http.post(url, jsonData).then((response) => {
-          if (response.status == 201) {
-            alert("Succesfully update admin"); 
-            this.post_status = true;
-            this.$router.push('/admin/adminList');
-          }
-        })
-        .catch((error) => {
+        http
+          .post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              alert("Succesfully update admin");
+              this.post_status = true;
+              this.$router.push("/admin/adminList");
+            }
+          })
+          .catch((error) => {
             alert("Failed to add admin \n" + error);
-          });;
-        
-      }else{
+          });
+      } else {
         alert("Failed to add admin");
       }
-
-      
-    }
-  }
+    },
+  },
 };
 </script>
 <style></style>

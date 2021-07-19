@@ -6,18 +6,18 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <admin-table type="dark" title="Daftar Admin"></admin-table>
+          <activity-table type="dark" title="Daftar Admin"></activity-table>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import AdminTable from "../Tables/AdminTable";
+import ActivityTable from "../Tables/ActivityTable";
 export default {
   name: "tables",
   components: {
-    AdminTable
+    ActivityTable,
   },
 };
 </script>

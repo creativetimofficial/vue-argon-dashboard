@@ -12,15 +12,18 @@
         </div>
        <!-- BUAT SEARCH  -->
            <div class="form-group mb-0 mr-6">
-          
-              <input
+             <div class="row">
+               <div class="mr-1">
+                 <input
                 type="text"
                 class="form-control"
                 placeholder="Search by Name"
                 v-model="name_search"
               />
+               </div>
+               <div class="btn btn-info" @click= "searchAction(name_search)" >Search</div>
+             </div>
 
-              <div class="btn btn-info mt-2" @click= "searchAction(name_search)" >Search</div>
               <div class="btn btn-info mt-2" @click= "seeAll()" >See All</div>
           
 

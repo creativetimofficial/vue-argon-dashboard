@@ -17,7 +17,7 @@ import AdminTable from "../Tables/AdminTable";
 export default {
   name: "tables",
   components: {
-    AdminTable
+    AdminTable,
   },
 };
 </script>

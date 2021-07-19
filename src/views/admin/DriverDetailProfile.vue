@@ -10,7 +10,6 @@
     >
       <!-- Mask -->
       <span class="mask bg-gradient-success opacity-8"></span>
-     
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -31,17 +30,13 @@
             </div>
             <div
               class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-            >
-              
-            </div>
+            ></div>
             <div class="card-body pt-0 pt-md-4">
               <div class="row">
                 <div class="col">
                   <div
                     class="card-profile-stats d-flex justify-content-center mt-md-5"
-                  >
-                    
-                  </div>
+                  ></div>
                 </div>
               </div>
               <div class="text-center">
@@ -102,11 +97,28 @@
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>Active</p>
-                    <div :class="data_driver.active_status == true ? 'btn btn-success' : 'btn btn-danger'"  >{{ activeText }}</div>
+                    <div
+                      :class="
+                        data_driver.active_status == true
+                          ? 'btn btn-success'
+                          : 'btn btn-danger'
+                      "
+                    >
+                      {{ activeText }}
+                    </div>
                   </div>
                   <div class="col-lg-6 mb-3">
-                    <p>Block/Unblock this Account </p>
-                    <div :class="data_driver.blocked == true ? 'btn btn-success' : 'btn btn-danger'" @click="blockAction()" >{{ blockedText }}</div>
+                    <p>Block/Unblock this Account</p>
+                    <div
+                      :class="
+                        data_driver.blocked == true
+                          ? 'btn btn-success'
+                          : 'btn btn-danger'
+                      "
+                      @click="blockAction()"
+                    >
+                      {{ blockedText }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -175,7 +187,6 @@
                     />
                   </div>
                 </div>
-
               </div>
               <hr class="my-4" />
 
@@ -184,12 +195,12 @@
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>Vehicle Type</p>
-                    <!-- <input
+                    <input
                       type="text"
                       class="form-control"
                       placeholder="Car/Motorcycle"
                       v-model="vehicle_details.transportation_type"
-                    /> -->
+                    />
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>Plat Number</p>
@@ -233,7 +244,6 @@
                     />
                   </div>
                 </div>
-
               </div>
               <hr class="my-4" />
 
@@ -287,7 +297,7 @@
                       type="text"
                       class="form-control"
                       placeholder="Steet"
-                      v-model="model.username"
+                      v-model="address.street"
                     />
                   </div>
                 </div>
@@ -299,49 +309,70 @@
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>SKCK</p>
-                      <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
-                      <div class="btn btn-primary mb-2" @click= "openFile(item)" >Open File</div>
-                      <input type="file" class="form-control-file ml-1" @change="change" >
+                    <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
+                    <div class="btn btn-primary mb-2" @click="openFile(item)">
+                      Open File
+                    </div>
+                    <input
+                      type="file"
+                      class="form-control-file ml-1"
+                      @change="change"
+                    />
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>KTP</p>
-                      <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
-                      <div class="btn btn-primary mb-2" @click= "openFile(item)" >Open File</div>
-                      <input type="file" class="form-control-file ml-1" @change="change" >
+                    <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
+                    <div class="btn btn-primary mb-2" @click="openFile(item)">
+                      Open File
+                    </div>
+                    <input
+                      type="file"
+                      class="form-control-file ml-1"
+                      @change="change"
+                    />
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>SIM</p>
-                      <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
-                      <div class="btn btn-primary mb-2" @click= "openFile(item)" >Open File</div>
-                      <input type="file" class="form-control-file ml-1" @change="change" >
+                    <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
+                    <div class="btn btn-primary mb-2" @click="openFile(item)">
+                      Open File
+                    </div>
+                    <input
+                      type="file"
+                      class="form-control-file ml-1"
+                      @change="change"
+                    />
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>STNK</p>
-                      <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
-                      <div class="btn btn-primary mb-2" @click= "openFile(item)" >Open File</div>
-                      <input type="file" class="form-control-file ml-1" @change="change" >
+                    <!-- <button id="fileInputButton" onclick="document.getElementById('fileInput').click()">Open File</button> -->
+                    <div class="btn btn-primary mb-2" @click="openFile(item)">
+                      Open File
+                    </div>
+                    <input
+                      type="file"
+                      class="form-control-file ml-1"
+                      @change="change"
+                    />
                   </div>
                 </div>
               </div>
               <hr class="my-4" />
 
-
               <div class="btn btn-info mt-3" @click="updateAction">Edit</div>
-
             </form>
           </card>
 
-          <div>
-             <div class="row ml-4">
-                  <div class="col-lg-4 mb-3 mt-3">
-                    <div class="btn btn-success" >Accept</div>
-                  </div>
-                  <div class="col-lg-6 mb-3 mt-3">
-                    <div class="btn btn-danger" @click= "blockAction(item)" >Decline</div>
-                  </div>
+          <div v-if="data_driver.verification_status == false">
+            <div class="row ml-4">
+              <div class="col-lg-4 mb-3 mt-3">
+                <div class="btn btn-success" @click="verificationAction">
+                  Verificate
                 </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -350,74 +381,90 @@
 </template>
 
 <script>
-import http from '../../http.js';
+import http from "../../http.js";
 export default {
   name: "user-profile",
   data() {
     return {
-      data_driver : {},
-      profile : {},
-      vehicle_detail:{},
-      address:{},
-      documents:{},
-      model:{username:"aaaa"},
-      form:{sertifikat:null},
+      data_driver: {},
+      profile: {},
+      vehicle_details: {},
+      address: {},
+      documents: {},
+      model: { username: "aaaa" },
+      form: { sertifikat: null },
       activeText: "",
-      blockedText: ""
+      blockedText: "",
     };
   },
   mounted() {
-      const url = "/admin/read/driver/" + this.$route.params.id;
-        http.get(url).then(response => {
-        this.data_driver = response.data[0];
-        this.profile = response.data[0].profile;
-        this.vehicle_details = response.data[0].vehicle_details;
-        this.address = response.data[0].address;
-        this.documents = response.data[0].documents;  
-        if(this.data_driver.active_status == true){
-          this.activeText = "Active";
-        }else{
-          this.activeText = "Non Active";
-        }
+    const url = "/admin/read/driver/" + this.$route.params.id;
+    http.get(url).then((response) => {
+      this.data_driver = response.data[0];
+      this.profile = response.data[0].profile;
+      this.vehicle_details = response.data[0].vehicle_details;
+      this.address = response.data[0].address;
+      this.documents = response.data[0].documents;
+      if (this.data_driver.active_status == true) {
+        this.activeText = "Active";
+      } else {
+        this.activeText = "Non Active";
+      }
 
-        if(this.data_driver.blocked == true){
-          this.blockedText = "Unblock";
-        }else{
-          this.blockedText = "Block";
-        }
-      });
-    },
+      if (this.data_driver.blocked == true) {
+        this.blockedText = "Unblock";
+      } else {
+        this.blockedText = "Block";
+      }
+    });
+  },
 
-  methods:{
-     blockAction() {
+  methods: {
+    blockAction() {
       let jsonData = {
-          "blocked" : true
+        blocked: true,
       };
-      
-       if(this.data_driver.blocked == true){
-         jsonData = {
-            "blocked" : false
-        };
-       }
 
-        const url = "/admin/update/blokirdriver/" + this.$route.params.id;
-        
-        http.post(url, jsonData).then((response) => {
+      if (this.data_driver.blocked == true) {
+        jsonData = {
+          blocked: false,
+        };
+      }
+
+      const url = "/admin/update/blokirdriver/" + this.$route.params.id;
+
+      http
+        .post(url, jsonData)
+        .then((response) => {
           if (response.status == 201) {
-            alert("Succesfully block/unblock this driver"); 
-            this.data_driver.blocked = (!this.data_driver.blocked)
-            if(this.data_driver.blocked == true){
-              this.blockedText = "Unblock"
-            }else{
-              this.blockedText = "Block"
+            alert("Succesfully block/unblock this driver");
+            this.data_driver.blocked = !this.data_driver.blocked;
+            if (this.data_driver.blocked == true) {
+              this.blockedText = "Unblock";
+            } else {
+              this.blockedText = "Block";
             }
           }
         })
         .catch((error) => {
-            alert("Failed to block this driver\n" + error);
-          });;
-    }
-  }
+          alert("Failed to block this driver\n" + error);
+        });
+    },
+    verificationAction() {
+      const url = "/admin/update/verif/" + this.$route.params.id;
+
+      http
+        .post(url)
+        .then((response) => {
+          if (response.status == 201) {
+            alert("Succesfully verificate this driver");
+          }
+        })
+        .catch((error) => {
+          alert("Failed to verificate this driver\n" + error);
+        });
+    },
+  },
 };
 </script>
 <style></style>

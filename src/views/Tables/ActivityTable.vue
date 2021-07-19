@@ -11,15 +11,38 @@
           </h3>
         </div>
         <!-- BUAT SEARCH  -->
-           <!-- <div class="form-group mb-0 mr-6">
-          <base-input
-            placeholder="Search"
-            class="input-group-alternative"
-            alternative=""
-            addon-right-icon="fas fa-search"
+        <div class="form-group mb-0 mr-4">
+          <div class="row">
+            <div class="mr-1">
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Search by Date"
+                v-model="date_search"
+              />
+            </div>
+
+            <div class="btn btn-success" @click="searchAction(date_search)">
+              Search
+            </div>
+          </div>
+        </div>
+
+        <base-dropdown>
+          <template v-slot:title>
+            <base-button type="secondary" class="dropdown-toggle">
+              {{service_type}}
+            </base-button>
+          </template>
+          <a class="dropdown-item" @click="allActivityAction">All Activity</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" @click="categoryActivityAction('Transportasi Motor')"
+            >Transportasi Motor</a
           >
-          </base-input>
-        </div> -->
+          <a class="dropdown-item" @click="categoryActivityAction('Transportasi Mobil')">Transportasi Mobil</a>
+
+          <a class="dropdown-item" @click="categoryActivityAction('Antar Barang')">Antar Barang</a>
+        </base-dropdown>
       </div>
     </div>
 
@@ -29,12 +52,15 @@
         :class="type === 'dark' ? 'table-dark' : ''"
         :thead-classes="type === 'dark' ? 'thead-dark' : 'thead-light'"
         tbody-classes="list"
-        :data="list_admin"
+        :data="list_activity"
       >
         <template v-slot:columns>
-          <th>Username</th>
-          <th>Email</th>
-          <th>Created At</th>
+          <th>Date and Time</th>
+          <th>Type of Service</th>
+          <th>Driver ID</th>
+          <th>Customer ID</th>
+          <th>Actiivty Status</th>
+          <th>Price</th>
           <th>Action</th>
           <th></th>
         </template>
@@ -42,44 +68,58 @@
         <template v-slot:default="row">
           <th scope="row">
             <div class="media align-items-center">
-
               <div class="media-body">
-                <span class="name mb-0 text-sm">{{ row.item.admin_name }}</span>
+                <span class="name mb-0 text-sm">{{ row.item.date }}</span>
               </div>
             </div>
           </th>
 
           <td>
-           
-             <div class="media-body">
-                <span class="name mb-0 text-sm">{{ row.item.admin_email }}</span>
-              </div>
-            
+            <div class="media-body">
+              <span class="name mb-0 text-sm">{{
+                row.item.type_of_service
+              }}</span>
+            </div>
           </td>
 
-         
           <td>
-           
-             <div class="media-body">
-                <span class="name mb-0 text-sm">{{ row.item.created_at }}</span>
-              </div>
-            
+            <div class="media-body">
+              <span class="name mb-0 text-sm">{{ row.item.id_driver }}</span>
+            </div>
+          </td>
+          <td>
+            <div class="media-body">
+              <span class="name mb-0 text-sm">{{ row.item.id_customer }}</span>
+            </div>
+          </td>
+
+          <td>
+            <div class="media-body">
+              <span class="name mb-0 text-sm">{{
+                row.item.activity_status
+              }}</span>
+            </div>
+          </td>
+
+          <td>
+            <div class="media-body">
+              <span class="name mb-0 text-sm">{{ row.item.price }}</span>
+            </div>
           </td>
 
           <td class="text-left">
-              <div class="btn btn-danger" @click= "deleteAction(item)" >Delete</div>
+            <div class="btn btn-danger" @click="detailAction(row.item._id)">
+              Detail Activity
+            </div>
           </td>
         </template>
       </base-table>
     </div>
   </div>
-<div class="pb-6 pb-8 pt-5 pt-md-4">
-  <a href="/?#/admin/newAdmin" class="btn btn-info">Create New Admin Account</a>
-</div>
 </template>
 
 <script>
-import http from '../../http.js';
+import http from "../../http.js";
 
 export default {
   name: "activity-table",
@@ -87,42 +127,44 @@ export default {
     type: {
       type: String,
     },
-    title: String
+    title: String,
   },
   data() {
     return {
-      list_admin:[]
+      list_activity: [],
+      date_search: "",
+      service_type: "Type of Service" 
     };
   },
   mounted() {
-    const url = "admin/read/alladmin";
-    http.get(url).then(response => {
-      this.list_admin = response.data;
+    const url = "admin/read/allactivity";
+    http.get(url).then((response) => {
+      this.list_activity = response.data;
     });
   },
-   methods: {
-    deleteAction(i) {
-      alert("i = " + i);
-      alert(JSON.stringify(this.list_admin[i]));
+  methods: {
+    allActivityAction() {
+      const url = "admin/read/allactivity";
+      http.get(url).then((response) => {
+        this.list_activity = response.data;
+      });
+      this.service_type = "All Activity";
+    },
+    detailAction(_id) {
+      this.$router.push({
+        name: "Activity Detail",
+        params: { id: _id },
+      });
+    },
+    categoryActivityAction(category) {
+      const url = "/admin/get/history/"+category;
+      http.get(url).then((response) => {
+        this.list_activity = response.data;
+      });
 
-
-
-
-
-        const url = "admin/delete/admin/";
-
-        http.delete(url).then((response) => {
-          if (response.status == 201) {
-            alert("Succesfully delete admin"); 
-            this.$router.push('/admin/adminList');
-          }
-        })
-        .catch((error) => {
-            alert("Failed to add admin \n" + error);
-          });;
+      this.service_type = category;
     }
-   }
-
+  },
 };
 </script>
 <style></style>

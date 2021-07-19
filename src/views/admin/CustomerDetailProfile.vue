@@ -150,9 +150,9 @@
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
-                      placeholder="dd/mm/yy"
+                      placeholder="dd-mm-yy"
                       v-model="profile.birth_of_date"
                     />
                   </div>
