@@ -17,12 +17,12 @@
               <input
                 type="text"
                 class="form-control"
-                placeholder="Search by Date"
+                placeholder="yyyy-mm-dd"
                 v-model="date_search"
               />
             </div>
 
-            <div class="btn btn-success" @click="searchAction(date_search)">
+            <div class="btn btn-success" @click="searchByDateAction(date_search)">
               Search
             </div>
           </div>
@@ -163,6 +163,12 @@ export default {
       });
 
       this.service_type = category;
+    },
+    searchByDateAction(date) {
+      const url = "admin/get/history/perday/" + date;
+      http.get(url).then((response) => {
+        this.list_activity = response.data;
+      });
     }
   },
 };

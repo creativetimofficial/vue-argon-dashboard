@@ -66,7 +66,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="dd-mm-yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="data_act.date"
                     />
                   </div>

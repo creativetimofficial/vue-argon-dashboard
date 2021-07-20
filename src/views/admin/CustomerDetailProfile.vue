@@ -92,7 +92,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="dd-mm-yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="data_cust.signUp_date"
                     />
                   </div>
@@ -103,7 +103,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      placeholder="dd-mm-yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="data_cust.customer_password"
                     />
                   </div>
@@ -152,7 +152,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      placeholder="dd-mm-yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="profile.birth_of_date"
                     />
                   </div>
