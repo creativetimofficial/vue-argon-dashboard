@@ -7,25 +7,23 @@
             <small>Log In Form</small>
           </div>
           <form role="form">
-            <div class="col-lg-14 mt-2">
-                    <input
-                      type="email"
-                      class="form-control"
-                      placeholder="Email"
-                      v-model="model.email"
-                    />
-                  </div>
-         
+            <div class="col-lg-14 mt-2 ">
+              <input
+                type="email"
+                class="form-control mb-2"
+                placeholder="Email"
+                v-model="model.email"
+              />
+            </div>
 
             <div class="col-lg-14 mt-2">
-                    <input
-                      type="password"
-                      class="form-control"
-                      placeholder="Password"
-                      v-model="model.password"
-                    />
-                  </div>
-
+              <input
+                type="password"
+                class="form-control mb-2"
+                placeholder="Password"
+                v-model="model.password"
+              />
+            </div>
 
             <div class="input-group mb-3 mt-2">
               <div class="input-group-prepend">
@@ -33,7 +31,11 @@
                   Login as
                 </button>
               </div>
-              <select class="custom-select" id="inputGroupSelect03"  v-model= "model.role">
+              <select
+                class="custom-select"
+                id="inputGroupSelect03"
+                v-model="model.role"
+              >
                 <option value="Customer">Customer</option>
                 <option value="Driver">Driver</option>
                 <option value="Admin">Admin</option>
@@ -44,7 +46,9 @@
               <span class="text-muted">Remember me</span>
             </base-checkbox>
             <div class="text-center">
-              <base-button type="primary" class="my-4" v-on:click= "doLogin" >Log in</base-button>
+              <base-button type="primary" class="my-4" v-on:click="doLogin"
+                >Log in</base-button
+              >
             </div>
           </form>
         </div>
@@ -63,7 +67,6 @@
   </div>
 </template>
 <script>
-
 // import router from "../routes/routes";
 import http from "../http.js";
 
@@ -75,96 +78,94 @@ export default {
       model: {
         email: "",
         password: "",
-        role: "Customer"
+        role: "Customer",
       },
     };
   },
-    methods: {
-    doLogin: function(){
-
-      if(this.model.role == "Admin"){
+  methods: {
+    doLogin: function () {
+      if (this.model.role == "Admin") {
         let formData = {
           admin_email: this.model.email,
-          admin_password: this.model.password
+          admin_password: this.model.password,
         };
-      
+
         const jsonData = JSON.stringify(formData);
         const url = "auth/admin";
-        http.post(url, jsonData)
+        http
+          .post(url, jsonData)
           .then((response) => {
             if (response.status == 201) {
               const email = JSON.stringify(response.data.result[0].admin_email);
               const id = JSON.stringify(response.data.result[0]._id);
               const name = JSON.stringify(response.data.result[0].admin_name);
-              localStorage.setItem("admin_email",email.replaceAll("\"", ""));
-              localStorage.setItem("admin_id",id.replaceAll("\"", ""));
-              localStorage.setItem("admin_name",name.replaceAll("\"", ""));
+              localStorage.setItem("admin_email", email.replaceAll('"', ""));
+              localStorage.setItem("admin_id", id.replaceAll('"', ""));
+              localStorage.setItem("admin_name", name.replaceAll('"', ""));
               alert("Login Succesful");
-              this.$router.push('/admin')
+              this.$router.push("/admin");
             }
           })
           .catch((error) => {
             alert("Login Err \n" + error);
           });
-
-        
-
-      }else if(this.model.role == "Customer"){
+      } else if (this.model.role == "Customer") {
         let formData = {
           customer_email: this.model.email,
-          customer_password: this.model.password
+          customer_password: this.model.password,
         };
-      
+
         const jsonData = JSON.stringify(formData);
         const url = "auth/cust";
-        http.post(url, jsonData)
+        http
+          .post(url, jsonData)
           .then((response) => {
             if (response.status == 201) {
-              const email = JSON.stringify(response.data.result[0].customer_email);
+              const email = JSON.stringify(
+                response.data.result[0].customer_email
+              );
               const id = JSON.stringify(response.data.result[0]._id);
-              const name = JSON.stringify(response.data.result[0].customer_name);
-              localStorage.setItem("customer_email",email.replaceAll("\"", ""));
-              localStorage.setItem("customer_id",id.replaceAll("\"", ""));
-              localStorage.setItem("customer_name",name.replaceAll("\"", ""));
+              const name = JSON.stringify(
+                response.data.result[0].customer_name
+              );
+              localStorage.setItem("customer_email", email.replaceAll('"', ""));
+              localStorage.setItem("customer_id", id.replaceAll('"', ""));
+              localStorage.setItem("customer_name", name.replaceAll('"', ""));
               alert("Login Succesful");
-              this.$router.push('/customer')
+              this.$router.push("/customer");
             }
-            
           })
           .catch((error) => {
             alert("Login Err \n" + error);
           });
-
-      }else{
+      } else {
         let formData = {
-          admin_email: this.model.email,
-          admin_password: this.model.password
+          driver_email: this.model.email,
+          driver_password: this.model.password,
         };
-      
+
         const jsonData = JSON.stringify(formData);
         const url = "auth/driver";
-        http.post(url, jsonData)
+        http
+          .post(url, jsonData)
           .then((response) => {
             if (response.status == 201) {
-              const email = JSON.stringify(response.data.result[0].driver_email);
+              const email = JSON.stringify(
+                response.data.result[0].driver_email
+              );
               const id = JSON.stringify(response.data.result[0]._id);
-              const name = JSON.stringify(response.data.result[0].driver_name);
-              localStorage.setItem("driver_email",email.replaceAll("\"", ""));
-              localStorage.setItem("driver_id",id.replaceAll("\"", ""));
-              localStorage.setItem("driver_name",name.replaceAll("\"", ""));
+              localStorage.setItem("driver_email", email.replaceAll('"', ""));
+              localStorage.setItem("driver_id", id.replaceAll('"', ""));
               alert("Login Succesful");
-              this.$router.push('/driver')
+              this.$router.push("/driver");
             }
-            
           })
           .catch((error) => {
             alert("Login Err \n" + error);
           });
-
       }
-
-    }
-  }
+    },
+  },
 };
 </script>
 <style></style>

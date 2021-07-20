@@ -44,9 +44,9 @@
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-6">
-                      <label for="verify" class="col-sm-8 col-form-label">
-                  Username
-                </label>
+                    <label for="verify" class="col-sm-8 col-form-label">
+                      Username
+                    </label>
 
                     <input
                       type="email"
@@ -56,9 +56,9 @@
                     />
                   </div>
                   <div class="col-lg-6">
-                      <label for="verify" class="col-sm-8 col-form-label">
-                  Email
-                </label>
+                    <label for="verify" class="col-sm-8 col-form-label">
+                      Email
+                    </label>
 
                     <input
                       type="text"
@@ -71,8 +71,8 @@
                 <div class="row">
                   <div class="col-lg-6">
                     <label for="verify" class="col-sm-8 col-form-label">
-                  Password
-                </label>
+                      Password
+                    </label>
                     <input
                       type="password"
                       class="form-control"
@@ -82,8 +82,8 @@
                   </div>
                   <div class="col-lg-6">
                     <label for="verify" class="col-sm-8 col-form-label">
-                  Password Verification
-                </label>
+                      Password Verification
+                    </label>
                     <input
                       type="password"
                       class="form-control"
@@ -113,9 +113,9 @@ export default {
         username: "",
         email: "",
         password: "",
-        passwordVerification: "",
+        password_verification: "",
       },
-      post_status :false
+      post_status: false,
     };
   },
   methods: {
@@ -127,34 +127,33 @@ export default {
         this.model.password_verification != ""
       ) {
         let formData = {
-          admin_name: this.model.username, 
-          admin_email: this.model.email, 
-          admin_password: this.model.password, 
-          password_verification: this.model.password_verification
+          admin_name: this.model.username,
+          admin_email: this.model.email,
+          admin_password: this.model.password,
+          password_verification: this.model.password_verification,
         };
-        
+
         const jsonData = JSON.stringify(formData);
 
         const url = "admin/add/newadmin";
 
-        http.post(url, jsonData).then((response) => {
-          if (response.status == 201) {
-            alert("Succesfully add admin"); 
-            this.post_status = true;
-            this.$router.push('/admin/adminList');
-          }
-        })
-        .catch((error) => {
+        http
+          .post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              alert("Succesfully add admin");
+              this.post_status = true;
+              this.$router.push("/admin/adminList");
+            }
+          })
+          .catch((error) => {
             alert("Failed to add admin \n" + error);
-          });;
-        
-      }else{
+          });
+      } else {
         alert("Failed to add admin");
       }
-
-      
-    }
-  }
+    },
+  },
 };
 </script>
 <style></style>

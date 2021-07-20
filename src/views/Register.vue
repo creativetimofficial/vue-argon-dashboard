@@ -2,73 +2,40 @@
   <div class="row justify-content-center">
     <div class="col-lg-5 col-md-7">
       <div class="card bg-secondary shadow border-0">
-        <!-- <div class="card-header bg-transparent pb-5">
-          <div class="text-muted text-center mt-2 mb-3">
-            <small>Sign up with</small>
-          </div>
-          <div class="btn-wrapper text-center">
-            <a href="#" class="btn btn-neutral btn-icon">
-              <span class="btn-inner--icon"
-                ><img src="img/icons/common/github.svg"
-              /></span>
-              <span class="btn-inner--text">Github</span>
-            </a>
-            <a href="#" class="btn btn-neutral btn-icon">
-              <span class="btn-inner--icon"
-                ><img src="img/icons/common/google.svg"
-              /></span>
-              <span class="btn-inner--text">Google</span>
-            </a>
-          </div>
-        </div> -->
         <div class="card-body px-lg-5 py-lg-5">
           <div class="text-center text-muted mb-4">
             <small>Sign Up Form</small>
           </div>
           <form role="form">
-            <base-input
-              formClasses="input-group-alternative"
-              placeholder="Name"
-              addon-left-icon="ni ni-hat-3"
-              v-model="model.name"
-            >
-            </base-input>
+            <input
+                      type="text"
+                      class="form-control mb-2"
+                      placeholder="Name"
+                      v-model="model.name"
+                    />
 
-            <base-input
-              formClasses="input-group-alternative"
-              placeholder="Email"
-              addon-left-icon="ni ni-email-83"
-              v-model="model.email"
-              focused
-            >
-            </base-input>
+            <input
+                      type="email"
+                      class="form-control mb-2"
+                      placeholder="Email"
+                      v-model="model.email"
+                    />
 
-            <base-input
-              formClasses="input-group-alternative"
-              placeholder="Password"
-              type="password"
-              addon-left-icon="ni ni-lock-circle-open"
-              v-model="model.password"
-            >
-            </base-input>
+            <input
+                      type="password"
+                      class="form-control mb-2"
+                      placeholder="Password"
+                      v-model="model.password"
+                    />
 
-             <base-input
-              formClasses="input-group-alternative mb-3"
-              placeholder="Password Verification"
-              type="password"
-              addon-left-icon="ni ni-lock-circle-open"
-              v-model= "model.passwordVerification"
-            >
-            </base-input>
+            <input
+                      type="email"
+                      class="form-control mb-2"
+                      placeholder="Password Verification"
+                      v-model="model.password_verification"
+                    />
 
-            <!-- <div class="text-muted font-italic">
-              <small
-                >password strength:
-                <span class="text-success font-weight-700">strong</span></small
-              >
-            </div> -->
-
-             <div class="input-group mb-3">
+            <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <button class="btn btn-outline-primary" type="button">
                   Register as
@@ -90,7 +57,7 @@
               </div>
             </div>
             <div class="text-center">
-              <base-button type="primary" class="my-4"
+              <base-button type="primary" class="my-4" v-on:click="submitAction"
                 >Create account</base-button
               >
             </div>
@@ -113,6 +80,8 @@
   </div>
 </template>
 <script>
+import http from "../http.js";
+
 export default {
   name: "register",
   data() {
@@ -121,9 +90,44 @@ export default {
         name: "",
         email: "",
         password: "",
-        passwordVerification:""
+        password_verification: "",
       },
     };
+  },
+  methods: {
+    submitAction() {
+      if (
+        this.model.username != "" &&
+        this.model.email != "" &&
+        this.model.password != "" &&
+        this.model.password_verification != ""
+      ) {
+        let formData = {
+          driver_name: this.model.username,
+          driver_email: this.model.email,
+          driver_password: this.model.password,
+          password_verification: this.model.password_verification,
+        };
+
+        const jsonData = JSON.stringify(formData);
+
+        const url = "driver/signup";
+        // alert(jsonData);
+        http
+          .post(url, jsonData)
+          .then((response) => {
+            if (response.status == 201) {
+              alert("Succesfully add driver");
+              this.$router.push('/login')
+            }
+          })
+          .catch((error) => {
+            alert("Failed to add driver \n" + error);
+          });
+      } else {
+        alert("Failed to add driver");
+      }
+    },
   },
 };
 </script>

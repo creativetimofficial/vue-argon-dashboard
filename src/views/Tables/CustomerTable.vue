@@ -53,9 +53,9 @@
 
           <th scope="row">
             <div class="media align-items-center">
-              <a href="#" class="avatar rounded-circle mr-3">
+              <!-- <a href="#" class="avatar rounded-circle mr-3">
                 <img alt="Image placeholder" :src="row.item.img" />
-              </a>
+              </a> -->
               <div class="media-body">
                 <span class="name mb-0 text-sm">{{ row.item.customer_email }}</span>
               </div>

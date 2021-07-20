@@ -72,8 +72,8 @@ export default {
       }
     },
     doLogout: function(){
-      localStorage.removeItem("admin_id");
-      localStorage.removeItem("admin_email");
+      localStorage.removeItem("customer_id");
+      localStorage.removeItem("customer_email");
 
      }
   },

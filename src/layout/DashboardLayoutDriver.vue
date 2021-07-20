@@ -10,7 +10,7 @@
           :link="{
             name: 'User Profile',
             icon: 'ni ni-single-02 text-yellow',
-            path: '/profile',
+            path: 'driver/profile',
           }"
         />
         <sidebar-item
@@ -24,7 +24,7 @@
           :link="{
             name: 'Order History',
             icon: 'ni ni-tv-2 text-primary',
-            path: '/dashboard',
+            path: '/driver/orderList',
           }"
         />
 
@@ -72,8 +72,8 @@ export default {
       }
     },
     doLogout: function(){
-      localStorage.removeItem("admin_id");
-      localStorage.removeItem("admin_email");
+      localStorage.removeItem("driver_id");
+      localStorage.removeItem("driver_email");
 
      }
   },

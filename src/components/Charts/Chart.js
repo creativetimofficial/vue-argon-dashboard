@@ -13,7 +13,20 @@ export const ordersChart = {
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        labels: [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec",
+        ],
         datasets: [
           {
             label: "Sales",
@@ -21,7 +34,7 @@ export const ordersChart = {
             borderWidth: 0,
             pointRadius: 0,
             backgroundColor: "#fb6340",
-            data: [25, 20, 30, 22, 17, 29],
+            data: [10, 20, 30, 20, 10, 14, 25, 20, 30, 22, 17, 29],
             maxBarThickness: 10,
           },
         ],
