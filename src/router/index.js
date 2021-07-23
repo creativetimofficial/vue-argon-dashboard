@@ -32,10 +32,14 @@ import AdminDashboard from "../views/admin/AdminDashboard";
 import DriverActivityTable from "../views/driver/ActivityTable";
 import DriverProfile from "../views/driver/DriverProfile";
 
-
-
-
-// CUSTOMER LAYOUT
+// CUSTOMER LAYOUT 
+import CustomerOrder from "../views/customer/OrderLayout";
+import CarOrder from "../views/customer/CarOrder";
+import RideOrder from "../views/customer/RideOrder";
+import SendOrder from "../views/customer/SendOrder";
+import CustomerProfile from "../views/customer/CustomerProfile"; 
+import CustomerActivity from "../views/customer/CustomerActivity"; 
+import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";
 
 const routes = [
   {
@@ -200,6 +204,46 @@ const routes = [
         path: "/tables",
         name: "tables",
         components: { default: Tables },
+      },
+      {
+        path: "/CustomerProfile",
+        name: "profile",
+        components: { default: CustomerProfile },
+      },
+      {
+        path: "/register",
+        name: "register",
+        components: { default: Register },
+      },
+      {
+        path: "Order",
+        name: "order",
+        components: { default: CustomerOrder},
+      },
+      {
+        path: "CarOrder",
+        name: "Gofar-Car",
+        components: { default: CarOrder},
+      },
+      {
+        path: "RideOrder",
+        name: "Gofar-Ride",
+        components: { default: RideOrder},
+      },
+      {
+        path: "SendOrder",
+        name: "Gofar-Send",
+        components: { default: SendOrder},
+      },
+      {
+        path: "ActivityHistory",
+        name: "Activity History",
+        components: { default: CustomerActivity},
+      },
+      {
+        path: "ActivityDetail",
+        name: "Activity Detail Customer",
+        components: { default: CustomerActivityDetail},
       },
     ],
   },
