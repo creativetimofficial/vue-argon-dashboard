@@ -127,12 +127,12 @@ export default {
       this.service_type = "All Activity";
     },
     
-    // detailAction(_id) {
-    //   this.$router.push({
-    //     name: "Activity Detail Customer",
-    //     params: { id: _id },
-    //   });
-    // },
+    detailAction(_id) {
+      this.$router.push({
+        name: "Activity Detail Customer",
+        params: { id: _id },
+      });
+    },
 
     categoryActivityAction(category) {
       const url = "/cust/get/history/"+category;

@@ -95,7 +95,7 @@
   </div>
 </template>
 <script>
-//import http from "../../http.js";
+import http from "../../http.js";
 
 export default {
   name: "user-profile",
@@ -118,6 +118,27 @@ export default {
   
   methods: {
      submitAction() {
+         let formData = {
+            start_loc: {
+              latitude: this.start_loc.latitude,
+              longtitude: this.start_loc.longtitude,
+            },
+            end_loc: {
+              latitude: this.end_loc.latitude,
+              longtitude: this.end_loc.longtitude,
+            },
+         };
+
+         const jsonData = JSON.stringify(formData);
+         const url = "/cust/create/order";
+         http.post(url, jsonData).then((response) => {
+          if (response.status == 201) {
+            alert("Succesfully create order"); 
+          }
+        })
+        .catch((error) => {
+            alert("Failed to create order \n" + error);
+          });
      }
   },
 };

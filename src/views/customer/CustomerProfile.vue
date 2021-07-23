@@ -194,6 +194,7 @@ export default {
         male: false,
         female: false,
         birth_of_date: "",
+        gender: "",
       },
       blockedText: "Block"
     };
@@ -203,6 +204,13 @@ export default {
       http.get(url).then(response => {
       this.data_cust = response.data[0];
       this.profile = response.data[0].profile;
+
+      if(response.data[0].profil.gender == "wanita"){
+      this.profil.female = true
+      }else if(response.data[0].profil.gender == "pria"){
+      this.profil.male = true
+      }
+      
       if(response.data[0].blocked == true){
         this.blockedText = "Unblock"
       }
@@ -217,29 +225,15 @@ export default {
        }
     },
 
-    // saveAction(){
-    //   alert("masuk");
-    //   let formData = {
-    //     customer_email: this.data_cust.customer_email,
-    //     customer_password: this.data_cust.customer_password,
-    //     profile: {
-    //       name: this.profile.name,
-    //       phone_number: this.profile.phone_number,
-    //       birth_of_date: this.profile.birth_of_date,
-    //     },
-    //     signUp_date: this.data_cust.signUp_date,
-    //   }
-    //   const jsonData = JSON.stringify(formData);
-    //   const url = "/cust/update/account/" + localStorage.getItem("customer_id");
-    //   http.post(url,jsonData).then((response) => {
-    //     if (response.status == 201){
-    //       alert("successfully update profil");
-    //        this.post_status = true;
-    //     }
-    //   })
-    
-    // },
     updateAction() {
+      if(this.profile.male == true){
+         this.profile.gender = "pria"
+      }else if (this.profile.female == true){
+        this.profile.gender = "wanita"
+      }else{
+        this.profile.gender = ""
+      }
+     
       if (
         this.data_cust.customer_email != "" &&
         this.data_cust.customer_password != "" &&
@@ -248,13 +242,15 @@ export default {
         this.profile.birth_of_date != "" &&
         this.data_cust.signUp_date != ""
       ) {
-           let formData = {
+      
+      let formData = {
         customer_email: this.data_cust.customer_email,
         customer_password: this.data_cust.customer_password,
         profile: {
           name: this.profile.name,
           phone_number: this.profile.phone_number,
           birth_of_date: this.profile.birth_of_date,
+          gender: this.profile.gender,
         },
         signUp_date: this.data_cust.signUp_date,
       };
@@ -279,36 +275,6 @@ export default {
       }
     },
   },
-    // blockAction() {
-
-    //   console.log("masukkk");
-    //   let jsonData = {
-    //       "blocked" : true
-    //   };
-      
-    //    if(this.data_cust.blocked == true){
-    //      jsonData = {
-    //         "blocked" : false
-    //     };
-    //    }
-
-    //     const url = "/admin/update/blokircust/" + this.$route.params.id;
-        
-    //     http.post(url, jsonData).then((response) => {
-    //       if (response.status == 201) {
-    //         alert("Succesfully block/unblock this customer"); 
-    //         this.data_cust.blocked = (!this.data_cust.blocked)
-    //         if(this.data_cust.blocked == true){
-    //           this.blockedText = "Unblock"
-    //         }else{
-    //           this.blockedText = "Block"
-    //         }
-    //       }
-    //     })
-    //     .catch((error) => {
-    //         alert("Failed to block this customer \n" + error);
-    //       });;
-  //}
  
 };
 </script>

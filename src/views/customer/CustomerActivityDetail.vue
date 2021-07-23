@@ -31,8 +31,8 @@
 
               <div class="pl-lg-4">
                 <div class="row">
-                  <!-- <div class="col-lg-6 mb-3">
-                    <p>Driver</p>
+                  <div class="col-lg-6 mb-3">
+                    <!-- <p>Driver</p>
                     <input
                       type="text"
                       class="form-control"
@@ -44,7 +44,7 @@
                     >
                       Go to driver Profile
                     </div>
-                  <!-- </div> -->
+                  </div>
                   <!-- <div class="col-lg-6 mb-3">
                     <p>Customer</p>
                     <input
@@ -128,18 +128,27 @@
                   />
                 </div>
               </div>
-              <div class="row ml-1" v-show="data_act.id_feedback != null">
+              <!-- <div class="row ml-1" v-show="data_act.id_feedback != null">
                 <div class="col-lg-6">
                   <p>Feedback</p>
-                  <div
-                    class="btn btn-info mt-2"
-                    @click="feedbackDetailAction(data_act.id_feedback)"
-                  >
-                    Read Feedback
-                  </div>
-                </div>
+                  <div class="row">
+                  <p>Rating</p>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="data_feedback.rating"
+                  />
+                  <p>Feedback</p>
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    aria-label="Large"
+                    v-model="data_feedback.review"
+                  />
+              </div> -->
+                <!-- </div>
               </div>
-              <hr class="my-4" />
+              <hr class="my-4" /> --> 
 
               <h6
                 class="heading-small text-muted mb-4"
@@ -240,6 +249,9 @@ export default {
   data() {
     return {
       data: "",
+      // data_feedback: {
+      //   rating: "",
+      // },
       data_act: {},
       start_loc: {},
       end_loc: {},
@@ -249,7 +261,7 @@ export default {
     };
   },
   mounted() {
-    const url = "/admin/read/activity/" + this.$route.params.id;
+    const url = "/cust/read/order/" + this.$route.params.id;
     http.get(url).then((response) => {
       this.data_act = response.data[0];
       this.start_loc = response.data[0].start_loc;
@@ -258,6 +270,11 @@ export default {
         this.item_detail = response.data[0].item_detail;
         this.recipient_detail = response.data[0].recipient_detail;
       }
+
+    // const url = "/admin/read/feedback/" + this.$route.params.id;
+    // http.get(url).then((response) => {
+    //   this.data_feedback = response.data[0].data_feedback;
+    // });
     });
   },
   methods: {
@@ -267,18 +284,18 @@ export default {
         params: { id: _id },
       });
     },
-    customerDetailAction(_id) {
-      this.$router.push({
-        name: "Customer Profile",
-        params: { id: _id },
-      });
-    },
-    feedbackDetailAction(_id) {
-      this.$router.push({
-        name: "Feedback Detail",
-        params: { id: _id },
-      });
-    },
+    // customerDetailAction(_id) {
+    //   this.$router.push({
+    //     name: "Customer Profile",
+    //     params: { id: _id },
+    //   });
+    // },
+    // feedbackDetailAction(_id) {
+    //   this.$router.push({
+    //     name: "Feedback Detail",
+    //     params: { id: _id },
+    //   });
+    // },
   },
 };
 </script>

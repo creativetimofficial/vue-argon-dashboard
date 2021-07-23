@@ -38,8 +38,11 @@ import CarOrder from "../views/customer/CarOrder";
 import RideOrder from "../views/customer/RideOrder";
 import SendOrder from "../views/customer/SendOrder";
 import CustomerProfile from "../views/customer/CustomerProfile"; 
-import CustomerActivity from "../views/customer/CustomerActivity"; 
-import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";
+import CustomerActivity from "../views/customer/CustomerActivity";
+import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";  
+import CustomerReview from "../views/customer/Review";
+import CustomerGetDriver from "../views/customer/GetDriver";
+
 
 const routes = [
   {
@@ -244,6 +247,16 @@ const routes = [
         path: "ActivityDetail",
         name: "Activity Detail Customer",
         components: { default: CustomerActivityDetail},
+      },
+      {
+        path: "GetDriver",
+        name: "Get Driver",
+        components: { default: CustomerGetDriver},
+      },
+      {
+        path: "Review",
+        name: "Review",
+        components: { default: CustomerReview},
       },
     ],
   },
