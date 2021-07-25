@@ -10,14 +10,14 @@
           :link="{
             name: 'User Profile',
             icon: 'ni ni-single-02 text-yellow',
-            path: '/profile',
+            path: '/Customerprofile',
           }"
         />
         <sidebar-item
           :link="{
             name: 'Order',
             icon: 'ni ni-tv-2 text-primary',
-            path: '/dashboard',
+            path: '/cust/Order',
           }"
         />
 
@@ -25,7 +25,7 @@
           :link="{
             name: 'Activity History',
             icon: 'ni ni-planet text-blue',
-            path: '/icons',
+              path: '/cust/ActivityHistory',
           }"
         />
         <sidebar-item
