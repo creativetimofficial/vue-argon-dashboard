@@ -125,12 +125,8 @@ export default {
                 response.data.result[0].customer_email
               );
               const id = JSON.stringify(response.data.result[0]._id);
-              const name = JSON.stringify(
-                response.data.result[0].customer_name
-              );
               localStorage.setItem("customer_email", email.replaceAll('"', ""));
               localStorage.setItem("customer_id", id.replaceAll('"', ""));
-              localStorage.setItem("customer_name", name.replaceAll('"', ""));
               alert("Login Succesful");
               this.$router.push("/customer");
             }

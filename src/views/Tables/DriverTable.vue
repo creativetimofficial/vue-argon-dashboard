@@ -108,9 +108,6 @@
         <template v-slot:default="row">
           <th scope="row">
             <div class="media align-items-center">
-              <!-- <a href="#" class="avatar rounded-circle mr-3">
-                <img alt="Image placeholder" :src="row.item.img" />
-              </a> -->
               <div class="media-body">
                 <span class="name mb-0 text-sm">{{
                   row.item.profile.name
@@ -134,13 +131,14 @@
           <td>
             <div class="media-body">
               <span class="name mb-0 text-sm">{{
-                row.item.vehicle_details.vehicle_status
+                row.item.vehicle_details.transportation_type
               }}</span>
             </div>
           </td>
 
           <td class="text-left">
             <div
+              v-show="row.item.verification_status == true"
               :class="
                 row.item.active_status === true
                   ? 'btn btn-success'
@@ -199,10 +197,6 @@ export default {
       for (let i = 0; i < response.data.length; i++) {
         if (response.data[i].verification_status == true) {
           this.number_of_driver++;
-          console.log(
-            "AAAAAAAAAAAA " +
-              response.data[i].vehicle_details.transportation_type
-          );
           if (response.data[i].vehicle_details.transportation_type == "Car") {
             this.number_of_car_driver++;
           } else {
@@ -247,7 +241,7 @@ export default {
 
     editAction(_id) {
       this.$router.push({
-        name: "Driver Profile",
+        name: "Driver Data",
         params: { id: _id },
       });
     },

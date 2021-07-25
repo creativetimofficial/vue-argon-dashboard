@@ -17,7 +17,7 @@
           :link="{
             name: 'New Order',
             icon: 'ni ni-tv-2 text-primary',
-            path: '/dashboard',
+            path: '/driver/newOrderList',
           }"
         />
         <sidebar-item

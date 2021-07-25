@@ -8,32 +8,32 @@
           </div>
           <form role="form">
             <input
-                      type="text"
-                      class="form-control mb-2"
-                      placeholder="Name"
-                      v-model="model.name"
-                    />
+              type="text"
+              class="form-control mb-2"
+              placeholder="Name"
+              v-model="model.name"
+            />
 
             <input
-                      type="email"
-                      class="form-control mb-2"
-                      placeholder="Email"
-                      v-model="model.email"
-                    />
+              type="email"
+              class="form-control mb-2"
+              placeholder="Email"
+              v-model="model.email"
+            />
 
             <input
-                      type="password"
-                      class="form-control mb-2"
-                      placeholder="Password"
-                      v-model="model.password"
-                    />
+              type="password"
+              class="form-control mb-2"
+              placeholder="Password"
+              v-model="model.password"
+            />
 
             <input
-                      type="email"
-                      class="form-control mb-2"
-                      placeholder="Password Verification"
-                      v-model="model.password_verification"
-                    />
+              type="email"
+              class="form-control mb-2"
+              placeholder="Password Verification"
+              v-model="model.password_verification"
+            />
 
             <div class="input-group mb-3">
               <div class="input-group-prepend">
@@ -103,7 +103,7 @@ export default {
         this.model.password_verification != ""
       ) {
         let formData = {
-          driver_name: this.model.username,
+          profile: { name: this.model.name },
           driver_email: this.model.email,
           driver_password: this.model.password,
           password_verification: this.model.password_verification,
@@ -118,7 +118,7 @@ export default {
           .then((response) => {
             if (response.status == 201) {
               alert("Succesfully add driver");
-              this.$router.push('/login')
+              this.$router.push("/login");
             }
           })
           .catch((error) => {

@@ -32,20 +32,6 @@
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-6 mb-3">
-                    <p>Driver</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="data_act.id_driver"
-                    />
-                    <div
-                      class="btn btn-info mt-2"
-                      @click="driverDetailAction(data_act.id_driver)"
-                    >
-                      Go to driver Profile
-                    </div>
-                  </div>
-                  <div class="col-lg-6 mb-3">
                     <p>Customer</p>
                     <input
                       type="text"
@@ -59,8 +45,7 @@
                       Go to customer Profile
                     </div>
                   </div>
-                </div>
-                <div class="row">
+
                   <div class="col-lg-6 mb-3">
                     <p>Date</p>
                     <input
@@ -70,11 +55,54 @@
                       v-model="data_act.date"
                     />
                   </div>
+                </div>
+                <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>Activity Status</p>
-                    <div class="btn btn-primary" @click="openFile(item)">
+                    <div :class="activity_button" @click="openFile(item)">
                       {{ data_act.activity_status }}
                     </div>
+                  </div>
+                  <div
+                    class="col-lg-6 mb-3"
+                    v-show="
+                      data_act.activity_status != ('finished' || 'cancelled')
+                    "
+                  >
+                    <p>Update Activity Status</p>
+                    <base-dropdown>
+                      <template v-slot:title>
+                        <base-button type="secondary" class="dropdown-toggle">
+                          Update Activity Status
+                        </base-button>
+                      </template>
+                      <a
+                        class="dropdown-item"
+                        @click="updActStatusAction(activity_status[0])"
+                        >{{ activity_status[0] }}</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        @click="updActStatusAction(activity_status[1])"
+                        >{{ activity_status[1] }}</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        @click="updActStatusAction(activity_status[2])"
+                        >{{ activity_status[2] }}</a
+                      >
+                      <a
+                        class="dropdown-item"
+                        @click="updActStatusAction(activity_status[3])"
+                        >{{ activity_status[3] }}</a
+                      >
+
+                      <a
+                        class="dropdown-item"
+                        @click="updActStatusAction(activity_status[4])"
+                        >{{ activity_status[4] }}</a
+                      >
+                    </base-dropdown>
                   </div>
                 </div>
               </div>
@@ -246,10 +274,18 @@ export default {
       item_detail: {},
       recipient_detail: {},
       blockedText: "Block",
+      activity_status: [
+        "on the way to sender",
+        "",
+        "",
+        "finished",
+        "cancelled",
+      ],
+      activity_button: "",
     };
   },
   mounted() {
-    const url = "/admin/read/activity/" + this.$route.params.id;
+    const url = "/driver/read/activity/" + this.$route.params.id;
     http.get(url).then((response) => {
       this.data_act = response.data[0];
       this.start_loc = response.data[0].start_loc;
@@ -258,26 +294,68 @@ export default {
         this.item_detail = response.data[0].item_detail;
         this.recipient_detail = response.data[0].recipient_detail;
       }
+
+      if (this.data_act.activity_status == "cancelled") {
+        this.activity_button = "btn btn-danger";
+      } else if (this.data_act.activity_status == "finished") {
+        this.activity_button = "btn btn-success";
+      } else if (this.data_act.activity_status == "new order") {
+        this.activity_button = "btn btn-default";
+      } else {
+        this.activity_button = "btn btn-info";
+      }
     });
+
+    if (this.data_act.type_of_service == "Antar Barang") {
+      this.activity_status[1] = "item(s) picked up";
+      this.activity_status[2] = "on the way to recipient";
+    } else {
+      this.activity_status[1] = "picked up";
+      this.activity_status[2] = "on the way to destination";
+    }
+
+    alert(JSON.stringify(this.data_act.activity_status));
   },
   methods: {
-    driverDetailAction(_id) {
-      this.$router.push({
-        name: "Driver Profile",
-        params: { id: _id },
-      });
-    },
     customerDetailAction(_id) {
       this.$router.push({
-        name: "Customer Profile",
+        name: "Customer Profile (Driver)",
         params: { id: _id },
       });
     },
     feedbackDetailAction(_id) {
       this.$router.push({
-        name: "Feedback Detail",
+        name: "Driver Feedback Detail",
         params: { id: _id },
       });
+    },
+    updActStatusAction(status) {
+      let jsonData = {
+        activity_status: status,
+      };
+
+      const url = "/driver/update/activitystatus/" + this.$route.params.id;
+
+      http
+        .post(url, jsonData)
+        .then((response) => {
+          if (response.status == 201) {
+            this.data_act.activity_status = status;
+            alert("Succesfully update activity status");
+            if (this.data_act.activity_status == "cancelled") {
+              this.activity_button = "btn btn-danger";
+            } else if (this.data_act.activity_status == "finished") {
+              this.activity_button = "btn btn-success";
+            } else if (this.data_act.activity_status == "new order") {
+              this.activity_button = "btn btn-default";
+            } else {
+              this.activity_button = "btn btn-info";
+            }
+          }
+        })
+        .catch((error) => {
+          alert("Failed to block this driver\n" + error);
+        });
     },
   },
 };

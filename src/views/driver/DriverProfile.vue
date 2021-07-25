@@ -10,6 +10,24 @@
     >
       <!-- Mask -->
       <span class="mask bg-gradient-success opacity-8"></span>
+
+      <div v-show="data_driver.submitted == false">
+        <base-alert type="danger" dismissible>
+          <span class="alert-inner--icon"><i class="ni ni-like-2"></i></span>
+          <span class="alert-inner--text"
+            ><strong>   Danger!</strong>  Submit data hanya dapat dilakukan satu
+            kali !</span
+          >
+          <button
+            type="button"
+            class="close"
+            data-dismiss="alert"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </base-alert>
+      </div>
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -28,6 +46,7 @@
                 </div>
               </div>
             </div>
+
             <div
               class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
             ></div>
@@ -41,18 +60,18 @@
               </div>
               <div class="text-center">
                 <h3>
-                  Jessica Jones<span class="font-weight-light">, 27</span>
+                  {{ profile.name }}
                 </h3>
                 <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>Bucharest, Romania
+                  <i class="ni location_pin mr-2"></i
+                  >{{ vehicle_details.transportation_type }}
                 </div>
                 <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>Solution Manager
-                  - Creative Tim Officer
+                  <i class="ni business_briefcase-24 mr-2"></i
+                  >{{ data_driver.driver_email }}
                 </div>
                 <div>
-                  <i class="ni education_hat mr-2"></i>University of Computer
-                  Science
+                  <i class="ni education_hat mr-2"></i>{{ address.city }}
                 </div>
               </div>
             </div>
@@ -129,7 +148,7 @@
                       type="text"
                       class="form-control"
                       placeholder="NIK"
-                      v-model="profile.NIK"
+                      v-model="profile.nik"
                     />
                   </div>
                   <div class="col-lg-6 mb-3">
@@ -176,9 +195,9 @@
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
-                      placeholder="dd/mm/yy"
+                      placeholder="yyyy/mm/dd"
                       v-model="profile.birth_of_date"
                     />
                   </div>
@@ -357,19 +376,15 @@
               </div>
               <hr class="my-4" />
 
-              <div class="btn btn-info mt-3" @click="updateAction">Edit</div>
+              <div
+                class="btn btn-info mt-3"
+                v-show="data_driver.submitted == false"
+                @click="updateProfileAction()"
+              >
+                Submit
+              </div>
             </form>
           </card>
-
-          <div v-if="data_driver.verification_status == false">
-            <div class="row ml-4">
-              <div class="col-lg-4 mb-3 mt-3">
-                <div class="btn btn-success" @click="verificationAction">
-                  Verificate
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -401,7 +416,7 @@ export default {
       this.vehicle_details = response.data[0].vehicle_details;
       this.address = response.data[0].address;
       this.documents = response.data[0].documents;
-      
+
       if (this.data_driver.active_status == true) {
         this.activeText = "Non Activate";
       } else {
@@ -411,7 +426,7 @@ export default {
   },
 
   methods: {
-    updActiveStatusAction(){
+    updActiveStatusAction() {
       let jsonData = {
         active_status: true,
       };
@@ -428,6 +443,7 @@ export default {
         .post(url, jsonData)
         .then((response) => {
           if (response.status == 201) {
+            alert("Succesfully edit Active Status");
             this.data_driver.active_status = !this.data_driver.active_status;
             if (this.data_driver.active_status == true) {
               this.activeText = "Non Activate";
@@ -439,7 +455,63 @@ export default {
         .catch((error) => {
           alert("Failed to change active status\n" + error);
         });
-    }
+    },
+    updateProfileAction() {
+      let new_profile = {
+        nik: this.profile.nik,
+        sim_no: this.profile.sim_no,
+        name: this.profile.name,
+        profpict: "",
+        phone_number: this.profile.phone_number,
+        gender: this.profile.gender,
+        birth_of_date: new Date(this.profile.birth_of_date),
+      };
+
+      let new_vehicle_details = {
+        transportation_type: this.vehicle_details.transportation_type,
+        plat_number: this.vehicle_details.plat_number,
+        capacity: this.vehicle_details.capacity,
+        merk_and_type: this.vehicle_details.merk_and_type,
+        stnk_no_registration: this.vehicle_details.stnk_no_registration,
+      };
+
+      let newAddress = {
+        province: this.address.province,
+        city: this.address.city,
+        sub_district: this.address.sub_district,
+        zip_code: this.address.zip_code,
+        street: this.address.street,
+      };
+
+      let newDocuments = {
+        skck: "",
+        ktp: "",
+        sim: "",
+        stnk: "",
+      };
+
+      let jsonData = {
+        driver_email: this.data_driver.driver_email,
+        profile: new_profile,
+        vehicle_details: new_vehicle_details,
+        address: newAddress,
+        documents: newDocuments,
+        rating: null,
+        submitted: true,
+      };
+
+      const url = "/driver/update/profile/" + localStorage.getItem("driver_id");
+      http
+        .post(url, jsonData)
+        .then((response) => {
+          if (response.status == 201) {
+            alert("Succesfully edit profile");
+          }
+        })
+        .catch((error) => {
+          alert("Failed to change active status\n" + error);
+        });
+    },
   },
 };
 </script>

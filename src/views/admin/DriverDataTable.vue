@@ -7,7 +7,7 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <driver-table type="dark" title="Dark Table"></driver-table>
+          <driver-table type="dark" title="List Driver"></driver-table>
         </div>
       </div>
     </div>

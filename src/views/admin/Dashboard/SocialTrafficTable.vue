@@ -3,10 +3,7 @@
     <div class="card-header border-0">
       <div class="row align-items-center">
         <div class="col">
-          <h3 class="mb-0">Social traffic</h3>
-        </div>
-        <div class="col text-right">
-          <base-button size="sm" type="primary">See all</base-button>
+          <h3 class="mb-0">All Order Traffic</h3>
         </div>
       </div>
     </div>
@@ -14,28 +11,16 @@
     <div class="table-responsive">
       <base-table thead-classes="thead-light" :data="tableData">
         <template v-slot:columns>
-          <th>Referral</th>
-          <th>Visitors</th>
-          <th></th>
+          <th>Type of Service</th>
+          <th>Order Total</th>
         </template>
 
         <template v-slot:default="row">
           <th scope="row">
-            {{ row.item.name }}
+            {{ row.item._id }}
           </th>
           <td>
-            {{ row.item.visitors }}
-          </td>
-          <td>
-            <div class="d-flex align-items-center">
-              <span class="mr-2">{{ row.item.progress }}%</span>
-              <base-progress
-                :type="row.item.progressType"
-                class="pt-0"
-                :show-percentage="false"
-                :value="row.item.progress"
-              />
-            </div>
+            {{ row.item.totalorder }}
           </td>
         </template>
       </base-table>
@@ -43,44 +28,20 @@
   </div>
 </template>
 <script>
+import http from "../../../http.js";
 export default {
   name: "social-traffic-table",
   data() {
     return {
-      tableData: [
-        {
-          name: "Facebook",
-          visitors: "1,480",
-          progress: 60,
-          progressType: "gradient-danger",
-        },
-        {
-          name: "LinkedIn",
-          visitors: "5,480",
-          progress: 70,
-          progressType: "gradient-success",
-        },
-        {
-          name: "Google",
-          visitors: "4,807",
-          progress: 80,
-          progressType: "gradient-primary",
-        },
-        {
-          name: "Instagram",
-          visitors: "3,678",
-          progress: 75,
-          progressType: "gradient-info",
-        },
-        {
-          name: "Twitter",
-          visitors: "2,645",
-          progress: 30,
-          progressType: "gradient-warning",
-        },
-      ],
+      tableData: [],
     };
   },
+  mounted(){
+    const url = "/admin/read/report/pertype";
+    http.get(url).then((response) => {
+      this.tableData = response.data;
+    });
+  }
 };
 </script>
 <style></style>

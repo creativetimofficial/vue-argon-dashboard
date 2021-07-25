@@ -31,8 +31,10 @@ import AdminDashboard from "../views/admin/AdminDashboard";
 // DRIVER LAYOUT
 import DriverActivityTable from "../views/driver/ActivityTable";
 import DriverProfile from "../views/driver/DriverProfile";
-
-
+import DriverActivityDetail from "../views/driver/DriverActivityDetail";
+import DriverFeedbackDetail from "../views/driver/DriverFeedbackDetail";
+import NewOrderTable from "../views/driver/NewOrderTable";
+import CustomerDetailProfileFromDriver from "../views/driver/CustomerDetail";
 
 
 // CUSTOMER LAYOUT
@@ -134,7 +136,7 @@ const routes = [
       },
       {
         path: "driverDetail/:id",
-        name: "Driver Profile",
+        name: "Driver Data",
         components: { default: DriverDetailProfile },
       },
       {
@@ -165,10 +167,30 @@ const routes = [
         components: { default: DriverActivityTable },
       },
       {
+        path: "newOrderList",
+        name: "New Order",
+        components: { default: NewOrderTable },
+      },
+      {
         path: "profile",
-        name: "Profile",
+        name: "Driver Profile",
         components: { default: DriverProfile },
       },
+      {
+        path: "activityDetail/:id",
+        name: "Driver Activity Detail",
+        components: { default: DriverActivityDetail },
+      },
+      {
+        path: "feedbackDetail/:id",
+        name: "Driver Feedback Detail",
+        components: { default: DriverFeedbackDetail },
+      },
+      {
+        path: "customerDetail/:id",
+        name: "Customer Profile (Driver)",
+        components: { default: CustomerDetailProfileFromDriver },
+      }
     ],
   },
   {
@@ -180,26 +202,6 @@ const routes = [
         path: "dashboardCust",
         name: "dashboard cust",
         components: { default: Dashboard },
-      },
-      {
-        path: "/icons",
-        name: "icons",
-        components: { default: Icons },
-      },
-      {
-        path: "/maps",
-        name: "maps",
-        components: { default: Maps },
-      },
-      {
-        path: "/profile",
-        name: "profile",
-        components: { default: Profile },
-      },
-      {
-        path: "/tables",
-        name: "tables",
-        components: { default: Tables },
       },
     ],
   },
