@@ -135,7 +135,7 @@ export default {
     },
 
     categoryActivityAction(category) {
-      const url = "/cust/get/history/"+category;
+      const url = "/cust/get/history/"+localStorage.getItem("customer_id")+"/"+category;
       http.get(url).then((response) => {
         this.list_activity = response.data;
       });

@@ -36,17 +36,16 @@ import DriverFeedbackDetail from "../views/driver/DriverFeedbackDetail";
 import NewOrderTable from "../views/driver/NewOrderTable";
 import CustomerDetailProfileFromDriver from "../views/driver/CustomerDetail";
 
-// CUSTOMER LAYOUT 
+// CUSTOMER LAYOUT
 import CustomerOrder from "../views/customer/OrderLayout";
 import CarOrder from "../views/customer/CarOrder";
 import RideOrder from "../views/customer/RideOrder";
 import SendOrder from "../views/customer/SendOrder";
-import CustomerProfile from "../views/customer/CustomerProfile"; 
+import CustomerProfile from "../views/customer/CustomerProfile";
 import CustomerActivity from "../views/customer/CustomerActivity";
-import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";  
+import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";
 import CustomerReview from "../views/customer/Review";
 import CustomerGetDriver from "../views/customer/GetDriver";
-
 
 const routes = [
   {
@@ -199,7 +198,7 @@ const routes = [
         path: "customerDetail/:id",
         name: "Customer Profile (Driver)",
         components: { default: CustomerDetailProfileFromDriver },
-      }
+      },
     ],
   },
   {
@@ -245,42 +244,42 @@ const routes = [
       {
         path: "Order",
         name: "order",
-        components: { default: CustomerOrder},
+        components: { default: CustomerOrder },
       },
       {
         path: "CarOrder",
         name: "Gofar-Car",
-        components: { default: CarOrder},
+        components: { default: CarOrder },
       },
       {
         path: "RideOrder",
         name: "Gofar-Ride",
-        components: { default: RideOrder},
+        components: { default: RideOrder },
       },
       {
         path: "SendOrder",
         name: "Gofar-Send",
-        components: { default: SendOrder},
+        components: { default: SendOrder },
       },
       {
         path: "ActivityHistory",
         name: "Activity History",
-        components: { default: CustomerActivity},
+        components: { default: CustomerActivity },
       },
       {
-        path: "ActivityDetail",
+        path: "ActivityDetail/:id",
         name: "Activity Detail Customer",
-        components: { default: CustomerActivityDetail},
+        components: { default: CustomerActivityDetail },
       },
       {
         path: "GetDriver",
         name: "Get Driver",
-        components: { default: CustomerGetDriver},
+        components: { default: CustomerGetDriver },
       },
       {
-        path: "Review",
-        name: "Review",
-        components: { default: CustomerReview},
+        path: "Review/:id",
+        name: "Create Feedback",
+        components: { default: CustomerReview },
       },
     ],
   },

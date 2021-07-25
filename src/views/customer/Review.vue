@@ -77,6 +77,7 @@ export default {
      reviewAction(){
          let formData = {
              new_review: {
+               
                  rating: this.feedback.rating,
                  review: this.feedback.review
              }
