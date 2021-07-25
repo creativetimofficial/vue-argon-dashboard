@@ -76,11 +76,9 @@ export default {
  methods :{
      reviewAction(){
          let formData = {
-             new_review: {
-               
+            
                  rating: this.feedback.rating,
                  review: this.feedback.review
-             }
          }
 
         const jsonData = JSON.stringify(formData);

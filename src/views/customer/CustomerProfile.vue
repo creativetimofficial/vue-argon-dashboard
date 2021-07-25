@@ -89,12 +89,7 @@
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>Sign Up Date</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="dd-mm-yy"
-                      v-model="data_cust.signUp_date"
-                    />
+                    <p>{{data_cust.signUp_date}}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -156,9 +151,9 @@
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
-                      placeholder="dd/mm/yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="profile.birth_of_date"
                     />
                   </div>

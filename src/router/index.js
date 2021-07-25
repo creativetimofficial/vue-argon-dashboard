@@ -237,11 +237,6 @@ const routes = [
         components: { default: CustomerProfile },
       },
       {
-        path: "/register",
-        name: "register",
-        components: { default: Register },
-      },
-      {
         path: "Order",
         name: "order",
         components: { default: CustomerOrder },
