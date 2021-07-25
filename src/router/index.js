@@ -36,8 +36,17 @@ import DriverFeedbackDetail from "../views/driver/DriverFeedbackDetail";
 import NewOrderTable from "../views/driver/NewOrderTable";
 import CustomerDetailProfileFromDriver from "../views/driver/CustomerDetail";
 
+// CUSTOMER LAYOUT 
+import CustomerOrder from "../views/customer/OrderLayout";
+import CarOrder from "../views/customer/CarOrder";
+import RideOrder from "../views/customer/RideOrder";
+import SendOrder from "../views/customer/SendOrder";
+import CustomerProfile from "../views/customer/CustomerProfile"; 
+import CustomerActivity from "../views/customer/CustomerActivity";
+import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";  
+import CustomerReview from "../views/customer/Review";
+import CustomerGetDriver from "../views/customer/GetDriver";
 
-// CUSTOMER LAYOUT
 
 const routes = [
   {
@@ -202,6 +211,76 @@ const routes = [
         path: "dashboardCust",
         name: "dashboard cust",
         components: { default: Dashboard },
+      },
+      {
+        path: "/icons",
+        name: "icons",
+        components: { default: Icons },
+      },
+      {
+        path: "/maps",
+        name: "maps",
+        components: { default: Maps },
+      },
+      {
+        path: "/profile",
+        name: "profile",
+        components: { default: Profile },
+      },
+      {
+        path: "/tables",
+        name: "tables",
+        components: { default: Tables },
+      },
+      {
+        path: "/CustomerProfile",
+        name: "profile",
+        components: { default: CustomerProfile },
+      },
+      {
+        path: "/register",
+        name: "register",
+        components: { default: Register },
+      },
+      {
+        path: "Order",
+        name: "order",
+        components: { default: CustomerOrder},
+      },
+      {
+        path: "CarOrder",
+        name: "Gofar-Car",
+        components: { default: CarOrder},
+      },
+      {
+        path: "RideOrder",
+        name: "Gofar-Ride",
+        components: { default: RideOrder},
+      },
+      {
+        path: "SendOrder",
+        name: "Gofar-Send",
+        components: { default: SendOrder},
+      },
+      {
+        path: "ActivityHistory",
+        name: "Activity History",
+        components: { default: CustomerActivity},
+      },
+      {
+        path: "ActivityDetail",
+        name: "Activity Detail Customer",
+        components: { default: CustomerActivityDetail},
+      },
+      {
+        path: "GetDriver",
+        name: "Get Driver",
+        components: { default: CustomerGetDriver},
+      },
+      {
+        path: "Review",
+        name: "Review",
+        components: { default: CustomerReview},
       },
     ],
   },

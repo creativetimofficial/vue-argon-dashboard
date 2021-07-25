@@ -128,7 +128,7 @@ export default {
               localStorage.setItem("customer_email", email.replaceAll('"', ""));
               localStorage.setItem("customer_id", id.replaceAll('"', ""));
               alert("Login Succesful");
-              this.$router.push("/customer");
+              this.$router.push("/cust");
             }
           })
           .catch((error) => {
