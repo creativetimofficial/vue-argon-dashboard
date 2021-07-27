@@ -27,25 +27,48 @@
             </template>
 
             <form>
+              <h6 class="heading-small text-muted mb-4">Customer Profile</h6>
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-6 mb-3">
+                    <p>Name</p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="driver's name"
+                      v-model="cust_profile.name"
+                    />
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <p>Phone Number</p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="08XXXXXXXXX"
+                      v-model="cust_profile.phone_number"
+                    />
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6 mb-3">
+                    <p>Gender</p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Gender"
+                      v-model="cust_profile.gender"
+                    />
+                  </div>
+                </div>
+              </div>
+              <hr class="my-4" />
+            </form>
+
+            <form>
               <h6 class="heading-small text-muted mb-4">Activity Info</h6>
 
               <div class="pl-lg-4">
                 <div class="row">
-                  <div class="col-lg-6 mb-3">
-                    <p>Customer</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="data_act.id_customer"
-                    />
-                    <div
-                      class="btn btn-info mt-2"
-                      @click="customerDetailAction(data_act.id_customer)"
-                    >
-                      Go to customer Profile
-                    </div>
-                  </div>
-
                   <div class="col-lg-6 mb-3">
                     <p>Date</p>
                     <input
@@ -282,6 +305,7 @@ export default {
         "cancelled",
       ],
       activity_button: "",
+      cust_profile: {},
     };
   },
   mounted() {
@@ -304,6 +328,12 @@ export default {
       } else {
         this.activity_button = "btn btn-info";
       }
+
+      const url = "/driver/read/cust/" + this.data_act.id_customer;
+      http.get(url).then((response) => {
+        this.cust_profile = response.data[0].profile;
+      });
+
     });
 
     if (this.data_act.type_of_service == "Antar Barang") {
@@ -314,7 +344,8 @@ export default {
       this.activity_status[2] = "on the way to destination";
     }
 
-    alert(JSON.stringify(this.data_act.activity_status));
+    // alert(JSON.stringify(this.data_act.activity_status));
+    alert(this.data_act.id_customer);
   },
   methods: {
     customerDetailAction(_id) {

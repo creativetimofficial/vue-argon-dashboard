@@ -41,9 +41,13 @@
                   Register as
                 </button>
               </div>
-              <select class="custom-select" id="inputGroupSelect03">
-                <option value="1">Customer</option>
-                <option value="2">Driver</option>
+              <select
+                class="custom-select"
+                id="inputGroupSelect03"
+                v-model="role"
+              >
+                <option value="customer">Customer</option>
+                <option value="driver">Driver</option>
               </select>
             </div>
 
@@ -92,40 +96,75 @@ export default {
         password: "",
         password_verification: "",
       },
+      role: "customer"
     };
   },
   methods: {
     submitAction() {
-      if (
-        this.model.username != "" &&
-        this.model.email != "" &&
-        this.model.password != "" &&
-        this.model.password_verification != ""
-      ) {
-        let formData = {
-          profile: { name: this.model.name },
-          driver_email: this.model.email,
-          driver_password: this.model.password,
-          password_verification: this.model.password_verification,
-        };
+      if (this.role == "driver") {
+        if (
+          this.model.username != "" &&
+          this.model.email != "" &&
+          this.model.password != "" &&
+          this.model.password_verification != ""
+        ) {
+          let formData = {
+            profile: { name: this.model.name },
+            driver_email: this.model.email,
+            driver_password: this.model.password,
+            password_verification: this.model.password_verification,
+          };
 
-        const jsonData = JSON.stringify(formData);
+          const jsonData = JSON.stringify(formData);
 
-        const url = "driver/signup";
-        // alert(jsonData);
-        http
-          .post(url, jsonData)
-          .then((response) => {
-            if (response.status == 201) {
-              alert("Succesfully add driver");
-              this.$router.push("/login");
-            }
-          })
-          .catch((error) => {
-            alert("Failed to add driver \n" + error);
-          });
+          const url = "driver/signup";
+          // alert(jsonData);
+          http
+            .post(url, jsonData)
+            .then((response) => {
+              if (response.status == 201) {
+                alert("Succesfully add driver");
+                this.$router.push("/login");
+              }
+            })
+            .catch((error) => {
+              alert("Failed to add driver \n" + error);
+            });
+        } else {
+          alert("Failed to add driver");
+        }
       } else {
-        alert("Failed to add driver");
+        if (
+          this.model.username != "" &&
+          this.model.email != "" &&
+          this.model.password != "" &&
+          this.model.password_verification != ""
+        ) {
+          let formData = {
+            profile: { name: this.model.name },
+            customer_email: this.model.email,
+            customer_password: this.model.password,
+            password_verification: this.model.password_verification,
+          };
+
+          const jsonData = JSON.stringify(formData);
+
+          const url = "cust/signup";
+          // alert(jsonData);
+          http
+            .post(url, jsonData)
+            .then((response) => {
+              if (response.status == 201) {
+                alert("Succesfully create account");
+                this.$router.push("/login");
+              }
+            })
+            .catch((error) => {
+              alert("Failed to create account \n" + error);
+            });
+        } else {
+          alert("Failed to create account");
+        }
       }
     },
   },

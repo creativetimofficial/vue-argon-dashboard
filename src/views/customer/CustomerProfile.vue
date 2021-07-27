@@ -10,7 +10,6 @@
     >
       <!-- Mask -->
       <span class="mask bg-gradient-success opacity-8"></span>
-     
     </base-header>
 
     <div class="container-fluid mt--7">
@@ -31,30 +30,27 @@
             </div>
             <div
               class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4"
-            >
-              
-            </div>
+            ></div>
             <div class="card-body pt-0 pt-md-4">
               <div class="row">
                 <div class="col">
                   <div
                     class="card-profile-stats d-flex justify-content-center mt-md-5"
-                  >
-                    
-                  </div>
+                  ></div>
                 </div>
               </div>
               <div class="text-center">
                 <h3>
-                  {{profile.name}}
+                  {{ profile.name }}
                 </h3>
                 <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>{{data_cust.customer_email}}
+                  <i class="ni location_pin mr-2"></i
+                  >{{ data_cust.customer_email }}
                 </div>
                 <div class="h5 mt-4">
-                  <i class="ni business_briefcase-24 mr-2"></i>{{profile.gender}}
+                  <i class="ni business_briefcase-24 mr-2"></i
+                  >{{ profile.gender }}
                 </div>
-                
               </div>
             </div>
           </div>
@@ -72,10 +68,11 @@
               </div>
             </template>
 
-           <form>
-                <h6 class="heading-small text-muted mb-4">Customer information</h6>
+            <form>
+              <h6 class="heading-small text-muted mb-4">
+                Customer information
+              </h6>
 
-                
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-6 mb-3">
@@ -89,7 +86,7 @@
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>Sign Up Date</p>
-                    <p>{{data_cust.signUp_date}}</p>
+                    <p>{{ data_cust.signUp_date }}</p>
                   </div>
                 </div>
                 <div class="row">
@@ -139,14 +136,21 @@
                   <div class="col-lg-6 mb-3">
                     <p>Gender</p>
                     <label for="verify" class="col-lg-6 mb-3">
-                       <input type="checkbox" v-model="profile.male" @click="checkBoxSelect('male')">
-                        Male
-                      </label>
-                      <label for="verify" class="col-lg-6 mb-3">
-                         <input type="checkbox"  v-model="profile.female" @click="checkBoxSelect('female')">
-                        Female
-                      </label>
-                      
+                      <input
+                        type="checkbox"
+                        v-model="profile.male"
+                        @click="checkBoxSelect('male')"
+                      />
+                      Male
+                    </label>
+                    <label for="verify" class="col-lg-6 mb-3">
+                      <input
+                        type="checkbox"
+                        v-model="profile.female"
+                        @click="checkBoxSelect('female')"
+                      />
+                      Female
+                    </label>
                   </div>
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
@@ -163,7 +167,7 @@
                 </div>
               </div>
               <hr class="my-4" />
-            </form> 
+            </form>
           </card>
         </div>
       </div>
@@ -171,19 +175,19 @@
   </div>
 </template>
 <script>
-import http from '../../http.js';
+import http from "../../http.js";
 
 export default {
   name: "user-profile",
   data() {
     return {
-      data : "",
-      data_cust : {
+      data: "",
+      data_cust: {
         customer_email: "",
         customer_password: "",
         signUp_date: "",
       },
-      profile : {
+      profile: {
         name: "",
         phone_number: "",
         male: false,
@@ -191,44 +195,33 @@ export default {
         birth_of_date: "",
         gender: "",
       },
-      blockedText: "Block"
+      blockedText: "Block",
     };
   },
   mounted() {
-    const url = "/cust/read/account/" + localStorage.getItem("customer_id");
-      http.get(url).then(response => {
-      this.data_cust = response.data[0];
-      this.profile = response.data[0].profile;
-
-      if(response.data[0].profil.gender == "wanita"){
-      this.profil.female = true
-      }else if(response.data[0].profil.gender == "pria"){
-      this.profil.male = true
-      }
-      
-      if(response.data[0].blocked == true){
-        this.blockedText = "Unblock"
-      }
-    });
+    
   },
   methods: {
-    checkBoxSelect (data) {
-       if (data === 'male') {
-         this.profile.female = false
-       } else if (data === 'female') {
-         this.profile.male = false
-       }
+    checkBoxSelect(data) {
+      this.profile.gender = data;
+      alert(this.profile.gender)
+      //  if (data === 'male') {
+      //    this.profile.female = false
+      //  } else if (data === 'female') {
+      //    this.profile.male = false
+      //  }
     },
 
     updateAction() {
-      if(this.profile.male == true){
-         this.profile.gender = "pria"
-      }else if (this.profile.female == true){
-        this.profile.gender = "wanita"
-      }else{
-        this.profile.gender = ""
-      }
-     
+     alert(this.profile.gender)
+      // if(this.profile.male == true){
+      //    this.profile.gender = "pria"
+      // }else if (this.profile.female == true){
+      //   this.profile.gender = "wanita"
+      // }else{
+      //   this.profile.gender = ""
+      // }
+
       if (
         this.data_cust.customer_email != "" &&
         this.data_cust.customer_password != "" &&
@@ -237,21 +230,21 @@ export default {
         this.profile.birth_of_date != "" &&
         this.data_cust.signUp_date != ""
       ) {
-      
-      let formData = {
-        customer_email: this.data_cust.customer_email,
-        customer_password: this.data_cust.customer_password,
-        profile: {
-          name: this.profile.name,
-          phone_number: this.profile.phone_number,
-          birth_of_date: this.profile.birth_of_date,
-          gender: this.profile.gender,
-        },
-        signUp_date: this.data_cust.signUp_date,
-      };
+        let formData = {
+          customer_email: this.data_cust.customer_email,
+          customer_password: this.data_cust.customer_password,
+          profile: {
+            name: this.profile.name,
+            phone_number: this.profile.phone_number,
+            birth_of_date: this.profile.birth_of_date,
+            gender: this.profile.gender,
+          },
+          signUp_date: this.data_cust.signUp_date,
+        };
         const jsonData = JSON.stringify(formData);
 
-        const url = "/cust/update/account/" + localStorage.getItem("customer_id");
+        const url =
+          "/cust/update/account/" + localStorage.getItem("customer_id");
 
         http
           .post(url, jsonData)
@@ -259,7 +252,6 @@ export default {
             if (response.status == 201) {
               alert("Succesfully update profil");
               this.post_status = true;
-             // this.$router.push("/admin/adminList");
             }
           })
           .catch((error) => {
@@ -270,7 +262,6 @@ export default {
       }
     },
   },
- 
 };
 </script>
 <style></style>

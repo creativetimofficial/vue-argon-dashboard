@@ -34,7 +34,6 @@ import DriverProfile from "../views/driver/DriverProfile";
 import DriverActivityDetail from "../views/driver/DriverActivityDetail";
 import DriverFeedbackDetail from "../views/driver/DriverFeedbackDetail";
 import NewOrderTable from "../views/driver/NewOrderTable";
-import CustomerDetailProfileFromDriver from "../views/driver/CustomerDetail";
 
 // CUSTOMER LAYOUT
 import CustomerOrder from "../views/customer/OrderLayout";
@@ -194,11 +193,6 @@ const routes = [
         name: "Driver Feedback Detail",
         components: { default: DriverFeedbackDetail },
       },
-      {
-        path: "customerDetail/:id",
-        name: "Customer Profile (Driver)",
-        components: { default: CustomerDetailProfileFromDriver },
-      },
     ],
   },
   {
@@ -209,7 +203,7 @@ const routes = [
       {
         path: "dashboardCust",
         name: "dashboard cust",
-        components: { default: Dashboard },
+        components: { default: CustomerOrder },
       },
       {
         path: "/icons",

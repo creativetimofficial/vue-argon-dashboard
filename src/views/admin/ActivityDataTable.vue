@@ -19,6 +19,9 @@ export default {
   components: {
     ActivityTable,
   },
+  mounted(){
+    alert("MASUK2");
+  }
 };
 </script>
 <style></style>
