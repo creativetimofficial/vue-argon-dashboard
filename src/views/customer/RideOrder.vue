@@ -110,7 +110,7 @@
               <div class="row ml-1">
                 <div class="col-lg-6 mb-3">
                   <p>Price</p>
-                  <p>{{ price }}</p>
+                  <p>Rp {{ price }}</p>
                 </div>
               </div>
               <div class="btn btn-info mt-3" @click="submitAction">
@@ -124,7 +124,7 @@
   </div>
 </template>
 <script>
-// import http from "../../http.js";
+import http from "../../http.js";
 import axios from "axios";
 import { Loader } from "google-maps";
 const loader = new Loader("AIzaSyAvNJNQgq8y58I7Uag7pVQr0W6moI3LtQI");
@@ -232,12 +232,12 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response)
+          console.log(response);
           this.start_loc.latitude = response.data.results[0].geometry.lat;
           this.start_loc.longitude = response.data.results[0].geometry.lng;
         });
     },
-    serachEndLoc(address){
+    serachEndLoc(address) {
       const url =
         "https://api.opencagedata.com/geocode/v1/json?key=3ff7bb143a9d46b99978fd40bad99cef&q=" +
         address;
@@ -248,17 +248,73 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response)
+          console.log(response);
           this.end_loc.latitude = response.data.results[0].geometry.lat;
           this.end_loc.longitude = response.data.results[0].geometry.lng;
         });
 
-        this.getPrice();
+      const distance = this.getDistance(this.start_loc, this.end_loc);
+      // alert(distance);
+      this.getPrice(distance);
     },
 
-    getPrice(){
-      
-    }
+    getPrice(dist) {
+      alert(dist);
+      this.price = Math.round((dist * 2500) / 1000);
+    },
+
+    rad(x) {
+      return (x * Math.PI) / 180;
+    },
+
+    getDistance(p1, p2) {
+      p1 = this.start_loc;
+      p2 = this.end_loc;
+      var R = 6378137; // Earth’s mean radius in meter
+      var dLat = this.rad(p2.latitude - p1.latitude);
+      var dLong = this.rad(p2.longitude - p1.longitude);
+      var a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(this.rad(p1.latitude)) *
+          Math.cos(this.rad(p2.latitude)) *
+          Math.sin(dLong / 2) *
+          Math.sin(dLong / 2);
+      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      var d = R * c;
+      return d / 1000; // returns the distance in kilo meter
+    },
+    createOrder() {
+      let formData = {
+        id_customer: localStorage.getItem("customer_id"),
+        type_of_service: "transportasi motor",
+        start_loc: {
+          longtitude: this.start_loc.longitude,
+          latitude: this.start_loc.latitude,
+        },
+        end_loc: {
+          longtitude: this.end_loc.longitude,
+          latitude: this.end_loc.latitude,
+        },
+        price: this.price,
+      };
+
+      const jsonData = JSON.stringify(formData);
+
+      const url = "admin/add/newadmin";
+
+      http
+        .post(url, jsonData)
+        .then((response) => {
+          if (response.status == 201) {
+            alert("Succesfully add admin");
+            this.post_status = true;
+            this.$router.push("/admin/adminList");
+          }
+        })
+        .catch((error) => {
+          alert("Failed to add admin \n" + error);
+        });
+    },
   },
 };
 </script>
