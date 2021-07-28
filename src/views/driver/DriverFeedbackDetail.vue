@@ -19,13 +19,14 @@
               <div class="bg-white border-0">
                 <div class="row align-items-center">
                   <div class="col-8">
-                    <h3 class="mb-0">Feedback</h3>
+                    <h3 class="mb-0">Activity Details</h3>
                   </div>
                 </div>
               </div>
             </template>
 
             <form>
+              <h6 class="heading-small text-muted mb-4">Feedback</h6>
 
               <div class="pl-lg-4">
                 <div class="row">
@@ -33,25 +34,20 @@
                   <input
                     type="text"
                     class="form-control"
-                    placeholder="1-5"
-                    v-model="feedback.rating"
+                    v-model="data_feedback.rating"
                   />
                 </div>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
-                  <p>Review</p>
-                  <input
+                  <p>Feedback</p>
+                  <textarea
                     type="text"
                     class="form-control"
                     aria-label="Large"
-                    placeholder="input your review"
-                    v-model="feedback.review"
+                    v-model="data_feedback.review"
                   />
                 </div>
-                <div class="btn btn-info mt-3" @click="reviewAction">
-                    Feedback Order
-                  </div>
               </div>
             </form>
           </card>
@@ -68,34 +64,17 @@ export default {
   data() {
     return {
       data: "",
-      feedback: {
-          rating: "",
-          review: "",
-      },
+      data_feedback: {},
+      profile: {},
+      blockedText: "Block",
     };
   },
- methods :{
-     reviewAction(){
-         let formData = {
-            
-                 rating: this.feedback.rating,
-                 review: this.feedback.review
-         }
-
-        const jsonData = JSON.stringify(formData);
-
-        const url = "/cust/create/review";
-
-        http.post(url, jsonData).then((response) => {
-          if (response.status == 201) {
-            alert("Succesfully create feedback"); 
-          }
-        })
-        .catch((error) => {
-            alert("Failed to create feedback \n" + error);
-          });
-     }
- }
+  mounted() {
+    const url = "/admin/read/feedback/" + this.$route.params.id;
+    http.get(url).then((response) => {
+      this.data_feedback = response.data[0];
+    });
+  },
 };
 </script>
 <style></style>

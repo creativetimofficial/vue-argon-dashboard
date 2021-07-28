@@ -20,11 +20,12 @@
             path: '/admin/profile',
           }"
         />
+
         <sidebar-item
           :link="{
-            name: 'Data Activities',
+            name: 'Order List',
             icon: 'ni ni-delivery-fast text-primary',
-            path: '/admin/orderList',
+            path: '/admin/orderTable',
           }"
         />
         <sidebar-item

@@ -18,11 +18,11 @@ import Register from "../views/Register.vue";
 // ADMIN LAYOUT
 import AdminDataTable from "../views/admin/AdminDataTable";
 import DriverDataTable from "../views/admin/DriverDataTable";
+import ActivityDataTable from "../views/admin/ActivityDataTable";
 import NewAdminForm from "../views/admin/NewAdminForm";
 import AdminProfile from "../views/admin/AdminProfile";
 import CustomerDataTable from "../views/admin/CustomerDataTable";
 import CustomerDetailProfile from "../views/admin/CustomerDetailProfile";
-import ActivityDataTable from "../views/admin/ActivityDataTable";
 import DriverDetailProfile from "../views/admin/DriverDetailProfile";
 import ActivityDetail from "../views/admin/ActivityDetail";
 import FeedbackDetail from "../views/admin/FeedbackDetail";
@@ -31,19 +31,21 @@ import AdminDashboard from "../views/admin/AdminDashboard";
 // DRIVER LAYOUT
 import DriverActivityTable from "../views/driver/ActivityTable";
 import DriverProfile from "../views/driver/DriverProfile";
+import DriverActivityDetail from "../views/driver/DriverActivityDetail";
+import DriverFeedbackDetail from "../views/driver/DriverFeedbackDetail";
+import NewOrderTable from "../views/driver/NewOrderTable";
 
-// CUSTOMER LAYOUT 
+// CUSTOMER LAYOUT
 import CustomerOrder from "../views/customer/OrderLayout";
 import CarOrder from "../views/customer/CarOrder";
 import RideOrder from "../views/customer/RideOrder";
 import SendOrder from "../views/customer/SendOrder";
-import CustomerProfile from "../views/customer/CustomerProfile"; 
+import CustomerProfile from "../views/customer/CustomerProfile";
 import CustomerActivity from "../views/customer/CustomerActivity";
-import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";  
+import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";
 import CustomerReview from "../views/customer/Review";
 import CustomerGetDriver from "../views/customer/GetDriver";
 import CustomerReadReview from "../views/customer/readReview";
-
 
 const routes = [
   {
@@ -116,11 +118,6 @@ const routes = [
         components: { default: DriverDataTable },
       },
       {
-        path: "orderList",
-        name: "Activity History",
-        components: { default: ActivityDataTable },
-      },
-      {
         path: "newAdmin",
         name: "Create New Admin Account",
         components: { default: NewAdminForm },
@@ -142,7 +139,7 @@ const routes = [
       },
       {
         path: "driverDetail/:id",
-        name: "Driver Profile",
+        name: "Driver Data",
         components: { default: DriverDetailProfile },
       },
       {
@@ -155,27 +152,42 @@ const routes = [
         name: "Feedback Detail",
         components: { default: FeedbackDetail },
       },
+      {
+        path: "orderTable",
+        name: "Order History",
+        components: { default: ActivityDataTable },
+      },
     ],
   },
   {
     path: "/driver",
-    redirect: "/driver/dashboardDriver",
+    redirect: "/driver/newOrderList",
     component: DashboardLayoutDriver,
     children: [
-      {
-        path: "dashboardDriver",
-        name: "dashboard driver",
-        components: { default: Dashboard },
-      },
       {
         path: "orderList",
         name: "Driver Activity History",
         components: { default: DriverActivityTable },
       },
       {
+        path: "newOrderList",
+        name: "New Order",
+        components: { default: NewOrderTable },
+      },
+      {
         path: "profile",
-        name: "Profile",
+        name: "Driver Profile",
         components: { default: DriverProfile },
+      },
+      {
+        path: "activityDetail/:id",
+        name: "Driver Activity Detail",
+        components: { default: DriverActivityDetail },
+      },
+      {
+        path: "feedbackDetail/:id",
+        name: "Driver Feedback Detail",
+        components: { default: DriverFeedbackDetail },
       },
     ],
   },
@@ -187,7 +199,7 @@ const routes = [
       {
         path: "dashboardCust",
         name: "dashboard cust",
-        components: { default: Dashboard },
+        components: { default: CustomerOrder },
       },
       {
         path: "/icons",
@@ -215,49 +227,44 @@ const routes = [
         components: { default: CustomerProfile },
       },
       {
-        path: "/register",
-        name: "register",
-        components: { default: Register },
-      },
-      {
         path: "Order",
         name: "order",
-        components: { default: CustomerOrder},
+        components: { default: CustomerOrder },
       },
       {
         path: "TransportasiMobil",
         name: "Gofar-Car",
-        components: { default: CarOrder},
+        components: { default: CarOrder },
       },
       {
         path: "TransportasiMotor",
         name: "Gofar-Ride",
-        components: { default: RideOrder},
+        components: { default: RideOrder },
       },
       {
         path: "AntarBarang",
         name: "Gofar-Send",
-        components: { default: SendOrder},
+        components: { default: SendOrder },
       },
       {
         path: "ActivityHistory",
         name: "Activity History",
-        components: { default: CustomerActivity},
+        components: { default: CustomerActivity },
       },
       {
-        path: "ActivityDetail",
+        path: "ActivityDetail/:id",
         name: "Activity Detail Customer",
-        components: { default: CustomerActivityDetail},
+        components: { default: CustomerActivityDetail },
       },
       {
         path: "GetDriver",
         name: "Get Driver",
-        components: { default: CustomerGetDriver},
+        components: { default: CustomerGetDriver },
       },
       {
-        path: "Review",
-        name: "Review",
-        components: { default: CustomerReview},
+        path: "Review/:id",
+        name: "Create Feedback",
+        components: { default: CustomerReview },
       },
       {
         path: "ReadFeedback",

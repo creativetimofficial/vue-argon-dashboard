@@ -10,19 +10,6 @@
             {{ title }}
           </h3>
         </div>
-        <!-- BUAT SEARCH  -->
-        <div class="form-group mb-0 mr-4">
-          <div class="row">
-            <div class="mr-1">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="yyyy-mm-dd"
-                v-model="date_search"
-              />
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -102,7 +89,7 @@
 import http from "../../http.js";
 
 export default {
-  name: "driver-activity-table",
+  name: "driver-new-order-table",
   props: {
     type: {
       type: String,
@@ -117,12 +104,19 @@ export default {
     };
   },
   mounted() {
-    const url = "/driver/get/history/" + localStorage.getItem("driver_id");
+    const url = "/driver/get/neworder/" + localStorage.getItem("driver_id");
     http.get(url).then((response) => {
       this.list_activity = response.data;
     });
   },
   methods: {
+    allActivityAction() {
+      const url =  "/driver/get/neworder/" + localStorage.getItem("driver_id");
+      http.get(url).then((response) => {
+        this.list_activity = response.data;
+      });
+      this.service_type = "All Activity";
+    },
     detailAction(_id) {
       this.$router.push({
         name: "Driver Activity Detail",

@@ -6,22 +6,22 @@
     <div class="container-fluid mt--7">
       <div class="row mt-5">
         <div class="col">
-          <activity-table type="dark" title="Daftar Admin"></activity-table>
+          <driver-new-order-table
+            type="dark"
+            title="Order Baru"
+          ></driver-new-order-table>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import ActivityTable from "../Tables/ActivityTable";
+import DriverNewOrderTable from "../Tables/DriverNewOrderTable";
 export default {
   name: "tables",
   components: {
-    ActivityTable,
+    DriverNewOrderTable,
   },
-  mounted(){
-    console.log("MASUK2");
-  }
 };
 </script>
 <style></style>

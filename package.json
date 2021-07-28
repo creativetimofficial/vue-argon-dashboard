@@ -15,7 +15,7 @@
     "core-js": "3.6.5",
     "dotenv": "^10.0.0",
     "element-plus": "1.0.1-beta.24",
-    "google-maps": "4.3.3",
+    "google-maps": "^4.3.3",
     "json-to-datatype": "^1.1.5",
     "nouislider": "14.6.0",
     "vue": "3.0.5",

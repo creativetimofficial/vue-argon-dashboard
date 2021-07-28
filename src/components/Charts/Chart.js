@@ -1,7 +1,7 @@
 import Chart from "chart.js";
 
 export const ordersChart = {
-  createChart(chartId) {
+  createChart(chartId, data_params) {
     const chartColor = "#FFFFFF";
     const fallBackColor = "#f96332";
     const color = this.color || fallBackColor;
@@ -34,7 +34,7 @@ export const ordersChart = {
             borderWidth: 0,
             pointRadius: 0,
             backgroundColor: "#fb6340",
-            data: [10, 20, 30, 20, 10, 14, 25, 20, 30, 22, 17, 29],
+            data: data_params,
             maxBarThickness: 10,
           },
         ],
@@ -103,3 +103,6 @@ const funcs = {
 };
 
 export default funcs;
+
+
+

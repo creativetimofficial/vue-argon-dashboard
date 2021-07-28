@@ -133,7 +133,7 @@
                       type="text"
                       class="form-control"
                       placeholder="NIK"
-                      v-model="profile.NIK"
+                      v-model="profile.nik"
                     />
                   </div>
                   <div class="col-lg-6 mb-3">
@@ -180,9 +180,9 @@
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
                     <input
-                      type="date"
+                      type="text"
                       class="form-control"
-                      placeholder="dd/mm/yy"
+                      placeholder="yyyy-mm-dd"
                       v-model="profile.birth_of_date"
                     />
                   </div>
@@ -361,7 +361,7 @@
               </div>
               <hr class="my-4" />
 
-              <div class="btn btn-info mt-3" @click="updateAction">Edit</div>
+              <div class="btn btn-info mt-3" @click="updateAction()">Edit</div>
             </form>
           </card>
 
@@ -462,6 +462,62 @@ export default {
         })
         .catch((error) => {
           alert("Failed to verificate this driver\n" + error);
+        });
+    },
+    updateAction() {
+      let new_profile = {
+        nik: this.profile.nik,
+        sim_no: this.profile.sim_no,
+        name: this.profile.name,
+        profpict: "",
+        phone_number: this.profile.phone_number,
+        gender: this.profile.gender,
+        birth_of_date: new Date(this.profile.birth_of_date),
+      };
+
+      let new_vehicle_details = {
+        transportation_type: this.vehicle_details.transportation_type,
+        plat_number: this.vehicle_details.plat_number,
+        capacity: this.vehicle_details.capacity,
+        merk_and_type: this.vehicle_details.merk_and_type,
+        stnk_no_registration: this.vehicle_details.stnk_no_registration,
+      };
+
+      let newAddress = {
+        province: this.address.province,
+        city: this.address.city,
+        sub_district: this.address.sub_district,
+        zip_code: this.address.zip_code,
+        street: this.address.street,
+      };
+
+      let newDocuments = {
+        skck: "",
+        ktp: "",
+        sim: "",
+        stnk: "",
+      };
+
+      let jsonData = {
+        driver_email: this.data_driver.driver_email,
+        profile: new_profile,
+        vehicle_details: new_vehicle_details,
+        address: newAddress,
+        documents: newDocuments,
+        rating: null,
+        submitted: true,
+      };
+
+      const url = "/admin/update/driver/" +  this.$route.params.id;
+      http
+        .post(url, jsonData)
+        .then((response) => {
+          if (response.status == 201) {
+            alert("Succesfully edit profile");
+          }
+        })
+        .catch((error) => {
+          alert("Failed to change active status\n" + error);
         });
     },
   },

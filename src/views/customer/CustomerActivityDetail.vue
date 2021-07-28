@@ -27,18 +27,11 @@
             </template>
 
             <form>
-              <h6 class="heading-small text-muted mb-4">Activity Info</h6>
+                <h6 class="heading-small text-muted mb-4">Activity Info</h6>
 
               <div class="pl-lg-4">
                 <div class="row">
-                  <div class="col-lg-6 mb-3">
-                    <div
-                      class="btn btn-info mt-2"
-                      @click="driverDetailActions(data_act.id_driver)"
-                    >
-                      Go to driver Profile
-                    </div>
-                  </div>
+
                 </div>
                 <div class="row">
                   <div class="col-lg-6 mb-3">
@@ -109,7 +102,80 @@
                 </div>
               </div>
 
-            <h6
+
+              <hr
+                class="my-4"
+                v-show="data_act.type_of_service == 'Antar Barang'"
+              />
+
+
+
+
+
+              <h6 class="heading-small text-muted mb-4">Driver Profile</h6>
+
+              <div class="pl-lg-4">
+                <div class="row">
+                  <div class="col-lg-6 mb-3">
+                    <p>Name</p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="driver_profile.name"
+                    />
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <p>Phone Number</p>
+                    <input
+                      type="text"
+                      class="form-control"
+                      placeholder="yyyy-mm-dd"
+                      v-model="driver_profile.phone_number"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row ml-1">
+                <div class="col-lg-6 mb-3">
+                  <p>Gender</p>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="driver_profile.gender"
+                  />
+                </div>
+                <div class="col-lg-6 mb-3">
+                  <p>Transportation Type</p>
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="vehicle_details.transportation_type"
+                  />
+                </div>
+              </div>
+              <div class="row ml-1">
+                <div class="col-lg-6 mb-3">
+                  <p>Vehicle</p>
+                  <label for="">Merk</label>
+                  <input
+                    type="text"
+                    class="form-control mb-1"
+                    v-model="vehicle_details.merk_and_type"
+                  />
+                  <label for="">Type</label>
+                  <input
+                    type="text"
+                    class="form-control mb-1"
+                    v-model="vehicle_details.plat_number"
+                  />
+                </div>
+              </div>
+
+              <hr
+                class="my-4"
+                v-show="data_act.type_of_service == 'Antar Barang'"
+              />
+              <h6
                 class="heading-small text-muted mb-4"
                 v-show="data_act.type_of_service == 'Antar Barang'"
               >
@@ -197,6 +263,18 @@
                     Read Feedback
                   </div>
             </form>
+
+            <div
+              class="row ml-1"
+              v-show="data_act.activity_status == 'finished' && data_act.id_feedback == null"
+            >
+              <div
+                class="btn btn-primary mt-2"
+                @click="createFeedback(data_act._id)"
+              >
+                Create Feedback
+              </div>
+            </div>
           </card>
         </div>
       </div>
@@ -217,6 +295,8 @@ export default {
       item_detail: {},
       recipient_detail: {},
       blockedText: "Block",
+      driver_profile: {},
+      vehicle_details: {}
     };
   },
   mounted() {
@@ -229,6 +309,14 @@ export default {
         this.item_detail = response.data[0].item_detail;
         this.recipient_detail = response.data[0].recipient_detail;
       }
+
+
+      const url = "/admin/read/driver/" + this.data_act.id_driver;
+      http.get(url).then((response) => {
+        this.driver_profile = response.data[0].profile;
+        this.vehicle_details = response.data[0].vehicle_details;
+      });
+
     });
     console.log(
        "id feedback=" + this.data_act.id_feedback,
@@ -248,6 +336,7 @@ export default {
         params: { id: _id },
       });
     },   
+
   },
 };
 </script>
