@@ -32,33 +32,13 @@
               <div class="pl-lg-4">
                 <div class="row">
                   <div class="col-lg-6 mb-3">
-                    <!-- <p>Driver</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="data_act.id_driver"
-                    /> -->
                     <div
                       class="btn btn-info mt-2"
-                      @click="driverDetailAction(data_act.id_driver)"
+                      @click="driverDetailActions(data_act.id_driver)"
                     >
                       Go to driver Profile
                     </div>
                   </div>
-                  <!-- <div class="col-lg-6 mb-3">
-                    <p>Customer</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="data_act.id_customer"
-                    />
-                    <div
-                      class="btn btn-info mt-2"
-                      @click="customerDetailAction(data_act.id_customer)"
-                    >
-                      Go to customer Profile
-                    </div>
-                  </div> -->
                 </div>
                 <div class="row">
                   <div class="col-lg-6 mb-3">
@@ -128,29 +108,8 @@
                   />
                 </div>
               </div>
-              <!-- <div class="row ml-1" v-show="data_act.id_feedback != null">
-                <div class="col-lg-6">
-                  <p>Feedback</p>
-                  <div class="row">
-                  <p>Rating</p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    v-model="data_feedback.rating"
-                  />
-                  <p>Feedback</p>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    aria-label="Large"
-                    v-model="data_feedback.review"
-                  />
-              </div> -->
-                <!-- </div>
-              </div>
-              <hr class="my-4" /> --> 
 
-              <h6
+            <h6
                 class="heading-small text-muted mb-4"
                 v-show="data_act.type_of_service == 'Antar Barang'"
               >
@@ -234,6 +193,9 @@
                   </div>
                 </div>
               </div>
+                  <div  v-show="data_act.id_feedback!=0&&data_act.activity_status=='finished'" class="btn btn-info mt-3" @click="readReview(data_act.id_feedback)">
+                    Read Feedback
+                  </div>
             </form>
           </card>
         </div>
@@ -249,9 +211,6 @@ export default {
   data() {
     return {
       data: "",
-      // data_feedback: {
-      //   rating: "",
-      // },
       data_act: {},
       start_loc: {},
       end_loc: {},
@@ -270,32 +229,25 @@ export default {
         this.item_detail = response.data[0].item_detail;
         this.recipient_detail = response.data[0].recipient_detail;
       }
-
-    // const url = "/admin/read/feedback/" + this.$route.params.id;
-    // http.get(url).then((response) => {
-    //   this.data_feedback = response.data[0].data_feedback;
-    // });
     });
+    console.log(
+       "id feedback=" + this.data_act.id_feedback,
+       "id driver=" + this.$route.params.id
+          );
   },
   methods: {
-    driverDetailAction(_id) {
+    driverDetailActions(_id) {
       this.$router.push({
-        name: "Driver Profile",
+        name: "Get Driver",
         params: { id: _id },
       });
     },
-    // customerDetailAction(_id) {
-    //   this.$router.push({
-    //     name: "Customer Profile",
-    //     params: { id: _id },
-    //   });
-    // },
-    // feedbackDetailAction(_id) {
-    //   this.$router.push({
-    //     name: "Feedback Detail",
-    //     params: { id: _id },
-    //   });
-    // },
+    readReview(_id){
+       this.$router.push({
+        name: "Read Feedback",
+        params: { id: _id },
+      });
+    },   
   },
 };
 </script>

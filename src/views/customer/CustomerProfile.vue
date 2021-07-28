@@ -108,11 +108,11 @@
                     />
                   </div>
                   <div class="col-lg-6 mb-3">
-                    <!-- <div
-                      v-show="data_driver.blokir == true"
+                    <div
+                      v-show="data_cust.blokir == true"
                       class="btn btn-danger">
                       Your Account Blocked By Admin
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </div>
@@ -187,6 +187,7 @@ export default {
         customer_email: "",
         customer_password: "",
         signUp_date: "",
+        blokir: true,
       },
       profile : {
         name: "",
@@ -196,7 +197,8 @@ export default {
         birth_of_date: "",
         gender: "",
       },
-      blockedText: "Block"
+      activeText: "",
+      blockedText: "",
     };
   },
   mounted() {
@@ -210,13 +212,28 @@ export default {
       }else if(response.data[0].profil.gender == "pria"){
       this.profil.male = true
       }
-      
-      if(response.data[0].blocked == true){
-        this.blockedText = "Unblock"
+
+      if (this.data_driver.active_status == true) {
+        this.activeText = "Non Activate";
+      } else {
+        this.activeText = "Activate";
       }
     });
   },
+
   methods: {
+    updActiveStatusAction(){
+      // let jsonData = {
+      //   active_status: true,
+      // };
+    
+      // if (this.data_driver.active_status == true) {
+      //   jsonData = {
+      //     active_status: false,
+      //   };
+      // }
+    },
+
     checkBoxSelect (data) {
        if (data === 'male') {
          this.profile.female = false
@@ -264,7 +281,6 @@ export default {
             if (response.status == 201) {
               alert("Succesfully update profil");
               this.post_status = true;
-             // this.$router.push("/admin/adminList");
             }
           })
           .catch((error) => {

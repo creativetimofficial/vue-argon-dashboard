@@ -29,29 +29,21 @@
 
               <div class="pl-lg-4">
                 <div class="row">
-                  <p>Rating</p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="1-5"
-                    v-model="feedback.rating"
-                  />
+                  <p>Rating:</p>
+                  <br>
+                   <div class="col-8">
+                  <p> {{ new_review.rating }} </p>
+                </div>
                 </div>
               </div>
               <div class="pl-lg-4">
                 <div class="row">
-                  <p>Review</p>
-                  <input
-                    type="text"
-                    class="form-control"
-                    aria-label="Large"
-                    placeholder="input your review"
-                    v-model="feedback.review"
-                  />
+                  <p>Review:</p>
+                  <br>
+                  <div class="col-8">
+                  <p> {{ new_review.review }} </p>
                 </div>
-                <div class="btn btn-info mt-3" @click="reviewAction">
-                    Feedback Order
-                  </div>
+                </div>
               </div>
             </form>
           </card>
@@ -68,35 +60,19 @@ export default {
   data() {
     return {
       data: "",
-      feedback: {
+      new_review: {
           rating: "",
           review: "",
       },
     };
   },
- methods :{
-     reviewAction(){
-         let formData = {
-             new_review: {
-                 rating: this.feedback.rating,
-                 review: this.feedback.review
-             }
-         }
-
-        const jsonData = JSON.stringify(formData);
-
-        const url = "/cust/create/review";
-
-        http.post(url, jsonData).then((response) => {
-          if (response.status == 201) {
-            alert("Succesfully create feedback"); 
-          }
-        })
-        .catch((error) => {
-            alert("Failed to create feedback \n" + error);
-          });
-     }
- }
+ mounted() {
+    const url = "/cust/read/feedback/" + this.$route.params.id;
+    http.get(url).then((response) => {
+      this.new_review = response.data[0];
+    });
+    console.log("hahah"+this.$route.params.id);
+  },
 };
 </script>
 <style></style>

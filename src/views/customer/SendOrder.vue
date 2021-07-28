@@ -14,7 +14,7 @@
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
           <div class="col-lg-10 col-md-30">
-            <h1 class="display-2 text-white">GoFar-Send Order</h1>
+            <h1 class="display-2 text-white">Antar Barang</h1>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
           <card shadow type="secondary">
 
              <form>
-              <h6 class="heading-small text-muted mb-4">Send Order</h6>
+              <h6 class="heading-small text-muted mb-4">Antar Barang</h6>
               <div class="pl-lg-4">
                   <div class="row ml-1">
                   <div class="col-lg-6 mb-3">

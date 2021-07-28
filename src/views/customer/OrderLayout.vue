@@ -1,18 +1,18 @@
 <template>
   <div>
-    <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
+    <base-header type="gradient-success" class="pb-6 pb-8 pt-5">
       <div class="row">
       </div>
     </base-header>     
   </div>
   <div class="pb-6 pb-8 pt-5 pt-md-4">
-    <a href="/?#/cust/CarOrder" class="btn btn-info">GoFar-Car</a>
+    <a href="/?#/cust/TransportasiMobil" class="btn btn-info">Transportasi Mobil</a>
   </div>
   <div class="pb-6 pb-8 pt-5 pt-md-4">
-    <a href="/?#/cust/RideOrder" class="btn btn-info">GoFar-Ride</a>
+    <a href="/?#/cust/TransportasiMotor" class="btn btn-info">Transportasi Motor</a>
   </div>
   <div class="pb-6 pb-8 pt-5 pt-md-4">
-    <a href="/?#/cust/SendOrder" class="btn btn-info">GoFar-Send</a>
+    <a href="/?#/cust/AntarBarang" class="btn btn-info">Antar Barang</a>
   </div>
 </template>
 <style></style>

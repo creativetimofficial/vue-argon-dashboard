@@ -42,6 +42,7 @@ import CustomerActivity from "../views/customer/CustomerActivity";
 import CustomerActivityDetail from "../views/customer/CustomerActivityDetail";  
 import CustomerReview from "../views/customer/Review";
 import CustomerGetDriver from "../views/customer/GetDriver";
+import CustomerReadReview from "../views/customer/readReview";
 
 
 const routes = [
@@ -224,17 +225,17 @@ const routes = [
         components: { default: CustomerOrder},
       },
       {
-        path: "CarOrder",
+        path: "TransportasiMobil",
         name: "Gofar-Car",
         components: { default: CarOrder},
       },
       {
-        path: "RideOrder",
+        path: "TransportasiMotor",
         name: "Gofar-Ride",
         components: { default: RideOrder},
       },
       {
-        path: "SendOrder",
+        path: "AntarBarang",
         name: "Gofar-Send",
         components: { default: SendOrder},
       },
@@ -257,6 +258,11 @@ const routes = [
         path: "Review",
         name: "Review",
         components: { default: CustomerReview},
+      },
+      {
+        path: "ReadFeedback",
+        name: "Read Feedback",
+        components: { default: CustomerReadReview},
       },
     ],
   },

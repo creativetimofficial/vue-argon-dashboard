@@ -168,28 +168,7 @@
                     />
                   </div>
                 </div>
-
-                
-              </div>
-              <hr class="my-4" />
-
-              <h6 class="heading-small text-muted mb-4">Activity Status</h6>
-              <div class="pl-lg-4">
-               
-
-                <div class="row">
-                  <div class="col-lg-6 mb-3">
-                    <p>Status</p>
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Steet"
-                      v-model="status"
-                    />
-                  </div>
-                </div>
-              </div>
-              <hr class="my-4" />
+             </div>      
             </form>
           </card>
         </div>
@@ -199,26 +178,37 @@
 </template>
 
 <script>
-//import http from "../../http.js";
+import http from "../../http.js";
 export default {
   name: "user-profile",
   data() {
     return {
-      data_driver: {},
-      profile: {},
-      vehicle_details: {},
-      address: {},
-      documents: {},
-      model: { username: "aaaa" },
-      form: { sertifikat: null },
-      activeText: "",
-      blockedText: "",
+      data_driver: {
+        rating:"",
+      },
+      profile: {
+        name:"",
+        phone_number:"",
+        gender:"",
+      },
+      vehicle_details: {
+        transportation_type:"",
+        plat_number:"",
+        capacity:"",
+        merk_and_type:"",
+      },
       status: "",
     };
   },
 
-  methods: {
-    
+ mounted() {
+    const url = "/cust/get/driver_profile/" + this.$route.params.id;
+    http.get(url).then((response) => {
+      this.data_driver = response.data[0];
+      this.profile = response.data[0].profile;
+      this.vehicle_details = response.data[0].vehicle_details;
+      this.address = response.data[0].address;
+    });
   },
 };
 </script>
