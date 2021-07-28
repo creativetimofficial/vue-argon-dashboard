@@ -113,7 +113,7 @@
                   <p>Rp {{ price }}</p>
                 </div>
               </div>
-              <div class="btn btn-info mt-3" @click="submitAction">
+              <div class="btn btn-info mt-3" @click="createOrder">
                 Order Now!
               </div>
             </form>
@@ -259,7 +259,7 @@ export default {
     },
 
     getPrice(dist) {
-      alert(dist);
+      // alert(dist);
       this.price = Math.round((dist * 2500) / 1000);
     },
 
@@ -300,21 +300,23 @@ export default {
 
       const jsonData = JSON.stringify(formData);
 
-      const url = "admin/add/newadmin";
+      const url = "/cust/create/order/transportasi";
 
       http
         .post(url, jsonData)
         .then((response) => {
           if (response.status == 201) {
-            alert("Succesfully add admin");
-            this.post_status = true;
-            this.$router.push("/admin/adminList");
+            alert("Your order successfully created!");
           }
+
+           this.$router.push({
+            name: "order"
+          });
         })
         .catch((error) => {
-          alert("Failed to add admin \n" + error);
+          alert("Failed to create order \n" + error);
         });
-    },
+    }
   },
 };
 </script>

@@ -160,14 +160,9 @@ const routes = [
   },
   {
     path: "/driver",
-    redirect: "/driver/dashboardDriver",
+    redirect: "/driver/newOrderList",
     component: DashboardLayoutDriver,
     children: [
-      {
-        path: "dashboardDriver",
-        name: "dashboard driver",
-        components: { default: Dashboard },
-      },
       {
         path: "orderList",
         name: "Driver Activity History",
