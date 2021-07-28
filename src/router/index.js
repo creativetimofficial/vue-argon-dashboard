@@ -18,11 +18,11 @@ import Register from "../views/Register.vue";
 // ADMIN LAYOUT
 import AdminDataTable from "../views/admin/AdminDataTable";
 import DriverDataTable from "../views/admin/DriverDataTable";
+import ActivityDataTable from "../views/admin/ActivityDataTable";
 import NewAdminForm from "../views/admin/NewAdminForm";
 import AdminProfile from "../views/admin/AdminProfile";
 import CustomerDataTable from "../views/admin/CustomerDataTable";
 import CustomerDetailProfile from "../views/admin/CustomerDetailProfile";
-import ActivityDataTable from "../views/admin/ActivityDataTable";
 import DriverDetailProfile from "../views/admin/DriverDetailProfile";
 import ActivityDetail from "../views/admin/ActivityDetail";
 import FeedbackDetail from "../views/admin/FeedbackDetail";
@@ -117,11 +117,6 @@ const routes = [
         components: { default: DriverDataTable },
       },
       {
-        path: "orderList",
-        name: "Activity History",
-        components: { default: ActivityDataTable },
-      },
-      {
         path: "newAdmin",
         name: "Create New Admin Account",
         components: { default: NewAdminForm },
@@ -155,6 +150,11 @@ const routes = [
         path: "feedbackDetail/:id",
         name: "Feedback Detail",
         components: { default: FeedbackDetail },
+      },
+      {
+        path: "orderTable",
+        name: "Order History",
+        components: { default: ActivityDataTable },
       },
     ],
   },

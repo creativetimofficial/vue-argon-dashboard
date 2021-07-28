@@ -89,7 +89,7 @@
 </template>
 <script>
 import { Loader } from "google-maps";
-const loader = new Loader("YOUR_API_KEY");
+const loader = new Loader("AIzaSyAF-NHeKslBcU_yuDNF0mR0fAshCPwRptA");
 export default {
   data() {
     return {

@@ -85,10 +85,7 @@ export default {
     };
   },
   mounted() {
-    const url = "admin/read/alladmin";
-    http.get(url).then(response => {
-      this.list_admin = response.data;
-    });
+    this.loadAdmin();
   },
    methods: {
     deleteAction(i) {
@@ -102,7 +99,13 @@ export default {
         .catch((error) => {
             alert("Failed to delete admin \n" + error);
           });;
-      this.$router.push('/admin/adminList');
+      this.loadAdmin();
+    },
+    loadAdmin(){
+      const url = "admin/read/alladmin";
+    http.get(url).then(response => {
+      this.list_admin = response.data;
+    });
     }
    }
 

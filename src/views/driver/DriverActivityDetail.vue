@@ -82,7 +82,7 @@
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>Activity Status</p>
-                    <div :class="activity_button" @click="openFile(item)">
+                    <div :class="activity_button" >
                       {{ data_act.activity_status }}
                     </div>
                   </div>

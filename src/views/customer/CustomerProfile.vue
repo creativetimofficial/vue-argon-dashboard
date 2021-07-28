@@ -100,11 +100,11 @@
                     />
                   </div>
                   <div class="col-lg-6 mb-3">
-                    <!-- <div
-                      v-show="data_driver.blokir == true"
+                    <div
+                      v-show="data_cust.blocked == true"
                       class="btn btn-danger">
                       Your Account Blocked By Admin
-                    </div> -->
+                    </div>
                   </div>
                 </div>
               </div>
@@ -135,23 +135,51 @@
                 <div class="row">
                   <div class="col-lg-6 mb-3">
                     <p>Gender</p>
-                    <label for="verify" class="col-lg-6 mb-3">
+
+                    <div
+                      class="form-check form-check-inline"
+                      @click="checkBoxSelect('male')"
+                    >
                       <input
-                        type="checkbox"
-                        v-model="profile.male"
-                        @click="checkBoxSelect('male')"
+                       v-if="profile.gender == 'male'"
+                        class="form-check-input"
+                        type="radio"
+                        id="inlineRadio1"
+                        checked=""
                       />
-                      Male
-                    </label>
-                    <label for="verify" class="col-lg-6 mb-3">
                       <input
-                        type="checkbox"
-                        v-model="profile.female"
-                        @click="checkBoxSelect('female')"
+                      v-else
+                        class="form-check-input"
+                        type="radio"
+                        id="inlineRadio1"
+                      
                       />
-                      Female
-                    </label>
+
+                      <label class="form-check-label" for="inlineRadio1"
+                        >Male</label
+                      >
+                    </div>
+                    <div
+                      class="form-check form-check-inline"
+                      @click="checkBoxSelect('female')"
+                    >
+                      <input
+                      v-if="profile.gender == 'female'"
+                        class="form-check-input"
+                        type="radio"
+                        checked=""
+                      />
+                       <input
+                      v-else
+                        class="form-check-input"
+                        type="radio"
+                      />
+                      <label class="form-check-label" for="inlineRadio2"
+                        >Female</label
+                      >
+                    </div>
                   </div>
+
                   <div class="col-lg-6 mb-3">
                     <p>Birth Date</p>
                     <input
@@ -199,29 +227,24 @@ export default {
     };
   },
   mounted() {
-    
+    const url = "/cust/read/account/" + localStorage.getItem("customer_id");
+    http
+      .get(url)
+      .then((response) => {
+        this.data_cust = response.data[0];
+        this.profile = response.data[0].profile;
+      })
+      .catch((error) => {
+        alert("Failed to update \n" + error);
+      });
+
   },
   methods: {
     checkBoxSelect(data) {
       this.profile.gender = data;
-      alert(this.profile.gender)
-      //  if (data === 'male') {
-      //    this.profile.female = false
-      //  } else if (data === 'female') {
-      //    this.profile.male = false
-      //  }
     },
 
     updateAction() {
-     alert(this.profile.gender)
-      // if(this.profile.male == true){
-      //    this.profile.gender = "pria"
-      // }else if (this.profile.female == true){
-      //   this.profile.gender = "wanita"
-      // }else{
-      //   this.profile.gender = ""
-      // }
-
       if (
         this.data_cust.customer_email != "" &&
         this.data_cust.customer_password != "" &&
@@ -251,7 +274,6 @@ export default {
           .then((response) => {
             if (response.status == 201) {
               alert("Succesfully update profil");
-              this.post_status = true;
             }
           })
           .catch((error) => {

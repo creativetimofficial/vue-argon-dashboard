@@ -20,7 +20,7 @@ export default {
     ActivityTable,
   },
   mounted(){
-    alert("MASUK2");
+    console.log("MASUK2");
   }
 };
 </script>
