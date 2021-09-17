@@ -27,8 +27,9 @@
     </div>
     <slot>
       <input
-        :value="value"
+        :value="modelValue"
         v-bind="$attrs"
+        v-on="listeners"
         class="form-control"
         :class="[
           { 'is-valid': valid === true },
@@ -92,7 +93,7 @@ export default {
       type: String,
       description: "Input css classes",
     },
-    value: {
+    modelValue: {
       type: [String, Number],
       description: "Input value",
     },
@@ -113,7 +114,6 @@ export default {
   computed: {
     listeners() {
       return {
-        ...this,
         input: this.updateValue,
         focus: this.onFocus,
         blur: this.onBlur,
@@ -132,7 +132,7 @@ export default {
   methods: {
     updateValue(evt) {
       let value = evt.target.value;
-      this.$emit("input", value);
+      this.$emit("update:modelValue", value);
     },
     onFocus(value) {
       this.focused = true;
