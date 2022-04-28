@@ -5,7 +5,6 @@ import AuthLayout from "@/layout/AuthLayout";
 
 import Dashboard from "../views/Dashboard.vue";
 import Icons from "../views/Icons.vue";
-import EstudanteList from "../views/Studants/ListEstudante.vue";
 import Maps from "../views/Maps.vue";
 import Profile from "../views/UserProfile.vue";
 import Tables from "../views/Tables.vue";
@@ -17,7 +16,7 @@ const routes = [
   {
     path: "/",
     redirect: "/dashboard",
-    component: DashboardLayout,
+    component: ashboardLayout,
     children: [
       {
         path: "/dashboard",
@@ -28,16 +27,6 @@ const routes = [
         path: "/icons",
         name: "icons",
         components: { default: Icons },
-      },
-      {
-        path: "/estudantes",
-        name: "estudantes",
-        components: { default: EstudanteList },
-      },
-      {
-        path: "/docentes",
-        name: "docentes",
-        components: { default: EstudanteList },
       },
       {
         path: "/maps",

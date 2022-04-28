@@ -35,7 +35,7 @@
             </div>
           </template>
           <div class="dropdown-header noti-title">
-            <h6 class="text-overflow m-0">Welcome!</h6>
+            <h6 class="text-overflow m-0">Bem-Vindo</h6>
           </div>
           <router-link to="/profile" class="dropdown-item">
             <i class="ni ni-single-02"></i>

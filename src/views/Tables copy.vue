@@ -78,7 +78,7 @@
       </div>
       <div class="row mt-5">
         <div class="col">
-         <projects-table type="dark" title="Dark Table"></projects-table>
+          <projects-table type="dark" title="Dark Table"></projects-table>
         </div>
       </div>
     </div>

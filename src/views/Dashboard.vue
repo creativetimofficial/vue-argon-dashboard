@@ -4,10 +4,10 @@
       <div class="row">
         <div class="col-xl-3 col-lg-6">
           <stats-card
-            title="Total traffic"
+            title="Estudantes"
             type="gradient-red"
             sub-title="350,897"
-            icon="ni ni-active-40"
+            icon="ni ni-badge"
             class="mb-4 mb-xl-0"
           >
             <template v-slot:footer>
@@ -20,10 +20,10 @@
         </div>
         <div class="col-xl-3 col-lg-6">
           <stats-card
-            title="Total traffic"
+            title="Docentes"
             type="gradient-orange"
             sub-title="2,356"
-            icon="ni ni-chart-pie-35"
+            icon="ni ni-badge"
             class="mb-4 mb-xl-0"
           >
             <template v-slot:footer>
@@ -36,10 +36,10 @@
         </div>
         <div class="col-xl-3 col-lg-6">
           <stats-card
-            title="Sales"
+            title="Usuários"
             type="gradient-green"
             sub-title="924"
-            icon="ni ni-money-coins"
+            icon="ni ni-circle-08"
             class="mb-4 mb-xl-0"
           >
             <template v-slot:footer>
@@ -52,7 +52,7 @@
         </div>
         <div class="col-xl-3 col-lg-6">
           <stats-card
-            title="Performance"
+            title="Solicitações"
             type="gradient-info"
             sub-title="49,65%"
             icon="ni ni-chart-bar-32"
@@ -70,70 +70,6 @@
     </base-header>
 
     <div class="container-fluid mt--7">
-      <!--Charts-->
-      <div class="row">
-        <div class="col-xl-8 mb-5 mb-xl-0">
-          <card type="default" header-classes="bg-transparent">
-            <template v-slot:header>
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-light text-uppercase ls-1 mb-1">Overview</h6>
-                  <h5 class="h3 text-white mb-0">Sales value</h5>
-                </div>
-                <div class="col">
-                  <ul class="nav nav-pills justify-content-end">
-                    <li class="nav-item mr-2 mr-md-0">
-                      <a
-                        class="nav-link py-2 px-3"
-                        href="#"
-                        :class="{ active: bigLineChart.activeIndex === 0 }"
-                        @click.prevent="initBigChart(0)"
-                      >
-                        <span class="d-none d-md-block">Month</span>
-                        <span class="d-md-none">M</span>
-                      </a>
-                    </li>
-                    <li class="nav-item">
-                      <a
-                        class="nav-link py-2 px-3"
-                        href="#"
-                        :class="{ active: bigLineChart.activeIndex === 1 }"
-                        @click.prevent="initBigChart(1)"
-                      >
-                        <span class="d-none d-md-block">Week</span>
-                        <span class="d-md-none">W</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </template>
-            <div class="chart-area">
-              <canvas :height="350" :id="salesChartID"></canvas>
-            </div>
-          </card>
-        </div>
-
-        <div class="col-xl-4">
-          <card header-classes="bg-transparent">
-            <template v-slot:header>
-              <div class="row align-items-center">
-                <div class="col">
-                  <h6 class="text-uppercase text-muted ls-1 mb-1">
-                    Performance
-                  </h6>
-                  <h5 class="h3 mb-0">Total orders</h5>
-                </div>
-              </div>
-            </template>
-            <div class="chart-area">
-              <canvas :height="350" :id="ordersChartID"></canvas>
-            </div>
-          </card>
-        </div>
-      </div>
-      <!-- End charts-->
-
       <!--Tables-->
       <div class="row mt-5">
         <div class="col-xl-8 mb-5 mb-xl-0">
@@ -142,6 +78,7 @@
         <div class="col-xl-4">
           <social-traffic-table></social-traffic-table>
         </div>
+        
       </div>
       <!--End tables-->
     </div>
@@ -150,6 +87,7 @@
 <script>
 // Charts
 import { ordersChart } from "@/components/Charts/Chart";
+//import calendar from "@/components/Calendar/calendar";
 import Chart from "chart.js";
 
 import PageVisitsTable from "./Dashboard/PageVisitsTable";
@@ -163,6 +101,7 @@ export default {
   },
   data() {
     return {
+      user: "Admin",
       salesChartID: "salesChart",
       ordersChartID: "ordersChart",
       bigLineChart: {
@@ -250,6 +189,7 @@ export default {
     },
   },
   mounted() {
+   
     chart = new Chart(
       document.getElementById(this.salesChartID).getContext("2d"),
       {

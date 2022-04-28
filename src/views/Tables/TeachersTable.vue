@@ -154,7 +154,7 @@
 </template>
 <script>
 export default {
-  name: "projects-table",
+  name: "teacher-table",
   props: {
     type: {
       type: String,

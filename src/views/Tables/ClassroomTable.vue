@@ -11,7 +11,10 @@
           </h3>
         </div>
         <div class="col text-right">
-          <base-button type="primary" size="sm"><i class="ni ni-fat-add "></i>Add</base-button>
+          <base-button type="primary" size="sm">See all</base-button>
+        </div>
+        <div class="row text-right">
+          <base-button type="primary" size="sm">See all</base-button>
         </div>
       </div>
     </div>

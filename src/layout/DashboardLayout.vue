@@ -8,7 +8,7 @@
       <template v-slot:links>
         <sidebar-item
           :link="{
-            name: 'Dashboard',
+            name: 'Painel Inicial',
             icon: 'ni ni-tv-2 text-primary',
             path: '/dashboard',
           }"
@@ -16,11 +16,40 @@
 
         <sidebar-item
           :link="{
-            name: 'Icons',
+            name: 'Icones',
             icon: 'ni ni-planet text-blue',
             path: '/icons',
           }"
         />
+        <sidebar-item
+          :link="{
+            name: 'Anos Académicos',
+            icon: 'ni ni-hat-3 text-blue',
+            path: '/icons',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Estudantes',
+            icon: 'ni ni-badge text-blue',
+            path: '/estudantes',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Docentes',
+            icon: 'ni ni-badge text-blue',
+            path: '/icons',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Anúncios',
+            icon: 'ni ni-notification-70 text-orange',
+            path: '/icons',
+          }"
+        />
+
         <sidebar-item
           :link="{
             name: 'Maps',
@@ -53,6 +82,42 @@
           :link="{
             name: 'Register',
             icon: 'ni ni-circle-08 text-pink',
+            path: '/register',
+          }"
+        />
+
+        <sidebar-item
+          :link="{
+            name: 'Área Académica',
+            icon: 'ni ni-collection text-blue',
+            path: '/register',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Reconfirmação de Matrícula',
+            icon: 'ni ni-ruler-pencil text-blue',
+            path: '/register',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Eventos',
+            icon: 'ni ni-calendar-grid-58 text-red',
+            path: '/register',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Programas',
+            icon: 'ni ni-single-copy-04 text-info',
+            path: '/register',
+          }"
+        />
+        <sidebar-item
+          :link="{
+            name: 'Horários',
+            icon: 'ni ni-calendar-grid-58 text-red',
             path: '/register',
           }"
         />

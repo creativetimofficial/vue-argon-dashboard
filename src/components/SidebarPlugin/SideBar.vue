@@ -69,7 +69,7 @@
             <div class="dropdown-divider"></div>
             <a href="#!" class="dropdown-item">
               <i class="ni ni-user-run"></i>
-              <span>Logout</span>
+              <span>Terminar a sessão</span>
             </a>
           </base-dropdown>
         </ul>
