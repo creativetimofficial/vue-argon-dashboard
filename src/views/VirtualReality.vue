@@ -11,7 +11,7 @@
   <div
     class="mx-3 mt-4 border-radius-xl position-relative"
     :style="{
-      backgroundImage: 'url(' + require('@/assets/img/vr-bg.jpg') + ')',
+      backgroundImage: `url(${vrBg})`,
       backgroundSize: 'cover'
     }"
   >
@@ -95,7 +95,7 @@
 </template>
 
 <script>
-import Sidenav from "@/examples/Sidenav";
+import Sidenav from "@/examples/Sidenav/index.vue";
 import AppFooter from "@/examples/Footer.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
 import CardCalendar from "./components/CardCalendar.vue";
@@ -104,6 +104,8 @@ import CardToDo from "./components/CardToDo.vue";
 import CardPlayer from "./components/CardPlayer.vue";
 import CardMessage from "./components/CardMessage.vue";
 import setTooltip from "@/assets/js/tooltip.js";
+
+import vrBg from '@/assets/img/vr-bg.jpg';
 
 const body = document.getElementsByTagName("body")[0];
 
@@ -121,6 +123,9 @@ export default {
     CardPlayer,
     CardMessage,
   },
+  data: () => ({
+    vrBg,
+  }),
   mounted() {
     setTooltip();
   },

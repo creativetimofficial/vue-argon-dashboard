@@ -27,7 +27,7 @@
         border: none;
 
         .dropdown-menu {
-          margin-left: $dropdown-item-padding-x / 2;
+          margin-left: calc($dropdown-item-padding-x / 2);
         }
       }
       .icon {
@@ -151,8 +151,8 @@
           }
           // Second level
           .navbar-nav .nav .nav-link {
-            padding-top: $navbar-vertical-nav-link-padding-y / 1.5;
-            padding-bottom: $navbar-vertical-nav-link-padding-y / 1.5;
+            padding-top: calc($navbar-vertical-nav-link-padding-y / 1.5);
+            padding-bottom: calc($navbar-vertical-nav-link-padding-y / 1.5);
             padding-left: 15px;
 
             > span.sidenav-normal {

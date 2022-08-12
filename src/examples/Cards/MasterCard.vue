@@ -2,7 +2,7 @@
   <div class="card bg-transparent shadow-xl">
     <div
       class="overflow-hidden position-relative border-radius-xl"
-      :style="{backgroundImage: 'url(' + require('../../assets/img/card-visa.jpg') + ')'}"
+      :style="{backgroundImage: `url(${img})`}"
     >
       <span class="mask bg-gradient-dark"></span>
       <div class="card-body position-relative z-index-1 p-3">
