@@ -148,8 +148,8 @@
   .navbar {
     &.navbar-transparent {
       .navbar-collapse {
-        padding-top: $spacer / 2;
-        padding-bottom: $spacer / 2;
+        padding-top: calc($spacer / 2);
+        padding-bottom: calc($spacer / 2);
       }
 
       .navbar-collapse.collapsing {

@@ -2,7 +2,7 @@
   <div class="card h-100 p-3">
     <div
       class="overflow-hidden position-relative border-radius-lg bg-cover h-100"
-      :style="{backgroundImage: 'url(' + require('@/assets/img/ivancik.jpg') + ')'}"
+      :style="{backgroundImage: `url(${ivancik})`}"
     >
       <span class="mask bg-gradient-dark"></span>
       <div class="card-body position-relative z-index-1 p-3 h-100">
@@ -25,7 +25,12 @@
 </template>
 
 <script>
+import ivancik from '@/assets/img/ivancik.jpg';
+
 export default {
   name: "rocket-card",
+  data: () => ({
+    ivancik,
+  }),
 };
 </script>

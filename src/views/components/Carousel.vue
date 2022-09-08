@@ -4,7 +4,7 @@
       <div class="carousel-inner border-radius-lg h-100">
         <div
           class="carousel-item h-100 active"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-1.jpg') + ')',
+          :style="{backgroundImage: `url(${carousel1})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -17,7 +17,7 @@
         </div>
         <div
           class="carousel-item h-100"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-2.jpg') + ')',
+          :style="{backgroundImage: `url(${carousel2})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -30,7 +30,7 @@
         </div>
         <div
           class="carousel-item h-100"
-          :style="{backgroundImage: 'url(' + require('@/assets/img/carousel-3.jpg') + ')',
+          :style="{backgroundImage: `url(${carousel3})`,
       backgroundSize: 'cover'}"
         >
           <div class="carousel-caption d-none d-md-block bottom-0 text-start start-0 ms-5">
@@ -65,7 +65,16 @@
 </template>
 
 <script>
+import carousel1 from '@/assets/img/carousel-1.jpg';
+import carousel2 from '@/assets/img/carousel-2.jpg';
+import carousel3 from '@/assets/img/carousel-3.jpg';
+
 export default {
   name: "carousel",
+  data: () => ({
+    carousel1,
+    carousel2,
+    carousel3,
+  }),
 };
 </script>

@@ -22,5 +22,5 @@ pnpm-debug.log*
 *.sln
 *.sw?
 
-package-lock.json
-yarn.lock
+# lock files
+*lock.*
