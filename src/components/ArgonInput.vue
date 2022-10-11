@@ -10,7 +10,8 @@
         :class="getClasses(size, valid)"
         :name="name"
         :id="id"
-        :value="value"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
         :isRequired="isRequired"
       />
@@ -55,5 +56,6 @@ export default {
     getIcon: (icon) => (icon ? icon : null),
     hasIcon: (icon) => (icon ? "input-group" : null),
   },
+  emits: ['update:modelValue']
 };
 </script>
