@@ -1,3 +1,7 @@
+## [3.0.1] 2023-04-25
+
+- Update dependencies & devDependencies
+
 ## [3.0.0] 2022-05-26
 
 - Fix errors
