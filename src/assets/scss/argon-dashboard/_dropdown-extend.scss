@@ -25,7 +25,7 @@
 }
 
 @include media-breakpoint-down(xl) {
- .dropdown-lg-responsive {
-   min-width: $dropdown-lg-width-responsive;
- }
+  .dropdown-lg-responsive {
+    min-width: $dropdown-lg-width-responsive;
+  }
 }

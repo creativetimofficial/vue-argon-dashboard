@@ -16,44 +16,44 @@ Docs & License: https://fullcalendar.io/
   border-color: $gray-200;
 }
 
-.fc-theme-standard thead tr th{
+.fc-theme-standard thead tr th {
   border-right: none;
   border-left: none;
 }
 
-.fc-theme-standard td{
-  &:last-child{
+.fc-theme-standard td {
+  &:last-child {
     border-right: none;
   }
 }
 
-.fc-theme-standard tr{
-  &:last-child td{
+.fc-theme-standard tr {
+  &:last-child td {
     border-bottom: none;
   }
 }
 
-.fc-h-event{
+.fc-h-event {
   border: none;
 }
 
 .fc-daygrid-block-event .fc-event-time,
-.fc-daygrid-block-event .fc-event-title{
+.fc-daygrid-block-event .fc-event-title {
   font-weight: $font-weight-bold;
   padding: $fc-event-title-padding-y $fc-event-title-padding-x;
 }
 
-.fc .fc-daygrid-body-natural .fc-daygrid-day-events{
+.fc .fc-daygrid-body-natural .fc-daygrid-day-events {
   margin-bottom: 0;
 }
 
-.fc .fc-col-header-cell-cushion{
+.fc .fc-col-header-cell-cushion {
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
   color: $gray-500;
 }
 
-.fc .fc-daygrid-day-number{
+.fc .fc-daygrid-day-number {
   color: $gray-700;
   font-size: $font-size-sm;
   font-weight: $font-weight-bold;
@@ -61,27 +61,27 @@ Docs & License: https://fullcalendar.io/
   text-align: center;
 }
 
-.fc .fc-toolbar-title{
+.fc .fc-toolbar-title {
   font-size: $font-size-lg;
 }
 
-.fc .fc-button{
+.fc .fc-button {
   font-size: $font-size-sm;
   padding-top: $spacer/4;
   box-shadow: $btn-box-shadow;
   transition: $btn-transition;
-  .fc-icon{
+  .fc-icon {
     font-size: $font-size-sm;
   }
 }
 
-.fc .fc-button-primary{
+.fc .fc-button-primary {
   background-color: $secondary;
   border-color: $secondary;
   &:hover,
   &:focus,
   &:not(:disabled):active,
-  &:not(:disabled):active:focus{
+  &:not(:disabled):active:focus {
     transform: $btn-hover-transform;
     box-shadow: $btn-hover-box-shadow;
     background-color: $secondary;
@@ -89,6 +89,6 @@ Docs & License: https://fullcalendar.io/
   }
 }
 
-.fc-event.fc-daygrid-event{
+.fc-event.fc-daygrid-event {
   border-radius: $fc-daygrid-event-border-radius;
 }

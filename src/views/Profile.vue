@@ -305,7 +305,7 @@ export default {
   name: "profile",
   data() {
     return {
-      showMenu: false
+      showMenu: false,
     };
   },
   components: { ProfileCard, ArgonInput, ArgonButton },
@@ -329,6 +329,6 @@ export default {
     this.$store.state.showFooter = true;
     this.$store.state.hideConfigButton = false;
     body.classList.remove("profile-overview");
-  }
+  },
 };
 </script>

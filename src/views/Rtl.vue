@@ -135,7 +135,7 @@ export default {
     GradientLineChart,
     OrdersCard,
     ProjectCard,
-  },  
+  },
   beforeMount() {
     this.$store.state.isRTL = true;
     document.querySelector("html").setAttribute("lang", "ar");

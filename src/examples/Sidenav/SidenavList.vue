@@ -15,6 +15,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/tables"
@@ -28,6 +29,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/billing"
@@ -39,6 +41,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/virtual-reality"
@@ -52,6 +55,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/rtl-page"
@@ -63,6 +67,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="mt-3 nav-item">
         <h6
           v-if="this.$store.state.isRTL"
@@ -71,6 +76,7 @@
         >
           صفحات المرافق
         </h6>
+
         <h6
           v-else
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
@@ -79,6 +85,7 @@
           ACCOUNT PAGES
         </h6>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/profile"
@@ -90,6 +97,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/signin"
@@ -101,6 +109,7 @@
           </template>
         </sidenav-item>
       </li>
+
       <li class="nav-item">
         <sidenav-item
           url="/signup"
@@ -114,6 +123,7 @@
       </li>
     </ul>
   </div>
+
   <div class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
       :class="cardBg"
@@ -122,6 +132,7 @@
     />
   </div>
 </template>
+
 <script>
 import SidenavItem from "./SidenavItem.vue";
 import SidenavCard from "./SidenavCard.vue";
@@ -129,24 +140,24 @@ import SidenavCard from "./SidenavCard.vue";
 export default {
   name: "SidenavList",
   props: {
-    cardBg: String
+    cardBg: String,
   },
   data() {
     return {
       title: "Argon Dashboard 2",
       controls: "dashboardsExamples",
-      isActive: "active"
+      isActive: "active",
     };
   },
   components: {
     SidenavItem,
-    SidenavCard
+    SidenavCard,
   },
   methods: {
     getRoute() {
       const routeArr = this.$route.path.split("/");
       return routeArr[1];
-    }
-  }
+    },
+  },
 };
 </script>

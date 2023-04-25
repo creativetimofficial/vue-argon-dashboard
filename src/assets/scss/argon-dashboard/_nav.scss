@@ -26,8 +26,8 @@
     &.nav-pills-primary {
       background: $white;
       color: $white;
-      .nav-link{
-        &.active{
+      .nav-link {
+        &.active {
           color: $white;
         }
       }
@@ -41,8 +41,8 @@
     &.nav-pills-info {
       background: $white;
       color: $white;
-      .nav-link{
-        &.active{
+      .nav-link {
+        &.active {
           color: $white;
         }
       }
@@ -56,8 +56,8 @@
     &.nav-pills-success {
       background: $white;
       color: $white;
-      .nav-link{
-        &.active{
+      .nav-link {
+        &.active {
           color: $white;
         }
       }
@@ -71,8 +71,8 @@
     &.nav-pills-warning {
       background: $white;
       color: $white;
-      .nav-link{
-        &.active{
+      .nav-link {
+        &.active {
           color: $white;
         }
       }
@@ -86,8 +86,8 @@
     &.nav-pills-danger {
       background: $white;
       color: $white;
-      .nav-link{
-        &.active{
+      .nav-link {
+        &.active {
           color: $white;
         }
       }
@@ -98,7 +98,7 @@
         }
       }
     }
-    .nav-item{
+    .nav-item {
       z-index: 3;
     }
   }
@@ -107,7 +107,7 @@
   z-index: 1 !important;
   .nav-link {
     color: $white;
-    transition: .2s ease;
+    transition: 0.2s ease;
     border-radius: $nav-pills-link-border-radius;
     &.active {
       color: $white;

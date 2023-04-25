@@ -1,10 +1,10 @@
-@each $name, $value in $max-width-dim{
+@each $name, $value in $max-width-dim {
   .max-width-#{$name} {
     max-width: $value !important;
   }
 }
 
-@each $name, $value in $width-dim{
+@each $name, $value in $width-dim {
   .width-#{$name} {
     width: $value !important;
   }

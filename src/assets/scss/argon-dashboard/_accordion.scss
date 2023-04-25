@@ -4,7 +4,7 @@
   }
 
   div {
-    button[aria-expanded='true'] {
+    button[aria-expanded="true"] {
       .collapse-close {
         display: none;
       }
@@ -14,7 +14,7 @@
       }
     }
 
-    button[aria-expanded='false'] {
+    button[aria-expanded="false"] {
       .collapse-open {
         display: none;
       }

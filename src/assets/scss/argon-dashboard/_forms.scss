@@ -10,30 +10,28 @@
     margin-left: 0;
   }
 
-	.form-control {
-		box-shadow: none;
+  .form-control {
+    box-shadow: none;
     background-image: none;
 
-		&:not(:first-child) {
-	    border-left: 0;
-	    padding-left: 0;
-		}
-		&:not(:last-child) {
-			border-right: 0;
-			padding-right: 0;
-		}
+    &:not(:first-child) {
+      border-left: 0;
+      padding-left: 0;
+    }
+    &:not(:last-child) {
+      border-right: 0;
+      padding-right: 0;
+    }
 
     & + .input-group-text {
       border-left: 0;
       border-right: $input-border-width solid $input-border-color;
     }
-	}
+  }
 
   .input-group-text {
     border-right: 0;
   }
-
-
 
   &.focused {
     box-shadow: $input-focus-box-shadow;
@@ -43,7 +41,6 @@
     border-color: $input-focus-border-color;
   }
 }
-
 
 .form-group {
   margin-bottom: 1rem;

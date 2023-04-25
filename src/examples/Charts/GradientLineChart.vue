@@ -4,8 +4,8 @@
       <h6>{{ title }}</h6>
       <p class="text-sm">
         <i class="fa fa-arrow-up text-success"></i>
-        <span class="font-weight-bold">{{detail1}}</span>
-        {{detail2}}
+        <span class="font-weight-bold">{{ detail1 }}</span>
+        {{ detail2 }}
       </p>
     </div>
     <div class="p-3 card-body">

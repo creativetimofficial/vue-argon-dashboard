@@ -9,16 +9,20 @@
   <main class="main-content mt-0">
     <div
       class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
-      style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg'); background-position: top;"
+      style="
+        background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signup-cover.jpg');
+        background-position: top;
+      "
     >
       <span class="mask bg-gradient-dark opacity-6"></span>
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-5 text-center mx-auto">
             <h1 class="text-white mb-2 mt-5">Welcome!</h1>
-            <p
-              class="text-lead text-white"
-            >Use these awesome forms to login or create new account in your project for free.</p>
+            <p class="text-lead text-white">
+              Use these awesome forms to login or create new account in your
+              project for free.
+            </p>
           </div>
         </div>
       </div>
@@ -33,10 +37,28 @@
             <div class="row px-xl-5 px-sm-4 px-3">
               <div class="col-3 ms-auto px-1">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <g transform="translate(3.000000, 3.000000)" fill-rule="nonzero">
-                        <circle fill="#3C5A9A" cx="29.5091719" cy="29.4927506" r="29.4882047" />
+                  <svg
+                    width="24px"
+                    height="32px"
+                    viewBox="0 0 64 64"
+                    version="1.1"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        transform="translate(3.000000, 3.000000)"
+                        fill-rule="nonzero"
+                      >
+                        <circle
+                          fill="#3C5A9A"
+                          cx="29.5091719"
+                          cy="29.4927506"
+                          r="29.4882047"
+                        />
                         <path
                           d="M39.0974944,9.05587273 L32.5651312,9.05587273 C28.6886088,9.05587273 24.3768224,10.6862851 24.3768224,16.3054653 C24.395747,18.2634019 24.3768224,20.1385313 24.3768224,22.2488655 L19.8922122,22.2488655 L19.8922122,29.3852113 L24.5156022,29.3852113 L24.5156022,49.9295284 L33.0113092,49.9295284 L33.0113092,29.2496356 L38.6187742,29.2496356 L39.1261316,22.2288395 L32.8649196,22.2288395 C32.8649196,22.2288395 32.8789377,19.1056932 32.8649196,18.1987181 C32.8649196,15.9781412 35.1755132,16.1053059 35.3144932,16.1053059 C36.4140178,16.1053059 38.5518876,16.1085101 39.1006986,16.1053059 L39.1006986,9.05587273 L39.0974944,9.05587273 L39.0974944,9.05587273 Z"
                           fill="#FFFFFF"
@@ -48,8 +70,18 @@
               </div>
               <div class="col-3 px-1">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                  <svg
+                    width="24px"
+                    height="32px"
+                    viewBox="0 0 64 64"
+                    version="1.1"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
                       <g
                         transform="translate(7.000000, 0.564551)"
                         fill="#000000"
@@ -65,9 +97,22 @@
               </div>
               <div class="col-3 me-auto px-1">
                 <a class="btn btn-outline-light w-100" href="javascript:;">
-                  <svg width="24px" height="32px" viewBox="0 0 64 64" version="1.1">
-                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                      <g transform="translate(3.000000, 2.000000)" fill-rule="nonzero">
+                  <svg
+                    width="24px"
+                    height="32px"
+                    viewBox="0 0 64 64"
+                    version="1.1"
+                  >
+                    <g
+                      stroke="none"
+                      stroke-width="1"
+                      fill="none"
+                      fill-rule="evenodd"
+                    >
+                      <g
+                        transform="translate(3.000000, 2.000000)"
+                        fill-rule="nonzero"
+                      >
                         <path
                           d="M57.8123233,30.1515267 C57.8123233,27.7263183 57.6155321,25.9565533 57.1896408,24.1212666 L29.4960833,24.1212666 L29.4960833,35.0674653 L45.7515771,35.0674653 C45.4239683,37.7877475 43.6542033,41.8844383 39.7213169,44.6372555 L39.6661883,45.0037254 L48.4223791,51.7870338 L49.0290201,51.8475849 C54.6004021,46.7020943 57.8123233,39.1313952 57.8123233,30.1515267"
                           fill="#4285F4"
@@ -92,32 +137,46 @@
               <div class="mt-2 position-relative text-center">
                 <p
                   class="text-sm font-weight-bold mb-2 text-secondary text-border d-inline z-index-2 bg-white px-3"
-                >or</p>
+                >
+                  or
+                </p>
               </div>
             </div>
             <div class="card-body">
               <form role="form">
                 <argon-input type="text" placeholder="Name" aria-label="Name" />
-                <argon-input type="email" placeholder="Email" aria-label="Email" />
-                <argon-input type="password" placeholder="Password" aria-label="Password" />
+                <argon-input
+                  type="email"
+                  placeholder="Email"
+                  aria-label="Email"
+                />
+                <argon-input
+                  type="password"
+                  placeholder="Password"
+                  aria-label="Password"
+                />
                 <argon-checkbox checked>
                   <label class="form-check-label" for="flexCheckDefault">
                     I agree the
-                    <a
-                      href="javascript:;"
-                      class="text-dark font-weight-bolder"
-                    >Terms and Conditions</a>
+                    <a href="javascript:;" class="text-dark font-weight-bolder"
+                      >Terms and Conditions</a
+                    >
                   </label>
                 </argon-checkbox>
                 <div class="text-center">
-                  <argon-button fullWidth color="dark" variant="gradient" class="my-4 mb-2">Sign up</argon-button>
+                  <argon-button
+                    fullWidth
+                    color="dark"
+                    variant="gradient"
+                    class="my-4 mb-2"
+                    >Sign up</argon-button
+                  >
                 </div>
                 <p class="text-sm mt-3 mb-0">
                   Already have an account?
-                  <a
-                    href="javascript:;"
-                    class="text-dark font-weight-bolder"
-                  >Sign in</a>
+                  <a href="javascript:;" class="text-dark font-weight-bolder"
+                    >Sign in</a
+                  >
                 </p>
               </form>
             </div>

@@ -4,14 +4,14 @@
 }
 
 /* Edit Task */
-ul li input[type=text] {
-  display:none;
+ul li input[type="text"] {
+  display: none;
 }
 
-ul li.editMode input[type=text] {
-  display:block;
+ul li.editMode input[type="text"] {
+  display: block;
 }
 
 ul li.editMode label {
-  display:none;
+  display: none;
 }

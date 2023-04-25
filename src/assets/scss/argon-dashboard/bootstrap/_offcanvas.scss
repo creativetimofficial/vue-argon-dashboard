@@ -15,7 +15,11 @@
 }
 
 .offcanvas-backdrop {
-  @include overlay-backdrop($zindex-offcanvas-backdrop, $offcanvas-backdrop-bg, $offcanvas-backdrop-opacity);
+  @include overlay-backdrop(
+    $zindex-offcanvas-backdrop,
+    $offcanvas-backdrop-bg,
+    $offcanvas-backdrop-opacity
+  );
 }
 
 .offcanvas-header {
@@ -25,10 +29,10 @@
   padding: $offcanvas-padding-y $offcanvas-padding-x;
 
   .btn-close {
-    padding: ($offcanvas-padding-y * .5) ($offcanvas-padding-x * .5);
-    margin-top: $offcanvas-padding-y * -.5;
-    margin-right: $offcanvas-padding-x * -.5;
-    margin-bottom: $offcanvas-padding-y * -.5;
+    padding: ($offcanvas-padding-y * 0.5) ($offcanvas-padding-x * 0.5);
+    margin-top: $offcanvas-padding-y * -0.5;
+    margin-right: $offcanvas-padding-x * -0.5;
+    margin-bottom: $offcanvas-padding-y * -0.5;
   }
 }
 

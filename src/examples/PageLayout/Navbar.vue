@@ -98,7 +98,7 @@ export default {
   data() {
     return {
       downArrWhite,
-      downArrBlack
+      downArrBlack,
     };
   },
   props: {
@@ -107,15 +107,15 @@ export default {
     isBtn: { type: String, default: "bg-gradient-light" },
     darkMode: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     darkModes() {
       return {
-        "text-dark": this.darkMode
+        "text-dark": this.darkMode,
       };
-    }
-  }
+    },
+  },
 };
 </script>

@@ -18,7 +18,11 @@
       <div class="row">
         <div class="text-center col-5">
           <div class="chart">
-            <canvas id="chart-consumption" class="chart-canvas" height="197"></canvas>
+            <canvas
+              id="chart-consumption"
+              class="chart-canvas"
+              height="197"
+            ></canvas>
           </div>
           <h4 class="font-weight-bold mt-n8">
             <span>471.3</span>

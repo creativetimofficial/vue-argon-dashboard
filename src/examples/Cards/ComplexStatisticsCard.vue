@@ -41,20 +41,28 @@
               :class="{ show: showMenu }"
             >
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">Action</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Action</a
+                >
               </li>
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">Another action</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Another action</a
+                >
               </li>
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">Something else here</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;"
+                  >Something else here</a
+                >
               </li>
             </ul>
           </div>
           <p
             class="text-white text-sm text-end font-weight-bolder mt-auto mb-0"
             :class="class_percentage"
-          >{{ percentage }}</p>
+          >
+            {{ percentage }}
+          </p>
         </div>
       </div>
     </div>

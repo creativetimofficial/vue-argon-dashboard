@@ -4,20 +4,26 @@
       :minNav="navbarMinimize"
       :toggle="toggleConfigurator"
       :class="`${
-        this.$store.state.isNavFixed ? this.$store.state.navbarFixed_class : ''} ${this.$store.state.isNavFixed ? 'bg-white' : 'bg-success'}`
-      "
+        this.$store.state.isNavFixed ? this.$store.state.navbarFixed_class : ''
+      } ${this.$store.state.isNavFixed ? 'bg-white' : 'bg-success'}`"
     />
   </div>
   <div
     class="mx-3 mt-4 border-radius-xl position-relative"
     :style="{
       backgroundImage: 'url(' + require('@/assets/img/vr-bg.jpg') + ')',
-      backgroundSize: 'cover'
+      backgroundSize: 'cover',
     }"
   >
-    <sidenav :custom_class="this.$store.state.mcolor" :class="isTransparent" class="fixed-start" />
+    <sidenav
+      :custom_class="this.$store.state.mcolor"
+      :class="isTransparent"
+      class="fixed-start"
+    />
     <main class="mt-1 main-content border-radius-lg">
-      <div class="section min-vh-85 position-relative transform-scale-0 transform-scale-md-7">
+      <div
+        class="section min-vh-85 position-relative transform-scale-0 transform-scale-md-7"
+      >
         <div class="container-fluid">
           <div class="pt-10 row">
             <div class="pt-5 text-center col-lg-1 col-md-1 pt-lg-0 ms-lg-5">
@@ -28,7 +34,11 @@
                 data-bs-placement="left"
                 title="My Profile"
               >
-                <img class="border-radius-lg" alt="Image placeholder" src="@/assets/img/team-1.jpg" />
+                <img
+                  class="border-radius-lg"
+                  alt="Image placeholder"
+                  src="@/assets/img/team-1.jpg"
+                />
               </a>
               <button
                 class="p-2 mt-2 btn btn-white border-radius-lg d-block"

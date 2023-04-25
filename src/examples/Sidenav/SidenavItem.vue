@@ -18,12 +18,12 @@ export default {
   props: {
     url: {
       type: String,
-      required: true
+      required: true,
     },
     navText: {
       type: String,
-      required: true
-    }
-  }
+      required: true,
+    },
+  },
 };
 </script>

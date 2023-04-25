@@ -11,20 +11,20 @@
     }
 
     .dropdown-toggle {
-      &:after{
+      &:after {
         content: "\f107";
         font: normal normal normal 14px/1 FontAwesome;
         border: none;
         vertical-align: middle;
         font-weight: $font-weight-bold;
       }
-      &.show{
-        &:after{
+      &.show {
+        &:after {
           transform: $dropdown-toggle-arrow-transform;
         }
       }
-      &:after{
-         transition: $dropdown-toggle-arrow-transition;
+      &:after {
+        transition: $dropdown-toggle-arrow-transition;
       }
     }
   }
@@ -39,10 +39,13 @@
       animation: $dropdown-animation;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      will-change: animation,box-shadow;
+      will-change: animation, box-shadow;
     }
 
-    &.dropdown-hover:hover > .dropdown-menu .dropdown-hover:hover > .dropdown-menu,
+    &.dropdown-hover:hover
+      > .dropdown-menu
+      .dropdown-hover:hover
+      > .dropdown-menu,
     .dropdown-menu.show {
       opacity: 1;
       pointer-events: auto;
@@ -57,7 +60,7 @@
 
     &.dropdown-hover {
       &:after {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         bottom: $dropdown-hover-after-bottom-pos;
@@ -90,7 +93,8 @@
   }
 
   .dropdown-item {
-    transition: background-color $dropdown-transition-time, color $dropdown-transition-time;
+    transition: background-color $dropdown-transition-time,
+      color $dropdown-transition-time;
   }
 }
 
@@ -107,7 +111,7 @@
         transition: $dropdown-transition;
         -webkit-backface-visibility: hidden;
         backface-visibility: hidden;
-        will-change: transform,box-shadow;
+        will-change: transform, box-shadow;
         box-shadow: $dropdown-box-shadow;
 
         &:before {
@@ -154,7 +158,7 @@
       transition: $dropdown-transition;
       -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
-      will-change: animation,box-shadow;
+      will-change: animation, box-shadow;
       box-shadow: $dropdown-box-shadow;
 
       &:before {
@@ -191,12 +195,10 @@
     }
   }
 
-
-
   .dropdown.nav-item .dropdown-menu-animation {
     display: block;
     height: 0;
-    transition: all .35s ease;
+    transition: all 0.35s ease;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     opacity: 0;
@@ -227,12 +229,12 @@
       left: 0;
       top: 0;
       z-index: -1;
-      transition: left .35s ease;
+      transition: left 0.35s ease;
     }
-    &.dropdown-menu-end{
+    &.dropdown-menu-end {
       right: 0 !important;
       left: auto !important;
-      &:before{
+      &:before {
         right: $dropdown-animation-arrow-left-position;
         left: auto;
       }
@@ -250,7 +252,7 @@
   }
 }
 
-.dropdown .dropdown-menu .dropdown-item+.dropdown-menu {
+.dropdown .dropdown-menu .dropdown-item + .dropdown-menu {
   right: $dropdown-subitem-position-right;
   left: auto;
   top: 0;
@@ -276,9 +278,9 @@
 }
 
 @include media-breakpoint-down(xl) {
- .dropdown-lg-responsive {
-   min-width: $dropdown-lg-width-responsive;
- }
+  .dropdown-lg-responsive {
+    min-width: $dropdown-lg-width-responsive;
+  }
 }
 
 // Keyframes
@@ -303,6 +305,6 @@
 
   to {
     opacity: 0;
-    transform: translate(0, 10px)
+    transform: translate(0, 10px);
   }
 }

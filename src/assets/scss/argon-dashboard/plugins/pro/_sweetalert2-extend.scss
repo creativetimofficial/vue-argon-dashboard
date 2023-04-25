@@ -3,13 +3,18 @@
 }
 
 .swal2-styled.swal2-confirm {
-  background-image: linear-gradient(310deg,#2152ff,#21d4fd);
+  background-image: linear-gradient(310deg, #2152ff, #21d4fd);
   background-color: transparent;
-  @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-border-radius);
+  @include button-size(
+    $btn-padding-y,
+    $btn-padding-x,
+    $btn-font-size,
+    $btn-border-radius
+  );
 
   &:hover,
   &:focus {
-    background-image: linear-gradient(310deg,#2152ff,#21d4fd) !important;
+    background-image: linear-gradient(310deg, #2152ff, #21d4fd) !important;
     outline: 0;
     box-shadow: $btn-focus-box-shadow;
   }

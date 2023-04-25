@@ -4,7 +4,9 @@
       <div class="mb-2">
         <sup class="text-white">$</sup>
         <span class="h2 text-white">3,300</span>
-        <div class="text-white opacity-8 mt-2 text-sm">Your current balance</div>
+        <div class="text-white opacity-8 mt-2 text-sm">
+          Your current balance
+        </div>
         <div>
           <span class="text-success font-weight-600">+ 15%</span>
           <span class="text-white opacity-8">($250)</span>

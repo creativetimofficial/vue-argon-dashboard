@@ -205,7 +205,7 @@ export default {
   name: "navbar",
   data() {
     return {
-      showMenu: false
+      showMenu: false,
     };
   },
   props: ["minNav", "textWhite"],
@@ -219,15 +219,15 @@ export default {
     toggleSidebar() {
       this.toggleSidebarColor("bg-white");
       this.navbarMinimize();
-    }
+    },
   },
   components: {
-    Breadcrumbs
+    Breadcrumbs,
   },
   computed: {
     currentRouteName() {
       return this.$route.name;
-    }
-  }
+    },
+  },
 };
 </script>

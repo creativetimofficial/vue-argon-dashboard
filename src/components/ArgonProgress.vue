@@ -3,7 +3,7 @@
     <div
       class="progress-bar"
       :class="getClasses(color, variant)"
-      :style="{width: percentage + '%'}"
+      :style="{ width: percentage + '%' }"
     ></div>
   </div>
 </template>
