@@ -5,14 +5,15 @@
         <i :class="getIcon(icon)"></i>
       </span>
       <input
+        :id="id"
         :type="type"
         class="form-control"
-        :class="getClasses(size, valid)"
+        :class="getClasses(size, success, error)"
         :name="name"
-        :id="id"
-        :value="value"
+        :value="modelValue"
         :placeholder="placeholder"
         :isRequired="isRequired"
+        @input="$emit('update:modelValue', $event.target.value)"
       />
       <span v-if="iconDir === 'right'" class="input-group-text">
         <i :class="getIcon(icon)"></i>
@@ -23,32 +24,68 @@
 
 <script>
 export default {
-  name: "argon-input",
+  name: "ArgonInput",
   props: {
     size: {
       type: String,
       default: "default",
     },
-    valid: {
+    success: {
       type: Boolean,
       default: false,
     },
-    icon: String,
-    iconDir: String,
-    name: String,
-    id: String,
-    value: String,
-    placeholder: String,
-    type: String,
-    isRequired: Boolean,
+    error: {
+      type: Boolean,
+      default: false,
+    },
+    icon: {
+      type: String,
+      default: "",
+    },
+    iconDir: {
+      type: String,
+      default: "",
+    },
+    name: {
+      type: String,
+      default: "",
+    },
+    id: {
+      type: String,
+      default: "",
+    },
+    modelValue: {
+      type: String,
+      default: "",
+    },
+    placeholder: {
+      type: String,
+      default: "",
+    },
+    type: {
+      type: String,
+      default: "text",
+    },
+    isRequired: {
+      type: Boolean,
+      default: false,
+    },
   },
+  emits: ["update:modelValue"],
+
   methods: {
-    getClasses: (size, valid) => {
+    getClasses: (size, success, error) => {
       let sizeValue, isValidValue;
 
       sizeValue = size ? `form-control-${size}` : null;
 
-      isValidValue = valid ? `${valid}` : "invalid";
+      if (error) {
+        isValidValue = "is-invalid";
+      } else if (success) {
+        isValidValue = "is-valid";
+      } else {
+        isValidValue = "";
+      }
 
       return `${sizeValue} ${isValidValue}`;
     },
