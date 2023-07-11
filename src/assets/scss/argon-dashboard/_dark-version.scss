@@ -122,9 +122,13 @@
     &.input-group-static {
       .form-control {
         background-image: $dark-version-input-bg-image !important;
-        background-size: 0 100%, 100% 100%;
+        background-size:
+          0 100%,
+          100% 100%;
         &:focus {
-          background-size: 100% 100%, 100% 100%;
+          background-size:
+            100% 100%,
+            100% 100%;
         }
       }
     }

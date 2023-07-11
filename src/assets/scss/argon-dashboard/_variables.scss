@@ -473,9 +473,11 @@ $rounded-pill: 50rem !default;
 
 $box-shadow-xs: 0 2px 9px -5px rgba($black, 0.15) !default;
 $box-shadow-sm: 0 0.3125rem 0.625rem 0 rgba(0, 0, 0, 0.12) !default;
-$box-shadow: 0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
+$box-shadow:
+  0 0.25rem 0.375rem -0.0625rem rgba(20, 20, 20, 0.12),
   0 0.125rem 0.25rem -0.0625rem rgba(20, 20, 20, 0.07) !default;
-$box-shadow-lg: 0 8px 26px -4px rgba(20, 20, 20, 0.15),
+$box-shadow-lg:
+  0 8px 26px -4px rgba(20, 20, 20, 0.15),
   0 8px 9px -5px rgba(20, 20, 20, 0.06) !default;
 $box-shadow-xl: 0 23px 45px -11px rgba(20, 20, 20, 0.25) !default;
 $box-shadow-inset: inset 0 1px 2px rgba($black, 0.075) !default;
@@ -780,10 +782,13 @@ $btn-font-size-lg: 0.875rem !default;
 $btn-border-width: $input-btn-border-width !default;
 
 $btn-font-weight: $font-weight-bolder !default;
-$btn-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08) !default;
+$btn-box-shadow:
+  0 4px 6px rgba(50, 50, 93, 0.1),
+  0 1px 3px rgba(0, 0, 0, 0.08) !default;
 $btn-box-shadow-values: 0 5px 8px 0 !default;
 $btn-box-shadow-hover-values: 0 8px 10px 0 !default;
-$btn-hover-box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1),
+$btn-hover-box-shadow:
+  0 7px 14px rgba(50, 50, 93, 0.1),
   0 3px 6px rgba(0, 0, 0, 0.08) !default;
 $btn-focus-box-shadow: $btn-hover-box-shadow !default;
 $btn-focus-width: $input-btn-focus-width !default;
@@ -908,7 +913,8 @@ $input-focus-bg: $white !default;
 $input-focus-border-color: $primary !default;
 $input-focus-color: $input-color !default;
 $input-focus-width: 2px !default;
-$input-focus-box-shadow: 0 3px 9px rgba(50, 50, 9, 0),
+$input-focus-box-shadow:
+  0 3px 9px rgba(50, 50, 9, 0),
   3px 4px 8px rgba(94, 114, 228, 0.1) !default;
 
 $input-placeholder-color: $gray-500 !default;
@@ -924,11 +930,15 @@ $input-height: unset !default;
 $input-height-sm: unset !default;
 $input-height-lg: unset !default;
 
-$input-transition: box-shadow 0.15s ease, border-color 0.15s ease !default;
+$input-transition:
+  box-shadow 0.15s ease,
+  border-color 0.15s ease !default;
 
-$input-alternative-box-shadow: 0 1px 3px rgba(50, 50, 93, 0.15),
+$input-alternative-box-shadow:
+  0 1px 3px rgba(50, 50, 93, 0.15),
   0 1px 0 rgba(0, 0, 0, 0.02) !default;
-$input-alternative-focus-box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11),
+$input-alternative-focus-box-shadow:
+  0 4px 6px rgba(50, 50, 93, 0.11),
   0 1px 3px rgba(0, 0, 0, 0.08) !default;
 
 $form-check-input-width: 1.23em !default;
@@ -937,8 +947,11 @@ $form-check-padding-left: $form-check-input-width + 0.45em !default;
 $form-check-margin-bottom: 0.125rem !default;
 $form-check-label-color: null !default;
 $form-check-label-cursor: null !default;
-$form-check-transition: background-color 0.25s ease, border-color 0.25s ease,
-  background-position 0.15s ease-in-out, opacity 0.15s ease-out,
+$form-check-transition:
+  background-color 0.25s ease,
+  border-color 0.25s ease,
+  background-position 0.15s ease-in-out,
+  opacity 0.15s ease-out,
   box-shadow 0.15s ease-in-out !default;
 $form-check-transition-time: 0.25s !default;
 
@@ -1054,12 +1067,16 @@ $form-range-thumb-bg: $component-active-bg !default;
 $form-range-thumb-border: 0 !default;
 $form-range-thumb-border-radius: 1rem !default;
 $form-range-thumb-box-shadow: 0 0.1rem 0.25rem rgba($black, 0.1) !default;
-$form-range-thumb-focus-box-shadow: 0 0 0 1px $body-bg, $input-focus-box-shadow !default;
+$form-range-thumb-focus-box-shadow:
+  0 0 0 1px $body-bg,
+  $input-focus-box-shadow !default;
 $form-range-thumb-focus-box-shadow-width: $input-focus-width !default; // For focus box shadow issue in Edge
 $form-range-thumb-active-bg: lighten($component-active-bg, 35%) !default;
 $form-range-thumb-disabled-bg: $gray-500 !default;
-$form-range-thumb-transition: background-color 0.15s ease-in-out,
-  border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out !default;
+$form-range-thumb-transition:
+  background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out,
+  box-shadow 0.15s ease-in-out !default;
 
 $form-file-height: $input-height !default;
 $form-file-focus-border-color: $input-focus-border-color !default;
@@ -1140,8 +1157,10 @@ $nav-link-font-size: null !default;
 $nav-link-font-weight: null !default;
 $nav-link-color: null !default;
 $nav-link-hover-color: null !default;
-$nav-link-transition: color 0.15s ease-in-out,
-  background-color 0.15s ease-in-out, border-color 0.15s ease-in-out !default;
+$nav-link-transition:
+  color 0.15s ease-in-out,
+  background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out !default;
 $nav-link-disabled-color: $gray-600 !default;
 $nav-link-footer-padding: 0.25rem !default;
 
@@ -1299,8 +1318,10 @@ $pagination-disabled-color: $gray-600 !default;
 $pagination-disabled-bg: $white !default;
 $pagination-disabled-border-color: $gray-300 !default;
 
-$pagination-transition: color 0.15s ease-in-out,
-  background-color 0.15s ease-in-out, border-color 0.15s ease-in-out,
+$pagination-transition:
+  color 0.15s ease-in-out,
+  background-color 0.15s ease-in-out,
+  border-color 0.15s ease-in-out,
   box-shadow 0.15s ease-in-out !default;
 
 // Cards
@@ -1343,7 +1364,9 @@ $accordion-button-padding-y: $accordion-padding-y !default;
 $accordion-button-padding-x: $accordion-padding-x !default;
 $accordion-button-color: $accordion-color !default;
 $accordion-button-bg: $accordion-bg !default;
-$accordion-transition: $btn-transition, border-radius 0.15s ease !default;
+$accordion-transition:
+  $btn-transition,
+  border-radius 0.15s ease !default;
 $accordion-button-active-bg: $accordion-bg !default;
 $accordion-button-active-color: $dark !default;
 

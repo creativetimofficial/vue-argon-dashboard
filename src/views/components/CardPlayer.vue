@@ -6,7 +6,7 @@
       <div
         class="full-background"
         style="
-          background-image: url('https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2370&q=80');
+          background-image: url(&quot;https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2370&q=80&quot;);
         "
       ></div>
       <div class="card-body">
@@ -45,9 +45,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "card-player",
-};
-</script>

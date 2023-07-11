@@ -5,7 +5,7 @@ const sidebarWhite = document.querySelectorAll(".sidenav.bg-white");
 const hr_card = document.querySelectorAll("div:not(.bg-gradient-dark) hr");
 const text_btn = document.querySelectorAll("button:not(.btn) > .text-dark");
 const text_span = document.querySelectorAll(
-  "span.text-dark, .breadcrumb .text-dark"
+  "span.text-dark, .breadcrumb .text-dark",
 );
 const text_span_white = document.querySelectorAll("span.text-white");
 const text_strong = document.querySelectorAll("strong.text-dark");
@@ -15,16 +15,16 @@ const secondary = document.querySelectorAll(".text-secondary");
 const bg_gray_100 = document.querySelectorAll(".bg-gray-100");
 const bg_gray_600 = document.querySelectorAll(".bg-gray-600");
 const btn_text_dark = document.querySelectorAll(
-  ".btn.btn-link.text-dark, .btn .ni.text-dark"
+  ".btn.btn-link.text-dark, .btn .ni.text-dark",
 );
 const btn_text_white = document.querySelectorAll(
-  ".btn.btn-link.text-white, .btn .ni.text-white"
+  ".btn.btn-link.text-white, .btn .ni.text-white",
 );
 const card_border = document.querySelectorAll(".card.border");
 const card_border_dark = document.querySelectorAll(".card.border.border-dark");
 const svg = document.querySelectorAll("g");
 const navLinks = document.querySelectorAll(
-  ".navbar-main .nav-link, .navbar-main .breadcrumb-item, .navbar-main .breadcrumb-item a, .navbar-main h6"
+  ".navbar-main .nav-link, .navbar-main .breadcrumb-item, .navbar-main .breadcrumb-item a, .navbar-main h6",
 );
 const cardNavLinksIcons = document.querySelectorAll(".card .nav .nav-link i");
 const cardNavSpan = document.querySelectorAll(".card .nav .nav-link span");

@@ -1,10 +1,26 @@
+<script setup>
+defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: String,
+    required: true,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+});
+</script>
 <template>
   <div class="form-check">
     <input
+      :id="id"
       class="form-check-input"
       type="radio"
       :name="name"
-      :id="id"
       :checked="checked"
     />
     <label class="custom-control-label" :for="id">
@@ -12,14 +28,3 @@
     </label>
   </div>
 </template>
-
-<script>
-export default {
-  name: "argon-radio",
-  props: {
-    name: String,
-    id: String,
-    checked: String,
-  },
-};
-</script>

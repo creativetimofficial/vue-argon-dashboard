@@ -38,9 +38,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "developer-card",
-};
-</script>

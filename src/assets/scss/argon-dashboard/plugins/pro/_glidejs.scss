@@ -83,7 +83,9 @@
   text-shadow: 0 0.25em 0.5em rgba(0, 0, 0, 0.1);
   opacity: 1;
   cursor: pointer;
-  transition: opacity 150ms ease, border 300ms ease-in-out;
+  transition:
+    opacity 150ms ease,
+    border 300ms ease-in-out;
   transform: translateY(-50%);
   line-height: 1;
 }

@@ -267,7 +267,8 @@
   padding: $dropdown-item-padding-y $dropdown-item-padding-x;
   @include font-size($dropdown-font-size);
   border-radius: $border-radius-md;
-  transition: background-color $dropdown-transition-time,
+  transition:
+    background-color $dropdown-transition-time,
     color $dropdown-transition-time;
 }
 

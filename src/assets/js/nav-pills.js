@@ -35,18 +35,18 @@ export default function setNavPills() {
               if (item.classList.contains("flex-column")) {
                 for (var j = 1; j <= nodes.indexOf(li); j++) {
                   sum += item.querySelector(
-                    "li:nth-child(" + j + ")"
+                    "li:nth-child(" + j + ")",
                   ).offsetHeight;
                 }
                 moving_div.style.transform =
                   "translate3d(0px," + sum + "px, 0px)";
                 moving_div.style.height = item.querySelector(
-                  "li:nth-child(" + j + ")"
+                  "li:nth-child(" + j + ")",
                 ).offsetHeight;
               } else {
                 for (var j = 1; j <= nodes.indexOf(li); j++) {
                   sum += item.querySelector(
-                    "li:nth-child(" + j + ")"
+                    "li:nth-child(" + j + ")",
                   ).offsetWidth;
                 }
                 moving_div.style.transform =
@@ -98,7 +98,7 @@ export default function setNavPills() {
             item.querySelector("li:nth-child(" + index + ")").offsetWidth +
             "px";
           moving_div.style.height = item.querySelector(
-            "li:nth-child(" + j + ")"
+            "li:nth-child(" + j + ")",
           ).offsetHeight;
         } else {
           for (var j = 1; j <= nodes.indexOf(li); j++) {

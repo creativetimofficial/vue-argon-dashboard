@@ -9,7 +9,8 @@
     height: $form-check-input-width + 0.02;
 
     &:after {
-      transition: transform $form-check-transition-time ease-in-out,
+      transition:
+        transform $form-check-transition-time ease-in-out,
         background-color $form-check-transition-time ease-in-out;
       content: "";
       width: $form-switch-check-after-width;

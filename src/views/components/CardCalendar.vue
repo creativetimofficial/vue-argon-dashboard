@@ -36,9 +36,3 @@
     </a>
   </div>
 </template>
-
-<script>
-export default {
-  name: "card-calendar",
-};
-</script>

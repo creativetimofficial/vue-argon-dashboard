@@ -1,3 +1,20 @@
+<script setup>
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+
+import SidenavItem from "./SidenavItem.vue";
+import SidenavCard from "./SidenavCard.vue";
+
+const store = useStore();
+const isRTL = computed(() => store.state.isRTL);
+
+const getRoute = () => {
+  const route = useRoute();
+  const routeArr = route.path.split("/");
+  return routeArr[1];
+};
+</script>
 <template>
   <div
     class="collapse navbar-collapse w-auto h-auto h-100"
@@ -6,9 +23,9 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <sidenav-item
-          url="/dashboard-default"
+          to="/dashboard-default"
           :class="getRoute() === 'dashboard-default' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'لوحة القيادة' : 'Dashboard'"
+          :navText="isRTL ? 'لوحة القيادة' : 'Dashboard'"
         >
           <template v-slot:icon>
             <i class="ni ni-tv-2 text-primary text-sm opacity-10"></i>
@@ -18,9 +35,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/tables"
+          to="/tables"
           :class="getRoute() === 'tables' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'الجداول' : 'Tables'"
+          :navText="isRTL ? 'الجداول' : 'Tables'"
         >
           <template v-slot:icon>
             <i
@@ -32,9 +49,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/billing"
+          to="/billing"
           :class="getRoute() === 'billing' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'الفواتیر' : 'Billing'"
+          :navText="isRTL ? 'الفواتیر' : 'Billing'"
         >
           <template v-slot:icon>
             <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
@@ -44,11 +61,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/virtual-reality"
+          to="/virtual-reality"
           :class="getRoute() === 'virtual-reality' ? 'active' : ''"
-          :navText="
-            this.$store.state.isRTL ? 'الواقع الافتراضي' : 'Virtual Reality'
-          "
+          :navText="isRTL ? 'الواقع الافتراضي' : 'Virtual Reality'"
         >
           <template v-slot:icon>
             <i class="ni ni-app text-info text-sm opacity-10"></i>
@@ -58,7 +73,7 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/rtl-page"
+          to="/rtl-page"
           :class="getRoute() === 'rtl-page' ? 'active' : ''"
           navText="RTL"
         >
@@ -70,9 +85,9 @@
 
       <li class="mt-3 nav-item">
         <h6
-          v-if="this.$store.state.isRTL"
+          v-if="isRTL"
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
+          :class="isRTL ? 'me-4' : 'ms-2'"
         >
           صفحات المرافق
         </h6>
@@ -80,7 +95,7 @@
         <h6
           v-else
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
-          :class="this.$store.state.isRTL ? 'me-4' : 'ms-2'"
+          :class="isRTL ? 'me-4' : 'ms-2'"
         >
           ACCOUNT PAGES
         </h6>
@@ -88,9 +103,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/profile"
+          to="/profile"
           :class="getRoute() === 'profile' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'حساب تعريفي' : 'Profile'"
+          :navText="isRTL ? 'حساب تعريفي' : 'Profile'"
         >
           <template v-slot:icon>
             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
@@ -100,9 +115,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/signin"
+          to="/signin"
           :class="getRoute() === 'signin' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'تسجيل الدخول' : 'Sign In'"
+          :navText="isRTL ? 'تسجيل الدخول' : 'Sign In'"
         >
           <template v-slot:icon>
             <i class="ni ni-single-copy-04 text-danger text-sm opacity-10"></i>
@@ -112,9 +127,9 @@
 
       <li class="nav-item">
         <sidenav-item
-          url="/signup"
+          to="/signup"
           :class="getRoute() === 'signup' ? 'active' : ''"
-          :navText="this.$store.state.isRTL ? 'اشتراك' : 'Sign Up'"
+          :navText="isRTL ? 'اشتراك' : 'Sign Up'"
         >
           <template v-slot:icon>
             <i class="ni ni-collection text-info text-sm opacity-10"></i>
@@ -126,38 +141,24 @@
 
   <div class="pt-3 mx-3 mt-3 sidenav-footer">
     <sidenav-card
-      :class="cardBg"
-      textPrimary="Need Help?"
-      textSecondary="Please check our docs"
+      :card="{
+        title: 'Need Help?',
+        description: 'Please check our docs',
+        links: [
+          {
+            label: 'Documentation',
+            route:
+              'https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/',
+            color: 'dark',
+          },
+          {
+            label: 'Buy now',
+            route:
+              'https://www.creative-tim.com/product/vue-argon-dashboard-pro?ref=vadp',
+            color: 'success',
+          },
+        ],
+      }"
     />
   </div>
 </template>
-
-<script>
-import SidenavItem from "./SidenavItem.vue";
-import SidenavCard from "./SidenavCard.vue";
-
-export default {
-  name: "SidenavList",
-  props: {
-    cardBg: String,
-  },
-  data() {
-    return {
-      title: "Argon Dashboard 2",
-      controls: "dashboardsExamples",
-      isActive: "active",
-    };
-  },
-  components: {
-    SidenavItem,
-    SidenavCard,
-  },
-  methods: {
-    getRoute() {
-      const routeArr = this.$route.path.split("/");
-      return routeArr[1];
-    },
-  },
-};
-</script>

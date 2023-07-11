@@ -81,9 +81,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "profile-card",
-};
-</script>

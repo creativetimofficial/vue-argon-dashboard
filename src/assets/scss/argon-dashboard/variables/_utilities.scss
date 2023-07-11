@@ -182,7 +182,8 @@ $blur-box-shadow: inset 0px 0px 2px #fefefed1 !default;
 $blur-backdrop-filter: saturate(200%) blur(30px) !default;
 $blur-backdrop-filter-less: saturate(20%) blur(30px) !default;
 
-$shadow-blur-box-shadow: inset 0 0px 1px 1px rgba(254, 254, 254, 0.9),
+$shadow-blur-box-shadow:
+  inset 0 0px 1px 1px rgba(254, 254, 254, 0.9),
   0 20px 27px 0 rgba(0, 0, 0, 0.05) !default;
 
 // sidebar variables

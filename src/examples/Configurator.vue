@@ -1,24 +1,54 @@
+<script setup>
+import { computed } from "vue";
+import { useStore } from "vuex";
+import { activateDarkMode, deactivateDarkMode } from "@/assets/js/dark-mode";
+
+const store = useStore();
+// state
+const isRTL = computed(() => store.state.isRTL);
+const isNavFixed = computed(() => store.state.isNavFixed);
+const sidebarType = computed(() => store.state.sidebarType);
+const toggleConfigurator = () => store.commit("toggleConfigurator");
+
+// mutations
+const navbarFixed = () => store.commit("navbarFixed");
+const setSidebarType = (type) => store.commit("sidebarType", type);
+
+const sidebarColor = (color = "success") => {
+  document.querySelector("#sidenav-main").setAttribute("data-color", color);
+};
+
+const darkMode = () => {
+  if (store.state.darkMode) {
+    store.state.darkMode = false;
+    setSidebarType("bg-white");
+    deactivateDarkMode();
+    return;
+  } else {
+    store.state.darkMode = true;
+    setSidebarType("bg-default");
+    activateDarkMode();
+  }
+};
+</script>
 <template>
   <div class="fixed-plugin">
     <a
       class="px-3 py-2 fixed-plugin-button text-dark position-fixed"
-      @click="toggle"
+      @click="toggleConfigurator"
     >
       <i class="py-2 fa fa-cog"></i>
     </a>
     <div class="shadow-lg card">
       <div class="pt-3 pb-0 bg-transparent card-header">
-        <div
-          class=""
-          :class="this.$store.state.isRTL ? 'float-end' : 'float-start'"
-        >
+        <div class="" :class="isRTL ? 'float-end' : 'float-start'">
           <h5 class="mt-3 mb-0">Argon Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div
           class="mt-4"
-          @click="toggle"
-          :class="this.$store.state.isRTL ? 'float-start' : 'float-end'"
+          @click="toggleConfigurator"
+          :class="isRTL ? 'float-start' : 'float-end'"
         >
           <button class="p-0 btn btn-link text-dark fixed-plugin-close-button">
             <i class="fa fa-close"></i>
@@ -35,7 +65,7 @@
         <a href="#" class="switch-trigger background-color">
           <div
             class="my-2 badge-colors"
-            :class="this.$store.state.isRTL ? 'text-end' : ' text-start'"
+            :class="isRTL ? 'text-end' : ' text-start'"
           >
             <span
               class="badge filter bg-gradient-primary active"
@@ -79,11 +109,11 @@
             id="btn-white"
             class="btn w-100 px-3 mb-2"
             :class="
-              this.$store.state.sidebarType === 'bg-white'
+              sidebarType === 'bg-white'
                 ? 'bg-gradient-success'
                 : 'btn-outline-success'
             "
-            @click="sidebarType('bg-white')"
+            @click="setSidebarType('bg-white')"
           >
             White
           </button>
@@ -91,11 +121,11 @@
             id="btn-dark"
             class="btn w-100 px-3 mb-2"
             :class="
-              this.$store.state.sidebarType === 'bg-default'
+              sidebarType === 'bg-default'
                 ? 'bg-gradient-success'
                 : 'btn-outline-success'
             "
-            @click="sidebarType('bg-default')"
+            @click="setSidebarType('bg-default')"
           >
             Dark
           </button>
@@ -110,28 +140,24 @@
           <div class="form-check form-switch ps-0 ms-auto my-auto">
             <input
               class="mt-1 form-check-input"
-              :class="
-                this.$store.state.isRTL ? 'float-end  me-auto' : ' ms-auto'
-              "
+              :class="isRTL ? 'float-end  me-auto' : ' ms-auto'"
               type="checkbox"
               id="navbarFixed"
-              :checked="this.$store.state.isNavFixed"
-              @click="setNavbarFixed"
+              :checked="isNavFixed"
+              @click="navbarFixed"
             />
           </div>
         </div>
 
         <hr class="horizontal dark my-4" />
         <div class="mt-2 mb-5 d-flex">
-          <h6 class="mb-0" :class="this.$store.state.isRTL ? 'ms-2' : ''">
-            Light / Dark
-          </h6>
+          <h6 class="mb-0" :class="isRTL ? 'ms-2' : ''">Light / Dark</h6>
           <div class="form-check form-switch ps-0 ms-auto my-auto">
             <input
               class="form-check-input mt-1 ms-auto"
               type="checkbox"
-              :checked="this.$store.state.darkMode"
-              @click="setDarkMode"
+              :checked="store.state.darkMode"
+              @click="darkMode"
             />
           </div>
         </div>
@@ -175,60 +201,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import { mapMutations } from "vuex";
-import { activateDarkMode, deactivateDarkMode } from "@/assets/js/dark-mode";
-export default {
-  name: "configurator",
-  props: ["toggle"],
-  methods: {
-    ...mapMutations(["navbarMinimize", "sidebarType", "navbarFixed"]),
-    sidebarColor(color = "success") {
-      document.querySelector("#sidenav-main").setAttribute("data-color", color);
-      this.$store.state.mcolor = `card-background-mask-${color}`;
-    },
-    sidebarType(type) {
-      this.$store.state.sidebarType = type;
-    },
-    setNavbarFixed() {
-      if (
-        this.$route.name !== "Profile" ||
-        this.$route.name !== "All Projects"
-      ) {
-        this.$store.state.isNavFixed = !this.$store.state.isNavFixed;
-      }
-    },
-    setDarkMode() {
-      if (this.$store.state.darkMode) {
-        this.$store.state.darkMode = false;
-        this.$store.state.sidebarType = "bg-white";
-        deactivateDarkMode();
-        return;
-      } else {
-        this.$store.state.darkMode = true;
-        this.$store.state.sidebarType = "bg-default";
-        activateDarkMode();
-      }
-    },
-    sidenavTypeOnResize() {
-      let white = document.querySelector("#btn-white");
-      if (window.innerWidth < 1200) {
-        white.classList.add("disabled");
-      } else {
-        white.classList.remove("disabled");
-      }
-    },
-  },
-  computed: {
-    sidenavResponsive() {
-      return this.sidenavTypeOnResize;
-    },
-  },
-  beforeMount() {
-    this.$store.state.isTransparent = "bg-transparent";
-    window.addEventListener("resize", this.sidenavTypeOnResize);
-    window.addEventListener("load", this.sidenavTypeOnResize);
-  },
-};
-</script>

@@ -1,23 +1,29 @@
+<script setup>
+defineProps({
+  id: {
+    type: String,
+    required: true,
+  },
+  placeholder: {
+    type: String,
+    default: "",
+  },
+  rows: {
+    type: Number,
+    default: 5,
+  },
+});
+</script>
 <template>
   <div class="form-group">
-    <label :for="exampleFormControlTextarea1">
+    <label :for="id">
       <slot />
     </label>
     <textarea
+      :id="id"
       class="form-control"
-      rows="5"
+      :rows="rows"
       :placeholder="placeholder"
-      :id="exampleFormControlTextarea1"
     ></textarea>
   </div>
 </template>
-
-<script>
-export default {
-  name: "argon-textarea",
-  props: {
-    id: String,
-    placeholder: String,
-  },
-};
-</script>

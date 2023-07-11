@@ -3,7 +3,7 @@ import { createStore } from "vuex";
 export default createStore({
   state: {
     hideConfigButton: false,
-    isPinned: true,
+    isPinned: false,
     showConfig: false,
     sidebarType: "bg-white",
     isRTL: false,
@@ -22,17 +22,16 @@ export default createStore({
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },
-    navbarMinimize(state) {
-      const sidenav_show = document.querySelector(".g-sidenav-show");
-
-      if (sidenav_show.classList.contains("g-sidenav-hidden")) {
-        sidenav_show.classList.remove("g-sidenav-hidden");
-        sidenav_show.classList.add("g-sidenav-pinned");
-        state.isPinned = true;
-      } else {
+    sidebarMinimize(state) {
+      let sidenav_show = document.querySelector("#app");
+      if (state.isPinned) {
         sidenav_show.classList.add("g-sidenav-hidden");
         sidenav_show.classList.remove("g-sidenav-pinned");
         state.isPinned = false;
+      } else {
+        sidenav_show.classList.add("g-sidenav-pinned");
+        sidenav_show.classList.remove("g-sidenav-hidden");
+        state.isPinned = true;
       }
     },
     sidebarType(state, payload) {

@@ -322,7 +322,8 @@
 }
 
 .navbar-main {
-  transition: box-shadow $transition-base-time ease-in,
+  transition:
+    box-shadow $transition-base-time ease-in,
     background-color $transition-base-time ease-in;
 
   &.fixed-top {

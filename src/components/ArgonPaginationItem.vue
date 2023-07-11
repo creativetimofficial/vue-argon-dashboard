@@ -1,3 +1,35 @@
+<script setup>
+defineProps({
+  label: {
+    type: String,
+    default: "",
+  },
+  active: {
+    type: Boolean,
+    default: false,
+  },
+  disabled: {
+    type: Boolean,
+    default: false,
+  },
+  prev: {
+    type: Boolean,
+    default: false,
+  },
+  next: {
+    type: Boolean,
+    default: false,
+  },
+});
+const getClasses = (active, disabled) => {
+  let activeValue, disabledValue;
+
+  activeValue = active ? "active" : null;
+  disabledValue = disabled ? "disabled" : null;
+
+  return `${activeValue} ${disabledValue}`;
+};
+</script>
 <template>
   <li class="page-item" :class="getClasses(active, disabled)">
     <a class="page-link" href="javascript:;">
@@ -7,38 +39,3 @@
     </a>
   </li>
 </template>
-
-<script>
-export default {
-  name: "argon-pagination-item",
-  props: {
-    label: String,
-    active: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-    prev: {
-      type: Boolean,
-      default: false,
-    },
-    next: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-    getClasses: (active, disabled) => {
-      let activeValue, disabledValue;
-
-      activeValue = active ? "active" : null;
-      disabledValue = disabled ? "disabled" : null;
-
-      return `${activeValue} ${disabledValue}`;
-    },
-  },
-};
-</script>

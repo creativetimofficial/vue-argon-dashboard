@@ -1,3 +1,11 @@
+<script setup>
+import { onMounted } from "vue";
+import setNavPills from "@/assets/js/nav-pills.js";
+
+onMounted(() => {
+  setNavPills();
+});
+</script>
 <template>
   <div class="nav-wrapper position-relative end-0">
     <ul class="nav nav-pills nav-fill p-1" role="tablist">
@@ -5,7 +13,7 @@
         <a
           class="nav-link mb-0 px-0 py-1 active active"
           data-bs-toggle="tab"
-          href="../../../examples/pages/account/settings.html"
+          href="#"
           role="tab"
           aria-selected="true"
           >Messages</a
@@ -15,7 +23,7 @@
         <a
           class="nav-link mb-0 px-0 py-1"
           data-bs-toggle="tab"
-          href="../../../examples/pages/account/billing.html"
+          href="#"
           role="tab"
           aria-selected="false"
           >Social</a
@@ -25,7 +33,7 @@
         <a
           class="nav-link mb-0 px-0 py-1"
           data-bs-toggle="tab"
-          href="../../../examples/pages/account/invoice.html"
+          href="#"
           role="tab"
           aria-selected="false"
           >Notifications</a
@@ -35,7 +43,7 @@
         <a
           class="nav-link mb-0 px-0 py-1"
           data-bs-toggle="tab"
-          href="../../../examples/pages/account/security.html"
+          href="#"
           role="tab"
           aria-selected="false"
           >Backup</a
@@ -44,14 +52,3 @@
     </ul>
   </div>
 </template>
-
-<script>
-import setNavPills from "@/assets/js/nav-pills.js";
-
-export default {
-  name: "nav-pill",
-  mounted() {
-    setNavPills();
-  },
-};
-</script>

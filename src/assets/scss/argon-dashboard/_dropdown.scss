@@ -93,7 +93,8 @@
   }
 
   .dropdown-item {
-    transition: background-color $dropdown-transition-time,
+    transition:
+      background-color $dropdown-transition-time,
       color $dropdown-transition-time;
   }
 }
@@ -289,7 +290,10 @@
   0% {
     opacity: 0;
     transform: translate(0, 10px) perspective(200px);
-    transition: visibility 0.25s, opacity 0.25s, transform 0.25s;
+    transition:
+      visibility 0.25s,
+      opacity 0.25s,
+      transform 0.25s;
   }
 
   100% {

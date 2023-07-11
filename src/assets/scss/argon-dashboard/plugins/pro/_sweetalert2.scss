@@ -105,7 +105,9 @@
   font-size: 1em;
 }
 .swal2-popup.swal2-toast .swal2-styled:focus {
-  box-shadow: 0 0 0 1px #fff, 0 0 0 3px rgba(100, 150, 200, 0.5);
+  box-shadow:
+    0 0 0 1px #fff,
+    0 0 0 3px rgba(100, 150, 200, 0.5);
 }
 .swal2-popup.swal2-toast .swal2-success {
   border-color: #a5dc86;
@@ -457,7 +459,9 @@
   margin-bottom: -1.2em;
   padding: 0;
   overflow: hidden;
-  transition: color 0.1s, box-shadow 0.1s;
+  transition:
+    color 0.1s,
+    box-shadow 0.1s;
   border: none;
   border-radius: 5px;
   background: transparent;
@@ -509,11 +513,15 @@
 .swal2-textarea {
   box-sizing: border-box;
   width: auto;
-  transition: border-color 0.1s, box-shadow 0.1s;
+  transition:
+    border-color 0.1s,
+    box-shadow 0.1s;
   border: 1px solid #d9d9d9;
   border-radius: 0.1875em;
   background: inherit;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06), 0 0 0 3px transparent;
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.06),
+    0 0 0 3px transparent;
   color: inherit;
   font-size: 1.125em;
 }
@@ -528,7 +536,8 @@
 .swal2-textarea:focus {
   border: 1px solid #b4dbed;
   outline: none;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.06),
+  box-shadow:
+    inset 0 1px 1px rgba(0, 0, 0, 0.06),
     0 0 0 3px rgba(100, 150, 200, 0.5);
 }
 .swal2-input::-moz-placeholder,

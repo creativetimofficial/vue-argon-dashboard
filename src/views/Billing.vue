@@ -1,3 +1,11 @@
+<script setup>
+import MasterCard from "@/examples/Cards/MasterCard.vue";
+import DefaultInfoCard from "@/examples/Cards/DefaultInfoCard.vue";
+import PaymentCard from "./components/PaymentCard.vue";
+import InvoiceCard from "./components/InvoiceCard.vue";
+import BillingCard from "./components/BillingCard.vue";
+import TransactionCard from "./components/TransactionCard.vue";
+</script>
 <template>
   <div class="container-fluid">
     <div class="row">
@@ -10,18 +18,24 @@
             <div class="row">
               <div class="col-md-6">
                 <default-info-card
-                  :classIcon="salary.classIcon"
-                  :title="salary.title"
-                  :desc="salary.desc"
-                  :price="salary.price"
+                  :icon="{
+                    component: 'fas fa-landmark',
+                    background: 'bg-gradient-success',
+                  }"
+                  title="Salary"
+                  description="Belong Interactive"
+                  value="+$2000"
                 />
               </div>
               <div class="col-md-6">
                 <default-info-card
-                  :classIcon="paypal.classIcon"
-                  :title="paypal.title"
-                  :desc="paypal.desc"
-                  :price="paypal.price"
+                  :icon="{
+                    component: 'fab fa-paypal',
+                    background: 'bg-gradient-success',
+                  }"
+                  title="Paypal"
+                  description="Freelance Payment"
+                  value="$455.00"
                 />
               </div>
             </div>
@@ -45,40 +59,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import MasterCard from "@/examples/Cards/MasterCard.vue";
-import DefaultInfoCard from "@/examples/Cards/DefaultInfoCard.vue";
-import PaymentCard from "./components/PaymentCard.vue";
-import InvoiceCard from "./components/InvoiceCard.vue";
-import BillingCard from "./components/BillingCard.vue";
-import TransactionCard from "./components/TransactionCard.vue";
-
-export default {
-  name: "Billing",
-  components: {
-    MasterCard,
-    DefaultInfoCard,
-    PaymentCard,
-    InvoiceCard,
-    BillingCard,
-    TransactionCard,
-  },
-  data() {
-    return {
-      salary: {
-        classIcon: "text-white fas fa-landmark",
-        title: "Salary",
-        desc: "Belong Interactive",
-        price: "+$2000",
-      },
-      paypal: {
-        classIcon: "text-white fab fa-paypal",
-        title: "Paypal",
-        desc: "Freelance Payment",
-        price: "$455.00",
-      },
-    };
-  },
-};
-</script>
