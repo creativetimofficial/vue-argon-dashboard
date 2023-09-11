@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "bootstrap": "4.3.1",
-    "bootstrap-vue": "2.0.0-rc.15",
+    "bootstrap-vue": "2.23.1",
     "chart.js": "2.8.0",
     "core-js": "2.6.5",
     "flatpickr": "4.5.7",
