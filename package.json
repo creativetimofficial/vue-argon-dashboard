@@ -20,7 +20,7 @@
     "vue-chartjs": "3.4.2",
     "vue-clipboard2": "0.3.0",
     "vue-flatpickr-component": "8.1.2",
-    "vue-router": "3.0.1",
+    "vue-router": "3.6.5",
     "vue2-transitions": "0.3.0"
   },
   "devDependencies": {
