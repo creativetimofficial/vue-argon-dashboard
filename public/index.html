@@ -4,7 +4,7 @@
 =========================================================
 
 * Product Page: https://creative-tim.com/product/vue-argon-dashboard
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
+* Copyright 2024 Creative Tim (https://www.creative-tim.com)
 
 Coded by www.creative-tim.com
 

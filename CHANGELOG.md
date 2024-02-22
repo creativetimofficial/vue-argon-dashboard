@@ -1,4 +1,4 @@
-## [4.0.0] 2023-07-07
+## [4.0.0] 2024-02-22
 
 - Update dependencies and devDependencies
 - Refactor code from `options api` to `composition api`
