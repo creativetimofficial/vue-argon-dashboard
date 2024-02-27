@@ -1,3 +1,28 @@
+<script setup>
+import { onBeforeUnmount, onBeforeMount } from "vue";
+import { useStore } from "vuex";
+import Navbar from "@/examples/PageLayout/Navbar.vue";
+import ArgonInput from "@/components/ArgonInput.vue";
+import ArgonSwitch from "@/components/ArgonSwitch.vue";
+import ArgonButton from "@/components/ArgonButton.vue";
+const body = document.getElementsByTagName("body")[0];
+
+const store = useStore();
+onBeforeMount(() => {
+  store.state.hideConfigButton = true;
+  store.state.showNavbar = false;
+  store.state.showSidenav = false;
+  store.state.showFooter = false;
+  body.classList.remove("bg-gray-100");
+});
+onBeforeUnmount(() => {
+  store.state.hideConfigButton = false;
+  store.state.showNavbar = true;
+  store.state.showSidenav = true;
+  store.state.showFooter = true;
+  body.classList.add("bg-gray-100");
+});
+</script>
 <template>
   <div class="container top-0 position-sticky z-index-sticky">
     <div class="row">
@@ -27,6 +52,7 @@
                   <form role="form">
                     <div class="mb-3">
                       <argon-input
+                        id="email"
                         type="email"
                         placeholder="Email"
                         name="email"
@@ -35,13 +61,16 @@
                     </div>
                     <div class="mb-3">
                       <argon-input
+                        id="password"
                         type="password"
                         placeholder="Password"
                         name="password"
                         size="lg"
                       />
                     </div>
-                    <argon-switch id="rememberMe">Remember me</argon-switch>
+                    <argon-switch id="rememberMe" name="remember-me"
+                      >Remember me</argon-switch
+                    >
 
                     <div class="text-center">
                       <argon-button
@@ -73,7 +102,7 @@
               <div
                 class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
                 style="
-                  background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg');
+                  background-image: url(&quot;https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg&quot;);
                   background-size: cover;
                 "
               >
@@ -95,35 +124,3 @@
     </section>
   </main>
 </template>
-
-<script>
-import Navbar from "@/examples/PageLayout/Navbar.vue";
-import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonSwitch from "@/components/ArgonSwitch.vue";
-import ArgonButton from "@/components/ArgonButton.vue";
-const body = document.getElementsByTagName("body")[0];
-
-export default {
-  name: "signin",
-  components: {
-    Navbar,
-    ArgonInput,
-    ArgonSwitch,
-    ArgonButton,
-  },
-  created() {
-    this.$store.state.hideConfigButton = true;
-    this.$store.state.showNavbar = false;
-    this.$store.state.showSidenav = false;
-    this.$store.state.showFooter = false;
-    body.classList.remove("bg-gray-100");
-  },
-  beforeUnmount() {
-    this.$store.state.hideConfigButton = false;
-    this.$store.state.showNavbar = true;
-    this.$store.state.showSidenav = true;
-    this.$store.state.showFooter = true;
-    body.classList.add("bg-gray-100");
-  },
-};
-</script>

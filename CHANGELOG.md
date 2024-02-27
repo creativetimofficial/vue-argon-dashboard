@@ -1,7 +1,9 @@
-## [3.1.0] 2023-05-31
+## [4.0.0] 2024-02-22
 
-- Update dependencies & devDependencies
-- Add two-way binding support for `ArgonInput`
+- Update dependencies and devDependencies
+- Refactor code from `options api` to `composition api`
+- Add two-way binding to `ArgonInput`
+- Add new component: `DefaultCounterCard`
 
 ## [3.0.0] 2022-05-26
 

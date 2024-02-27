@@ -1,3 +1,6 @@
+<script setup>
+import ArgonButton from "@/components/ArgonButton.vue";
+</script>
 <template>
   <div class="card pb-4">
     <div class="card-header pb-0 p-3">
@@ -103,14 +106,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import ArgonButton from "@/components/ArgonButton.vue";
-
-export default {
-  name: "invoice-card",
-  components: {
-    ArgonButton,
-  },
-};
-</script>

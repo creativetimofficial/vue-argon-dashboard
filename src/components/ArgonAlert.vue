@@ -1,3 +1,28 @@
+<script setup>
+defineProps({
+  color: {
+    type: String,
+    default: "success",
+  },
+  icon: {
+    type: String,
+    default: "",
+  },
+  dismissible: {
+    type: Boolean,
+    default: false,
+  },
+});
+const getClasses = (color, dismissible) => {
+  let colorValue, dismissibleValue;
+
+  colorValue = color ? `alert-${color}` : null;
+  dismissibleValue = dismissible ? "alert-dismissible fade show" : null;
+  return `${colorValue} ${dismissibleValue}`;
+};
+
+const getIcon = (icon) => (icon ? icon : null);
+</script>
 <template>
   <div
     class="alert text-white font-weight-bold"
@@ -22,32 +47,3 @@
     </button>
   </div>
 </template>
-
-<script>
-export default {
-  name: "argon-alert",
-  props: {
-    color: {
-      type: String,
-      default: "success",
-    },
-    icon: String,
-    dismissible: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  methods: {
-    getClasses: (color, dismissible) => {
-      let colorValue, dismissibleValue;
-
-      colorValue = color ? `alert-${color}` : null;
-
-      dismissibleValue = dismissible ? "alert-dismissible fade show" : null;
-
-      return `${colorValue} ${dismissibleValue}`;
-    },
-    getIcon: (icon) => (icon ? icon : null),
-  },
-};
-</script>

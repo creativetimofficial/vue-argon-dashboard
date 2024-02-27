@@ -1,5 +1,8 @@
 $dropdown-subitem-position: 101% !default;
-$dropdown-transition: visibility 0.25s, opacity 0.25s, transform 0.25s !default;
+$dropdown-transition:
+  visibility 0.25s,
+  opacity 0.25s,
+  transform 0.25s !default;
 $dropdown-transform-origin: 50% 0 !default;
 $dropdown-transform: perspective(999px) rotateX(-10deg) translateZ(0)
   translate3d(0px, 37px, 0px) !important !default;

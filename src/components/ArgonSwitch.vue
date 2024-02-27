@@ -1,11 +1,35 @@
+<script setup>
+defineProps({
+  name: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: String,
+    required: true,
+  },
+  checked: {
+    type: Boolean,
+    default: false,
+  },
+  labelClass: {
+    type: String,
+    default: "",
+  },
+  inputClass: {
+    type: String,
+    default: "",
+  },
+});
+</script>
 <template>
-  <div class="form-check form-switch">
+  <div class="form-check form-switch ps-0">
     <input
-      class="form-check-input"
+      :id="id"
+      class="form-check-input ms-0"
       :class="inputClass"
       type="checkbox"
       :name="name"
-      :id="id"
       :checked="checked"
     />
     <label class="form-check-label" :class="labelClass" :for="id">
@@ -13,16 +37,3 @@
     </label>
   </div>
 </template>
-
-<script>
-export default {
-  name: "argon-switch",
-  props: {
-    name: String,
-    id: String,
-    checked: String,
-    labelClass: String,
-    inputClass: String,
-  },
-};
-</script>

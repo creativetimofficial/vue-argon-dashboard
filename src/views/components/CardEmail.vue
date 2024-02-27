@@ -16,9 +16,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "card-email",
-};
-</script>

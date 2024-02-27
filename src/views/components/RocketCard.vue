@@ -28,9 +28,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-  name: "rocket-card",
-};
-</script>

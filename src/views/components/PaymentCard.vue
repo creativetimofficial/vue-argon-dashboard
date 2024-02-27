@@ -1,3 +1,6 @@
+<script setup>
+import ArgonButton from "@/components/ArgonButton.vue";
+</script>
 <template>
   <div class="card mt-4">
     <div class="card-header pb-0 p-3">
@@ -67,22 +70,3 @@
     </div>
   </div>
 </template>
-
-<script>
-import ArgonButton from "@/components/ArgonButton.vue";
-import img1 from "@/assets/img/logos/mastercard.png";
-import img2 from "@/assets/img/logos/visa.png";
-
-export default {
-  name: "payment-card",
-  components: {
-    ArgonButton,
-  },
-  data() {
-    return {
-      img1,
-      img2,
-    };
-  },
-};
-</script>

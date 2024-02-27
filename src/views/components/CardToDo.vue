@@ -22,9 +22,3 @@
     </a>
   </div>
 </template>
-
-<script>
-export default {
-  name: "card-todo",
-};
-</script>

@@ -1,60 +1,92 @@
+<script setup>
+import { onBeforeMount, onBeforeUnmount } from "vue";
+import { useStore } from "vuex";
+import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
+import DeveloperCard from "./components/DeveloperCard.vue";
+import RocketCard from "./components/RocketCard.vue";
+import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
+import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
+import TimelineList from "@/examples/Cards/TimelineList.vue";
+import TimelineItem from "@/examples/Cards/TimelineItem.vue";
+import ProjectCard from "./components/ProjectCard.vue";
+
+import logoXD from "@/assets/img/small-logos/logo-xd.svg";
+import logoAtlassian from "@/assets/img/small-logos/logo-atlassian.svg";
+import logoSlack from "@/assets/img/small-logos/logo-slack.svg";
+import logoSpotify from "@/assets/img/small-logos/logo-spotify.svg";
+import logoJira from "@/assets/img/small-logos/logo-jira.svg";
+import logoInvision from "@/assets/img/small-logos/logo-invision.svg";
+
+import team1 from "@/assets/img/team-1.jpg";
+import team2 from "@/assets/img/team-2.jpg";
+import team3 from "@/assets/img/team-3.jpg";
+import team4 from "@/assets/img/team-4.jpg";
+
+const store = useStore();
+
+onBeforeMount(() => {
+  store.state.isRTL = true;
+  document.querySelector("html").setAttribute("lang", "ar");
+  document.querySelector("html").setAttribute("dir", "rtl");
+  document.querySelector("#app").classList.add("rtl");
+});
+onBeforeUnmount(() => {
+  store.state.isRTL = false;
+  document.querySelector("html").removeAttribute("lang");
+  document.querySelector("html").removeAttribute("dir");
+  document.querySelector("#app").classList.remove("rtl");
+});
+</script>
 <template>
   <div class="py-4 container-fluid">
     <div class="row">
       <div class="col-lg-3 col-sm-6 mb-lg-0">
-        <card
+        <mini-statistics-card
           class="p-0 bg-white"
-          title="أموال اليوم"
-          value="$53,000"
-          iconClass="text-white ni ni-money-coins"
-          titleColor="opacity-7 text-dark"
-          iconBackground="bg-gradient-success"
-          valueColor="text-dark"
-          percentage="55%+"
-          percentageColor="text-success"
-          directionReverse
+          :title="{ text: 'أموال اليوم', color: 'text-dark opacity-7' }"
+          :value="{ text: '$53,000', color: 'text-dark' }"
+          :icon="{
+            component: 'ni ni-money-coins text-white',
+            background: 'bg-gradient-success ',
+          }"
+          :percentage="{ value: '55%+', color: 'text-success' }"
         />
       </div>
       <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
-        <card
+        <mini-statistics-card
           class="p-0 bg-white"
-          title="مستخدمو اليوم"
-          value="2,300"
-          iconClass="text-white ni ni-world"
-          titleColor="opacity-7 text-dark"
-          iconBackground="bg-gradient-success"
-          valueColor="text-dark"
-          percentage="+33%"
-          percentageColor="text-success"
-          directionReverse
+          :title="{ text: 'مستخدمو اليوم', color: 'text-dark opacity-7' }"
+          :value="{ text: '2,300', color: 'text-dark' }"
+          :icon="{
+            component: 'text-white ni ni-world',
+            background: 'bg-gradient-success ',
+          }"
+          :percentage="{ value: '+33%', color: 'text-success' }"
         />
       </div>
       <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
-        <card
+        <mini-statistics-card
           class="p-0 bg-white"
-          title="عملاء جدد"
-          value=" +3,462"
-          iconClass="text-white ni ni-paper-diploma"
-          titleColor="opacity-7 text-dark"
-          iconBackground="bg-gradient-success"
-          valueColor="text-dark"
-          percentage="-2%"
-          percentageColor="text-danger"
-          directionReverse
+          :title="{ text: 'عملاء جدد', color: 'text-dark opacity-7' }"
+          :value="{ text: '+3,462', color: 'text-dark' }"
+          :icon="{
+            component: 'ni ni-paper-diploma text-white',
+            background: 'bg-gradient-success ',
+          }"
+          :percentage="{ value: '-2%', color: 'text-danger' }"
         />
       </div>
       <div class="col-lg-3 col-sm-6 mb-lg-0 mb-4">
-        <card
+        <mini-statistics-card
           class="p-0 bg-white"
-          title="مبيعات"
-          value="$103,430"
-          iconClass="text-white ni ni-cart"
-          titleColor="opacity-7 text-dark"
-          iconBackground="bg-gradient-success"
-          valueColor="text-dark"
-          percentage="+5%"
-          percentageColor="text-success"
-          directionReverse
+          :title="{ text: 'مبيعات', color: 'text-dark opacity-7' }"
+          :value="{ text: '$103,430', color: 'text-dark' }"
+          :icon="{
+            component: 'ni ni-cart text-white',
+            background: 'bg-gradient-success ',
+          }"
+          :percentage="{ value: '+5%', color: 'text-success' }"
+          rowReverse
         />
       </div>
     </div>
@@ -72,81 +104,139 @@
       </div>
       <div class="col-lg-7">
         <gradient-line-chart
+          id="chart-line-rtl"
           title="نظرة عامة على المبيعات"
-          detail1="4% أكثر"
-          detail2="في عام 2021"
+          description="<i class='fa fa-arrow-up text-success'></i>
+      <span class='font-weight-bold'>4% أكثر</span> في عام 2021"
+          :chart="{
+            labels: [
+              'Apr',
+              'May',
+              'Jun',
+              'Jul',
+              'Aug',
+              'Sep',
+              'Oct',
+              'Nov',
+              'Dec',
+            ],
+            datasets: [
+              {
+                label: 'Mobile Apps',
+                data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
+              },
+            ],
+          }"
         />
       </div>
     </div>
     <div class="row mt-4">
       <div class="col-lg-8 col-md-6 mb-md-0 mb-4">
         <project-card
-          action="عمل"
-          AnotherAction="عمل اخر"
-          SomethingElse="شی اخر هنا"
-          th1="المشروع"
-          th2="أعضاء"
-          th3="ميزانية"
-          th4="إكمال"
           title="المشاريع"
-          desc="هذا الشهر"
-          descBold="انتهى30 "
-          data-1="الإصدار"
-          data-2="أضف مسار التقدم إلى التطبيق الداخلي"
-          data-3="إصلاح أخطاء النظام الأساسي"
-          data-5="أضف صفحة التسعير الجديدة"
-          data-6="إعادة تصميم متجر جديد على الإنترنت"
-          data-4="إطلاق تطبيق الهاتف المحمول الخاص بنا"
-          empty="غير مضبوط"
+          description='<i class="fa fa-check text-info" aria-hidden="true"></i>
+            <span class="font-weight-bold ms-1">انتهى30</span>
+            هذا الشهر'
+          :headings="['المشروع', 'أعضاء', 'ميزانية', 'إكمال']"
+          :rows="[
+            {
+              logo: logoXD,
+              tool: 'Material XD الإصدار',
+              teamMembers: [team1, team2, team3, team4],
+              price: '$14,000',
+              progress: 60,
+            },
+            {
+              logo: logoAtlassian,
+              tool: 'أضف مسار التقدم إلى التطبيق الداخلي',
+              teamMembers: [team1, team2],
+              price: '$3,000',
+              progress: 10,
+            },
+            {
+              logo: logoSlack,
+              tool: 'إصلاح أخطاء النظام الأساسي',
+              teamMembers: [team2, team4],
+              price: 'غير مضبوط',
+              progress: 100,
+            },
+            {
+              logo: logoSpotify,
+              tool: 'إطلاق تطبيق الهاتف المحمول الخاص بنا',
+              teamMembers: [team1, team2, team3, team4],
+              price: '$20,500',
+              progress: 60,
+            },
+            {
+              logo: logoJira,
+              tool: 'أضف صفحة التسعير الجديدة',
+              teamMembers: [team1],
+              price: '$500',
+              progress: 25,
+            },
+            {
+              logo: logoInvision,
+              tool: 'إعادة تصميم متجر جديد على الإنترنت',
+              teamMembers: [team1, team4],
+              price: '$2,000',
+              progress: 40,
+            },
+          ]"
+          :action="[
+            {
+              route: 'javascript:;',
+              label: 'عمل',
+            },
+            {
+              route: 'javascript:;',
+              label: 'عمل اخر',
+            },
+            {
+              route: 'javascript:;',
+              label: 'شی اخر هنا',
+            },
+          ]"
         />
       </div>
       <div class="col-lg-4 col-md-6">
-        <orders-card
+        <timeline-list
+          class="h-100"
           title="نظرة عامة على الطلبات"
-          text="هذا الشهر"
-          order="$2400, تغييرات في التصميم"
-          newOrder="طلب جديد #1832412"
-          payment="مدفوعات الخادم لشهر أبريل"
-          newCard="تمت إضافة بطاقة جديدة للطلب #4395133"
-          unlockPackages="فتح الحزم من أجل التطوير"
-          newOrder2="طلب جديد #9583120"
-        />
+          description="<i class='fa fa-arrow-up text-success' aria-hidden='true'></i>
+        <span class='font-weight-bold'>24%</span>هذا الشهر"
+        >
+          <timeline-item
+            :icon="{ component: 'ni ni-bell-55', color: 'success' }"
+            title="$2400, تغييرات في التصميم"
+            date-time="22 ديسمبر 7:20 مساءً"
+          />
+          <TimelineItem
+            :icon="{ component: 'ni ni-html5', color: 'danger' }"
+            title="طلب جديد # 1832412"
+            date-time="21 ديسمبر 11 م"
+          />
+          <TimelineItem
+            :icon="{ component: 'ni ni-cart', color: 'info' }"
+            title="مدفوعات الخادم لشهر أبريل"
+            date-time="21 ديسمبر 9:34 مساءً"
+          />
+          <TimelineItem
+            :icon="{ component: 'ni ni-credit-card', color: 'warning' }"
+            title="تمت إضافة بطاقة جديدة للأمر رقم 4395133"
+            date-time="20 ديسمبر 2:20 صباحًا"
+          />
+          <TimelineItem
+            :icon="{ component: 'ni ni-key-25', color: 'primary' }"
+            title="فتح الحزم من أجل التطوير"
+            date-time="18 ديسمبر ، 4:54 صباحًا"
+          />
+          <TimelineItem
+            :icon="{ component: 'ni ni-money-coins', color: 'dark' }"
+            title="طلب جديد # 9583120"
+            date-time="17 ديسمبر"
+          />
+        </timeline-list>
       </div>
     </div>
   </div>
 </template>
-
-<script>
-import Card from "@/examples/Cards/Card.vue";
-import DeveloperCard from "./components/DeveloperCard.vue";
-import RocketCard from "./components/RocketCard.vue";
-import ActiveUsersChart from "@/examples/Charts/ActiveUsersChart.vue";
-import GradientLineChart from "@/examples/Charts/GradientLineChart.vue";
-import OrdersCard from "./components/OrdersCard.vue";
-import ProjectCard from "./components/ProjectCard.vue";
-
-export default {
-  name: "rtl-page",
-  components: {
-    Card,
-    DeveloperCard,
-    RocketCard,
-    ActiveUsersChart,
-    GradientLineChart,
-    OrdersCard,
-    ProjectCard,
-  },
-  beforeMount() {
-    this.$store.state.isRTL = true;
-    document.querySelector("html").setAttribute("lang", "ar");
-    document.querySelector("html").setAttribute("dir", "rtl");
-    document.querySelector("#app").classList.add("rtl");
-  },
-  beforeUnmount() {
-    this.$store.state.isRTL = false;
-    document.querySelector("html").removeAttribute("lang");
-    document.querySelector("html").removeAttribute("dir");
-    document.querySelector("#app").classList.remove("rtl");
-  },
-};
-</script>
