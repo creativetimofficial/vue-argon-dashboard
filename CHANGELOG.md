@@ -1,3 +1,8 @@
+## [3.1.0] 2023-05-31
+
+- Update dependencies & devDependencies
+- Add two-way binding support for `ArgonInput`
+
 ## [3.0.0] 2022-05-26
 
 - Fix errors

@@ -4,9 +4,13 @@
     <div class="p-3 pb-0 card-header">
       <h6 class="mb-0">{{ title }}</h6>
       <div class="d-flex">
-        <div class="mb-0 text-sm p font-weight-bold widget-calendar-day">Tuesday</div>
+        <div class="mb-0 text-sm p font-weight-bold widget-calendar-day">
+          Tuesday
+        </div>
         <span>,&nbsp;</span>
-        <div class="mb-1 text-sm p font-weight-bold widget-calendar-year">2021</div>
+        <div class="mb-1 text-sm p font-weight-bold widget-calendar-year">
+          2021
+        </div>
       </div>
     </div>
     <!-- Card body -->

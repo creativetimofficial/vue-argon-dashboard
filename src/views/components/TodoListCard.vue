@@ -6,13 +6,20 @@
     <div class="card-body pt-0">
       <ul class="list-group list-group-flush" data-toggle="checklist">
         <li class="checklist-entry list-group-item px-0">
-          <div class="checklist-item checklist-item-success checklist-item-checked d-flex">
+          <div
+            class="checklist-item checklist-item-success checklist-item-checked d-flex"
+          >
             <div class="checklist-info">
               <h6 class="checklist-title mb-0">Call with Dave</h6>
               <small class="text-xs">09:30 AM</small>
             </div>
             <div class="form-check my-auto ms-auto">
-              <input class="form-check-input" type="checkbox" id="customCheck1" checked />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="customCheck1"
+                checked
+              />
             </div>
           </div>
         </li>
@@ -23,7 +30,11 @@
               <small class="text-xs">11:00 AM</small>
             </div>
             <div class="form-check my-auto ms-auto">
-              <input class="form-check-input" type="checkbox" id="customCheck1" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="customCheck1"
+              />
             </div>
           </div>
         </li>
@@ -34,18 +45,29 @@
               <small class="text-xs">02:00 PM</small>
             </div>
             <div class="form-check my-auto ms-auto">
-              <input class="form-check-input" type="checkbox" id="customCheck1" />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="customCheck1"
+              />
             </div>
           </div>
         </li>
         <li class="checklist-entry list-group-item px-0">
-          <div class="checklist-item checklist-item-danger checklist-item-checked d-flex">
+          <div
+            class="checklist-item checklist-item-danger checklist-item-checked d-flex"
+          >
             <div class="checklist-info">
               <h6 class="checklist-title mb-0">Winter Hackaton</h6>
               <small>10:30 AM</small>
             </div>
             <div class="form-check my-auto ms-auto">
-              <input class="form-check-input" type="checkbox" id="customCheck2" checked />
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="customCheck2"
+                checked
+              />
             </div>
           </div>
         </li>

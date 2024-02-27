@@ -41,6 +41,6 @@
 
 <script>
 export default {
-  name: "developer-card"
+  name: "developer-card",
 };
 </script>

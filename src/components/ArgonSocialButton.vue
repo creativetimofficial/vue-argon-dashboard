@@ -1,5 +1,9 @@
 <template>
-  <button type="button" class="btn" :class="getClasses(iconOnly, socialBtn, rounded, size)">
+  <button
+    type="button"
+    class="btn"
+    :class="getClasses(iconOnly, socialBtn, rounded, size)"
+  >
     <span class="btn-inner--icon">
       <i :class="getIcon(icon)"></i>
     </span>

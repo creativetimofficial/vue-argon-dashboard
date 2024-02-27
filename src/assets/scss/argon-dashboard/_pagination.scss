@@ -40,7 +40,6 @@
   }
 }
 
-
 // Colors
 .pagination {
   @each $name, $value in $theme-gradient-colors {
@@ -49,7 +48,11 @@
         &,
         &:focus,
         &:hover {
-          @include gradient-directional(nth($value, 1) 0%, nth($value, -1) 100%, $deg: 310deg);
+          @include gradient-directional(
+            nth($value, 1) 0%,
+            nth($value, -1) 100%,
+            $deg: 310deg
+          );
           border: none;
         }
       }

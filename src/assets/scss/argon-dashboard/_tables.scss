@@ -16,7 +16,7 @@
     .progress {
       height: $table-progress-height;
       width: $table-progress-width;
-      margin: $table-progress-margin; 
+      margin: $table-progress-margin;
     }
   }
 
@@ -31,9 +31,9 @@
       vertical-align: middle;
     }
   }
-  tbody{
-    tr:last-child{
-      td{
+  tbody {
+    tr:last-child {
+      td {
         border-width: 0;
       }
     }

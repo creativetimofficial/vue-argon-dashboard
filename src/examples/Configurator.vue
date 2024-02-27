@@ -218,17 +218,17 @@ export default {
       } else {
         white.classList.remove("disabled");
       }
-    }
+    },
   },
   computed: {
     sidenavResponsive() {
       return this.sidenavTypeOnResize;
-    }
+    },
   },
   beforeMount() {
     this.$store.state.isTransparent = "bg-transparent";
     window.addEventListener("resize", this.sidenavTypeOnResize);
     window.addEventListener("load", this.sidenavTypeOnResize);
-  }
+  },
 };
 </script>

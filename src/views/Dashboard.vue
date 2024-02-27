@@ -78,7 +78,9 @@
                             <img :src="sale.flag" alt="Country flag" />
                           </div>
                           <div class="ms-4">
-                            <p class="mb-0 text-xs font-weight-bold">Country:</p>
+                            <p class="mb-0 text-xs font-weight-bold">
+                              Country:
+                            </p>
                             <h6 class="mb-0 text-sm">{{ sale.country }}</h6>
                           </div>
                         </div>

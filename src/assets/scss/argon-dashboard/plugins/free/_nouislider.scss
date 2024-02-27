@@ -108,10 +108,10 @@
 * Giving the connect element a border radius causes issues with using transform: scale
 */
 .noUi-target {
-  background: #FAFAFA;
+  background: #fafafa;
   border-radius: 4px;
   // border: 1px solid #D3D3D3;
-  box-shadow: inset 0 1px 1px #F0F0F0, 0 3px 6px -5px #BBB;
+  box-shadow: inset 0 1px 1px #f0f0f0, 0 3px 6px -5px #bbb;
 }
 .noUi-connects {
   border-radius: 3px;
@@ -131,17 +131,17 @@
   border-radius: 100%;
   background: $primary;
   cursor: default;
-  webkit-transition: .3s ease 0s;
-  -moz-transition: .3s ease 0s;
-  -ms-transition: .3s ease 0s;
-  -o-transform: .3s ease 0s;
-  transition: .3s ease 0s;
+  webkit-transition: 0.3s ease 0s;
+  -moz-transition: 0.3s ease 0s;
+  -ms-transition: 0.3s ease 0s;
+  -o-transform: 0.3s ease 0s;
+  transition: 0.3s ease 0s;
 }
 
 /* Disabled state;
 */
 [disabled] .noUi-connect {
-  background: #B8B8B8;
+  background: #b8b8b8;
 }
 [disabled].noUi-target,
 [disabled].noUi-handle,
@@ -177,13 +177,13 @@
 */
 .noUi-marker {
   position: absolute;
-  background: #CCC;
+  background: #ccc;
 }
 .noUi-marker-sub {
-  background: #AAA;
+  background: #aaa;
 }
 .noUi-marker-large {
-  background: #AAA;
+  background: #aaa;
 }
 /* Horizontal layout;
 *
@@ -246,7 +246,7 @@
 .noUi-tooltip {
   display: block;
   position: absolute;
-  border: 1px solid #D9D9D9;
+  border: 1px solid #d9d9d9;
   border-radius: 3px;
   background: #fff;
   color: #000;

@@ -5,9 +5,13 @@ License - nucleoapp.com/license/
 
 -------------------------------- */
 @font-face {
-  font-family: 'NucleoIcons';
-  src: url('../fonts/nucleo-icons.eot');
-  src: url('../fonts/nucleo-icons.eot') format('embedded-opentype'), url('../fonts/nucleo-icons.woff2') format('woff2'), url('../fonts/nucleo-icons.woff') format('woff'), url('../fonts/nucleo-icons.ttf') format('truetype'), url('../fonts/nucleo-icons.svg') format('svg');
+  font-family: "NucleoIcons";
+  src: url("../fonts/nucleo-icons.eot");
+  src: url("../fonts/nucleo-icons.eot") format("embedded-opentype"),
+    url("../fonts/nucleo-icons.woff2") format("woff2"),
+    url("../fonts/nucleo-icons.woff") format("woff"),
+    url("../fonts/nucleo-icons.ttf") format("truetype"),
+    url("../fonts/nucleo-icons.svg") format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -72,24 +76,24 @@ License - nucleoapp.com/license/
   list-style-type: none;
 }
 
-.ni-ul>li {
+.ni-ul > li {
   position: relative;
 }
 
-.ni-ul>li>.ni {
+.ni-ul > li > .ni {
   position: absolute;
   left: -1.57142857em;
   top: 0.14285714em;
   text-align: center;
 }
 
-.ni-ul>li>.ni.lg {
+.ni-ul > li > .ni.lg {
   top: 0;
   left: -1.35714286em;
 }
 
-.ni-ul>li>.ni.circle,
-.ni-ul>li>.ni.square {
+.ni-ul > li > .ni.circle,
+.ni-ul > li > .ni.square {
   top: -0.19047619em;
   left: -1.9047619em;
 }
@@ -592,6 +596,5 @@ License - nucleoapp.com/license/
 .ni-ui-04::before {
   content: "\ea65";
 }
-
 
 /* all icon font classes list here */

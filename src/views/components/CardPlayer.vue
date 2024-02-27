@@ -1,5 +1,7 @@
 <template>
-  <div class="card card-background card-background-mask-primary move-on-hover align-items-start">
+  <div
+    class="card card-background card-background-mask-primary move-on-hover align-items-start"
+  >
     <div class="cursor-pointer">
       <div
         class="full-background"

@@ -26,13 +26,19 @@
               style
             >
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">{{Action}}</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;">{{
+                  Action
+                }}</a>
               </li>
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">{{AnotherAction}}</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;">{{
+                  AnotherAction
+                }}</a>
               </li>
               <li>
-                <a class="dropdown-item border-radius-md" href="javascript:;">{{SomethingElse}}</a>
+                <a class="dropdown-item border-radius-md" href="javascript:;">{{
+                  SomethingElse
+                }}</a>
               </li>
             </ul>
           </div>
@@ -46,16 +52,24 @@
             <tr>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >{{ th1 }}</th>
+              >
+                {{ th1 }}
+              </th>
               <th
                 class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
-              >{{ th2 }}</th>
+              >
+                {{ th2 }}
+              </th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >{{ th3 }}</th>
+              >
+                {{ th3 }}
+              </th>
               <th
                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-              >{{ th4 }}</th>
+              >
+                {{ th4 }}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -70,7 +84,7 @@
                     />
                   </div>
                   <div class="d-flex flex-column justify-content-center">
-                    <h6 class="mb-0 text-sm me-3">Material XD {{data1}}</h6>
+                    <h6 class="mb-0 text-sm me-3">Material XD {{ data1 }}</h6>
                   </div>
                 </div>
               </td>

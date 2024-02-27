@@ -12,7 +12,7 @@
     pointer-events: none;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
-    will-change: transform,box-shadow;
+    will-change: transform, box-shadow;
     animation: $dropdown-animation;
 
     &.show {

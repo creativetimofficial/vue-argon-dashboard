@@ -3,9 +3,7 @@
     <div class="toast-header bg-transparent border-0">
       <i class="me-2" :class="getIcon(icon, iconColor)" />
       <span class="me-auto font-weight-bold" :class="getTextColor(color)">
-        {{
-        title
-        }}
+        {{ title }}
       </span>
       <small :class="getTextColor(color)">{{ date }}</small>
       <i

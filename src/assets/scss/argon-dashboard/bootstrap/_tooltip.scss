@@ -12,7 +12,9 @@
   word-wrap: break-word;
   opacity: 0;
 
-  &.show { opacity: $tooltip-opacity; }
+  &.show {
+    opacity: $tooltip-opacity;
+  }
 
   .tooltip-arrow {
     position: absolute;
@@ -37,7 +39,7 @@
 
     &::before {
       top: -1px;
-      border-width: $tooltip-arrow-height ($tooltip-arrow-width * .5) 0;
+      border-width: $tooltip-arrow-height ($tooltip-arrow-width * 0.5) 0;
       border-top-color: $tooltip-arrow-color;
     }
   }
@@ -53,7 +55,8 @@
 
     &::before {
       right: -1px;
-      border-width: ($tooltip-arrow-width * .5) $tooltip-arrow-height ($tooltip-arrow-width * .5) 0;
+      border-width: ($tooltip-arrow-width * 0.5) $tooltip-arrow-height
+        ($tooltip-arrow-width * 0.5) 0;
       border-right-color: $tooltip-arrow-color;
     }
   }
@@ -67,7 +70,7 @@
 
     &::before {
       bottom: -1px;
-      border-width: 0 ($tooltip-arrow-width * .5) $tooltip-arrow-height;
+      border-width: 0 ($tooltip-arrow-width * 0.5) $tooltip-arrow-height;
       border-bottom-color: $tooltip-arrow-color;
     }
   }
@@ -83,7 +86,8 @@
 
     &::before {
       left: -1px;
-      border-width: ($tooltip-arrow-width * .5) 0 ($tooltip-arrow-width * .5) $tooltip-arrow-height;
+      border-width: ($tooltip-arrow-width * 0.5) 0 ($tooltip-arrow-width * 0.5)
+        $tooltip-arrow-height;
       border-left-color: $tooltip-arrow-color;
     }
   }
