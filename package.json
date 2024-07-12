@@ -15,7 +15,7 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "cross-env CI=false; cross-env PUBLIC_URL=/ vue-cli-service build",
     "lint": "vue-cli-service lint",
     "prettify": "prettier --write ."
   },
@@ -45,7 +45,8 @@
     "eslint-plugin-vue": "9.21.1",
     "prettier": "3.2.5",
     "sass": "1.71.1",
-    "sass-loader": "13.3.2"
+    "sass-loader": "13.3.2",
+    "cross-env": "^7.0.3"
   },
   "engines": {
     "node": ">=8 <=21"
