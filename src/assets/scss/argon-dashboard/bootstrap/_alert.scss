@@ -1,6 +1,7 @@
 //
 // Base styles
 //
+@use "sass:math";
 
 .alert {
   position: relative;
@@ -49,7 +50,7 @@
     $alert-color: mix(
       $value,
       color-contrast($alert-background),
-      abs($alert-color-scale)
+      math.abs($alert-color-scale)
     );
   }
   .alert-#{$state} {

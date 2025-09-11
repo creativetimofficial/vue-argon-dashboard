@@ -1,4 +1,5 @@
 // stylelint-disable property-blacklist, scss/dollar-variable-default
+@use "sass:math";
 
 // SCSS RFS mixin
 //
@@ -64,8 +65,8 @@ $rfs-base-value-unit: unit($rfs-base-value);
     1,
     -1
   );
-  $dividend: abs($dividend);
-  $divisor: abs($divisor);
+  $dividend: math.abs($dividend);
+  $divisor: math.abs($divisor);
   @if $dividend == 0 {
     @return 0;
   }

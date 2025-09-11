@@ -181,105 +181,105 @@ $color-contrast-dark: $black !default;
 $color-contrast-light: $white !default;
 
 // fusv-disable
-$blue-100: tint-color($blue, 8) !default;
-$blue-200: tint-color($blue, 6) !default;
-$blue-300: tint-color($blue, 4) !default;
-$blue-400: tint-color($blue, 2) !default;
+$blue-100: tint-color($blue, 8%) !default;
+$blue-200: tint-color($blue, 6%) !default;
+$blue-300: tint-color($blue, 4%) !default;
+$blue-400: tint-color($blue, 2%) !default;
 $blue-500: $blue !default;
-$blue-600: shade-color($blue, 2) !default;
-$blue-700: shade-color($blue, 4) !default;
-$blue-800: shade-color($blue, 6) !default;
-$blue-900: shade-color($blue, 8) !default;
+$blue-600: shade-color($blue, 2%) !default;
+$blue-700: shade-color($blue, 4%) !default;
+$blue-800: shade-color($blue, 6%) !default;
+$blue-900: shade-color($blue, 8%) !default;
 
-$indigo-100: tint-color($indigo, 8) !default;
-$indigo-200: tint-color($indigo, 6) !default;
-$indigo-300: tint-color($indigo, 4) !default;
-$indigo-400: tint-color($indigo, 2) !default;
+$indigo-100: tint-color($indigo, 8%) !default;
+$indigo-200: tint-color($indigo, 6%) !default;
+$indigo-300: tint-color($indigo, 4%) !default;
+$indigo-400: tint-color($indigo, 2%) !default;
 $indigo-500: $indigo !default;
-$indigo-600: shade-color($indigo, 2) !default;
-$indigo-700: shade-color($indigo, 4) !default;
-$indigo-800: shade-color($indigo, 6) !default;
-$indigo-900: shade-color($indigo, 8) !default;
+$indigo-600: shade-color($indigo, 2%) !default;
+$indigo-700: shade-color($indigo, 4%) !default;
+$indigo-800: shade-color($indigo, 6%) !default;
+$indigo-900: shade-color($indigo, 8%) !default;
 
-$purple-100: tint-color($purple, 8) !default;
-$purple-200: tint-color($purple, 6) !default;
-$purple-300: tint-color($purple, 4) !default;
-$purple-400: tint-color($purple, 2) !default;
+$purple-100: tint-color($purple, 8%) !default;
+$purple-200: tint-color($purple, 6%) !default;
+$purple-300: tint-color($purple, 4%) !default;
+$purple-400: tint-color($purple, 2%) !default;
 $purple-500: $purple !default;
-$purple-600: shade-color($purple, 2) !default;
-$purple-700: shade-color($purple, 4) !default;
-$purple-800: shade-color($purple, 6) !default;
-$purple-900: shade-color($purple, 8) !default;
+$purple-600: shade-color($purple, 2%) !default;
+$purple-700: shade-color($purple, 4%) !default;
+$purple-800: shade-color($purple, 6%) !default;
+$purple-900: shade-color($purple, 8%) !default;
 
-$pink-100: tint-color($pink, 8) !default;
-$pink-200: tint-color($pink, 6) !default;
-$pink-300: tint-color($pink, 4) !default;
-$pink-400: tint-color($pink, 2) !default;
+$pink-100: tint-color($pink, 8%) !default;
+$pink-200: tint-color($pink, 6%) !default;
+$pink-300: tint-color($pink, 4%) !default;
+$pink-400: tint-color($pink, 2%) !default;
 $pink-500: $pink !default;
-$pink-600: shade-color($pink, 2) !default;
-$pink-700: shade-color($pink, 4) !default;
-$pink-800: shade-color($pink, 6) !default;
-$pink-900: shade-color($pink, 8) !default;
+$pink-600: shade-color($pink, 2%) !default;
+$pink-700: shade-color($pink, 4%) !default;
+$pink-800: shade-color($pink, 6%) !default;
+$pink-900: shade-color($pink, 8%) !default;
 
-$red-100: tint-color($red, 8) !default;
-$red-200: tint-color($red, 6) !default;
-$red-300: tint-color($red, 4) !default;
-$red-400: tint-color($red, 2) !default;
+$red-100: tint-color($red, 8%) !default;
+$red-200: tint-color($red, 6%) !default;
+$red-300: tint-color($red, 4%) !default;
+$red-400: tint-color($red, 2%) !default;
 $red-500: $red !default;
-$red-600: shade-color($red, 2) !default;
-$red-700: shade-color($red, 4) !default;
-$red-800: shade-color($red, 6) !default;
-$red-900: shade-color($red, 8) !default;
+$red-600: shade-color($red, 2%) !default;
+$red-700: shade-color($red, 4%) !default;
+$red-800: shade-color($red, 6%) !default;
+$red-900: shade-color($red, 8%) !default;
 
-$orange-100: tint-color($orange, 8) !default;
-$orange-200: tint-color($orange, 6) !default;
-$orange-300: tint-color($orange, 4) !default;
-$orange-400: tint-color($orange, 2) !default;
+$orange-100: tint-color($orange, 8%) !default;
+$orange-200: tint-color($orange, 6%) !default;
+$orange-300: tint-color($orange, 4%) !default;
+$orange-400: tint-color($orange, 2%) !default;
 $orange-500: $orange !default;
-$orange-600: shade-color($orange, 2) !default;
-$orange-700: shade-color($orange, 4) !default;
-$orange-800: shade-color($orange, 6) !default;
-$orange-900: shade-color($orange, 8) !default;
+$orange-600: shade-color($orange, 2%) !default;
+$orange-700: shade-color($orange, 4%) !default;
+$orange-800: shade-color($orange, 6%) !default;
+$orange-900: shade-color($orange, 8%) !default;
 
-$yellow-100: tint-color($yellow, 8) !default;
-$yellow-200: tint-color($yellow, 6) !default;
-$yellow-300: tint-color($yellow, 4) !default;
-$yellow-400: tint-color($yellow, 2) !default;
+$yellow-100: tint-color($yellow, 8%) !default;
+$yellow-200: tint-color($yellow, 6%) !default;
+$yellow-300: tint-color($yellow, 4%) !default;
+$yellow-400: tint-color($yellow, 2%) !default;
 $yellow-500: $yellow !default;
-$yellow-600: shade-color($yellow, 2) !default;
-$yellow-700: shade-color($yellow, 4) !default;
-$yellow-800: shade-color($yellow, 6) !default;
-$yellow-900: shade-color($yellow, 8) !default;
+$yellow-600: shade-color($yellow, 2%) !default;
+$yellow-700: shade-color($yellow, 4%) !default;
+$yellow-800: shade-color($yellow, 6%) !default;
+$yellow-900: shade-color($yellow, 8%) !default;
 
-$green-100: tint-color($green, 8) !default;
-$green-200: tint-color($green, 6) !default;
-$green-300: tint-color($green, 4) !default;
-$green-400: tint-color($green, 2) !default;
+$green-100: tint-color($green, 8%) !default;
+$green-200: tint-color($green, 6%) !default;
+$green-300: tint-color($green, 4%) !default;
+$green-400: tint-color($green, 2%) !default;
 $green-500: $green !default;
-$green-600: shade-color($green, 2) !default;
-$green-700: shade-color($green, 4) !default;
-$green-800: shade-color($green, 6) !default;
-$green-900: shade-color($green, 8) !default;
+$green-600: shade-color($green, 2%) !default;
+$green-700: shade-color($green, 4%) !default;
+$green-800: shade-color($green, 6%) !default;
+$green-900: shade-color($green, 8%) !default;
 
-$teal-100: tint-color($teal, 8) !default;
-$teal-200: tint-color($teal, 6) !default;
-$teal-300: tint-color($teal, 4) !default;
-$teal-400: tint-color($teal, 2) !default;
+$teal-100: tint-color($teal, 8%) !default;
+$teal-200: tint-color($teal, 6%) !default;
+$teal-300: tint-color($teal, 4%) !default;
+$teal-400: tint-color($teal, 2%) !default;
 $teal-500: $teal !default;
-$teal-600: shade-color($teal, 2) !default;
-$teal-700: shade-color($teal, 4) !default;
-$teal-800: shade-color($teal, 6) !default;
-$teal-900: shade-color($teal, 8) !default;
+$teal-600: shade-color($teal, 2%) !default;
+$teal-700: shade-color($teal, 4%) !default;
+$teal-800: shade-color($teal, 6%) !default;
+$teal-900: shade-color($teal, 8%) !default;
 
-$cyan-100: tint-color($cyan, 8) !default;
-$cyan-200: tint-color($cyan, 6) !default;
-$cyan-300: tint-color($cyan, 4) !default;
-$cyan-400: tint-color($cyan, 2) !default;
+$cyan-100: tint-color($cyan, 8%) !default;
+$cyan-200: tint-color($cyan, 6%) !default;
+$cyan-300: tint-color($cyan, 4%) !default;
+$cyan-400: tint-color($cyan, 2%) !default;
 $cyan-500: $cyan !default;
-$cyan-600: shade-color($cyan, 2) !default;
-$cyan-700: shade-color($cyan, 4) !default;
-$cyan-800: shade-color($cyan, 6) !default;
-$cyan-900: shade-color($cyan, 8) !default;
+$cyan-600: shade-color($cyan, 2%) !default;
+$cyan-700: shade-color($cyan, 4%) !default;
+$cyan-800: shade-color($cyan, 6%) !default;
+$cyan-900: shade-color($cyan, 8%) !default;
 // fusv-enable
 
 // Characters which are escaped by the escape-svg function
@@ -328,8 +328,8 @@ $gradient: linear-gradient(
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
-  1: $spacer / 4,
-  2: $spacer / 2,
+  1: calc($spacer / 4),
+  2: calc($spacer / 2),
   3: $spacer,
   4: $spacer * 1.5,
   5: $spacer * 3,
@@ -582,7 +582,7 @@ $text-sm-font-size: 0.875rem !default;
 $text-xs-font-size: 0.75rem !default;
 $p-font-size: 1rem !default;
 
-$headings-margin-bottom: $spacer / 2 !default;
+$headings-margin-bottom: calc($spacer / 2) !default;
 $headings-font-family: null !default;
 $headings-font-style: null !default;
 $headings-font-weight: 400 !default;
@@ -1183,7 +1183,7 @@ $nav-pills-vertical-link-radius: 0.875rem !default;
 
 // Navbar
 
-$navbar-padding-y: $spacer / 2 !default;
+$navbar-padding-y: calc($spacer / 2) !default;
 $navbar-padding-x: null !default;
 $navbar-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16) !default;
 
@@ -1194,7 +1194,7 @@ $navbar-brand-font-size: $font-size-lg !default;
 // Compute the navbar-brand padding-y so the navbar-brand will have the same height as navbar-text and nav-link
 $nav-link-height: $font-size-base * $line-height-base + $nav-link-padding-y * 2 !default;
 $navbar-brand-height: $navbar-brand-font-size * $line-height-base !default;
-$navbar-brand-padding-y: ($nav-link-height - $navbar-brand-height) / 2 !default;
+$navbar-brand-padding-y: calc(($nav-link-height - $navbar-brand-height) / 2) !default;
 $navbar-brand-margin-right: 1rem !default;
 
 $navbar-toggler-padding-y: 0.25rem !default;
@@ -1254,7 +1254,7 @@ $dropdown-inner-border-radius: subtract(
 ) !default;
 $dropdown-transition-time: 0.3s ease !default;
 $dropdown-divider-bg: $dropdown-border-color !default;
-$dropdown-divider-margin-y: $spacer / 2 !default;
+$dropdown-divider-margin-y: calc($spacer / 2) !default;
 $dropdown-box-shadow: $box-shadow-lg !default;
 
 $dropdown-link-color: $font-color !default;
@@ -1328,7 +1328,7 @@ $pagination-transition:
 
 $card-spacer-y: $spacer !default;
 $card-spacer-x: $spacer !default;
-$card-title-spacer-y: $spacer / 2 !default;
+$card-title-spacer-y: calc($spacer / 2) !default;
 $card-border-width: 0 !default;
 $card-border-radius: 1rem !default;
 $card-border-color: rgba($black, 0.125) !default;
@@ -1336,7 +1336,7 @@ $card-inner-border-radius: subtract(
   $card-border-radius,
   $card-border-width
 ) !default;
-$card-cap-padding-y: $card-spacer-y / 2 !default;
+$card-cap-padding-y: calc($card-spacer-y / 2) !default;
 $card-cap-padding-x: $card-spacer-x !default;
 $card-cap-bg: $white !default;
 $card-cap-color: null !default;
@@ -1346,7 +1346,7 @@ $card-bg: $white !default;
 
 $card-img-overlay-padding: $spacer !default;
 
-$card-group-margin: $grid-gutter-width / 2 !default;
+$card-group-margin: calc($grid-gutter-width / 2) !default;
 
 // Accordion
 $accordion-padding-y: 1rem !default;
@@ -1390,8 +1390,8 @@ $tooltip-color: $white !default;
 $tooltip-bg: $black !default;
 $tooltip-border-radius: $border-radius-md !default;
 $tooltip-opacity: 0.9 !default;
-$tooltip-padding-y: $spacer / 4 !default;
-$tooltip-padding-x: $spacer / 2 !default;
+$tooltip-padding-y: calc($spacer / 4) !default;
+$tooltip-padding-x: calc($spacer / 2) !default;
 $tooltip-margin: 0 !default;
 
 $tooltip-arrow-width: 0.8rem !default;
@@ -1548,7 +1548,7 @@ $list-group-border-color: rgba($black, 0.125) !default;
 $list-group-border-width: $border-width !default;
 $list-group-border-radius: $border-radius-md !default;
 
-$list-group-item-padding-y: $spacer / 2 !default;
+$list-group-item-padding-y: calc($spacer / 2) !default;
 $list-group-item-padding-x: $spacer !default;
 $list-group-item-bg-level: -9 !default;
 $list-group-item-color-level: 6 !default;
@@ -1584,7 +1584,7 @@ $figure-caption-color: $gray-600 !default;
 // Breadcrumbs
 
 $breadcrumb-font-size: null !default;
-$breadcrumb-padding-y: $spacer / 2 !default;
+$breadcrumb-padding-y: calc($spacer / 2) !default;
 $breadcrumb-padding-x: $spacer !default;
 $breadcrumb-item-padding-x: 0.5rem !default;
 $breadcrumb-margin-bottom: 1rem !default;
