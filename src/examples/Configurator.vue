@@ -11,25 +11,80 @@ const sidebarType = computed(() => store.state.sidebarType);
 const toggleConfigurator = () => store.commit("toggleConfigurator");
 
 // mutations
-const navbarFixed = () => store.commit("navbarFixed");
+const navbarFixed = () => {
+  store.commit("navbarFixed");
+  localStorage.setItem("navbarFixed", store.state.isNavFixed ? "true" : "false");
+};
 const setSidebarType = (type) => store.commit("sidebarType", type);
 
 const sidebarColor = (color = "success") => {
   document.querySelector("#sidenav-main").setAttribute("data-color", color);
+  localStorage.setItem("sidebarColor", color);
+};
+
+const setSidebarTypePersist = (type) => {
+  setSidebarType(type);
+  store.commit("sidebarType", type);
+  localStorage.setItem("sidebarType", type);
+  // Terapkan langsung ke elemen sidenav jika ada
+  const sidenav = document.querySelector("#sidenav-main");
+  if (sidenav) {
+    sidenav.classList.remove("bg-white", "bg-default");
+    sidenav.classList.add(type);
+  }
 };
 
 const darkMode = () => {
   if (store.state.darkMode) {
     store.state.darkMode = false;
-    setSidebarType("bg-white");
+    setSidebarTypePersist("bg-white");
     deactivateDarkMode();
+    localStorage.setItem("darkMode", "false");
     return;
   } else {
     store.state.darkMode = true;
-    setSidebarType("bg-default");
+    setSidebarTypePersist("bg-default");
     activateDarkMode();
+    localStorage.setItem("darkMode", "true");
   }
 };
+
+import { onMounted } from "vue";
+onMounted(() => {
+  // Restore sidebar color
+  const color = localStorage.getItem("sidebarColor");
+  if (color) sidebarColor(color);
+  // Restore sidebar type
+  const type = localStorage.getItem("sidebarType");
+  if (type) {
+    setSidebarType(type);
+    store.commit("sidebarType", type);
+    const sidenav = document.querySelector("#sidenav-main");
+    if (sidenav) {
+      sidenav.classList.remove("bg-white", "bg-default");
+      sidenav.classList.add(type);
+    }
+  }
+  // Restore dark mode
+  const dark = localStorage.getItem("darkMode");
+  if (dark === "true") {
+    store.state.darkMode = true;
+    setSidebarType("bg-default");
+    activateDarkMode();
+  } else if (dark === "false") {
+    store.state.darkMode = false;
+    setSidebarType("bg-white");
+    deactivateDarkMode();
+  }
+  // Restore navbar fixed
+  const navFixed = localStorage.getItem("navbarFixed");
+  if (navFixed === "true") {
+    store.commit("navbarFixed");
+  } else if (navFixed === "false") {
+    if (store.state.isNavFixed) store.commit("navbarFixed");
+  }
+});
+
 </script>
 <template>
   <div class="fixed-plugin">
@@ -108,24 +163,16 @@ const darkMode = () => {
           <button
             id="btn-white"
             class="btn w-100 px-3 mb-2"
-            :class="
-              sidebarType === 'bg-white'
-                ? 'bg-gradient-success'
-                : 'btn-outline-success'
-            "
-            @click="setSidebarType('bg-white')"
+            :class="sidebarType === 'bg-white' ? 'btn-success text-white' : 'btn-outline-success'"
+            @click="setSidebarTypePersist('bg-white')"
           >
             White
           </button>
           <button
             id="btn-dark"
             class="btn w-100 px-3 mb-2"
-            :class="
-              sidebarType === 'bg-default'
-                ? 'bg-gradient-success'
-                : 'btn-outline-success'
-            "
-            @click="setSidebarType('bg-default')"
+            :class="sidebarType === 'bg-default' ? 'btn-success text-white' : 'btn-outline-success'"
+            @click="setSidebarTypePersist('bg-default')"
           >
             Dark
           </button>
@@ -161,41 +208,8 @@ const darkMode = () => {
             />
           </div>
         </div>
-        <a
-          class="btn bg-gradient-dark w-100"
-          href="https://www.creative-tim.com/product/vue-argon-dashboard"
-          >Free Download</a
-        >
-        <a
-          class="btn btn-outline-dark w-100"
-          href="https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/"
-          >View documentation</a
-        >
-        <div class="text-center w-100">
-          <a
-            class="github-button"
-            href="https://github.com/creativetimofficial/vue-argon-dashboard"
-            data-icon="octicon-star"
-            data-size="large"
-            data-show-count="true"
-            aria-label="Star creativetimofficial/vue-argon-dashboard on GitHub"
-            >Star</a
-          >
-          <h6 class="mt-3">Thank you for sharing!</h6>
-          <a
-            href="https://twitter.com/intent/tweet?text=Check%20Vue%20Argon%20Dashboard%202%20made%20by%20%40CreativeTim%20%23webdesign%20%23dashboard%20%vuejs3&amp;url=https%3A%2F%2Fwww.creative-tim.com%2Fproduct%vue-argon-dashboard"
-            class="mb-0 btn btn-dark me-2"
-            target="_blank"
-          >
-            <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
-          </a>
-          <a
-            href="https://www.facebook.com/sharer/sharer.php?u=https://www.creative-tim.com/product/vue-argon-dashboard"
-            class="mb-0 btn btn-dark me-2"
-            target="_blank"
-          >
-            <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-          </a>
+        <div class="text-center w-100 mt-4">
+          <button class="btn btn-outline-primary w-100" @click="toggleConfigurator">Kembali</button>
         </div>
       </div>
     </div>

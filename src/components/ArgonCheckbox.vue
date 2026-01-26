@@ -1,5 +1,6 @@
 <script setup>
-defineProps({
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
   name: {
     type: String,
     default: "",
@@ -8,7 +9,7 @@ defineProps({
     type: String,
     default: "",
   },
-  checked: {
+  modelValue: {
     type: Boolean,
     default: false,
   },
@@ -21,7 +22,8 @@ defineProps({
       class="form-check-input"
       type="checkbox"
       :name="name"
-      :checked="checked"
+      :checked="modelValue"
+      @change="emit('update:modelValue', $event.target.checked)"
     />
     <label :for="id" class="custom-control-label" :class="$attrs.class">
       <slot />

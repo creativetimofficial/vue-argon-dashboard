@@ -1,5 +1,6 @@
 <script setup>
-defineProps({
+const emit = defineEmits(["update:modelValue"]);
+const props = defineProps({
   id: {
     type: String,
     required: true,
@@ -11,6 +12,10 @@ defineProps({
   rows: {
     type: Number,
     default: 5,
+  },
+  modelValue: {
+    type: String,
+    default: "",
   },
 });
 </script>
@@ -24,6 +29,8 @@ defineProps({
       class="form-control"
       :rows="rows"
       :placeholder="placeholder"
+      :value="modelValue"
+      @input="emit('update:modelValue', $event.target.value)"
     ></textarea>
   </div>
 </template>
