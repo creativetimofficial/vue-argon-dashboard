@@ -14,11 +14,21 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'detect.tenant' => \App\Http\Middleware\DetectTenant::class,
         ]);
         
         // Add CORS middleware globally (before other middleware)
         $middleware->prepend(\App\Http\Middleware\HandleCors::class);
+        
+        // Removed IdentifyTenant - DetectTenant handles tenant detection
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        // Handle unauthenticated exceptions for API routes
+        $exceptions->renderable(function (\Illuminate\Auth\AuthenticationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => 'Unauthenticated.'
+                ], 401);
+            }
+        });
     })->create();

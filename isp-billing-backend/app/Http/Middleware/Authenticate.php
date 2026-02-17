@@ -9,18 +9,11 @@ class Authenticate extends Middleware
 {
     /**
      * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
      */
-    protected function redirectTo(Request $request)
+    protected function redirectTo(Request $request): ?string
     {
-        // For API requests, return null to trigger 401 JSON response
-        if ($request->expectsJson() || $request->is('api/*')) {
-            return null;
-        }
-        // Default: you can set a web login route here if needed
-        // return route('login');
+        // Always return null for API requests to get 401 JSON response
+        // Never redirect to login route
         return null;
     }
 }

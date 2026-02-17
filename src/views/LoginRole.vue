@@ -6,6 +6,7 @@ import { authAPI } from "@/services/api";
 import ArgonInput from "@/components/ArgonInput.vue";
 import ArgonSwitch from "@/components/ArgonSwitch.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
+import Swal from "sweetalert2";
 
 const body = document.getElementsByTagName("body")[0];
 const store = useStore();
@@ -17,12 +18,30 @@ const rememberMe = ref(false);
 const loading = ref(false);
 const errorMessage = ref("");
 
-onBeforeMount(() => {
+const tenantInfo = ref(null);
+
+onBeforeMount(async () => {
   store.state.hideConfigButton = true;
   store.state.showNavbar = false;
   store.state.showSidenav = false;
   store.state.showFooter = false;
   body.classList.remove("bg-gray-100");
+
+  try {
+    const response = await authAPI.getTenantInfo();
+    if (response.data && response.data.is_tenant) {
+       tenantInfo.value = response.data;
+    }
+  } catch (e) {
+    console.log("Not a tenant domain or error fetching info", e);
+  }
+
+  // Pre-fill email if remembered
+  const savedEmail = localStorage.getItem("remembered_email");
+  if (savedEmail) {
+    email.value = savedEmail;
+    rememberMe.value = true;
+  }
 });
 
 onBeforeUnmount(() => {
@@ -37,7 +56,12 @@ const handleLogin = async () => {
   errorMessage.value = "";
 
   if (!email.value || !password.value) {
-    errorMessage.value = "Email dan password harus diisi";
+    Swal.fire({
+      icon: 'warning',
+      title: 'Form Tidak Lengkap',
+      text: 'Email dan password harus diisi',
+      confirmButtonColor: '#5e72e4'
+    });
     return;
   }
 
@@ -82,8 +106,19 @@ const handleLogin = async () => {
     console.log("Token:", token);
 
     // Save token and user to localStorage
-    localStorage.setItem("auth_token", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    // Save token and user based on Remember Me
+    if (rememberMe.value) {
+      localStorage.setItem("auth_token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("remembered_email", email.value);
+    } else {
+      sessionStorage.setItem("auth_token", token);
+      sessionStorage.setItem("user", JSON.stringify(user));
+      localStorage.removeItem("remembered_email"); // Clear if unchecked
+      // Clear localStorage auth data just in case
+      localStorage.removeItem("auth_token");
+      localStorage.removeItem("user");
+    }
 
     // Redirect based on role
     switch (user.role) {
@@ -97,7 +132,12 @@ const handleLogin = async () => {
           router.push("/client-area/dashboard");
         } else if (user.isp && user.isp.approval_status === 'pending') {
           // Package pending approval, show message and redirect to client area dashboard
-          alert("Paket Anda sedang menunggu persetujuan dari Super Admin.");
+          Swal.fire({
+            icon: 'info',
+            title: 'Menunggu Persetujuan',
+            text: 'Paket Anda sedang menunggu persetujuan dari Super Admin.',
+            confirmButtonColor: '#5e72e4'
+          });
           router.push("/client-area/dashboard");
         } else if (user.isp && user.isp.subscription_package_id) {
           // Has package, redirect to client area dashboard
@@ -119,17 +159,43 @@ const handleLogin = async () => {
     console.error("Login error:", error);
     console.error("Error response:", error.response);
 
-    if (error.response?.data?.errors) {
-      errorMessage.value = Object.values(error.response.data.errors)
-        .flat()
-        .join(", ");
-    } else if (error.response?.data?.message) {
-      errorMessage.value = error.response.data.message;
-    } else if (error.message) {
-      errorMessage.value = error.message;
-    } else {
-      errorMessage.value = "Terjadi kesalahan. Silakan coba lagi.";
+    let errorTitle = 'Login Gagal';
+    let errorText = 'Terjadi kesalahan. Silakan coba lagi.';
+    let icon = 'error';
+
+    // Handle rate limiting (429)
+    if (error.response?.status === 429) {
+      errorTitle = 'Akun Terkunci';
+      icon = 'warning';
+      errorText = error.response.data.message || 'Terlalu banyak percobaan login gagal.';
     }
+    // Handle validation errors (422)
+    else if (error.response?.status === 422) {
+      if (error.response.data.errors) {
+        errorText = Object.values(error.response.data.errors).flat().join(', ');
+      } else if (error.response.data.message) {
+        errorText = error.response.data.message;
+      }
+    }
+    // Handle forbidden (403) - unverified email
+    else if (error.response?.status === 403) {
+      errorTitle = 'Akses Ditolak';
+      icon = 'warning';
+      errorText = error.response.data.message || 'Akun Anda belum diverifikasi.';
+    }
+    // Handle other errors
+    else if (error.response?.data?.message) {
+      errorText = error.response.data.message;
+    } else if (error.message) {
+      errorText = error.message;
+    }
+
+    Swal.fire({
+      icon: icon,
+      title: errorTitle,
+      text: errorText,
+      confirmButtonColor: '#5e72e4'
+    });
   } finally {
     loading.value = false;
   }
@@ -238,12 +304,12 @@ const handleLogin = async () => {
                 <div class="px-1 pt-0 text-center card-footer px-lg-2">
                   <p class="mx-auto mb-2 text-sm">
                     Lupa password?
-                    <a
-                      href="javascript:;"
+                    <router-link
+                      to="/forgot-password"
                       class="text-success text-gradient font-weight-bold"
                     >
                       Reset Password
-                    </a>
+                    </router-link>
                   </p>
                   <p class="mx-auto mb-4 text-sm">
                     Belum punya akun?
@@ -268,15 +334,16 @@ const handleLogin = async () => {
                 "
               >
                 <span class="mask bg-gradient-success opacity-6"></span>
-                <h4
-                  class="mt-5 text-white font-weight-bolder position-relative"
-                >
-                  Selamat Datang Kembali!
-                </h4>
-                <p class="text-white position-relative">
-                  Kelola bisnis ISP Anda dengan mudah menggunakan platform
-                  terlengkap di Indonesia.
-                </p>
+                <div v-if="!tenantInfo" class="position-relative">
+                   <h4 class="mt-5 text-white font-weight-bolder">Selamat Datang Kembali!</h4>
+                   <p class="text-white">Kelola bisnis ISP Anda dengan mudah menggunakan platform terlengkap di Indonesia.</p>
+                </div>
+                <div v-else class="position-relative text-center">
+                   <!-- Tenant Branding -->
+                   <img v-if="tenantInfo.logo" :src="tenantInfo.logo" class="mb-3" style="max-height: 80px;" alt="Logo" />
+                   <h4 class="mt-3 text-white font-weight-bolder">{{ tenantInfo.name }} Admin</h4>
+                   <p class="text-white">Sign in to manage your implementation.</p>
+                </div>
               </div>
             </div>
           </div>

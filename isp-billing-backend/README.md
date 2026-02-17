@@ -64,3 +64,11 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## ISP Billing Scheduler Setup
+Untuk menjalankan sistem otomatisasi (pengecekan expired, email notifikasi), silakan baca panduan lengkap di file [SCHEDULER_SETUP.md](SCHEDULER_SETUP.md).
+
+**Singkatnya:**
+Setup Cron Job (Linux) atau Task Scheduler (Windows) untuk menjalankan perintah:
+`php artisan schedule:run`
+Setiap menit.

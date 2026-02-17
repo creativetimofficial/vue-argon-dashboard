@@ -10,27 +10,26 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
-        'payment_code',
-        'invoice_id',
         'isp_id',
+        'invoice_id',
+        'transaction_id',
+        'payment_gateway',
+        'payment_reference',
         'amount',
         'payment_method',
-        'gateway_id',
-        'gateway_transaction_id',
-        'gateway_response',
-        'payment_proof',
-        'payment_note',
-        'received_by',
         'status',
         'payment_date',
-        'confirmed_at',
+        'paid_at',
+        'payment_details',
+        'notes',
+        'expiry_time',
     ];
 
     protected $casts = [
         'amount' => 'decimal:2',
-        'gateway_response' => 'array',
+        'payment_details' => 'array',
         'payment_date' => 'datetime',
-        'confirmed_at' => 'datetime',
+        'expiry_time' => 'datetime',
     ];
 
     public function invoice()

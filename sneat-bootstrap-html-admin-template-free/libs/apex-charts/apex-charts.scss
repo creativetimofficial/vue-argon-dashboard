@@ -1,0 +1,100 @@
+/**
+* Apex Charts
+*/
+@import "../../scss/_bootstrap-extended/include";
+@import "apexcharts/dist/apexcharts";
+
+.apexcharts-canvas {
+  .apexcharts-tooltip {
+    box-shadow: var(--#{$prefix}box-shadow);
+    &.apexcharts-theme-light {
+      border-color: var(--#{$prefix}border-color);
+      background: var(--#{$prefix}paper-bg);
+      color: var(--#{$prefix}heading-color);
+
+      .apexcharts-tooltip-title {
+        background: var(--#{$prefix}paper-bg);
+        border-block-end-color: var(--#{$prefix}border-color);
+        font-family: $font-family-base !important;
+        font-weight: $headings-font-weight;
+      }
+    }
+    &.apexcharts-theme-dark {
+      background: transparent;
+    }
+  }
+
+  .apexcharts-xaxistooltip,
+  .apexcharts-yaxistooltip {
+    border-color: var(--#{$prefix}border-color);
+    background: var(--#{$prefix}paper-bg);
+    color: var(--#{$prefix}heading-color);
+
+    &.apexcharts-xaxistooltip-bottom,
+    &.apexcharts-yaxistooltip-bottom {
+      &::after {
+        border-block-end-color: var(--#{$prefix}paper-bg);
+      }
+      &::before {
+        border-block-end-color: var(--#{$prefix}border-color);
+      }
+    }
+
+    &.apexcharts-xaxistooltip-left,
+    &.apexcharts-yaxistooltip-left {
+      &::after {
+        border-inline-start-color: var(--#{$prefix}paper-bg);
+      }
+      &::before {
+        border-inline-start-color: var(--#{$prefix}border-color);
+      }
+    }
+
+    &.apexcharts-xaxistooltip-right,
+    &.apexcharts-yaxistooltip-right {
+      &::after {
+        border-inline-end-color: var(--#{$prefix}paper-bg);
+      }
+      &::before {
+        border-inline-end-color: var(--#{$prefix}border-color);
+      }
+    }
+
+    &.apexcharts-xaxistooltip-top,
+    &.apexcharts-yaxistooltip-top {
+      &::after {
+        border-block-start-color: var(--#{$prefix}paper-bg);
+      }
+      &::before {
+        border-block-start-color: var(--#{$prefix}border-color);
+      }
+    }
+  }
+
+  .apexcharts-tooltip-text {
+    font-family: $font-family-base !important;
+  }
+  .apexcharts-legend-marker,
+  .apexcharts-tooltip-marker {
+    margin-inline: 0 .5rem;
+  }
+}
+
+
+/* total-revenue card styles */
+
+@media (min-width: 1400px) and (max-width: 1550px) {
+  .total-revenue {
+    inline-size: 100% !important;
+  }
+  .profile-report {
+    inline-size: 100% !important;
+    .payments,
+    .transactions {
+      inline-size: 25% !important;
+    }
+    .profile-report {
+      inline-size: 50% !important;
+    }
+  }
+}

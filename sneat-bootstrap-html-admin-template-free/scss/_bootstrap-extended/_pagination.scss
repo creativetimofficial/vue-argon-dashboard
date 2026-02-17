@@ -1,0 +1,123 @@
+/* Pagination
+******************************************************************************* */
+
+.pagination {
+  --#{$prefix}pagination-box-shadow-color: #{$pagination-box-shadow-color};
+  padding-inline-start: 0;
+  .page-link {
+    border-color: transparent;
+  }
+  &.pagination-lg {
+    --#{$prefix}pagination-font-size: #{$font-size-lg};
+  }
+  &.pagination-sm {
+    --#{$prefix}pagination-font-size: #{$font-size-sm};
+  }
+  .page-item .page-link,
+  & li > a:not(.page-link) {
+    &:focus {
+      color: var(--#{$prefix}pagination-focus-color);
+    }
+  }
+  .page-item.active .page-link,
+  & li.active > a:not(.page-link) {
+    box-shadow: 0 .125rem .25rem 0 rgba(var(--#{$prefix}pagination-box-shadow-color), .4);
+    color: var(--#{$prefix}pagination-active-color);
+  }
+}
+
+/* Pagination next, prev, first & last css padding */
+.page-item {
+  &.disabled,
+  &[disabled] {
+    .page-link {
+      opacity: $pagination-disabled-opacity;
+      pointer-events: none;
+    }
+  }
+}
+.page-item:last-child .icon-base {
+  transform: translateX(7%);
+}
+
+/* Pagination basic style */
+.page-link,
+.page-link > a {
+  @include border-radius($border-radius);
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  min-block-size:
+    calc(
+      #{"#{($font-size-base * $pagination-line-height) + ($pagination-padding-y * 2)} + calc(#{$pagination-border-width} * 2)"}
+    );
+  min-inline-size:
+    calc(
+      #{"#{($font-size-base * $pagination-line-height) + ($pagination-padding-x * 1.923)} + calc(#{$pagination-border-width} * 2)"}
+    );
+}
+
+/* Sizing
+******************************************************************************* */
+
+/* Pagination Large */
+.pagination-lg .page-link,
+.pagination-lg > li > a:not(.page-link) {
+  min-block-size:
+    calc(
+      #{"#{($font-size-base * $pagination-line-height) + ($pagination-padding-y-lg * 2.33)} + calc(#{$pagination-border-width} * 2)"}
+    );
+  min-inline-size:
+    calc(
+      #{"#{($font-size-base * $pagination-line-height) + ($pagination-padding-x-lg * 1.615)} + calc(#{$pagination-border-width} * 2)"}
+    );
+}
+
+.pagination-lg > .page-item {
+  &.first,
+  &.last,
+  &.next,
+  &.prev,
+  &.previous {
+    .page-link {
+      padding-inline: $pagination-padding-y-lg - .0845rem;
+    }
+  }
+}
+
+/* Pagination Small */
+.pagination-sm .page-link,
+.pagination-sm > li > a:not(.page-link) {
+  min-block-size:
+    calc(
+      #{"#{($font-size-sm * $pagination-line-height) + ($pagination-padding-y-sm * 2)} + calc(#{$pagination-border-width} * 2)"}
+    );
+  min-inline-size:
+    calc(
+      #{"#{($font-size-sm * $pagination-line-height) + ($pagination-padding-x-sm * 2.356)} + calc(#{$pagination-border-width} * 2)"}
+    );
+}
+
+.pagination-sm > .page-item {
+  &.first,
+  &.last,
+  &.next,
+  &.prev,
+  &.previous {
+    .page-link {
+      padding-block: $pagination-padding-y-sm - .1055rem;
+      padding-inline: $pagination-padding-y-sm - .1055rem;
+    }
+  }
+}
+
+/* Add spacing between pagination items */
+.page-item + .page-item .page-link,
+.pagination li + li > a:not(.page-link) {
+  .pagination-sm & {
+    margin-inline-start: .25rem;
+  }
+  .pagination-lg & {
+    margin-inline-start: .5rem;
+  }
+}

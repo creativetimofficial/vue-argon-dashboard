@@ -55,9 +55,9 @@
                       <h4 class="card-title text-center mb-3">{{ pkg.name }}</h4>
                       <div class="text-center mb-4">
                         <h2 class="text-success mb-0">
-                          {{ formatCurrency(pkg.price_monthly) }}
+                          {{ formatCurrency(pkg.price) }}
                         </h2>
-                        <small class="text-muted">/ bulan</small>
+                        <small class="text-muted">/ {{ pkg.active_days }} Hari</small>
                       </div>
 
                       <div v-if="pkg.description" class="mb-3">
@@ -123,7 +123,7 @@
                       <div class="col-md-6">
                         <p class="mb-2">
                           <strong>Harga:</strong>
-                          {{ formatCurrency(selectedPackage.price_monthly) }} / bulan
+                          {{ formatCurrency(selectedPackage.price) }} / {{ selectedPackage.active_days }} Hari
                         </p>
                         <p class="mb-2">
                           <strong>Maksimal Pelanggan:</strong>
@@ -220,7 +220,7 @@ const proceedToPayment = async () => {
     // Check if package is trial (trial_days > 0 or price is 0)
     const isTrial =
       selectedPackage.value.trial_days > 0 ||
-      selectedPackage.value.price_monthly === 0;
+      selectedPackage.value.price === 0;
 
     if (isTrial) {
       // For trial packages, request approval
@@ -243,7 +243,6 @@ const requestTrialApproval = async () => {
   try {
     const response = await api.post("/isp-admin/subscribe", {
       package_id: selectedPackage.value.id,
-      billing_cycle: "monthly",
     });
 
     if (response.data.success) {
@@ -261,7 +260,6 @@ const createPayment = async () => {
   try {
     const response = await api.post("/isp-admin/subscribe", {
       package_id: selectedPackage.value.id,
-      billing_cycle: "monthly",
     });
 
     if (response.data.payment_url) {

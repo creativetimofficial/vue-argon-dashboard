@@ -1,0 +1,36 @@
+// Breadcrumbs
+// *******************************************************************************
+
+
+.breadcrumb {
+  --#{$prefix}breadcrumb-color: #{$breadcrumb-color};
+}
+
+.breadcrumb-item {
+  line-height: 1.5rem;
+  a {
+    color: var(--#{$prefix}breadcrumb-color);
+
+    &:hover,
+    &:focus {
+      color: var(--#{$prefix}breadcrumb-item-active-color);
+    }
+  }
+  .icon-base.breadcrumb-icon {
+    color: var(--#{$prefix}breadcrumb-divider-color);
+    margin-inline-start: $breadcrumb-item-padding-x;
+  }
+}
+
+.breadcrumb-item.active a {
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    color: inherit;
+  }
+}
+
+.breadcrumb-custom-icon .breadcrumb-item + .breadcrumb-item::before {
+  content: none !important;
+}

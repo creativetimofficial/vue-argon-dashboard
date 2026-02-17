@@ -1,0 +1,33 @@
+    /**
+     * Download invoice as PDF
+     */
+    public function downloadInvoice($id)
+    {
+        try {
+            $user = auth()->user();
+            $isp = $user->isp;
+
+            $invoice = Invoice::with(['items', 'payment'])
+                ->where('billable_type', 'App\\Models\\ISP')
+                ->where('billable_id', $isp->id)
+                ->where('id', $id)
+                ->firstOrFail();
+
+            // Simple HTML invoice (for now)
+            // TODO: Implement proper PDF generation with dompdf
+            $html = view('invoices.pdf', [
+                'invoice' => $invoice,
+                'isp' => $isp
+            ])->render();
+            
+            return response($html)
+                ->header('Content-Type', 'text/html')
+                ->header('Content-Disposition', 'inline; filename="invoice-' . $invoice->invoice_number . '.html"');
+                
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to download invoice: ' . $e->getMessage(),
+            ], 500);
+        }
+    }

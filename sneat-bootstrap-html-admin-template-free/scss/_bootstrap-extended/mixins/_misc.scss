@@ -1,0 +1,17 @@
+// Keyframes
+// *******************************************************************************
+
+@mixin keyframes($name) {
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+// icons
+// *******************************************************************************
+
+@mixin icon-base($size: var(--#{$prefix}icon-size)) {
+  block-size: $size;
+  font-size: $size;
+  inline-size: $size;
+}

@@ -34,7 +34,7 @@ const handleSearch = async (e) => {
   if (e.key === "Enter" && searchQuery.value.trim()) {
     searching.value = true;
     try {
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       const res = await axios.get(`http://localhost:8000/api/search?q=${encodeURIComponent(searchQuery.value)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -56,7 +56,8 @@ const closeSearchResults = () => {
 const user = ref(null);
 const userMenuOpen = ref(false);
 onMounted(() => {
-  const userData = localStorage.getItem("user");
+  // Check both localStorage and sessionStorage for user data
+  const userData = localStorage.getItem("user") || sessionStorage.getItem("user");
   if (userData) user.value = JSON.parse(userData);
 });
 const handleSignInClick = () => {
@@ -67,8 +68,11 @@ const handleSignInClick = () => {
   }
 };
 const handleLogout = () => {
+  // Clear from both localStorage and sessionStorage
   localStorage.removeItem("auth_token");
   localStorage.removeItem("user");
+  sessionStorage.removeItem("auth_token");
+  sessionStorage.removeItem("user");
   user.value = null;
   router.push({ name: "Login" });
 };
@@ -78,7 +82,7 @@ const notifications = ref([]);
 const notificationCount = computed(() => notifications.value.length);
 const fetchNotifications = async () => {
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     const res = await axios.get("http://localhost:8000/api/notifications", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -124,7 +128,7 @@ onMounted(fetchNotifications);
               @keydown="handleSearch"
               @focus="showSearchResults = false"
             />
-            <div v-if="showSearchResults" class="search-results position-absolute bg-white border rounded shadow p-2" style="top: 40px; left: 0; right: 0; z-index: 1000;">
+            <div v-if="showSearchResults" class="search-results position-absolute border rounded shadow p-2" style="top: 40px; left: 0; right: 0; z-index: 1000;">
               <div v-if="searching" class="text-center py-2">Mencari...</div>
               <div v-else>
                 <div v-if="searchResults.length === 0" class="text-center py-2 text-muted">Tidak ada hasil</div>
@@ -150,9 +154,9 @@ onMounted(fetchNotifications);
               <span v-if="!user">Sign In</span>
               <span v-else>{{ user.name }}</span>
             </a>
-            <div v-if="user && userMenuOpen" class="user-menu position-absolute bg-white border rounded shadow p-2" style="top: 40px; right: 0; z-index: 1000; min-width: 150px;">
+            <div v-if="user && userMenuOpen" class="user-menu position-absolute border rounded shadow p-2" style="top: 40px; right: 0; z-index: 1000; min-width: 150px;">
               <div class="py-1"><strong>{{ user.name }}</strong></div>
-              <div class="py-1"><a href="javascript:;" @click="router.push({ name: 'Profile' })">Profil</a></div>
+              <div class="py-1"><a href="javascript:;" @click="router.push({ name: user.role === 'super_admin' ? 'SuperAdminProfile' : 'ClientAreaProfile' })">Profil</a></div>
               <div class="py-1"><a href="javascript:;" @click="handleLogout">Logout</a></div>
             </div>
           </li>
@@ -215,3 +219,44 @@ onMounted(fetchNotifications);
     </div>
   </nav>
 </template>
+
+<style scoped>
+/* User menu dropdown styling */
+.user-menu {
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #000);
+}
+
+.user-menu a {
+  color: var(--bs-body-color, #000);
+  text-decoration: none;
+}
+
+.user-menu a:hover {
+  color: var(--bs-primary, #5e72e4);
+}
+
+/* Search results dropdown styling */
+.search-results {
+  background-color: var(--bs-body-bg, #fff);
+  color: var(--bs-body-color, #000);
+}
+
+/* Dark theme support */
+body.dark-version .user-menu,
+body.dark-version .search-results {
+  background-color: #1a1f37;
+  color: #fff;
+  border-color: #344767;
+}
+
+body.dark-version .user-menu a,
+body.dark-version .search-results a {
+  color: #fff;
+}
+
+body.dark-version .user-menu a:hover,
+body.dark-version .search-results a:hover {
+  color: #5e72e4;
+}
+</style>

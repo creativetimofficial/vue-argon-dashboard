@@ -1,279 +1,173 @@
 <template>
-  <div class="landing-page">
-    <!-- Navigation -->
-    <nav
-      class="navbar navbar-expand-lg position-absolute top-0 z-index-3 w-100 shadow-none my-3 navbar-transparent"
-    >
-      <div class="container">
-        <a class="navbar-brand font-weight-bolder text-white" href="/">
-          <i class="fas fa-broadcast-tower me-2"></i>
-          ISP Billing System
-        </a>
-        <button
-          class="navbar-toggler shadow-none ms-2"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navigation"
-        >
-          <span class="navbar-toggler-icon mt-2">
-            <span class="navbar-toggler-bar bar1"></span>
-            <span class="navbar-toggler-bar bar2"></span>
-            <span class="navbar-toggler-bar bar3"></span>
-          </span>
-        </button>
-        <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0">
-          <ul class="navbar-nav navbar-nav-hover ms-auto">
-            <li class="nav-item mx-2">
-              <a
-                class="nav-link ps-2 d-flex cursor-pointer align-items-center text-white"
-                @click="scrollToPricing"
-              >
-                <i class="fas fa-tags me-1"></i> Harga
-              </a>
-            </li>
-            <li class="nav-item mx-2">
-              <router-link
-                to="/login"
-                class="nav-link ps-2 d-flex align-items-center text-white"
-              >
-                <i class="fas fa-sign-in-alt me-1"></i> Login
-              </router-link>
-            </li>
-            <li class="nav-item ms-2">
-              <argon-button
-                color="success"
-                variant="gradient"
-                size="sm"
-                @click="goToRegister"
-              >
-                <i class="fas fa-user-plus me-1"></i> Daftar Sekarang
-              </argon-button>
-            </li>
-          </ul>
+  <div class="modern-landing-page" v-if="pageData" :style="cssVars">
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-progress" id="scroll-progress"></div>
+    
+    <!-- Navbar -->
+    <nav class="navbar-modern">
+      <div class="container-custom">
+        <div class="navbar-content">
+          <a href="/" class="brand">
+            <i class="fas fa-broadcast-tower"></i>
+            {{ pageData.footer_company_name || 'ISP Billing' }}
+          </a>
+          <div class="nav-links">
+            <a v-if="pageData.show_features" href="#features">Fitur</a>
+            <a v-if="pageData.show_pricing" href="#pricing">Harga</a>
+            <a v-if="pageData.show_faqs" href="#faq">FAQ</a>
+            <router-link to="/login" class="btn-outline">Login</router-link>
+            <button @click="goToRegister" class="btn-primary">Daftar Gratis</button>
+          </div>
         </div>
       </div>
     </nav>
 
     <!-- Hero Section -->
-    <section
-      class="hero-section min-vh-100 position-relative d-flex align-items-center"
-      style="overflow: visible; padding-bottom: 100px"
-    >
-      <div
-        class="position-absolute w-100 h-100 top-0 start-0"
-        style="
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          z-index: 0;
-        "
-      ></div>
-
-      <div class="container position-relative pt-7" style="z-index: 1">
-        <div class="row align-items-center">
-          <div class="col-lg-6 text-lg-start text-center">
-            <span class="badge badge-white text-dark mb-3">
-              <i class="fas fa-star text-warning"></i> Platform #1 untuk ISP
-            </span>
-            <h1
-              class="display-1 font-weight-bold text-white mb-4"
-              style="line-height: 1.2"
-            >
-              Sistem Billing ISP Terlengkap
-            </h1>
-            <p class="lead text-white mb-4 opacity-9 pe-lg-5">
-              Platform manajemen ISP all-in-one dengan integrasi Mikrotik,
-              payment gateway otomatis, dan sistem billing yang powerful. Kelola
-              ribuan pelanggan dengan mudah.
-            </p>
-            <div
-              class="d-flex gap-3 justify-content-lg-start justify-content-center mb-5"
-            >
-              <argon-button
-                color="white"
-                size="lg"
-                class="shadow-lg px-5"
-                @click="scrollToPricing"
-              >
-                <i class="fas fa-tags me-2"></i>
-                Lihat Paket
-              </argon-button>
-              <argon-button
-                color="success"
-                variant="gradient"
-                size="lg"
-                class="shadow-lg px-5"
-                @click="goToRegister"
-              >
-                <i class="fas fa-rocket me-2"></i>
-                Mulai Gratis
-              </argon-button>
+    <section class="hero-gradient">
+      <!-- Animated Background with More Particles -->
+      <div class="hero-bg-animation">
+        <div class="floating-shape shape-1"></div>
+        <div class="floating-shape shape-2"></div>
+        <div class="floating-shape shape-3"></div>
+        <div class="floating-shape shape-4"></div>
+        <div class="floating-shape shape-5"></div>
+        <div class="floating-shape shape-6"></div>
+        <div class="floating-shape shape-7"></div>
+        <div class="floating-shape shape-8"></div>
+        <!-- Animated Grid Pattern -->
+        <div class="grid-pattern"></div>
+      </div>
+      
+      <div class="container-custom">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="badge-pill animate-fade-in" v-if="pageData.hero_badge_text">
+              {{ pageData.hero_badge_text }}
             </div>
-
-            <!-- Stats -->
-            <div class="row mt-5 pt-3">
-              <div class="col-4">
-                <h3 class="text-white font-weight-bold mb-0">1,200+</h3>
-                <p class="text-white opacity-8 mb-0 text-sm">ISP Aktif</p>
-              </div>
-              <div class="col-4">
-                <h3 class="text-white font-weight-bold mb-0">50K+</h3>
-                <p class="text-white opacity-8 mb-0 text-sm">Pelanggan</p>
-              </div>
-              <div class="col-4">
-                <h3 class="text-white font-weight-bold mb-0">99.9%</h3>
-                <p class="text-white opacity-8 mb-0 text-sm">Uptime</p>
-              </div>
+            <h1 class="hero-title animate-slide-up" style="color: #344767 !important;">{{ pageData.hero_title }}</h1>
+            <p class="hero-subtitle animate-slide-up delay-1" style="color: #67748e !important;">{{ pageData.hero_subtitle }}</p>
+            <div class="hero-actions animate-slide-up delay-2">
+              <button @click="goToRegister" class="btn-hero-primary">
+                {{ pageData.hero_cta_text }}
+              </button>
+              <button v-if="pageData.show_pricing" @click="scrollTo('pricing')" class="btn-hero-secondary">
+                Lihat Harga
+              </button>
             </div>
           </div>
-          <div class="col-lg-6 text-center mt-lg-0 mt-5 position-relative">
-            <div class="position-relative" style="z-index: 2">
-              <div class="bg-white p-5 rounded-3 shadow-xl">
-                <i
-                  class="fas fa-chart-line text-primary"
-                  style="font-size: 120px; opacity: 0.8"
-                ></i>
-                <h4 class="text-dark mt-4">Dashboard ISP Billing</h4>
-                <p class="text-muted">Kelola bisnis ISP Anda dengan mudah</p>
-              </div>
+          <div class="hero-visual animate-slide-up delay-3">
+            <div class="dashboard-mockup" ref="dashboardMockup" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
+              <img :src="pageData.hero_image || 'https://via.placeholder.com/600x400/f0f0f0/667eea?text=Dashboard+Preview'" alt="Dashboard Preview" />
             </div>
           </div>
         </div>
       </div>
+    </section>
 
-      <!-- Wave -->
-      <div
-        class="position-absolute bottom-0 start-0 w-100"
-        style="z-index: 1; margin-bottom: -2px"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 1440 320"
-          style="display: block"
-          preserveAspectRatio="none"
-          width="100%"
-          height="100"
-        >
-          <path
-            fill="#ffffff"
-            fill-opacity="1"
-            d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,138.7C960,139,1056,117,1152,96C1248,75,1344,53,1392,42.7L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"
-          ></path>
-        </svg>
+    <!-- Logos Section -->
+    <section v-if="pageData.show_logos && pageData.logos && pageData.logos.length" class="logos-section">
+      <div class="container-custom">
+        <p class="logos-title">Terintegrasi dengan</p>
+        <div class="logos-grid">
+          <div v-for="(logo, index) in pageData.logos" :key="index" class="logo-item">
+            <img :src="logo.url" :alt="logo.name" />
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section
-      class="features-section py-7 bg-gray-100"
-      style="position: relative; z-index: 2"
-    >
-      <div class="container">
-        <div class="row text-center mb-5">
-          <div class="col-lg-8 mx-auto">
-            <span class="badge badge-primary mb-3">Fitur Lengkap</span>
-            <h2 class="display-3 font-weight-bold mb-3">
-              Semua yang Anda Butuhkan untuk Mengelola ISP
-            </h2>
-            <p class="lead text-muted">
-              Platform lengkap dengan fitur-fitur modern untuk mempermudah
-              operasional bisnis ISP Anda
-            </p>
-          </div>
+    <section id="features" v-if="pageData.show_features && pageData.features && pageData.features.length" class="features-section observe-me">
+      <div class="container-custom">
+        <div class="section-header">
+          <h2>Fitur Lengkap untuk Bisnis ISP Anda</h2>
+          <p>Semua yang Anda butuhkan dalam satu platform</p>
         </div>
-
-        <div class="row g-4">
-          <div
-            v-for="(feature, index) in features"
-            :key="index"
-            class="col-lg-3 col-md-6"
-          >
-            <div class="card h-100 shadow-sm border-0 hover-lift">
-              <div class="card-body text-center p-4">
-                <div
-                  class="icon icon-shape rounded-circle mx-auto mb-3"
-                  :class="`bg-gradient-${feature.color}`"
-                  style="width: 64px; height: 64px"
-                >
-                  <i
-                    :class="`${feature.icon} text-white opacity-10 text-lg`"
-                  ></i>
-                </div>
-                <h5 class="font-weight-bold mb-2">{{ feature.title }}</h5>
-                <p class="text-sm text-muted mb-0">{{ feature.description }}</p>
-              </div>
+        <div class="features-grid">
+          <div v-for="(feature, index) in pageData.features" :key="index" class="feature-card observe-card" :style="{ animationDelay: `${index * 0.1}s` }">
+            <div class="feature-icon">
+              <i :class="feature.icon || 'fas fa-star'"></i>
             </div>
+            <h3>{{ feature.title }}</h3>
+            <p>{{ feature.description }}</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Pricing Section -->
-    <section
-      id="pricing"
-      class="pricing-section py-7 bg-white"
-      style="position: relative; z-index: 2"
-    >
-      <div class="container">
-        <div class="row text-center mb-5">
-          <div class="col-lg-8 mx-auto">
-            <span class="badge badge-success mb-3">Harga Terjangkau</span>
-            <h2 class="display-3 font-weight-bold mb-3">
-              Pilih Paket yang Sesuai dengan Kebutuhan Anda
-            </h2>
-            <p class="lead text-muted">
-              Mulai dari paket starter hingga enterprise, semua dengan fitur
-              lengkap
-            </p>
+    <section id="pricing" v-if="pageData.show_pricing && pageData.pricing_plans && pageData.pricing_plans.length" class="pricing-section observe-me">
+      <div class="container-custom">
+        <div class="section-header">
+          <h2>Pilih Paket yang Sesuai</h2>
+          <p>Harga transparan, tanpa biaya tersembunyi</p>
+        </div>
+        <div class="pricing-grid">
+          <div v-for="(plan, index) in pageData.pricing_plans" :key="index" class="pricing-card observe-card" :class="{ 'popular': plan.isPopular }" :style="{ animationDelay: `${index * 0.15}s` }">
+            <div v-if="plan.isPopular" class="popular-badge">PALING POPULER</div>
+            <div class="pricing-header">
+              <h3>{{ plan.name }}</h3>
+              <div class="price">
+                <span class="currency">Rp</span>
+                <span class="amount">{{ formatPrice(plan.price) }}</span>
+                <span class="period">/{{ plan.period }}</span>
+              </div>
+            </div>
+            <ul class="features-list">
+              <li v-for="(feature, idx) in (plan.features ? plan.features.split('\n') : [])" :key="idx">
+                <i class="fas fa-check"></i>{{ feature }}
+              </li>
+            </ul>
+            <button @click="selectPackage(plan.name)" class="btn-pricing" :class="{ 'btn-pricing-popular': plan.isPopular }">
+              Pilih Paket
+            </button>
           </div>
         </div>
+      </div>
+    </section>
 
-        <div class="row g-4">
-          <div
-            v-for="(pkg, index) in packages"
-            :key="index"
-            class="col-lg-4 col-md-6"
-          >
-            <div
-              class="card shadow-lg border-0 h-100"
-              :class="{ 'border-success border-2': pkg.popular }"
-            >
-              <div
-                v-if="pkg.popular"
-                class="position-absolute top-0 start-50 translate-middle"
-              >
-                <span class="badge badge-success px-3 py-2"
-                  >Paling Populer</span
-                >
+    <!-- Testimonials / Team Section -->
+    <section v-if="pageData.show_testimonials && pageData.testimonials && pageData.testimonials.length" class="testimonials-section">
+      <div class="container-custom">
+        <div class="section-header">
+          <h2>Apa Kata Mereka?</h2>
+          <p>Dipercaya oleh ratusan ISP di Indonesia</p>
+        </div>
+        <div class="testimonials-grid">
+          <div v-for="(testi, index) in pageData.testimonials" :key="index" class="testimonial-card">
+            <div class="quote-icon">
+              <i class="fas fa-quote-left"></i>
+            </div>
+            <p class="testimonial-text">{{ testi.text }}</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">
+                {{ testi.name.charAt(0) }}
               </div>
-              <div class="card-header text-center pt-4 pb-3 bg-transparent">
-                <h5 class="font-weight-bold text-uppercase">{{ pkg.name }}</h5>
-                <h1 class="display-2 font-weight-bold mt-3">
-                  {{ formatCurrency(pkg.price) }}
-                </h1>
-                <p class="text-sm text-muted mb-0">/bulan</p>
+              <div class="author-info">
+                <h4>{{ testi.name }}</h4>
+                <p>{{ testi.company }}</p>
               </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
-                  <li
-                    v-for="(feature, idx) in pkg.features"
-                    :key="idx"
-                    class="py-2 border-bottom"
-                  >
-                    <i class="fas fa-check text-success me-2"></i>
-                    <span>{{ feature }}</span>
-                  </li>
-                </ul>
-              </div>
-              <div class="card-footer bg-transparent text-center pt-0 pb-4">
-                <argon-button
-                  :color="pkg.popular ? 'success' : 'dark'"
-                  :variant="pkg.popular ? 'gradient' : 'outline'"
-                  class="w-100"
-                  size="lg"
-                  @click="selectPackage(pkg)"
-                >
-                  Pilih Paket {{ pkg.name }}
-                </argon-button>
-              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" v-if="pageData.show_faqs && pageData.faqs && pageData.faqs.length" class="faq-section">
+      <div class="container-custom">
+        <div class="section-header">
+          <h2>Pertanyaan yang Sering Diajukan</h2>
+          <p>Temukan jawaban untuk pertanyaan Anda</p>
+        </div>
+        <div class="faq-container">
+          <div v-for="(faq, index) in pageData.faqs" :key="index" class="faq-item" :class="{ 'active': activeFaq === index }">
+            <button class="faq-question" @click="toggleFaq(index)">
+              <span>{{ faq.question }}</span>
+              <i class="fas" :class="activeFaq === index ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            </button>
+            <div class="faq-answer" v-show="activeFaq === index">
+              <p>{{ faq.answer }}</p>
             </div>
           </div>
         </div>
@@ -281,229 +175,135 @@
     </section>
 
     <!-- CTA Section -->
-    <section
-      class="cta-section py-7 position-relative"
-      style="
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        z-index: 2;
-      "
-    >
-      <div class="container position-relative">
-        <div class="row text-center">
-          <div class="col-lg-8 mx-auto">
-            <h2 class="display-3 font-weight-bold text-white mb-4">
-              Siap Meningkatkan Bisnis ISP Anda?
-            </h2>
-            <p class="lead text-white opacity-9 mb-5">
-              Bergabunglah dengan lebih dari 1,200 ISP yang telah mempercayai
-              platform kami untuk mengelola bisnis mereka
-            </p>
-            <argon-button
-              color="white"
-              size="lg"
-              class="shadow-lg px-5"
-              @click="goToRegister"
-            >
-              <i class="fas fa-rocket me-2"></i>
-              Mulai Sekarang - Gratis 14 Hari
-            </argon-button>
-          </div>
+    <section class="cta-section">
+      <div class="container-custom">
+        <div class="cta-content">
+          <h2>Siap Memulai?</h2>
+          <p>Bergabunglah dengan ratusan ISP yang sudah menggunakan platform kami</p>
+          <button @click="goToRegister" class="btn-cta">
+            Daftar Gratis Sekarang
+          </button>
         </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer
-      class="footer py-5 bg-gray-100"
-      style="position: relative; z-index: 2"
-    >
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-4 mb-lg-0 mb-4">
-            <h5 class="font-weight-bold mb-3">
-              <i class="fas fa-broadcast-tower me-2"></i>
-              ISP Billing System
-            </h5>
-            <p class="text-sm text-muted">
-              Platform manajemen ISP terlengkap di Indonesia
-            </p>
-          </div>
-          <div class="col-lg-8">
-            <div class="row">
-              <div class="col-md-4 col-6 mb-4">
-                <h6 class="font-weight-bold text-dark">Perusahaan</h6>
-                <ul class="list-unstyled">
-                  <li class="mb-2">
-                    <a href="#" class="text-muted text-sm">Tentang Kami</a>
-                  </li>
-                  <li class="mb-2">
-                    <a href="#" class="text-muted text-sm">Kontak</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-4 col-6 mb-4">
-                <h6 class="font-weight-bold text-dark">Produk</h6>
-                <ul class="list-unstyled">
-                  <li class="mb-2">
-                    <a href="#" class="text-muted text-sm">Fitur</a>
-                  </li>
-                  <li class="mb-2">
-                    <a href="#pricing" class="text-muted text-sm">Harga</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md-4 col-6 mb-4">
-                <h6 class="font-weight-bold text-dark">Bantuan</h6>
-                <ul class="list-unstyled">
-                  <li class="mb-2">
-                    <a href="#" class="text-muted text-sm">Dokumentasi</a>
-                  </li>
-                  <li class="mb-2">
-                    <a href="#" class="text-muted text-sm">Support</a>
-                  </li>
-                </ul>
-              </div>
+    <footer class="footer-modern">
+      <div class="container-custom">
+        <div class="footer-grid">
+          <div class="footer-col">
+            <h3>
+              <i class="fas fa-broadcast-tower"></i>
+              {{ pageData.footer_company_name }}
+            </h3>
+            <p>{{ pageData.meta_description }}</p>
+            <div class="social-links" v-if="pageData.footer_social_links">
+              <a v-if="pageData.footer_social_links.facebook" :href="pageData.footer_social_links.facebook" target="_blank">
+                <i class="fab fa-facebook"></i>
+              </a>
+              <a v-if="pageData.footer_social_links.twitter" :href="pageData.footer_social_links.twitter" target="_blank">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a v-if="pageData.footer_social_links.instagram" :href="pageData.footer_social_links.instagram" target="_blank">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a v-if="pageData.footer_social_links.linkedin" :href="pageData.footer_social_links.linkedin" target="_blank">
+                <i class="fab fa-linkedin"></i>
+              </a>
             </div>
           </div>
+          <div class="footer-col" v-if="pageData.show_contact && pageData.contact_info">
+            <h4>Hubungi Kami</h4>
+            <ul>
+              <li><i class="fas fa-envelope"></i>{{ pageData.contact_info.email }}</li>
+              <li><i class="fas fa-phone"></i>{{ pageData.contact_info.phone }}</li>
+              <li><i class="fas fa-map-marker-alt"></i>{{ pageData.contact_info.address }}</li>
+            </ul>
+          </div>
+          <div class="footer-col">
+            <h4>Link Cepat</h4>
+            <ul>
+              <li><a href="#features">Fitur</a></li>
+              <li><a href="#pricing">Harga</a></li>
+              <li><a href="#faq">FAQ</a></li>
+            </ul>
+          </div>
         </div>
-        <hr class="my-4" />
-        <div class="row align-items-center">
-          <div class="col-md-6">
-            <p class="text-sm text-muted mb-0">
-              © 2026 ISP Billing System. All rights reserved.
-            </p>
-          </div>
-          <div class="col-md-6 text-md-end">
-            <a href="#" class="text-muted me-3"
-              ><i class="fab fa-facebook"></i
-            ></a>
-            <a href="#" class="text-muted me-3"
-              ><i class="fab fa-twitter"></i
-            ></a>
-            <a href="#" class="text-muted"><i class="fab fa-instagram"></i></a>
-          </div>
+        <div class="footer-bottom">
+          <p>{{ pageData.footer_copyright }}</p>
         </div>
       </div>
     </footer>
   </div>
+
+  <!-- Loading State -->
+  <div v-else class="loading-state">
+    <div class="spinner"></div>
+  </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed, onMounted, watchEffect } from "vue";
 import { useRouter } from "vue-router";
-import ArgonButton from "@/components/ArgonButton.vue";
+import axios from "axios";
 
 const router = useRouter();
+const pageData = ref(null);
+const activeFaq = ref(null);
+const API_URL = "http://localhost:8000/api";
+const scrollProgress = ref(0);
+const dashboardMockup = ref(null);
 
-const features = ref([
-  {
-    icon: "fas fa-wallet",
-    color: "primary",
-    title: "Payment Gateway",
-    description:
-      "Integrasi otomatis dengan Midtrans & Xendit untuk pembayaran realtime",
-  },
-  {
-    icon: "fas fa-network-wired",
-    color: "info",
-    title: "Mikrotik Integration",
-    description: "Kelola bandwidth dan isolasi pelanggan langsung dari sistem",
-  },
-  {
-    icon: "fas fa-file-invoice-dollar",
-    color: "success",
-    title: "Billing Otomatis",
-    description: "Generate invoice otomatis dan kirim ke pelanggan via email",
-  },
-  {
-    icon: "fas fa-users",
-    color: "warning",
-    title: "Manajemen Pelanggan",
-    description: "Database pelanggan lengkap dengan riwayat pembayaran",
-  },
-  {
-    icon: "fas fa-tools",
-    color: "danger",
-    title: "Ticketing System",
-    description: "Kelola keluhan dan permintaan pelanggan dengan mudah",
-  },
-  {
-    icon: "fas fa-chart-line",
-    color: "dark",
-    title: "Laporan Lengkap",
-    description: "Dashboard analytics dan laporan keuangan real-time",
-  },
-  {
-    icon: "fas fa-user-shield",
-    color: "primary",
-    title: "Multi-Level Access",
-    description: "Role management untuk admin, teknisi, dan customer",
-  },
-  {
-    icon: "fas fa-mobile-alt",
-    color: "success",
-    title: "Responsive Design",
-    description: "Akses dari desktop, tablet, atau smartphone dengan mudah",
-  },
-]);
+const cssVars = computed(() => {
+  if (!pageData.value) return {};
+  return {
+    '--color-primary': pageData.value.color_primary || '#667eea',
+    '--color-secondary': pageData.value.color_secondary || '#764ba2',
+    '--color-accent': pageData.value.color_accent || '#4f46e5',
+    '--color-text': pageData.value.color_text || '#1a202c',
+    '--color-background': pageData.value.color_background || '#ffffff',
+    '--font-family': pageData.value.font_family || 'Inter',
+    '--font-size-base': pageData.value.font_size_base || '16px',
+    '--spacing-scale': pageData.value.spacing_scale || 1,
+    '--border-radius': pageData.value.border_radius_base || '12px',
+  };
+});
 
-const packages = ref([
-  {
-    name: "Starter",
-    price: 299000,
-    popular: false,
-    features: [
-      "Maksimal 100 Pelanggan",
-      "1 User Admin",
-      "2 Mikrotik Router",
-      "Payment Gateway",
-      "Email Notification",
-      "Support via Email",
-    ],
-  },
-  {
-    name: "Professional",
-    price: 599000,
-    popular: true,
-    features: [
-      "Maksimal 500 Pelanggan",
-      "3 User Admin",
-      "5 Mikrotik Router",
-      "Payment Gateway",
-      "SMS & Email Notification",
-      "Priority Support",
-      "Custom Domain",
-    ],
-  },
-  {
-    name: "Enterprise",
-    price: 1299000,
-    popular: false,
-    features: [
-      "Unlimited Pelanggan",
-      "Unlimited User",
-      "Unlimited Router",
-      "Payment Gateway",
-      "SMS & Email & WhatsApp",
-      "24/7 Support",
-      "Custom Domain",
-      "API Access",
-    ],
-  },
-]);
+// Dynamic Font Loader
+watchEffect(() => {
+  if (pageData.value?.font_family) {
+    const fontName = pageData.value.font_family;
+    const linkId = 'dynamic-font-loader';
+    let link = document.getElementById(linkId);
+    
+    if (!link) {
+      link = document.createElement('link');
+      link.id = linkId;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+    
+    link.href = `https://fonts.googleapis.com/css2?family=${fontName.replace(/ /g, '+')}:wght@300;400;500;600;700&display=swap`;
+  }
+});
 
-const formatCurrency = (amount) => {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(amount);
+const fetchLandingPage = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/landing-page`);
+    pageData.value = response.data;
+  } catch (error) {
+    console.error("Error fetching landing page:", error);
+  }
 };
 
-const scrollToPricing = () => {
-  const pricingSection = document.getElementById("pricing");
-  if (pricingSection) {
-    pricingSection.scrollIntoView({ behavior: "smooth" });
+const formatPrice = (amount) => {
+  return new Intl.NumberFormat("id-ID").format(amount);
+};
+
+const scrollTo = (id) => {
+  const element = document.getElementById(id);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 };
 
@@ -511,60 +311,1564 @@ const goToRegister = () => {
   router.push("/register");
 };
 
-const selectPackage = (pkg) => {
+const selectPackage = (pkgName) => {
   router.push({
     name: "Register",
-    query: { package: pkg.name.toLowerCase() },
+    query: { package: pkgName.toLowerCase() },
   });
 };
+
+const toggleFaq = (index) => {
+  activeFaq.value = activeFaq.value === index ? null : index;
+};
+
+// Scroll Progress Indicator
+const updateScrollProgress = () => {
+  const winScroll = document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (winScroll / height) * 100;
+  scrollProgress.value = scrolled;
+  const progressBar = document.getElementById('scroll-progress');
+  if (progressBar) {
+    progressBar.style.width = scrolled + '%';
+  }
+};
+
+// Intersection Observer for Scroll Animations
+const observeElements = () => {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-in');
+        }
+      });
+    },
+    { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+  );
+
+  // Observe sections
+  document.querySelectorAll('.observe-card').forEach((el) => {
+    observer.observe(el);
+  });
+};
+
+// Parallax Mouse Tracking Effect
+const handleMouseMove = (e) => {
+  if (!dashboardMockup.value) return;
+  
+  const rect = dashboardMockup.value.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  const centerX = rect.width / 2;
+  const centerY = rect.height / 2;
+  
+  const rotateX = ((y - centerY) / centerY) * -10; // Invert axis for better feel
+  const rotateY = ((centerX - x) / centerX) * 10; 
+  
+  dashboardMockup.value.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+};
+
+const handleMouseLeave = () => {
+  if (!dashboardMockup.value) return;
+  dashboardMockup.value.style.transform = 'translateY(0)';
+};
+
+onMounted(() => {
+  fetchLandingPage();
+  
+  // Setup scroll listener
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  
+  // Setup intersection observer after DOM is ready
+  // Use nextTick to ensure Vue has finished rendering
+  setTimeout(() => {
+    observeElements();
+  }, 300);
+});
+
+// Cleanup on unmount
+import { onUnmounted } from 'vue';
+onUnmounted(() => {
+  window.removeEventListener('scroll', updateScrollProgress);
+});
 </script>
 
 <style scoped>
-.landing-page {
-  width: 100%;
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap'); */
+
+/* ========== SCROLL PROGRESS INDICATOR ========== */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  z-index: 9999;
+  transition: width 0.1s ease-out;
+  box-shadow: 0 2px 10px rgba(94, 114, 228, 0.5);
+  will-change: width;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.modern-landing-page {
+  font-family: var(--font-family), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background: var(--color-background);
+  line-height: 1.6;
   overflow-x: hidden;
 }
 
-.hero-section {
-  position: relative;
-  overflow: visible !important;
+.container-custom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 calc(20px * var(--spacing-scale));
 }
 
-.hover-lift {
+/* Navbar - Enhanced Glassmorphism */
+.navbar-modern {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(94, 114, 228, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  z-index: 1000;
+  padding: calc(16px * var(--spacing-scale)) 0;
   transition: all 0.3s ease;
+}
+
+.navbar-modern:hover {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-size: calc(22px * var(--spacing-scale));
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.brand:hover {
+  transform: scale(1.05);
+}
+
+.brand i {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: calc(28px * var(--spacing-scale));
+}
+
+.nav-links a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--color-primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.btn-outline {
+  padding: calc(10px * var(--spacing-scale)) calc(24px * var(--spacing-scale));
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius);
+  color: var(--color-primary);
+  background: transparent;
+  font-weight: 700;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+}
+
+.btn-outline:hover {
+  color: white !important;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(94, 114, 228, 0.3);
+}
+
+.btn-outline:hover::before {
+  left: 0;
+}
+
+.btn-outline:active,
+.btn-outline:focus {
+  color: white !important;
+  text-decoration: none;
+  outline: none;
+}
+
+.btn-outline:visited {
+  color: var(--color-primary);
+}
+
+a.btn-outline:active,
+a.btn-outline:focus {
+  color: white !important;
+}
+
+.btn-primary {
+  padding: calc(10px * var(--spacing-scale)) calc(24px * var(--spacing-scale));
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border: none;
+  border-radius: var(--border-radius);
+  color: white;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(94, 114, 228, 0.3);
+  position: relative;
+  overflow: hidden;
 }
 
-.hover-lift:hover {
-  transform: translateY(-10px);
-  box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
 }
 
-.badge {
-  font-size: 0.875rem;
-  padding: 0.5rem 1rem;
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px rgba(94, 114, 228, 0.4);
 }
 
-.icon-shape {
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Hero Section - Enhanced with Particles */
+.hero-gradient {
+  position: relative;
+  background: #f8f9fa; /* Light background like Sneat */
+  background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%), 
+                    radial-gradient(at 50% 0%, hsla(225,39%,30%,0) 0, hsla(225,39%,30%,0) 50%), 
+                    radial-gradient(at 100% 0%, hsla(339,49%,30%,0) 0, hsla(339,49%,30%,0) 50%);
+  padding: calc(140px * var(--spacing-scale)) 0 calc(100px * var(--spacing-scale));
+  margin-top: 70px;
+  color: var(--color-text); /* Dark text */
+  overflow: hidden;
+}
+
+.hero-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 20% 50%, rgba(17, 205, 239, 0.2) 0%, transparent 50%),
+              radial-gradient(circle at 80% 80%, rgba(130, 94, 228, 0.2) 0%, transparent 50%);
+  animation: pulseGlow 8s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(80px * var(--spacing-scale));
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.badge-pill {
   display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  padding: calc(10px * var(--spacing-scale)) calc(20px * var(--spacing-scale));
+  border-radius: 50px;
+  font-size: calc(14px * var(--spacing-scale));
+  font-weight: 700;
+  margin-bottom: calc(28px * var(--spacing-scale));
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.hero-title {
+  font-size: calc(56px * var(--spacing-scale));
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: calc(24px * var(--spacing-scale));
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  letter-spacing: -0.02em;
+}
+
+.hero-subtitle {
+  font-size: calc(20px * var(--spacing-scale));
+  opacity: 0.95;
+  margin-bottom: calc(40px * var(--spacing-scale));
+  line-height: 1.8;
+  font-weight: 400;
+}
+
+.hero-actions {
+  display: flex;
+  gap: calc(20px * var(--spacing-scale));
+  flex-wrap: wrap;
+}
+
+.btn-hero-primary {
+  padding: calc(16px * var(--spacing-scale)) calc(40px * var(--spacing-scale));
+  background: white;
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  font-size: calc(17px * var(--spacing-scale));
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-hero-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(94, 114, 228, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-hero-primary:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+}
+
+.btn-hero-primary:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+.btn-hero-secondary {
+  padding: calc(16px * var(--spacing-scale)) calc(40px * var(--spacing-scale));
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  font-size: calc(17px * var(--spacing-scale));
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-hero-secondary:hover {
+  background: white;
+  color: var(--color-primary);
+  border-color: white;
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-mockup {
+  background: transparent;
+  border-radius: calc(var(--border-radius) * 2);
+  padding: 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08),
+              0 0 0 1px rgba(0, 0, 0, 0.04);
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: perspective(1500px) rotateY(-5deg) rotateX(2deg) translateY(0px);
+  }
+  50% {
+    transform: perspective(1500px) rotateY(-5deg) rotateX(2deg) translateY(-15px);
+  }
+}
+
+.dashboard-mockup:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12),
+              0 0 0 1px rgba(94, 114, 228, 0.1);
+}
+
+.dashboard-mockup img {
+  width: 100%;
+  border-radius: calc(var(--border-radius) * 2);
+  display: block;
+  transition: transform 0.4s ease;
+}
+
+.dashboard-mockup:hover img {
+  transform: scale(1.02);
+}
+
+/* Logos Section */
+.logos-section {
+  padding: calc(40px * var(--spacing-scale)) 0;
+  background: #f8f9fa;
+}
+
+.logos-title {
+  text-align: center;
+  color: #6c757d;
+  font-size: calc(14px * var(--spacing-scale));
+  margin-bottom: calc(24px * var(--spacing-scale));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.logos-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: calc(32px * var(--spacing-scale));
+  align-items: center;
+}
+
+.logo-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.logo-item:hover {
+  opacity: 1;
+}
+
+.logo-item img {
+  max-height: 40px;
+  max-width: 100%;
+}
+
+/* Features Section */
+.features-section {
+  padding: calc(80px * var(--spacing-scale)) 0;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: calc(60px * var(--spacing-scale));
+}
+
+.section-header h2 {
+  font-size: calc(36px * var(--spacing-scale));
+  font-weight: 700;
+  margin-bottom: calc(12px * var(--spacing-scale));
+  color: var(--color-text);
+}
+
+.section-header p {
+  font-size: calc(18px * var(--spacing-scale));
+  color: #6c757d;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(40px * var(--spacing-scale));
+}
+
+.feature-card {
+  padding: calc(40px * var(--spacing-scale));
+  background: white;
+  border: 1px solid rgba(94, 114, 228, 0.1);
+  border-radius: calc(var(--border-radius) * 1.5);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(94, 114, 228, 0.2);
+  border-color: var(--color-primary);
+}
+
+.feature-card:hover::before {
+  transform: scaleX(1);
+}
+
+.feature-icon {
+  width: 72px;
+  height: 72px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: calc(var(--border-radius) * 1.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: calc(24px * var(--spacing-scale));
+  color: white;
+  font-size: calc(32px * var(--spacing-scale));
+  box-shadow: 0 8px 20px rgba(94, 114, 228, 0.3);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-card:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 30px rgba(94, 114, 228, 0.4);
+}
+
+.feature-card h3 {
+  font-size: calc(22px * var(--spacing-scale));
+  font-weight: 700;
+  margin-bottom: calc(14px * var(--spacing-scale));
+  color: var(--color-text);
+  transition: color 0.3s ease;
+}
+
+.feature-card:hover h3 {
+  color: var(--color-primary);
+}
+
+.feature-card p {
+  color: #67748e;
+  line-height: 1.8;
+  font-size: calc(15px * var(--spacing-scale));
+}
+
+/* Pricing Section - Enhanced */
+.pricing-section {
+  padding: calc(100px * var(--spacing-scale)) 0;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+}
+
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(40px * var(--spacing-scale));
+}
+
+.pricing-card {
+  background: white;
+  border-radius: calc(var(--border-radius) * 1.5);
+  padding: calc(48px * var(--spacing-scale));
+  border: 2px solid rgba(94, 114, 228, 0.1);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-accent));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pricing-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 0 30px 60px rgba(94, 114, 228, 0.2);
+  border-color: var(--color-primary);
+}
+
+.pricing-card:hover::before {
+  transform: scaleX(1);
+}
+
+.pricing-card.popular {
+  border-color: var(--color-primary);
+  box-shadow: 0 20px 50px rgba(94, 114, 228, 0.25);
+  transform: scale(1.05);
+}
+
+.pricing-card.popular:hover {
+  transform: translateY(-12px) scale(1.07);
+  box-shadow: 0 35px 70px rgba(94, 114, 228, 0.3);
+}
+
+.popular-badge {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  padding: calc(8px * var(--spacing-scale)) calc(20px * var(--spacing-scale));
+  border-radius: 50px;
+  font-size: calc(11px * var(--spacing-scale));
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 15px rgba(94, 114, 228, 0.4);
+}
+
+.pricing-header h3 {
+  font-size: calc(24px * var(--spacing-scale));
+  font-weight: 700;
+  margin-bottom: calc(16px * var(--spacing-scale));
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.price {
+  margin-bottom: calc(32px * var(--spacing-scale));
+}
+
+.currency {
+  font-size: calc(20px * var(--spacing-scale));
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.amount {
+  font-size: calc(48px * var(--spacing-scale));
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.period {
+  font-size: calc(16px * var(--spacing-scale));
+  color: #6c757d;
+}
+
+.features-list {
+  list-style: none;
+  margin-bottom: calc(32px * var(--spacing-scale));
+}
+
+.features-list li {
+  padding: calc(12px * var(--spacing-scale)) 0;
+  color: var(--color-text);
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.features-list i {
+  color: var(--color-primary);
+  margin-top: 4px;
+}
+
+.btn-pricing {
+  width: 100%;
+  padding: calc(14px * var(--spacing-scale));
+  border: 2px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  font-size: calc(16px * var(--spacing-scale));
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-pricing:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.btn-pricing-popular {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  border: none;
+}
+
+.btn-pricing-popular:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+/* Testimonials Section */
+.testimonials-section {
+  padding: calc(80px * var(--spacing-scale)) 0;
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: calc(32px * var(--spacing-scale));
+}
+
+.testimonial-card {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: var(--border-radius);
+  padding: calc(32px * var(--spacing-scale));
+  transition: all 0.3s;
+}
+
+.testimonial-card:hover {
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.quote-icon {
+  font-size: calc(32px * var(--spacing-scale));
+  color: var(--color-primary);
+  opacity: 0.2;
+  margin-bottom: calc(16px * var(--spacing-scale));
+}
+
+.testimonial-text {
+  color: var(--color-text);
+  line-height: 1.7;
+  margin-bottom: calc(24px * var(--spacing-scale));
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: calc(16px * var(--spacing-scale));
+}
+
+.author-avatar {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: calc(20px * var(--spacing-scale));
+}
+
+.author-info h4 {
+  font-size: calc(16px * var(--spacing-scale));
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.author-info p {
+  font-size: calc(14px * var(--spacing-scale));
+  color: #6c757d;
+}
+
+/* FAQ Section */
+.faq-section {
+  padding: calc(80px * var(--spacing-scale)) 0;
+  background: #f8f9fa;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-item {
+  background: white;
+  border-radius: var(--border-radius);
+  margin-bottom: calc(16px * var(--spacing-scale));
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.faq-question {
+  width: 100%;
+  padding: calc(20px * var(--spacing-scale)) calc(24px * var(--spacing-scale));
+  background: white;
+  border: none;
+  text-align: left;
+  font-size: calc(16px * var(--spacing-scale));
+  font-weight: 600;
+  color: var(--color-text);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s;
+}
+
+.faq-question:hover {
+  background: #f8f9fa;
+}
+
+.faq-item.active .faq-question {
+  color: var(--color-primary);
+}
+
+.faq-answer {
+  padding: 0 calc(24px * var(--spacing-scale)) calc(20px * var(--spacing-scale));
+  color: #6c757d;
+  line-height: 1.7;
+}
+
+/* CTA Section - Enhanced with Animation */
+.cta-section {
+  padding: calc(100px * var(--spacing-scale)) 0;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background-size: 200% 200%;
+  color: white;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  animation: gradientShift 15s ease infinite;
+}
+
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.cta-content {
+  position: relative;
+  z-index: 1;
+}
+
+.cta-content h2 {
+  font-size: calc(48px * var(--spacing-scale));
+  font-weight: 800;
+  margin-bottom: calc(20px * var(--spacing-scale));
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cta-content p {
+  font-size: calc(20px * var(--spacing-scale));
+  opacity: 0.95;
+  margin-bottom: calc(40px * var(--spacing-scale));
+  font-weight: 400;
+}
+
+.btn-cta {
+  padding: calc(18px * var(--spacing-scale)) calc(56px * var(--spacing-scale));
+  background: white;
+  color: var(--color-primary);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 800;
+  font-size: calc(18px * var(--spacing-scale));
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(94, 114, 228, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-cta:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.btn-cta:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Footer */
+.footer-modern {
+  background: #1a202c;
+  color: white;
+  padding: calc(60px * var(--spacing-scale)) 0 calc(30px * var(--spacing-scale));
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: calc(48px * var(--spacing-scale));
+  margin-bottom: calc(40px * var(--spacing-scale));
+}
+
+.footer-col h3 {
+  font-size: calc(20px * var(--spacing-scale));
+  margin-bottom: calc(16px * var(--spacing-scale));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-col h4 {
+  font-size: calc(16px * var(--spacing-scale));
+  margin-bottom: calc(16px * var(--spacing-scale));
+  font-weight: 600;
+}
+
+.footer-col p {
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.7;
+  margin-bottom: calc(20px * var(--spacing-scale));
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: calc(12px * var(--spacing-scale));
+  color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-col ul li i {
+  color: var(--color-primary);
+}
+
+.footer-col a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-col a:hover {
+  color: white;
+}
+
+.social-links {
+  display: flex;
+  gap: calc(16px * var(--spacing-scale));
+}
+
+.social-links a {
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.social-links a:hover {
+  background: var(--color-primary);
+  transform: translateY(-2px);
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: calc(30px * var(--spacing-scale));
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Loading State */
+.loading-state {
+  min-height: 100vh;
+  display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.navbar-toggler-bar {
-  display: block;
-  position: relative;
-  width: 22px;
-  height: 2px;
-  background: white;
-  border-radius: 1px;
-  margin: 4px auto;
-  transition: all 0.2s;
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid var(--color-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
-.cursor-pointer {
-  cursor: pointer;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: calc(40px * var(--spacing-scale));
+  }
+  
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .pricing-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .footer-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .logos-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+  }
+  
+  .hero-title {
+    font-size: calc(32px * var(--spacing-scale));
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(5deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Hero Background Animation */
+.hero-bg-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.floating-shape {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  animation: float 6s ease-in-out infinite;
+}
+
+.shape-1 {
+  width: 300px;
+  height: 300px;
+  top: 10%;
+  left: 5%;
+  animation-delay: 0s;
+  animation-duration: 8s;
+}
+
+.shape-2 {
+  width: 200px;
+  height: 200px;
+  top: 60%;
+  right: 10%;
+  animation-delay: 1s;
+  animation-duration: 10s;
+}
+
+.shape-3 {
+  width: 150px;
+  height: 150px;
+  bottom: 20%;
+  left: 15%;
+  animation-delay: 2s;
+  animation-duration: 7s;
+}
+
+.shape-4 {
+  width: 250px;
+  height: 250px;
+  top: 30%;
+  right: 20%;
+  animation-delay: 1.5s;
+  animation-duration: 9s;
+}
+
+/* Additional Floating Shapes for More Dynamic Effect */
+.shape-5 {
+  width: 180px;
+  height: 180px;
+  top: 50%;
+  left: 30%;
+  animation-delay: 0.5s;
+  animation-duration: 11s;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.shape-6 {
+  width: 120px;
+  height: 120px;
+  bottom: 30%;
+  right: 25%;
+  animation-delay: 2.5s;
+  animation-duration: 8.5s;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.shape-7 {
+  width: 220px;
+  height: 220px;
+  top: 70%;
+  left: 50%;
+  animation-delay: 1.2s;
+  animation-duration: 10.5s;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.shape-8 {
+  width: 160px;
+  height: 160px;
+  top: 15%;
+  right: 35%;
+  animation-delay: 3s;
+  animation-duration: 9.5s;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+/* Animated Grid Pattern */
+.grid-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+  opacity: 0.5;
+}
+
+@keyframes gridMove {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
+}
+
+/* Entrance Animations */
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.8s ease-out;
+}
+
+.delay-1 {
+  animation-delay: 0.2s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.delay-2 {
+  animation-delay: 0.4s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+.delay-3 {
+  animation-delay: 0.6s;
+  opacity: 0;
+  animation-fill-mode: forwards;
+}
+
+/* ========== SCROLL-BASED ANIMATIONS ========== */
+/* Start with elements visible, then add animation class */
+.observe-me,
+.observe-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Only apply initial hidden state when will-animate class is added */
+.observe-me.will-animate,
+.observe-card.will-animate {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.observe-me.animate-in,
+.observe-card.animate-in {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* ========== ENHANCED HOVER EFFECTS WITH 3D TILT ========== */
+.feature-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.feature-card:hover::after {
+  transform: translateX(100%);
+}
+
+.feature-card:hover {
+  transform: translateY(-12px) scale(1.02) rotateX(2deg);
+  box-shadow: 0 25px 50px rgba(94, 114, 228, 0.25);
+}
+
+.feature-card:hover .feature-icon {
+  animation: iconBounce 0.6s ease;
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.1) rotate(-5deg); }
+  50% { transform: scale(1.15) rotate(5deg); }
+  75% { transform: scale(1.1) rotate(-3deg); }
+}
+
+/* ========== PRICING CARD ENHANCEMENTS ========== */
+.pricing-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.pricing-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.pricing-card:hover::after {
+  transform: translateX(100%);
+}
+
+.pricing-card:hover {
+  transform: translateY(-12px) scale(1.03);
+  box-shadow: 0 30px 60px rgba(94, 114, 228, 0.3);
+}
+
+/* Shimmer Effect on Popular Badge */
+.popular-badge {
+  position: relative;
+  overflow: hidden;
+}
+
+.popular-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* Pulse Animation on Price Amount */
+.pricing-card.popular .amount {
+  animation: pricePulse 2s ease-in-out infinite;
+}
+
+@keyframes pricePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.testimonial-card {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(94, 114, 228, 0.05),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.testimonial-card:hover::before {
+  left: 100%;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* ========== BUTTON ENHANCEMENTS ========== */
+.btn-hero-primary {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.btn-hero-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.btn-hero-primary:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* Glow Effect on Hover */
+.btn-hero-primary:hover {
+  animation: buttonGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15),
+                0 0 20px rgba(94, 114, 228, 0.3);
+  }
+  50% {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25),
+                0 0 40px rgba(94, 114, 228, 0.6);
+  }
+}
+
+/* Gradient Animation */
+.hero-gradient {
+  position: relative;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+  will-change: background-position;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* ========== NAVBAR ENHANCEMENTS ========== */
+.navbar-modern {
+  will-change: background, box-shadow;
+}
+
+/* ========== PERFORMANCE OPTIMIZATIONS ========== */
+/* Use GPU acceleration for smooth animations */
+.floating-shape,
+.feature-card,
+.pricing-card,
+.testimonial-card,
+.btn-hero-primary,
+.btn-primary,
+.dashboard-mockup {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ========== HIDE RECAPTCHA BADGE ========== */
+/* Hide reCAPTCHA badge on landing page - it's loaded by login/register pages */
+/* Using display:none instead of visibility:hidden for complete removal */
+.grecaptcha-badge {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 </style>

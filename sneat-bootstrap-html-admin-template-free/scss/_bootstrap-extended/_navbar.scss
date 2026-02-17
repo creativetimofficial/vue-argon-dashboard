@@ -1,0 +1,26 @@
+/* Navbar
+******************************************************************************* */
+.layout-navbar {
+  background-color: var(--#{$prefix}paper-bg);
+}
+
+/* IE fix */
+
+.navbar {
+  &.bg-body-tertiary {
+    --#{$prefix}navbar-color: var(--#{$prefix}body-color);
+    --#{$prefix}navbar-hover-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-disabled-color: color-mix(in sRGB, var(--#{$prefix}base-color) 40%, var(--#{$prefix}paper-bg));
+    --#{$prefix}navbar-active-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-brand-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-brand-hover-color: color-mix(in sRGB, var(--#{$prefix}base-color) 70%, var(--#{$prefix}paper-bg));
+  }
+  &.bg-light {
+    --#{$prefix}navbar-color: var(--#{$prefix}body-color);
+    --#{$prefix}navbar-hover-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-disabled-color: color-mix(in sRGB, var(--#{$prefix}base-color) 40%, var(--#{$prefix}paper-bg));
+    --#{$prefix}navbar-active-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-brand-color: var(--#{$prefix}heading-color);
+    --#{$prefix}navbar-brand-hover-color: color-mix(in sRGB, var(--#{$prefix}base-color) 70%, var(--#{$prefix}paper-bg));
+  }
+}

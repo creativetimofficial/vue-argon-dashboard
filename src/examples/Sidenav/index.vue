@@ -49,3 +49,14 @@ const darkMode = computed(() => store.state.darkMode);
     <sidenav-list />
   </aside>
 </template>
+
+<style scoped>
+#sidenav-main::-webkit-scrollbar {
+  display: none;
+}
+#sidenav-main {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>
+

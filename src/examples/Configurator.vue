@@ -18,8 +18,11 @@ const navbarFixed = () => {
 const setSidebarType = (type) => store.commit("sidebarType", type);
 
 const sidebarColor = (color = "success") => {
-  document.querySelector("#sidenav-main").setAttribute("data-color", color);
-  localStorage.setItem("sidebarColor", color);
+  const sidenav = document.querySelector("#sidenav-main");
+  if (sidenav) {
+    sidenav.setAttribute("data-color", color);
+    localStorage.setItem("sidebarColor", color);
+  }
 };
 
 const setSidebarTypePersist = (type) => {
@@ -180,21 +183,7 @@ onMounted(() => {
         <p class="mt-2 text-sm d-xl-none d-block">
           You can change the sidenav type just on desktop view.
         </p>
-        <!-- Navbar Fixed -->
-        <!-- Navbar Fixed -->
-        <div class="mt-3 d-flex">
-          <h6 class="mb-0">Navbar Fixed</h6>
-          <div class="form-check form-switch ps-0 ms-auto my-auto">
-            <input
-              class="mt-1 form-check-input"
-              :class="isRTL ? 'float-end  me-auto' : ' ms-auto'"
-              type="checkbox"
-              id="navbarFixed"
-              :checked="isNavFixed"
-              @click="navbarFixed"
-            />
-          </div>
-        </div>
+
 
         <hr class="horizontal dark my-4" />
         <div class="mt-2 mb-5 d-flex">

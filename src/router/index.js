@@ -1,31 +1,35 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-// Import existing views
-import Dashboard from "../views/Dashboard.vue";
-import Profile from "../views/Profile.vue";
-import Billing from "../views/Billing.vue";
-import Tables from "../views/Tables.vue";
-
 // Import new views
 import LandingPage from "../views/LandingPage.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import LoginRole from "../views/LoginRole.vue";
+import ISPLogin from "../views/ISPLogin.vue";
+import ISPRegister from "../views/ISPRegister.vue";
 import SuperAdminDashboard from "../views/SuperAdminDashboard.vue";
 import VerificationSuccess from "../views/VerificationSuccess.vue";
+import ISPLandingPage from "../views/ISPLandingPage.vue";
+import { detectTenant } from "@/utils/tenant";
 
 // Import Super Admin views
 import PaymentGateways from "../views/super-admin/PaymentGateways.vue";
 import LandingPageEditor from "../views/super-admin/LandingPageEditor.vue";
-import ISPThemeEditor from "../views/super-admin/ISPThemeEditor.vue";
 import SubscriptionPackages from "../views/super-admin/SubscriptionPackages.vue";
 import ISPManagement from "../views/super-admin/ISPManagement.vue";
+import SuperAdminProfile from "../views/super-admin/Profile.vue";
 
 const routes = [
   // ===== PUBLIC ROUTES =====
   {
     path: "/",
     name: "Home",
-    component: LandingPage,
+    component: () => {
+      const tenant = detectTenant();
+      if (tenant) {
+        return ISPLandingPage;
+      }
+      return LandingPage;
+    },
     meta: {
       guest: true,
       title: "ISP Billing System - Platform Manajemen ISP Terlengkap",
@@ -34,13 +38,31 @@ const routes = [
   {
     path: "/register",
     name: "Register",
-    component: RegisterPage,
+    component: () => {
+      const tenant = detectTenant();
+      if (tenant) {
+        return ISPRegister;
+      }
+      return RegisterPage;
+    },
     meta: { guest: true, title: "Registrasi - ISP Billing System" },
+  },
+  {
+    path: "/reset-password",
+    name: "ResetPassword",
+    component: () => import("../views/ISPResetPassword.vue"),
+    meta: { guest: true, title: "Reset Password" },
   },
   {
     path: "/login",
     name: "Login",
-    component: LoginRole,
+    component: () => {
+       const tenant = detectTenant();
+      if (tenant) {
+        return ISPLogin;
+      }
+      return LoginRole;
+    },
     meta: { guest: true, title: "Login - ISP Billing System" },
   },
   {
@@ -56,6 +78,12 @@ const routes = [
     meta: { guest: true, title: "Verifikasi Berhasil" },
   },
   {
+    path: "/magic-login",
+    name: "MagicLogin",
+    component: () => import("../views/MagicLogin.vue"),
+    meta: { guest: true, title: "Magic Login" },
+  },
+  {
     path: "/client-area-package",
     name: "ClientAreaPackage",
     component: () => import("../views/ClientArea.vue"),
@@ -65,7 +93,7 @@ const routes = [
     path: "/client-area",
     redirect: "/client-area/dashboard",
     component: () => import("../views/client-area/LayoutWrapper.vue"),
-    meta: { requiresAuth: true, role: "isp_admin" },
+    meta: { requiresAuth: true, role: "client" },
     children: [
       {
         path: "dashboard",
@@ -143,12 +171,6 @@ const routes = [
         meta: { title: "Landing Page Editor" },
       },
       {
-        path: "isp-theme-editor",
-        name: "ISPThemeEditor",
-        component: ISPThemeEditor,
-        meta: { title: "ISP Theme Customizer" },
-      },
-      {
         path: "subscription-packages",
         name: "SubscriptionPackages",
         component: SubscriptionPackages,
@@ -167,102 +189,109 @@ const routes = [
         meta: { title: "ISP Orders Management" },
       },
       {
+        path: "servers",
+        name: "ServerManager",
+        component: () => import("../views/super-admin/ServerManager.vue"),
+        meta: { title: "Server Management" },
+      },
+      {
+        path: "withdrawals",
+        name: "Withdrawals",
+        component: () => import("../views/super-admin/Withdrawals.vue"),
+        meta: { title: "Withdrawal Requests" },
+      },
+      {
         path: "profile",
         name: "SuperAdminProfile",
-        component: Profile,
-        meta: { title: "Profile" },
+        component: SuperAdminProfile,
+        meta: { title: "Profile Settings" },
       },
     ],
   },
 
   // ===== ISP ADMIN ROUTES =====
+  // ISP Admin now uses Client Area routes (/client-area/*)
+  // Old routes removed - components (Dashboard, Tables, Billing, Profile) have been deleted
+
+
+  // ===== TECHNICIAN ROUTES =====
+  // Removed: Technician routes - not implemented yet
+  // Components (Dashboard, Profile) have been deleted
+
+  // ===== CUSTOMER ROUTES =====
+  // Removed: Customer routes - not implemented yet
+  // Components (Dashboard, Billing, Profile) have been deleted
+
+
+  // ===== COMMON ROUTES =====
+  // Removed: Common Profile route - Profile component has been deleted
+
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("../views/ISPForgotPassword.vue"),
+    meta: { guest: true, title: "Lupa Password" },
+  },
   {
     path: "/isp-admin",
-    redirect: "/isp-admin/dashboard",
+    component: () => import("../layouts/ISPAdminLayout.vue"),
     meta: { requiresAuth: true, role: "isp_admin" },
     children: [
       {
+        path: "",
+        redirect: "/isp-admin/dashboard",
+      },
+      {
         path: "dashboard",
         name: "ISPAdminDashboard",
-        component: Dashboard,
-        meta: { title: "ISP Admin Dashboard" },
+        component: () => import("../views/ISPAdmin/Dashboard.vue"),
+        meta: { title: "Dashboard - ISP Admin" },
       },
       {
         path: "customers",
-        name: "CustomerManagement",
-        component: Tables,
-        meta: { title: "Customer Management" },
+        name: "ISPAdminCustomers",
+        component: () => import("../views/ISPAdmin/CustomerManagement.vue"),
+        meta: { title: "Managemen Pelanggan - ISP Admin" },
       },
       {
-        path: "billing",
-        name: "ISPAdminBilling",
-        component: Billing,
-        meta: { title: "Billing Management" },
+        path: "packages",
+        name: "ISPAdminPackages",
+        component: () => import("../views/ISPAdmin/Packages.vue"),
+        meta: { title: "Paket Internet - ISP Admin" },
       },
       {
-        path: "profile",
-        name: "ISPAdminProfile",
-        component: Profile,
-        meta: { title: "Profile" },
+        path: "mikrotik",
+        name: "ISPAdminMikrotik",
+        component: () => import("../views/ISPAdmin/Mikrotik.vue"),
+        meta: { title: "Managemen Mikrotik - ISP Admin" },
+      },
+      {
+        path: "tickets",
+        name: "ISPAdminTickets",
+        component: () => import("../views/ISPAdmin/Tickets.vue"),
+        meta: { title: "Tiket Support - ISP Admin" },
+      },
+      {
+        path: "invoices",
+        name: "ISPAdminInvoices",
+        component: () => import("../views/ISPAdmin/Invoices.vue"),
+        meta: { title: "Invoice - ISP Admin" },
+      },
+      {
+        path: "reports",
+        name: "ISPAdminReports",
+        component: () => import("../views/ISPAdmin/Reports.vue"),
+        meta: { title: "Laporan - ISP Admin" },
+      },
+      {
+        path: "settings",
+        name: "ISPAdminSettings",
+        component: () => import("../views/ISPAdmin/Settings.vue"),
+        meta: { title: "Pengaturan - ISP Admin" },
       },
     ],
   },
 
-  // ===== TECHNICIAN ROUTES =====
-  {
-    path: "/technician",
-    redirect: "/technician/dashboard",
-    meta: { requiresAuth: true, role: "technician" },
-    children: [
-      {
-        path: "dashboard",
-        name: "TechnicianDashboard",
-        component: Dashboard,
-        meta: { title: "Technician Dashboard" },
-      },
-      {
-        path: "profile",
-        name: "TechnicianProfile",
-        component: Profile,
-        meta: { title: "Profile" },
-      },
-    ],
-  },
-
-  // ===== CUSTOMER ROUTES =====
-  {
-    path: "/customer",
-    redirect: "/customer/dashboard",
-    meta: { requiresAuth: true, role: "customer" },
-    children: [
-      {
-        path: "dashboard",
-        name: "CustomerDashboard",
-        component: Dashboard,
-        meta: { title: "Customer Dashboard" },
-      },
-      {
-        path: "billing",
-        name: "CustomerBilling",
-        component: Billing,
-        meta: { title: "My Billing" },
-      },
-      {
-        path: "profile",
-        name: "CustomerProfile",
-        component: Profile,
-        meta: { title: "My Profile" },
-      },
-    ],
-  },
-
-  // ===== COMMON ROUTES =====
-  {
-    path: "/profile",
-    name: "Profile",
-    component: Profile,
-    meta: { requiresAuth: true, title: "Profile" },
-  },
   {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
@@ -281,8 +310,45 @@ router.beforeEach((to, from, next) => {
   // Set page title
   document.title = to.meta.title || "ISP Billing System";
 
-  // For now, just allow all navigation
-  // TODO: Implement authentication check with localStorage or session
+  // Get authentication tokens
+  const ispAdminToken = localStorage.getItem("isp_admin_token");
+  const clientToken = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token"); // Client Area token (matches LoginRole.vue)
+
+  // ISP Admin Routes Protection
+  if (to.meta.requiresAuth && to.meta.role === "isp_admin") {
+    if (!ispAdminToken) {
+      // No ISP Admin token, redirect to generic login
+      next("/login");
+      return;
+    }
+    // Has ISP Admin token, allow access
+    next();
+    return;
+  }
+
+
+
+  // Client Area Routes Protection
+  if (to.path.startsWith('/client-area') && to.path !== '/client-area-package') {
+    if (!clientToken) {
+      // No client token, redirect to main login
+      next("/login");
+      return;
+    }
+    // Has client token, allow access
+    next();
+    return;
+  }
+
+  // Super Admin Routes Protection (if any)
+  if (to.path.startsWith('/super-admin')) {
+    // Check for super admin token/role
+    // TODO: Implement super admin authentication check
+    next();
+    return;
+  }
+
+  // Allow all other routes
   next();
 });
 

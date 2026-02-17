@@ -27,6 +27,7 @@ class PaymentGateway extends Model
         'webhook_secret',
         'webhook_url',
         'sandbox_mode',
+        'expiry_duration',
         'logo_url',
         'sort_order',
     ];
@@ -39,6 +40,7 @@ class PaymentGateway extends Model
         'transaction_fee' => 'decimal:2',
         'fixed_fee' => 'decimal:2',
         'sandbox_mode' => 'boolean',
+        'expiry_duration' => 'integer',
         'sort_order' => 'integer',
     ];
 

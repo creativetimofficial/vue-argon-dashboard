@@ -23,6 +23,7 @@ class ISPService extends Model
         'is_active',
         'is_featured',
         'sort_order',
+        'requires_manual_approval',
     ];
 
     protected $casts = [
@@ -32,6 +33,7 @@ class ISPService extends Model
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'sort_order' => 'integer',
+        'requires_manual_approval' => 'boolean',
     ];
 
     public function orders()

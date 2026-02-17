@@ -4,7 +4,7 @@ import axios from "axios";
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
-    token: localStorage.getItem("token") || null,
+    token: localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token") || null,
     isAuthenticated: false,
     loading: false,
     error: null,
@@ -38,8 +38,8 @@ export const useAuthStore = defineStore("auth", {
      * Initialize auth from local storage
      */
     async init() {
-      const token = localStorage.getItem("token");
-      const userData = localStorage.getItem("user");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
+      const userData = localStorage.getItem("user") || sessionStorage.getItem("user");
 
       if (token && userData) {
         this.token = token;
@@ -311,14 +311,19 @@ export const useAuthStore = defineStore("auth", {
     /**
      * Set authentication data
      */
-    setAuthData(token, user) {
+    setAuthData(token, user, rememberMe = true) {
       this.token = token;
       this.user = user;
       this.isAuthenticated = true;
 
-      // Store in localStorage
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      // Store based on Remember Me preference
+      if (rememberMe) {
+        localStorage.setItem("auth_token", token);
+        localStorage.setItem("user", JSON.stringify(user));
+      } else {
+        sessionStorage.setItem("auth_token", token);
+        sessionStorage.setItem("user", JSON.stringify(user));
+      }
 
       // Set axios default header
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
@@ -332,9 +337,11 @@ export const useAuthStore = defineStore("auth", {
       this.user = null;
       this.isAuthenticated = false;
 
-      // Remove from localStorage
-      localStorage.removeItem("token");
+      // Remove from both storages
+      localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
+      sessionStorage.removeItem("auth_token");
+      sessionStorage.removeItem("user");
 
       // Remove axios default header
       delete axios.defaults.headers.common["Authorization"];

@@ -1,5 +1,6 @@
 <template>
   <div class="py-4 container-fluid">
+    <LoadingOverlay :active="isLoading" />
     <div class="row">
       <!-- Summary Cards -->
       <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -80,21 +81,24 @@
       </div>
     </div>
 
-    <!-- Service Cards for Ordering -->
+    <!-- My Services (Replaces Available Services Catalog) -->
     <div class="row mt-4">
       <div class="col-12">
         <div class="card">
           <div class="card-header pb-0">
-            <h6 class="mb-0">Available Services</h6>
+            <div class="d-flex justify-content-between">
+               <h6 class="mb-0">Available Services (Layanan Tersedia)</h6>
+               <button class="btn btn-sm btn-primary mb-0" @click="$router.push({ name: 'ClientAreaOrders' })">
+                  <i class="fas fa-plus me-1"></i> Order Baru
+               </button>
+            </div>
           </div>
           <div class="card-body">
-            <div v-if="loadingServices" class="text-center py-5">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </div>
-            <div v-else-if="services.length === 0" class="text-center py-5">
-              <p class="text-muted">No services available at the moment.</p>
+            <div v-if="services.length === 0" class="text-center py-5">
+              <p class="text-muted">Belum ada layanan yang aktif atau pending.</p>
+              <button class="btn btn-primary mt-3" @click="$router.push({ name: 'ClientAreaOrders' })">
+                Mulai Berlangganan
+              </button>
             </div>
             <div v-else class="row g-4">
               <div
@@ -105,32 +109,54 @@
                 <div class="card h-100 shadow-sm border">
                   <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3">
-                      <h5 class="card-title mb-0">{{ service.name }}</h5>
-                      <span
-                        v-if="service.trial_days > 0"
-                        class="badge bg-warning text-dark"
-                      >
-                        Trial
+                      <div>
+                        <h5 class="card-title mb-1">{{ service.service?.name || service.subscription_package?.name || 'Unknown Service' }}</h5>
+                         <span class="text-xs text-muted">{{ service.reference }}</span>
+                      </div>
+                      <span :class="getStatusBadgeClass(service.status)">
+                        {{ service.status.toUpperCase() }}
                       </span>
                     </div>
+                    
+                    <div v-if="service.status === 'active'" class="alert alert-light border mb-3 p-2">
+                       <small class="d-block text-muted mb-1">Credentials:</small>
+                       <div class="d-flex justify-content-between align-items-center mb-1">
+                          <span class="text-xs font-weight-bold">User:</span>
+                          <span class="text-xs">{{ service.username || '-' }}</span>
+                       </div>
+                       <div class="d-flex justify-content-between align-items-center">
+                          <span class="text-xs font-weight-bold">Pass:</span>
+                          <div class="d-flex align-items-center">
+                              <span class="text-xs me-2">
+                                {{ visiblePasswords[service.id] ? service.password : '••••••' }}
+                              </span>
+                              <span class="cursor-pointer text-primary" @click="togglePassword(service.id)">
+                                <i :class="visiblePasswords[service.id] ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                              </span>
+                          </div>
+                       </div>
+                    </div>
+
                     <p class="text-sm text-muted mb-3">
-                      {{ service.description || 'No description available' }}
+                       <i class="fas fa-calendar-alt me-1"></i> 
+                       Expires: {{ formatDate(service.expired_date) }}
                     </p>
+                    
                     <div class="mb-3">
-                      <h6 class="text-success mb-0">
-                        Mulai dari {{ formatCurrency(service.price) }}
+                      <h6 class="text-primary mb-0">
+                        {{ formatCurrency(service.price) }}
                       </h6>
                       <small class="text-muted">/ {{ service.billing_cycle }}</small>
                     </div>
-                    <button
-                      class="btn btn-primary btn-sm w-100"
-                      @click="goToOrder(service)"
-                    >
-                      <span v-if="service.trial_days > 0">
-                        Trial {{ service.trial_days }} Hari
-                      </span>
-                      <span v-else>Pesan Sekarang</span>
-                    </button>
+
+                    <div class="d-grid gap-2">
+                       <button
+                          class="btn btn-outline-primary btn-sm"
+                          @click="$router.push({ name: 'ClientAreaServiceDetail', params: { id: service.id } })"
+                        >
+                          Lihat Detail
+                        </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -144,23 +170,23 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import { ispAdminAPI } from '@/services/api'
-
-const router = useRouter()
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
 
 const balance = ref(0)
 const activeServices = ref(0)
 const unpaidInvoices = ref(0)
 const pendingOrders = ref(0)
 const services = ref([])
-const loadingServices = ref(false)
+const isLoading = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   await Promise.all([
     fetchDashboardStats(),
-    fetchServices()
+    fetchMyServices()
   ])
+  isLoading.value = false
 })
 
 const fetchDashboardStats = async () => {
@@ -175,16 +201,22 @@ const fetchDashboardStats = async () => {
   }
 }
 
-const fetchServices = async () => {
-  loadingServices.value = true
+const fetchMyServices = async () => {
   try {
-    const response = await ispAdminAPI.getClientAreaServices()
-    services.value = response.data.filter(s => s.is_active)
+    const response = await ispAdminAPI.getMyServices()
+    services.value = response.data
   } catch (error) {
     console.error('Error fetching services:', error)
-  } finally {
-    loadingServices.value = false
   }
+}
+
+const formatDate = (dateString) => {
+  if (!dateString) return 'N/A'
+  return new Date(dateString).toLocaleDateString('id-ID', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  })
 }
 
 const formatCurrency = (amount) => {
@@ -195,10 +227,20 @@ const formatCurrency = (amount) => {
   }).format(amount)
 }
 
-const goToOrder = (service) => {
-  router.push({
-    name: 'ClientAreaOrders',
-    query: { service_id: service.id }
-  })
+const visiblePasswords = ref({})
+
+const togglePassword = (id) => {
+  visiblePasswords.value[id] = !visiblePasswords.value[id]
+}
+
+const getStatusBadgeClass = (status) => {
+  switch (status) {
+    case 'active': return 'badge bg-success'
+    case 'trial': return 'badge bg-warning text-dark'
+    case 'suspended': return 'badge bg-danger'
+    case 'pending': return 'badge bg-info'
+    case 'cancelled': return 'badge bg-secondary'
+    default: return 'badge bg-light text-dark'
+  }
 }
 </script>

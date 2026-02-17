@@ -1,0 +1,234 @@
+/* Input groups
+******************************************************************************* */
+
+/* Using :focus-within to apply focus border and shadow to default and merged input-group */
+.input-group {
+  --#{$prefix}input-group-addon-border-color: #{$input-group-addon-border-color};
+  --#{$prefix}input-group-disabled-border-color: #{$input-disabled-border-color};
+  &:has(.form-check-input):not(:has(.dropdown-toggle)) {
+    z-index: 1;
+    &::before {
+      z-index: -1;
+    }
+  }
+  @include border-radius($input-border-radius);
+
+  // Input group (Default)
+  .input-group-text {
+    border-color: var(--#{$prefix}input-group-addon-border-color);
+    @include transition($input-transition);
+  }
+
+  .form-control,
+  .form-select,
+  .input-group-text {
+    &:focus,
+    &:focus-within {
+      border-width: $input-border-width;
+    }
+  }
+
+  .form-control,
+  .input-group-text {
+    &,
+    &:focus,
+    &:focus-within {
+      padding-block: calc($input-padding-y - $input-border-width);
+      padding-inline: calc($input-padding-x - $input-border-width);
+    }
+  }
+  .form-select {
+    &,
+    &:focus,
+    &:focus-within {
+      background-position: right calc($form-select-padding-x) center;
+      padding-block: calc($form-select-padding-y - $input-border-width);
+      padding-inline-end: calc($form-select-indicator-padding - $input-border-width);
+      padding-inline-start: calc($form-select-padding-x - $input-border-width);
+    }
+  }
+  &.input-group-sm {
+    &,
+    &::before {
+      @include border-radius($input-border-radius-sm);
+    }
+    .form-control,
+    .input-group-text {
+      &,
+      &:focus,
+      &:focus-within {
+        padding-block: $input-padding-y-sm;
+        padding-inline: $input-padding-x-sm;
+      }
+    }
+    .form-select {
+      &,
+      &:focus,
+      &:focus-within {
+        background-position: right calc($form-select-padding-x-sm) center;
+        padding-block: $form-select-padding-y-sm;
+        padding-inline: $form-select-padding-x-sm;
+        padding-inline-start: calc($form-select-padding-x-sm - $input-border-width);
+      }
+    }
+  }
+  &.input-group-lg {
+    &,
+    &::before {
+      @include border-radius($input-border-radius-lg);
+    }
+    .form-control,
+    .input-group-text {
+      &,
+      &:focus,
+      &:focus-within {
+        padding-block: $input-padding-y-lg;
+        padding-inline: $input-padding-x-lg;
+      }
+    }
+    .form-select {
+      &,
+      &:focus,
+      &:focus-within {
+        background-position: right calc($form-select-padding-x-lg) center;
+        padding-block: $form-select-padding-y-lg;
+        padding-inline: $form-select-padding-x-lg;
+        padding-inline-start: calc($form-select-padding-x-lg - $input-border-width);
+      }
+    }
+  }
+
+  &::before {
+    position: absolute;
+    display: block;
+    block-size: 100%;
+    content: "";
+    inline-size: 100%;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    @include border-radius($input-border-radius);
+  }
+
+  > :not(:first-child):not(.dropdown-menu) {
+    margin-inline: calc(#{$input-border-width} * -1) 0;
+  }
+
+  &:hover {
+    .input-group-text,
+    .form-control,
+    .form-select {
+      border-color: $input-hover-border-color;
+    }
+  }
+
+  /*
+  ? Info :focus-within to apply focus border and shadow to default and merged input & input-group */
+  &:focus-within,
+  &:focus {
+    box-shadow: 0 0 0 $input-border-width $input-focus-border-color;
+    &::before {
+      box-shadow: $input-focus-box-shadow;
+    }
+    &:not(.input-group-merge) {
+      .form-control,
+      .form-select,
+      .input-group-text,
+      .btn,
+      .form-control::file-selector-button {
+        box-shadow: $input-border-width 0 0  $input-focus-border-color;
+      }
+    }
+    .input-group-text,
+    .form-control,
+    .form-select {
+      border-color: $input-focus-border-color;
+      &:hover {
+        border-color: $input-focus-border-color;
+      }
+    }
+  }
+
+  // Input group merge
+  &.input-group-merge {
+    > :not(:first-child):not(.dropdown-menu) {
+      margin-inline: 0;
+    }
+    &:not(.disabled) > :not(:first-child):not(.dropdown-menu):not(.btn):not(.dropdown-menu + .form-control):not(.btn + .form-control) {
+      margin-inline-start: calc($input-focus-border-width - 4px);
+    }
+    .input-group-text,
+    .form-control,
+    .form-select {
+      &,
+      &:focus,
+      &:focus-within {
+        box-shadow: none;
+      }
+      &:first-child {
+        border-inline-end: 0;
+      }
+      &:last-child {
+        border-inline-start: 0;
+      }
+      &:not(:first-child) {
+        border-inline-start: 0;
+        padding-inline-start: 0;
+      }
+      &:not(:last-child) {
+        border-inline-end: 0;
+      }
+    }
+    &.disabled,
+    &[disabled] {
+      margin-inline: 0 !important;
+    }
+  }
+  // Rounded pill option
+  &.rounded-pill {
+    .input-group-text,
+    .form-control,
+    .form-select,
+    &::before {
+      @include border-radius($border-radius-pill);
+    }
+  }
+  // For disabled input group
+  &.disabled,
+  &[disabled] {
+    .input-group-text,
+    .form-control,
+    .form-select {
+      border-color: var(--#{$prefix}input-group-disabled-border-color);
+      background-color: $input-disabled-bg;
+      color: var(--#{$prefix}secondary-color);
+      pointer-events: none;
+    }
+    .form-select {
+      background-image: escape-svg($form-select-disabled-indicator);
+    }
+  }
+}
+
+/* input-group-text icon size */
+.input-group-text {
+  background-clip: padding-box;
+
+  /* Adding transition (On focus border color change) */
+  @include transition($input-transition);
+}
+
+.input-group-lg > .input-group-text {
+  .icon-base{
+    block-size: 1.375rem;
+    font-size: 1.375rem;
+    inline-size: 1.375rem;
+  }
+}
+
+.input-group-sm > .input-group-text {
+  .icon-base{
+    block-size: 1.125rem;
+    font-size: 1.125rem;
+    inline-size: 1.125rem;
+  }
+}

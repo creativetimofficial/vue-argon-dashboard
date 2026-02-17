@@ -1,0 +1,47 @@
+/* Common
+******************************************************************************* */
+
+@import "../_bootstrap-extended/include";
+
+/* Line Clamp with ellipsis
+******************************************************************************* */
+
+$clamp-numbers: (
+  "1": 1,
+  "2": 2,
+  "3": 3
+) !default;
+
+@each $clamp-class, $clamp-value in $clamp-numbers {
+  .line-clamp-#{$clamp-class} {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: $clamp-value;
+  }
+}
+
+/* Background
+******************************************************************************* */
+
+.ui-bg-cover {
+  background-color: rgb(0 0 0 / 0%);
+  background-position: center center;
+  background-size: cover;
+}
+
+.ui-bg-overlay-container,
+.ui-bg-video-container {
+  position: relative;
+
+  > * {
+    position: relative;
+  }
+}
+
+.ui-bg-overlay-container .ui-bg-overlay {
+  position: absolute;
+  display: block;
+  background-color: var(--#{$prefix}gray-900);
+  inset: 0;
+}

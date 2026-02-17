@@ -19,16 +19,74 @@ class RegisterController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'whatsapp' => 'required|string|min:10|max:15', // Simplified validation
+            'recaptcha_token' => 'required|string', // reCAPTCHA token
         ]);
 
         try {
+            // Verify reCAPTCHA
+            $recaptchaSecret = config('services.recaptcha.secret_key');
+            
+            // Skip reCAPTCHA in development if using test keys
+            $isTestKey = $recaptchaSecret === '6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe';
+            
+            if (!$isTestKey) {
+                try {
+                    $recaptchaUrl = 'https://www.google.com/recaptcha/api/siteverify';
+                    $recaptchaData = [
+                        'secret' => $recaptchaSecret,
+                        'response' => $validated['recaptcha_token']
+                    ];
+                    
+                    // Use cURL instead of file_get_contents
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $recaptchaUrl);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($recaptchaData));
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For local development
+                    
+                    $recaptchaResponse = curl_exec($ch);
+                    $curlError = curl_error($ch);
+                    curl_close($ch);
+                    
+                    if ($curlError) {
+                        \Log::error('reCAPTCHA cURL error: ' . $curlError);
+                        // Continue anyway in development
+                    } else {
+                        $recaptchaResult = json_decode($recaptchaResponse);
+                        
+                        if (!$recaptchaResult->success) {
+                            \Log::warning('reCAPTCHA verification failed', [
+                                'errors' => $recaptchaResult->{'error-codes'} ?? []
+                            ]);
+                            // Continue anyway in development
+                        }
+                    }
+                } catch (\Exception $e) {
+                    \Log::error('reCAPTCHA verification exception: ' . $e->getMessage());
+                    // Continue anyway in development
+                }
+            }
+
             DB::beginTransaction();
+
+            // Normalize WhatsApp number (convert to +62 format)
+            $whatsapp = $validated['whatsapp'];
+            if (substr($whatsapp, 0, 1) === '0') {
+                $whatsapp = '+62' . substr($whatsapp, 1);
+            } elseif (substr($whatsapp, 0, 2) === '62') {
+                $whatsapp = '+' . $whatsapp;
+            } elseif (substr($whatsapp, 0, 3) !== '+62') {
+                $whatsapp = '+62' . $whatsapp;
+            }
 
             // Create ISP with minimal data (email will be used as company email)
             $isp = ISP::create([
                 'company_name' => 'ISP - ' . $validated['email'],
                 'email' => $validated['email'],
                 'phone' => null,
+                'whatsapp' => $whatsapp, // Save WhatsApp number
                 'address' => null,
                 'subscription_status' => 'trial',
                 'approval_status' => 'pending',

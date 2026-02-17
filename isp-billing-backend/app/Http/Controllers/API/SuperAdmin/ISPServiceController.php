@@ -35,6 +35,7 @@ class ISPServiceController extends Controller
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'sort_order' => 'nullable|integer',
+            'requires_manual_approval' => 'boolean',
         ]);
 
         if (empty($validated['slug'])) {
@@ -73,6 +74,7 @@ class ISPServiceController extends Controller
             'is_active' => 'boolean',
             'is_featured' => 'boolean',
             'sort_order' => 'nullable|integer',
+            'requires_manual_approval' => 'boolean',
         ]);
 
         $service->update($validated);

@@ -167,12 +167,10 @@
                   <label class="form-label">Gateway Name</label>
                   <select v-model="form.gateway_name" class="form-control" required>
                     <option value="">Pilih Gateway</option>
-                    <option value="Xendit">Xendit</option>
                     <option value="Midtrans">Midtrans</option>
-                    <option value="PayPal">PayPal</option>
-                    <option value="Stripe">Stripe</option>
-                    <option value="2Checkout">2Checkout</option>
-                    <option value="Razorpay">Razorpay</option>
+                    <option value="Xendit">Xendit</option>
+                    <option value="Tripay">Tripay</option>
+                    <option value="Duitku">Duitku</option>
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
@@ -194,7 +192,7 @@
                     class="form-control"
                     required
                   />
-                  <small class="text-muted">Public key atau Client Key untuk browser</small>
+                  <small class="text-muted">Client Key (Midtrans) / API Key (Tripay/Duitku)</small>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Secret Key / Private Key (Server Key)</label>
@@ -202,21 +200,23 @@
                     v-model="form.secret_key"
                     type="password"
                     class="form-control"
-                    :placeholder="editMode ? 'Kosongkan jika tidak ingin mengubah' : 'Masukkan Server Key'"
+                    :placeholder="editMode ? 'Kosongkan jika tidak ingin mengubah' : 'Masukkan Server/Private Key'"
                     :required="!editMode"
                   />
-                  <small class="text-muted">Secret key atau Server Key untuk otentikasi di server</small>
+                  <small class="text-muted">Secret/Server Key untuk otentikasi backend</small>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Merchant ID (Optional)</label>
+                  <label class="form-label">Merchant ID / Project ID</label>
                   <input
                     v-model="form.merchant_id"
                     type="text"
                     class="form-control"
+                    placeholder="Merchant Code (Tripay/Duitku) or ID"
                   />
+                  <small class="text-muted">Required for Tripay & Duitku</small>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Transaction Fee (%)</label>
@@ -238,7 +238,7 @@
                   v-model="countriesText"
                   type="text"
                   class="form-control"
-                  placeholder="ID, MY, SG, US, UK"
+                  placeholder="ID, MY, SG"
                 />
               </div>
 
@@ -324,7 +324,7 @@ const countriesText = ref("");
 const fetchGateways = async () => {
   try {
     loading.value = true;
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     const response = await axios.get(`${API_URL}/super-admin/payment-gateways`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -342,14 +342,12 @@ const fetchGateways = async () => {
 
 const getLogo = (name) => {
   const logos = {
-    Midtrans: "https://midtrans.com/assets/images/midtrans-logo.svg",
-    Xendit: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Xendit_logo.svg/1200px-Xendit_logo.svg.png",
-    Stripe: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Stripe_Logo%2C_revised_2016.svg/1200px-Stripe_Logo%2C_revised_2016.svg.png",
-    PayPal: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png",
-    "2Checkout": "https://www.2checkout.com/images/branding/logo-2checkout-blue.svg",
-    Razorpay: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Razorpay_logo.svg/1200px-Razorpay_logo.svg.png",
-    Bank_Transfer: "https://premium.creative-tim.com/vue-argon-dashboard-pro/img/logos/mastercard.png"
+    Midtrans: "https://nurosoft.id/blog/wp-content/uploads/2024/06/Midtrans.webp",
+    Xendit: "https://dka575ofm4ao0.cloudfront.net/pages-transactional_logos/retina/69862/xenditlogo.png",
+    Tripay: "https://tripay.co.id/assets/images/logo-black.png",
+    Duitku: "https://docs.duitku.com/assets/img/duitku-logo.png",
   };
+  // Fallback
   return logos[name] || "https://premium.creative-tim.com/vue-argon-dashboard-pro/img/logos/mastercard.png";
 };
 
@@ -357,7 +355,7 @@ const editGateway = (gateway) => {
   editMode.value = true;
   showAddModal.value = true;
   
-  // Copy all fields except secret_key (it's hidden by API)
+  // Copy all fields except secret_key (columns match DB)
   Object.keys(form).forEach(key => {
     if (key !== 'secret_key' && gateway[key] !== undefined) {
       form[key] = gateway[key];
@@ -373,14 +371,15 @@ const editGateway = (gateway) => {
 const saveGateway = async () => {
   try {
     loading.value = true;
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     
+    // Construct payload
     const payload = {
       ...form,
       supported_countries: countriesText.value.split(",").map(c => c.trim()).filter(c => c)
     };
     
-    // If editing and secret_key is empty, don't send it (keep existing value)
+    // If editing and secret_key is empty, don't send it (keep existing)
     if (editMode.value && !payload.secret_key) {
       delete payload.secret_key;
     }
@@ -400,7 +399,7 @@ const saveGateway = async () => {
     alert(editMode.value ? 'Payment gateway berhasil diupdate!' : 'Payment gateway berhasil ditambahkan!');
   } catch (error) {
     console.error("Error saving gateway:", error);
-    alert("Failed to save gateway settings: " + (error.response?.data?.message || error.message));
+    alert("Failed to save gateway: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -408,7 +407,7 @@ const saveGateway = async () => {
 
 const toggleGateway = async (gateway) => {
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     await axios.put(`${API_URL}/super-admin/payment-gateways/${gateway.id}`, {
       is_active: !gateway.is_active
     }, {
@@ -423,7 +422,7 @@ const toggleGateway = async (gateway) => {
 const deleteGateway = async (id) => {
   if (confirm("Yakin ingin menghapus gateway ini?")) {
     try {
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       await axios.delete(`${API_URL}/super-admin/payment-gateways/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -437,12 +436,18 @@ const deleteGateway = async (id) => {
 const closeModal = () => {
   showAddModal.value = false;
   editMode.value = false;
-  Object.keys(form).forEach((key) => {
-    if (typeof form[key] === "boolean")
-      form[key] = key === "is_active" || key === "sandbox_mode";
-    else if (typeof form[key] === "number") form[key] = 2.9;
-    else form[key] = "";
-  });
+  
+  // Reset Form
+  form.id = null;
+  form.gateway_name = "";
+  form.gateway_type = "local";
+  form.api_key = "";
+  form.secret_key = "";
+  form.merchant_id = "";
+  form.transaction_fee = 0;
+  form.is_active = true;
+  form.sandbox_mode = true;
+  countriesText.value = "";
 };
 
 onMounted(() => {

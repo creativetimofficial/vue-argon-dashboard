@@ -1,8 +1,9 @@
 <template>
   <div class="py-4 container-fluid">
+    <LoadingOverlay :active="isLoading" />
     <div class="row">
     <div class="col-12">
-      <div class="card">
+      <div class="card mb-4 min-vh-75">
         <div class="card-header pb-0">
           <h6 class="mb-0">Services Table</h6>
         </div>
@@ -11,33 +12,15 @@
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    ID
-                  </th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                    PRODUCT
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    USERNAME
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    ADDRESS
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    EXPIRED
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    PRICE
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    STATUS
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    DOMAIN
-                  </th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                    CATATAN
-                  </th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Product</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expired</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Domain</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Notes</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
@@ -51,7 +34,7 @@
                     </div>
                   </td>
                   <td>
-                    <p class="text-xs font-weight-bold mb-0">{{ service.service?.name || 'N/A' }}</p>
+                    <p class="text-xs font-weight-bold mb-0">{{ service.service?.name || service.subscription_package?.name || 'N/A' }}</p>
                   </td>
                   <td class="align-middle text-center text-sm">
                     <span class="text-secondary text-xs font-weight-bold">{{ service.username || '-' }}</span>
@@ -86,7 +69,7 @@
                   <td class="align-middle text-center">
                     <a
                       v-if="service.domain"
-                      :href="service.domain.startsWith('http') ? service.domain : 'https://' + service.domain"
+                      :href="getDomainUrl(service.domain)"
                       target="_blank"
                       class="text-xs font-weight-bold mb-0"
                     >
@@ -126,23 +109,24 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
 
 const services = ref([])
-const loading = ref(false)
+const isLoading = ref(false)
 
 onMounted(async () => {
   await fetchServices()
 })
 
 const fetchServices = async () => {
-  loading.value = true
+  isLoading.value = true
   try {
     const response = await api.get('/isp-admin/client-area/my-services')
     services.value = response.data
   } catch (error) {
     console.error('Error fetching services:', error)
   } finally {
-    loading.value = false
+    isLoading.value = false
   }
 }
 
@@ -162,5 +146,12 @@ const formatDate = (date) => {
 const isExpired = (date) => {
   if (!date) return false
   return new Date(date) < new Date()
+}
+
+const getDomainUrl = (domain) => {
+  if (domain.startsWith('http')) return domain
+  const protocol = window.location.protocol
+  const port = window.location.port ? `:${window.location.port}` : ''
+  return `${protocol}//${domain}${port}`
 }
 </script>

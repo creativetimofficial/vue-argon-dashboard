@@ -25,12 +25,34 @@ class DashboardController extends Controller
             // Calculate total revenue (sum of all ISPs subscription prices)
             $totalRevenue = ISP::join('subscription_packages', 'isps.subscription_package_id', '=', 'subscription_packages.id')
                 ->where('isps.subscription_status', 'active')
-                ->sum('subscription_packages.price_monthly');
+                ->sum('subscription_packages.price');
 
             // Count active users (users who logged in today)
             $activeUsers = User::whereDate('updated_at', today())->count();
             if ($activeUsers === 0) {
                 $activeUsers = 1; // At least the current user
+            }
+
+            // Calculate monthly revenue for current year
+            $monthlyRevenue = [];
+            $currentYear = now()->year;
+            
+            // Initialize all months with 0
+            for ($i = 1; $i <= 12; $i++) {
+                $monthlyRevenue[$i] = 0;
+            }
+
+            // Get successful payments grouped by month
+            $revenueData = \App\Models\Payment::whereYear('payment_date', $currentYear)
+                ->where('status', 'success')
+                ->selectRaw('MONTH(payment_date) as month, SUM(amount) as total')
+                ->groupBy('month')
+                ->pluck('total', 'month')
+                ->toArray();
+
+            // Fill in the data
+            foreach ($revenueData as $month => $amount) {
+                $monthlyRevenue[$month] = (int) $amount;
             }
 
             return response()->json([
@@ -41,6 +63,7 @@ class DashboardController extends Controller
                     'total_revenue' => $totalRevenue,
                     'pending_approvals' => $pendingApprovals,
                     'active_users' => $activeUsers,
+                    'monthly_revenue' => array_values($monthlyRevenue), // Returns array [jan_total, feb_total, ...]
                 ]
             ], 200);
         } catch (\Exception $e) {
@@ -69,6 +92,7 @@ class DashboardController extends Controller
                         'approval_status' => $isp->approval_status,
                         'customers_count' => $isp->customers_count,
                         'package_name' => $isp->subscriptionPackage->name ?? 'N/A',
+                        'created_at' => $isp->created_at,
                     ];
                 });
 

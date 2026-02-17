@@ -49,26 +49,41 @@ const processPayment = async () => {
   try {
     const params = route.query
     
-    if (!params.isp_id || !params.package_id) {
+    if (!params.order_id && (!params.isp_id || !params.package_id)) {
       errorMessage.value = 'Parameter pembayaran tidak valid.'
       loading.value = false
       return
     }
 
-    const response = await api.post('/isp-admin/payment-callback', {
-      isp_id: params.isp_id,
-      package_id: params.package_id,
-      amount: params.amount,
-      billing_cycle: params.billing_cycle || 'monthly',
+    const payload = {
       status: params.status || 'success',
       transaction_id: params.transaction_id,
-    })
+    }
+
+    if (params.order_id) {
+      payload.order_id = params.order_id
+    } else {
+      payload.isp_id = params.isp_id
+      payload.package_id = params.package_id
+      payload.amount = params.amount
+      payload.billing_cycle = params.billing_cycle || 'monthly'
+    }
+
+    const response = await api.post('/payment-callback', payload)
 
     if (response.data.success) {
       success.value = true
+      
+      // Short delay for visual confirmation, then redirect
       setTimeout(() => {
-        router.push('/isp-admin/dashboard')
-      }, 3000)
+         const token = localStorage.getItem('auth_token')
+         if (token) {
+            router.push('/client-area/services')
+         } else {
+            // User not logged in, send to login
+            router.push('/login')
+         }
+      }, 1500)
     } else {
       errorMessage.value = response.data.message || 'Pembayaran gagal.'
     }

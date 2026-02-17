@@ -26,10 +26,15 @@ const route = useRoute();
 
 // Check if current route is a public page (no sidebar/navbar needed)
 const isPublicPage = computed(() => {
-  const publicPaths = ["/", "/login", "/register", "/verify-email", "/verify-success", "/payment-callback", "/client-area-package"];
-  const publicRoutes = ["Home", "Login", "Register", "VerifyEmail", "VerificationSuccess", "PaymentCallback", "ClientAreaPackage"];
+  const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password", "/verify-email", "/verify-success", "/payment-callback", "/client-area-package"];
+  const publicRoutes = ["Home", "Login", "Register", "ForgotPassword", "ResetPassword", "VerifyEmail", "VerificationSuccess", "PaymentCallback", "ClientAreaPackage"];
 
   return publicPaths.includes(route.path) || publicRoutes.includes(route.name);
+});
+
+// Check if current route is ISP Admin (uses Sneat theme, no Argon components)
+const isISPAdmin = computed(() => {
+  return route.path.startsWith('/isp-admin');
 });
 
 // Check if current route uses ClientAreaLayout
@@ -41,13 +46,14 @@ const isClientArea = computed(() => {
 watch(
   () => route.path,
   (newPath) => {
-    const publicPaths = ["/", "/login", "/register"];
+    const publicPaths = ["/", "/login", "/register", "/forgot-password", "/reset-password"];
     const isPublic = publicPaths.includes(newPath);
+    const isISPAdminRoute = newPath.startsWith('/isp-admin');
 
-    // Hide sidebar/navbar/footer for public pages
-    store.state.showSidenav = !isPublic;
-    store.state.showNavbar = !isPublic;
-    store.state.showFooter = !isPublic;
+    // Hide sidebar/navbar/footer for public pages AND ISP Admin pages
+    store.state.showSidenav = !isPublic && !isISPAdminRoute;
+    store.state.showNavbar = !isPublic && !isISPAdminRoute;
+    store.state.showFooter = !isPublic && !isISPAdminRoute;
 
     // IMPORTANT: Force 'default' layout for Client Area to show the green header background
     if (newPath.startsWith('/client-area')) {
@@ -81,11 +87,16 @@ const navClasses = computed(() => {
 </script>
 <template>
   <!-- Public Pages Layout (No Sidebar/Navbar) -->
-  <div v-if="isPublicPage" class="public-layout">
+  <div v-if="isPublicPage" class="public-layout" :style="cssVars">
     <router-view />
   </div>
 
-  <!-- Authenticated Layout (With Sidebar & Navbar) -->
+  <!-- ISP Admin Layout (Sneat Theme - No Argon Components) -->
+  <div v-else-if="isISPAdmin" class="isp-admin-layout">
+    <router-view />
+  </div>
+
+  <!-- Authenticated Layout (Argon Theme - With Sidebar & Navbar) -->
   <div v-else>
     <div
       v-show="layout === 'landing'"
@@ -117,5 +128,23 @@ const navClasses = computed(() => {
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.isp-admin-layout {
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  /* Ensure Sneat CSS takes precedence */
+  background-color: #f5f5f9;
+}
+</style>
+
+<style>
+/* Global CSS - Hide reCAPTCHA badge across all pages */
+/* This prevents the badge from appearing after visiting login/register pages */
+.grecaptcha-badge {
+  display: none !important;
+  visibility: hidden !important;
 }
 </style>

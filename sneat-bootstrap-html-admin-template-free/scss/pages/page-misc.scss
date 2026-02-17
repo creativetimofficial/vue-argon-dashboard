@@ -1,0 +1,17 @@
+/* Miscellaneous
+******************************************************************************* */
+
+@import "../_bootstrap-extended/include";
+
+.misc-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-block-size:
+    calc(
+      100vh - calc(#{$container-padding-y} * 2)
+    ); /* ?we have added container-p-y class to add padding on top & bottom */
+
+  text-align: center;
+}

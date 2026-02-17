@@ -2,71 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
-class ISPAdmin extends Model
+class ISPAdmin extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, Notifiable;
 
     protected $table = 'isp_admins';
 
     protected $fillable = [
-        'isp_id',
         'name',
+        'email',
+        'password',
         'phone',
-        'avatar',
-        'position',
-        'is_primary',
-        'permissions',
+        'company_name',
+        'company_address',
+        'subdomain',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
-        'is_primary' => 'boolean',
-        'permissions' => 'array',
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
     ];
-
-    /**
-     * Get the user record associated with the ISP admin.
-     */
-    public function user()
-    {
-        return $this->morphOne(User::class, 'userable');
-    }
-
-    /**
-     * Get the ISP that owns the admin.
-     */
-    public function isp()
-    {
-        return $this->belongsTo(ISP::class);
-    }
-
-    /**
-     * Get customers for this ISP.
-     */
-    public function customers()
-    {
-        return $this->isp->customers();
-    }
-
-    /**
-     * Get technicians for this ISP.
-     */
-    public function technicians()
-    {
-        return $this->isp->technicians();
-    }
-
-    /**
-     * Check if admin has specific permission.
-     */
-    public function hasPermission(string $permission): bool
-    {
-        if ($this->is_primary) {
-            return true;
-        }
-
-        return in_array($permission, $this->permissions ?? []);
-    }
 }

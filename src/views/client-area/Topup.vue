@@ -1,5 +1,6 @@
 <template>
   <div class="py-4 container-fluid">
+    <LoadingOverlay :active="isLoading" />
     <div class="row">
       <div class="col-lg-8">
         <div class="card">
@@ -7,6 +8,13 @@
             <h6>Topup Balance</h6>
           </div>
           <div class="card-body">
+            <div class="alert alert-info text-white mb-4 d-flex align-items-center justify-content-between">
+              <div>
+                <span class="text-sm opacity-8">Current Balance</span>
+                <h4 class="text-white mb-0">{{ formatCurrency(balance) }}</h4>
+              </div>
+              <i class="fas fa-wallet fa-2x opacity-5"></i>
+            </div>
             <form @submit.prevent="handleTopup">
               <div class="mb-4">
                 <label class="form-label">Select Amount</label>
@@ -36,14 +44,6 @@
                     min="10000"
                   />
                 </div>
-              </div>
-
-              <div class="mb-4">
-                <label class="form-label">Payment Method</label>
-                <select v-model="paymentMethod" class="form-control" required>
-                  <option value="bank_transfer">Bank Transfer (Manual Review)</option>
-                  <option value="midtrans">Midtrans (Virtual Account / QRIS)</option>
-                </select>
               </div>
 
               <div class="d-grid mt-4">
@@ -83,16 +83,20 @@
               >
                 <div class="d-flex align-items-center">
                   <button
-                    class="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"
+                    class="btn btn-icon-only btn-rounded mb-0 me-3 btn-sm d-flex align-items-center justify-content-center"
+                    :class="getStatusIconClass(item.status)"
                   >
-                    <i class="fas fa-arrow-up"></i>
+                    <i :class="getStatusIcon(item.status)"></i>
                   </button>
                   <div class="d-flex flex-column">
                     <h6 class="mb-1 text-dark text-sm">Topup Balance</h6>
                     <span class="text-xs">{{ formatDate(item.created_at) }}</span>
+                    <span class="text-xs mt-1" :class="getStatusTextClass(item.status)">
+                      {{ item.status ? item.status.toUpperCase() : 'PENDING' }}
+                    </span>
                   </div>
                 </div>
-                <div class="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                <div class="d-flex align-items-center text-sm font-weight-bold" :class="getStatusTextClass(item.status)">
                   + {{ formatCurrency(item.amount) }}
                 </div>
               </li>
@@ -107,50 +111,130 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import LoadingOverlay from '@/components/LoadingOverlay.vue'
+import notify from '@/utils/notify'
 
 const presets = [50000, 100000, 250000, 500000, 1000000, 2500000]
 const amount = ref(100000)
-const paymentMethod = ref('bank_transfer')
 const processing = ref(false)
+const isLoading = ref(false)
 const history = ref([])
+const balance = ref(0)
+const scriptLoaded = ref(false)
 
 onMounted(async () => {
-  // Fetch history (simulated for now or point to real endpoint if exists)
-  fetchHistory()
+  isLoading.value = true
+  await Promise.all([fetchHistory(), fetchBalance()])
+  loadMidtransScript()
+  isLoading.value = false
 })
+
+const loadMidtransScript = () => {
+    if(document.getElementById('midtrans-script')) {
+        scriptLoaded.value = true
+        return
+    }
+    
+    const scriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js'
+    const script = document.createElement('script')
+    script.src = scriptUrl
+    script.id = 'midtrans-script'
+    script.onload = () => {
+        scriptLoaded.value = true
+    }
+    document.body.appendChild(script)
+}
+
 
 const fetchHistory = async () => {
   try {
-    // Assuming there's a transactions endpoint
-    const response = await api.get('/isp-admin/client-area/stats')
-    // Mock history from stats logic if available, or just empty
-    history.value = response.data.recent_transactions || []
+    const response = await api.get('/isp-admin/client-area/topup-history', {
+        params: { per_page: 5 }
+    })
+    history.value = response.data.data
   } catch (error) {
     console.error('Error fetching history:', error)
+  }
+}
+
+const fetchBalance = async () => {
+  try {
+     const response = await api.get('/isp-admin/client-area/balance')
+     balance.value = response.data.balance || 0
+  } catch (error) {
+      console.error('Error fetching balance', error)
   }
 }
 
 const handleTopup = async () => {
   processing.value = true
   try {
-    // This endpoint should be implemented in the backend
     const response = await api.post('/isp-admin/client-area/topup', {
       amount: amount.value,
-      method: paymentMethod.value
     })
     
-    if (response.data.success) {
-      alert(response.data.message || 'Topup request created!')
-      if (response.data.payment_url) {
-        window.open(response.data.payment_url, '_blank')
+    const data = response.data
+    
+    if (data.success) {
+      if (data.payment_token && window.snap) {
+          window.snap.pay(data.payment_token, {
+              onSuccess: function(result) {
+                  notify('success', 'Success', "Payment Success!");
+                  console.log(result);
+                  fetchBalance();
+                  fetchHistory();
+              },
+              onPending: function(result) {
+                  notify('info', 'Pending', "Waiting for payment!");
+                  console.log(result);
+              },
+              onError: function(result) {
+                  notify('error', 'Failed', "Payment failed!");
+                  console.log(result);
+              },
+              onClose: function() {
+                  console.log('Customer closed the popup without finishing the payment');
+              }
+          });
+      } else if (data.payment_url) {
+         window.location.href = data.payment_url;
+      } else {
+         notify('success', 'Initiated', data.message || 'Topup initiated!');
+         fetchHistory();
       }
-      fetchHistory()
     }
   } catch (error) {
     console.error('Topup error:', error)
-    alert(error.response?.data?.message || 'Failed to process topup. Please try again.')
+    notify('error', 'Error', error.response?.data?.message || 'Failed to process topup. Please try again.')
   } finally {
     processing.value = false
+  }
+}
+
+const getStatusIconClass = (status) => {
+  switch (status) {
+    case 'success': return 'btn-outline-success'
+    case 'failed': return 'btn-outline-danger'
+    case 'pending': return 'btn-outline-warning'
+    default: return 'btn-outline-secondary'
+  }
+}
+
+const getStatusIcon = (status) => {
+  switch (status) {
+    case 'success': return 'fas fa-arrow-up'
+    case 'failed': return 'fas fa-times'
+    case 'pending': return 'fas fa-clock'
+    default: return 'fas fa-question'
+  }
+}
+
+const getStatusTextClass = (status) => {
+  switch (status) {
+    case 'success': return 'text-success'
+    case 'failed': return 'text-danger'
+    case 'pending': return 'text-warning'
+    default: return 'text-secondary'
   }
 }
 

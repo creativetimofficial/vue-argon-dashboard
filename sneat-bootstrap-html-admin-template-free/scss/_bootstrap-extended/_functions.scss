@@ -1,0 +1,73 @@
+// Functions
+
+// Remove the unit of a length
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return divide($number, ($number * 0 + 1));
+  }
+
+  @return $number;
+}
+
+// Convert size px to rem
+@function px-to-rem($value) {
+  // Assumes the browser default font size = `16px`
+  @return (divide(strip-unit($value), 16)) * 1rem;
+}
+
+// Convert size rem to px
+@function rem-to-px($value) {
+  // Assumes the browser default font size = `16px`
+  @return (strip-unit($value) * 16) * 1px;
+}
+
+// Colors
+// *******************************************************************************
+
+// ? Override shade, tint and shift function with custom background color option i.e $card-bg to make it similar like design
+// Shade a color: mix a color with background/white
+@function tint-color($color, $weight, $background: null) {
+  $background: if($background, $background, #fff);
+
+  @return mix($background, $color, $weight);
+}
+
+// Shade a color: mix a color with background/black
+@function shade-color($color, $weight, $background: null) {
+  $background: if($background, $background, #000);
+
+  @return mix($background, $color, $weight);
+}
+
+// Shade the color if the weight is positive, else tint it
+@function shift-color($color, $weight, $background: null) {
+  @return if($weight > 0, shade-color($color, $weight, $background), tint-color($color, -$weight));
+}
+
+
+// RGBA to HEX
+@function rgba-to-hex($color, $background: #fff) {
+  @if $color and alpha($color) != 1 {
+    $percent: alpha($color) * 100%;
+    $opaque: opacify($color, 1);
+
+    @return mix($opaque, $background, $percent);
+  } @else {
+    @return $color;
+  }
+}
+
+// Calculating Color Contrast
+@function contrast-value($color) {
+  @if $color == transparent {
+    @return $body-color;
+  } @else if alpha($color) != 1 {
+    $color: rgba-to-hex($color);
+  }
+
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  @return divide((($r * 299) + ($g * 587) + ($b * 114)), 1000);
+}

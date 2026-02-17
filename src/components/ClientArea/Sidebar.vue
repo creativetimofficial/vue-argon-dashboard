@@ -52,7 +52,7 @@
             <span class="nav-link-text ms-1">Services</span>
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="isSubscribed">
           <router-link
             :to="{ name: 'ClientAreaInvoices' }"
             class="nav-link"
@@ -64,6 +64,20 @@
             <span class="nav-link-text ms-1">Invoices</span>
           </router-link>
         </li>
+        
+        <!-- Conditional Advanced Features -->
+        <li class="nav-item" v-if="hasFeature('feature_analytics')">
+          <router-link
+            :to="{ name: 'ClientAreaDashboard' }"
+            class="nav-link"
+          >
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-chart-line text-dark text-sm"></i>
+            </div>
+            <span class="nav-link-text ms-1">Reports</span>
+          </router-link>
+        </li>
+        
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
             ACCOUNT PAGES
@@ -82,12 +96,16 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">
+          <router-link
+            :to="{ name: 'ClientAreaTopup' }"
+            class="nav-link"
+            :class="{ active: $route.name === 'ClientAreaTopup' }"
+          >
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="fas fa-wallet text-dark text-sm"></i>
             </div>
             <span class="nav-link-text ms-1">Top Up</span>
-          </a>
+          </router-link>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#" @click.prevent="handleLogout">
@@ -95,6 +113,28 @@
               <i class="fas fa-sign-out-alt text-danger text-sm"></i>
             </div>
             <span class="nav-link-text ms-1">Logout</span>
+          </a>
+        </li>
+
+        <li class="nav-item mt-3" v-if="hasFeature('whatsapp_support') || hasFeature('email_support')">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
+            SUPPORT
+          </h6>
+        </li>
+        <li class="nav-item" v-if="hasFeature('whatsapp_support')">
+          <a class="nav-link" href="https://wa.me/628123456789" target="_blank">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fab fa-whatsapp text-success text-sm"></i>
+            </div>
+            <span class="nav-link-text ms-1">WhatsApp Support</span>
+          </a>
+        </li>
+        <li class="nav-item" v-if="hasFeature('email_support')">
+          <a class="nav-link" href="mailto:support@perwiramedia.com" target="_blank">
+            <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="fas fa-envelope text-info text-sm"></i>
+            </div>
+            <span class="nav-link-text ms-1">Email Support</span>
           </a>
         </li>
       </ul>
@@ -124,9 +164,30 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 import { authAPI } from '@/services/api'
 
 const router = useRouter()
+
+const user = computed(() => {
+  try {
+    const userData = localStorage.getItem('user')
+    return userData ? JSON.parse(userData) : null
+  } catch (e) {
+    return null
+  }
+})
+
+const isp = computed(() => user.value?.isp || null)
+const package_features = computed(() => isp.value?.package || {})
+
+const isSubscribed = computed(() => {
+  return isp.value?.subscription_status === 'active' || isp.value?.subscription_status === 'trial'
+})
+
+const hasFeature = (featureName) => {
+  return package_features.value[featureName] === true || package_features.value[featureName] === 1
+}
 
 const handleLogout = async () => {
   try {

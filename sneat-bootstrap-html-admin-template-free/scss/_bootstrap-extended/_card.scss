@@ -1,0 +1,152 @@
+// Cards
+// *******************************************************************************
+
+.card {
+  --#{$prefix}card-hover-box-shadow: #{$box-shadow-lg};
+  --#{$prefix}card-border-bottom-color: #{$card-border-color};
+  --#{$prefix}card-subtitle-color: #{$card-subtitle-color};
+  box-shadow: var(--#{$prefix}card-box-shadow);
+
+  .card-header + .card-body,
+  .card-header + .card-content > .card-body:first-of-type,
+  .card-header + .card-footer,
+  .card-body + .card-footer {
+    padding-block-start: 0;
+  }
+
+  .card-header,
+  .card-footer {
+    --#{$prefix}card-border-width: #{$card-border-width};
+  }
+
+  .card-link {
+    display: inline-block;
+    + .card-link {
+      margin-inline: $card-spacer-x 0;
+    }
+  }
+
+  hr {
+    color: var(--#{$prefix}card-border-color);
+  }
+
+  /* List groups */
+  > .list-group {
+    border-block-end-width: $border-width;
+    border-block-start-width: $border-width;
+    .list-group-item {
+      padding-inline: $card-spacer-x;
+    }
+  }
+
+  .collapse > .card-body,
+  .collapsing > .card-body {
+    padding-block-start: 0;
+  }
+}
+
+/* card-subtitle */
+.card-subtitle {
+  font-weight: $font-weight-normal;
+}
+
+/* adding class with card background color */
+.bg-card {
+  background-color: var(--#{$prefix}card-bg);
+}
+
+/* Card header elements
+******************************************************** */
+.card-title {
+  &:not(:is(h1, h2, h3, h4, h5, h6)) {
+    color: var(--#{$prefix}body-color);
+  }
+}
+
+/* Horizontal card radius issue fix
+******************************************************** */
+.card-img-left,
+.card-img-right {
+  block-size: 100%;
+  object-fit: cover;
+}
+.card-img-left {
+  @include border-start-radius($card-inner-border-radius);
+  @include border-end-radius(0);
+
+  @include media-breakpoint-down(md) {
+    @include border-top-radius($card-inner-border-radius);
+    @include border-bottom-radius(0);
+  }
+}
+
+.card-img-right {
+  @include border-end-radius($card-inner-border-radius);
+  @include border-start-radius(0);
+  @include media-breakpoint-down(md) {
+    @include border-bottom-radius($card-inner-border-radius);
+    @include border-top-radius(0);
+  }
+}
+
+// Card group
+// ********************************************************
+.card-group {
+  --#{$prefix}card-box-shadow: #{$card-box-shadow};
+  --#{$prefix}card-bg: #{$card-bg};
+  @include media-breakpoint-up(sm) {
+    @include border-radius($card-border-radius);
+    background-color: var(--#{$prefix}card-bg);
+    box-shadow: var(--#{$prefix}card-box-shadow);
+    .card {
+      box-shadow: none;
+      + .card {
+        border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
+        border-inline-start: 0;
+        margin-inline: 0;
+      }
+      .card-img-top,
+      .card-header,
+      .card-img-bottom,
+      .card-footer {
+        @include border-radius(0);
+      }
+      &:is(:last-child) {
+        .card-img-top,
+        .card-header {
+          @include border-top-end-radius($card-border-radius);
+        }
+        .card-img-bottom,
+        .card-footer {
+          @include border-bottom-end-radius($card-border-radius);
+        }
+      }
+      &:is(:first-child) {
+        .card-img-top,
+        .card-header {
+          @include border-top-start-radius($card-border-radius);
+        }
+        .card-img-bottom,
+        .card-footer {
+          @include border-bottom-start-radius($card-border-radius);
+        }
+      }
+    }
+  }
+}
+
+/* Card action */
+.card-action {
+  /* Card header */
+  .card-header {
+    display: flex;
+    &.collapsed {
+      border-block-end: 0;
+    }
+  }
+
+  .collapse > .card-body,
+  .collapsing > .card-body {
+    padding-block-start: 0;
+  }
+}

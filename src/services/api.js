@@ -13,9 +13,19 @@ const api = axios.create({
 // Request interceptor to add token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
+    let token = localStorage.getItem("auth_token");
+    if (!token) {
+      token = sessionStorage.getItem("auth_token");
+      console.log("Token from sessionStorage:", token ? "Found" : "Not found");
+    } else {
+      console.log("Token from localStorage:", token ? "Found" : "Not found");
+    }
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log("Authorization header set for:", config.url);
+    } else {
+      console.warn("No token found in localStorage or sessionStorage!");
     }
     return config;
   },
@@ -30,8 +40,11 @@ api.interceptors.response.use(
   (error) => {
     if (error.response?.status === 401) {
       // Unauthorized - clear token and redirect to login
+      // Unauthorized - clear token and redirect to login
       localStorage.removeItem("auth_token");
       localStorage.removeItem("user");
+      sessionStorage.removeItem("auth_token");
+      sessionStorage.removeItem("user");
       window.location.href = "/login";
     }
     return Promise.reject(error);
@@ -44,6 +57,10 @@ export const authAPI = {
   register: (data) => api.post("/auth/register", data),
   logout: () => api.post("/auth/logout"),
   getUser: () => api.get("/auth/user"),
+  forgotPassword: (email) => api.post("/auth/forgot-password", { email }),
+  verifyResetCode: (data) => api.post("/auth/verify-reset-code", data),
+  resetPassword: (data) => api.post("/auth/reset-password", data),
+  getTenantInfo: () => api.get("/tenant-info"),
 };
 
 // Super Admin API
@@ -55,6 +72,9 @@ export const superAdminAPI = {
   approveISP: (id) => api.post(`/super-admin/isp-management/${id}/approve`),
   rejectISP: (id) => api.post(`/super-admin/isp-management/${id}/reject`),
   getSubscriptionPackages: () => api.get("/super-admin/subscription-packages"),
+  createSubscriptionPackage: (data) => api.post("/super-admin/subscription-packages", data),
+  updateSubscriptionPackage: (id, data) => api.put(`/super-admin/subscription-packages/${id}`, data),
+  deleteSubscriptionPackage: (id) => api.delete(`/super-admin/subscription-packages/${id}`),
   getPaymentGateways: () => api.get("/super-admin/payment-gateways"),
 };
 
@@ -69,9 +89,14 @@ export const ispAdminAPI = {
   
   // Client Area endpoints for ISP Admin
   getClientAreaStats: () => api.get("/isp-admin/client-area/stats"),
+  getMyServices: () => api.get("/isp-admin/client-area/my-services"),
   getClientAreaServices: () => api.get("/isp-admin/client-area/services"),
   getClientAreaOrders: () => api.get("/isp-admin/client-area/orders"),
   createClientAreaOrder: (data) => api.post("/isp-admin/client-area/orders", data),
+  
+  // Theme Management
+  getTheme: () => api.get("/isp-admin/theme"),
+  updateTheme: (data) => api.post("/isp-admin/theme", data),
 };
 
 export default api;

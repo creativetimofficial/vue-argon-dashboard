@@ -49,7 +49,7 @@
                       <p class="text-xs font-weight-bold mb-0">{{ order.isp?.company_name || order.isp?.email || 'N/A' }}</p>
                     </td>
                     <td class="align-middle text-center text-sm">
-                      <span class="text-secondary text-xs font-weight-bold">{{ order.service?.name || 'N/A' }}</span>
+                      <span class="text-secondary text-xs font-weight-bold">{{ order.service?.name || order.subscription_package?.name || 'N/A' }}</span>
                       <span v-if="order.service?.trial_days > 0" class="badge badge-sm bg-warning ms-1">Trial</span>
                     </td>
                     <td class="align-middle text-center">
@@ -146,7 +146,7 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                   <p class="mb-1"><strong>ISP:</strong> {{ orderDetail.isp?.company_name || orderDetail.isp?.email }}</p>
-                  <p class="mb-1"><strong>Service:</strong> {{ orderDetail.service?.name }}</p>
+                  <p class="mb-1"><strong>Service:</strong> {{ orderDetail.service?.name || orderDetail.subscription_package?.name || 'N/A' }}</p>
                   <p class="mb-1"><strong>Price:</strong> {{ formatCurrency(orderDetail.price) }}</p>
                   <p class="mb-1"><strong>Billing Cycle:</strong> {{ orderDetail.billing_cycle }}</p>
                 </div>

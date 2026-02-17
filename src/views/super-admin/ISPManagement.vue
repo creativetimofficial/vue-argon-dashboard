@@ -196,8 +196,6 @@
                       <span :class="getApprovalStatusClass(isp.approval_status)">{{ isp.approval_status }}</span>
                     </td>
                     <td class="align-middle text-center">
-                      <button v-if="isp.approval_status === 'pending'" class="btn btn-success btn-sm mb-0 me-1" @click="approveISP(isp)"><i class="fas fa-check"></i> Approve</button>
-                      <button v-if="isp.approval_status === 'pending'" class="btn btn-danger btn-sm mb-0 me-1" @click="rejectISP(isp)"><i class="fas fa-times"></i> Reject</button>
                       <button class="btn btn-info btn-sm mb-0 me-1" @click="viewDetails(isp)"><i class="fas fa-eye"></i> View</button>
                       <button class="btn btn-dark btn-sm mb-0 me-1" @click="openEditISP(isp)"><i class="fas fa-pencil-alt"></i> Edit</button>
                       <button class="btn btn-danger btn-sm mb-0" @click="deleteISP(isp)"><i class="fas fa-trash"></i> Delete</button>
@@ -254,23 +252,46 @@
                 <p>{{ selectedISP.created_at }}</p>
               </div>
             </div>
-            <div class="mt-3">
-              <h6>Change Subscription Package</h6>
-              <select
-                v-model="selectedISP.subscription_package_id"
-                class="form-control"
-              >
-                <option value="">Select Package</option>
-                <option v-for="pkg in packages" :key="pkg.id" :value="pkg.id">
-                  {{ pkg.name }} - Rp {{ formatCurrency(pkg.price_monthly) }}/mo
-                </option>
-              </select>
-              <button
-                class="btn btn-primary btn-sm mt-2"
-                @click="updateSubscription"
-              >
-                Update Subscription
-              </button>
+            <div class="mt-4">
+              <h6 class="mb-3">Riwayat Langganan & Pesanan</h6>
+              <div class="table-responsive">
+                <table class="table table-sm align-items-center mb-0">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Service/Package</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cycle</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expires</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-if="!selectedISP.orders || selectedISP.orders.length === 0">
+                      <td colspan="5" class="text-center text-secondary text-xs py-3">No subscriptions found</td>
+                    </tr>
+                    <tr v-else v-for="order in selectedISP.orders" :key="order.id">
+                      <td>
+                        <div class="d-flex flex-column px-2">
+                          <h6 class="mb-0 text-xs">{{ order.service_name || order.subscription_package?.name || 'Unknown' }}</h6>
+                          <span class="text-secondary text-xxs">{{ order.reference }}</span>
+                        </div>
+                      </td>
+                      <td>
+                        <p class="text-xs font-weight-bold mb-0">Rp {{ formatCurrency(order.price) }}</p>
+                      </td>
+                       <td>
+                        <span class="text-xs text-secondary">{{ order.billing_cycle || 'N/A' }}</span>
+                      </td>
+                      <td>
+                        <span :class="getSubscriptionStatusClass(order.status)">{{ order.status }}</span>
+                      </td>
+                      <td>
+                        <span class="text-xs font-weight-bold">{{ order.expired_date }}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="modal-footer">
@@ -385,7 +406,7 @@ const getApprovalStatusClass = (status) => {
 
 const fetchStats = async () => {
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     if (!token) {
       stats.value = { total: 0, pending: 0, active: 0, approved: 0, revenue: 0 };
       return;
@@ -417,7 +438,7 @@ const fetchStats = async () => {
 const fetchISPs = async () => {
   try {
     loading.value = true;
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     if (!token) {
       alert("Please login first");
       window.location.href = "/";
@@ -471,7 +492,7 @@ const fetchISPs = async () => {
 
 const fetchPackages = async () => {
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     if (!token) {
       return; // Silent fail, will redirect from fetchISPs
     }
@@ -491,7 +512,7 @@ const fetchPackages = async () => {
 const approveISP = async (isp) => {
   if (confirm(`Approve ISP: ${isp.name}?`)) {
     try {
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       await axios.post(
         `${API_URL}/super-admin/isp-management/${isp.id}/approve`,
         {},
@@ -513,7 +534,7 @@ const rejectISP = async (isp) => {
   const reason = prompt(`Rejection reason for ${isp.name}:`);
   if (reason) {
     try {
-      const token = localStorage.getItem("auth_token");
+      const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       await axios.post(
         `${API_URL}/super-admin/isp-management/${isp.id}/reject`,
         {
@@ -533,14 +554,23 @@ const rejectISP = async (isp) => {
   }
 };
 
-const viewDetails = (isp) => {
-  selectedISP.value = { ...isp };
-  showDetailsModal.value = true;
+const viewDetails = async (isp) => {
+  try {
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
+    const response = await axios.get(`${API_URL}/super-admin/isp-management/${isp.id}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    selectedISP.value = response.data;
+    showDetailsModal.value = true;
+  } catch (error) {
+    console.error("Error fetching ISP details:", error);
+    alert("Failed to load details");
+  }
 };
 
 const updateSubscription = async () => {
   try {
-    const token = localStorage.getItem("auth_token");
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     await axios.post(
       `${API_URL}/super-admin/isp-management/${selectedISP.value.id}/update-subscription`,
       {
@@ -576,7 +606,7 @@ function openEditISP(isp) {
   showISPModal.value = true;
 }
 async function saveISP() {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
   try {
     if (editMode.value) {
       await axios.put(`${API_URL}/super-admin/isp-management/${ispForm.value.id}`, {
@@ -608,7 +638,7 @@ async function saveISP() {
 }
 async function deleteISP(isp) {
   if (!confirm(`Yakin ingin menghapus ISP: ${isp.name}?`)) return;
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
   try {
     await axios.delete(`${API_URL}/super-admin/isp-management/${isp.id}`, {
       headers: { Authorization: `Bearer ${token}` },

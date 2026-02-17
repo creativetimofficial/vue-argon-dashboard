@@ -12,9 +12,19 @@ const isRTL = computed(() => store.state.isRTL);
 const user = ref(null);
 
 onMounted(() => {
-  const userStr = localStorage.getItem("user");
+  // Check localStorage first (Remember Me = true)
+  let userStr = localStorage.getItem("user");
+  
+  // If not in localStorage, check sessionStorage (Remember Me = false)
+  if (!userStr) {
+    userStr = sessionStorage.getItem("user");
+  }
+  
   if (userStr) {
     user.value = JSON.parse(userStr);
+    console.log("Sidebar - User loaded:", user.value); // Debug log
+  } else {
+    console.warn("Sidebar - No user found in storage"); // Debug log
   }
 });
 
@@ -36,6 +46,16 @@ const superAdminMenu = [
     text: "ISP Management",
   },
   {
+    to: "/super-admin/isp-orders",
+    icon: "ni ni-cart text-info",
+    text: "ISP Orders",
+  },
+  {
+    to: "/super-admin/servers",
+    icon: "ni ni-world-2 text-primary",
+    text: "Server Manager",
+  },
+  {
     to: "/super-admin/subscription-packages",
     icon: "ni ni-box-2 text-info",
     text: "Subscription Packages",
@@ -46,19 +66,14 @@ const superAdminMenu = [
     text: "Payment Gateways",
   },
   {
+    to: "/super-admin/withdrawals",
+    icon: "ni ni-money-coins text-success",
+    text: "Withdrawals",
+  },
+  {
     to: "/super-admin/landing-page-editor",
     icon: "ni ni-palette text-danger",
     text: "Landing Page Editor",
-  },
-  {
-    to: "/super-admin/isp-theme-editor",
-    icon: "ni ni-settings-gear-65 text-dark",
-    text: "ISP Theme Editor",
-  },
-  {
-    to: "/super-admin/isp-orders",
-    icon: "ni ni-cart text-info",
-    text: "ISP Orders",
   },
 ];
 
@@ -235,3 +250,13 @@ const logout = () => {
     />
   </div>
 </template>
+
+<style scoped>
+#sidenav-collapse-main::-webkit-scrollbar {
+  display: none;
+}
+#sidenav-collapse-main {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+</style>

@@ -128,7 +128,7 @@ class ISPManagementController extends Controller
 
     public function show($id)
     {
-        $isp = ISP::with(['subscriptionPackage', 'users'])->findOrFail($id);
+        $isp = ISP::with(['subscriptionPackage', 'users', 'orders.subscriptionPackage'])->findOrFail($id);
         return response()->json($isp);
     }
 
@@ -139,7 +139,7 @@ class ISPManagementController extends Controller
         // If ISP has a trial package, activate it
         if ($isp->subscription_package_id) {
             $package = $isp->subscriptionPackage;
-            $isTrial = $package && ($package->price_monthly == 0 || ($package->trial_days ?? 0) > 0);
+            $isTrial = $package && ($package->price == 0 || ($package->trial_days ?? 0) > 0);
             
             if ($isTrial) {
                 // Set trial period

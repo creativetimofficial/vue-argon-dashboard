@@ -23,7 +23,18 @@ class HandleCors
         ];
 
         $origin = $request->headers->get('Origin');
-        $allowedOrigin = in_array($origin, $allowedOrigins) ? $origin : ($allowedOrigins[0] ?? '*');
+        
+        // Check if origin matches allowed origins or subdomain pattern
+        $allowedOrigin = null;
+        
+        if (in_array($origin, $allowedOrigins)) {
+            $allowedOrigin = $origin;
+        } elseif ($origin && preg_match('/^http:\/\/[a-zA-Z0-9-]+\.localhost:8080$/', $origin)) {
+            // Allow any subdomain of localhost:8080 (for multi-tenant)
+            $allowedOrigin = $origin;
+        } else {
+            $allowedOrigin = $allowedOrigins[0] ?? '*';
+        }
 
         // Handle preflight requests
         if ($request->getMethod() === 'OPTIONS') {

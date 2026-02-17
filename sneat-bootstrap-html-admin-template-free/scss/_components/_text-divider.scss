@@ -1,0 +1,96 @@
+/* Divider
+******************************************************************************* */
+
+.divider {
+  --#{$prefix}divider-color: #{$divider-color};
+  display: block;
+  overflow: hidden;
+  margin-block: $divider-margin-y;
+  margin-inline: $divider-margin-x;
+  text-align: center;
+  white-space: nowrap;
+
+  .divider-text {
+    position: relative;
+    display: inline-block;
+    color: $divider-text-color;
+    font-size: $divider-font-size;
+    padding-block: $divider-text-padding-y;
+    padding-inline: $divider-text-padding-x;
+
+    .icon-base {
+      @include icon-base($divider-icon-size);
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      border-block-start: 1px solid var(--#{$prefix}divider-color);
+      content: "";
+      inline-size: 100vw;
+      inset-block-start: 50%;
+    }
+
+    &::before {
+      inset-inline-end: 100%;
+    }
+
+    &::after {
+      inset-inline-start: 100%;
+    }
+  }
+
+  &.text-start {
+    .divider-text {
+      padding-inline-start: 0;
+    }
+  }
+
+  &.text-end {
+    .divider-text {
+      padding-inline-end: 0;
+    }
+  }
+
+  &.text-start-center {
+    .divider-text {
+      inset-inline-start: -25%;
+    }
+  }
+
+  &.text-end-center {
+    .divider-text {
+      inset-inline-end: -25%;
+    }
+  }
+
+  // Dotted Bordered Divider
+  &.divider-dotted {
+    .divider-text {
+      &::before,
+      &::after {
+        border-width: 0 1px 1px;
+        border-style: dotted;
+        border-color: var(--#{$prefix}divider-color);
+      }
+    }
+  }
+
+  // Dashed Bordered Divider
+  &.divider-dashed {
+    .divider-text {
+      &::before,
+      &::after {
+        border-width: 0 1px 1px;
+        border-style: dashed;
+        border-color: var(--#{$prefix}divider-color);
+      }
+    }
+  }
+}
+
+@each $state in map-keys($theme-colors) {
+  .divider-#{$state} {
+    --#{$prefix}divider-color: var(--#{$prefix}#{$state});
+  }
+}

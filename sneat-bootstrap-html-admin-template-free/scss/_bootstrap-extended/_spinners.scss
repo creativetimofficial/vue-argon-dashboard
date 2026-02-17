@@ -1,0 +1,25 @@
+/* Spinners */
+
+/* Large size */
+.spinner-border-lg,
+.spinner-grow-lg {
+  --#{$prefix}spinner-border-width: #{$spinner-border-width-lg};
+  --#{$prefix}spinner-height: #{$spinner-height-lg};
+  --#{$prefix}spinner-width: #{$spinner-width-lg};
+}
+
+/* Within button
+******************************************************************************* */
+
+.btn {
+  .spinner-border,
+  .spinner-grow {
+    --#{$prefix}spinner-height: 1em;
+    --#{$prefix}spinner-width: 1em;
+    inset-block-start: -.0625rem;
+  }
+
+  .spinner-border {
+    --#{$prefix}spinner-border-width: .15em;
+  }
+}

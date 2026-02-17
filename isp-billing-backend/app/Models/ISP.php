@@ -22,6 +22,9 @@ class ISP extends Model
         'postal_code',
         'logo',
         'website',
+        'subdomain',
+        'custom_domain',
+        'custom_domain_verified',
         'package_id',
         'subscription_package_id',
         'subscription_status',
@@ -41,6 +44,7 @@ class ISP extends Model
         'rejection_reason',
         'referral_code',
         'is_active',
+        'balance',
     ];
 
     protected $casts = [
@@ -58,7 +62,7 @@ class ISP extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'isp_id');
     }
 
     public function approvedBy()
@@ -68,6 +72,6 @@ class ISP extends Model
 
     public function orders()
     {
-        return $this->hasMany(ISPOrder::class);
+        return $this->hasMany(ISPOrder::class, 'isp_id');
     }
 }
