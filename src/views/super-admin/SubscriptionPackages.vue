@@ -7,11 +7,11 @@
             class="card-header d-flex justify-content-between align-items-center"
           >
             <div>
-              <h5 class="mb-0">Manajemen Paket Berlangganan</h5>
-              <p class="text-sm mb-0">Kelola paket berlangganan untuk ISP</p>
+              <h5 class="mb-0">{{ $t('dashboard.packages.title') }}</h5>
+              <p class="text-sm mb-0">{{ $t('dashboard.packages.subtitle') }}</p>
             </div>
             <button class="btn btn-primary btn-sm" @click="showAddModal = true">
-              <i class="fas fa-plus me-2"></i>Tambah Paket
+              <i class="fas fa-plus me-2"></i>{{ $t('dashboard.packages.add_package') }}
             </button>
           </div>
 
@@ -23,10 +23,10 @@
                     <th
                       class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      Paket
+                      Package
                     </th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Harga & Masa Aktif</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Fitur Utama</th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.packages.price_duration') }}</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.packages.main_features') }}</th>
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
@@ -35,14 +35,14 @@
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      Aksi
+                      Action
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-if="packages.length === 0">
                     <td colspan="5" class="text-center text-secondary py-4">
-                      Tidak ada paket berlangganan yang tersedia.
+                      {{ $t('dashboard.packages.no_packages') }}
                     </td>
                   </tr>
                   <tr v-for="pkg in packages" :key="pkg.id">
@@ -56,7 +56,7 @@
                           v-if="pkg.is_popular"
                           class="badge badge-sm bg-gradient-warning mt-1"
                           style="width: fit-content"
-                          >Populer</span
+                          >{{ $t('dashboard.packages.popular') }}</span
                         >
                       </div>
                     </td>
@@ -65,26 +65,26 @@
                         Rp {{ formatCurrency(pkg.price) }}
                       </p>
                       <p class="text-xs text-secondary mb-0">
-                        Masa Aktif: {{ pkg.active_days ? pkg.active_days + ' Hari' : 'Selamanya (Unlimited)' }}
+                        Duration: {{ pkg.active_days ? pkg.active_days + ' Days' : 'Lifetime (Unlimited)' }}
                       </p>
                       <p class="text-xs text-info mb-0" v-if="pkg.trial_days > 0">
-                        Trial: {{ pkg.trial_days }} Hari
+                        Trial: {{ pkg.trial_days }} Days
                       </p>
                     </td>
                     <td>
                       <p class="text-xs mb-0">
-                        <strong>Pelanggan:</strong>
+                        <strong>{{ $t('dashboard.packages.max_customers') }}:</strong>
                         {{
                           pkg.max_customers === -1
-                            ? "Tak terbatas"
+                            ? "Unlimited"
                             : pkg.max_customers
                         }}
                       </p>
                       <p class="text-xs mb-0">
-                        <strong>Pengguna:</strong> {{ pkg.max_users }}
+                        <strong>{{ $t('dashboard.packages.max_users') }}:</strong> {{ pkg.max_users }}
                       </p>
                       <p class="text-xs mb-0">
-                        <strong>Lokasi:</strong> {{ pkg.max_locations }}
+                        <strong>{{ $t('dashboard.packages.max_locations') }}:</strong> {{ pkg.max_locations }}
                       </p>
                     </td>
                     <td class="align-middle text-center">
@@ -95,7 +95,7 @@
                             : 'badge badge-sm bg-gradient-secondary'
                         "
                       >
-                        {{ pkg.is_active ? "Aktif" : "Nonaktif" }}
+                        {{ pkg.is_active ? $t('common.active') : $t('common.inactive') }}
                       </span>
                     </td>
                     <td class="align-middle text-center">
@@ -135,39 +135,39 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Tambah Paket Berlangganan</h5>
+            <h5 class="modal-title">{{ $t('dashboard.packages.add_subscription') }}</h5>
             <button type="button" class="btn-close" @click="closeModal"></button>
           </div>
           <div class="modal-body" style="overflow-x: auto; max-width: 100vw;">
             <form @submit.prevent="savePackage">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Nama Paket *</label>
+                  <label class="form-label">{{ $t('dashboard.packages.package_name') }}</label>
                   <input v-model="form.name" type="text" class="form-control" required />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Slug *</label>
+                  <label class="form-label">{{ $t('dashboard.packages.slug') }}</label>
                   <input v-model="form.slug" type="text" class="form-control" required />
-                  <small class="text-muted">Nama URL-friendly (misal: starter, profesional)</small>
+                  <small class="text-muted">{{ $t('dashboard.packages.slug_hint') }}</small>
                 </div>
               </div>
               <div class="mb-3">
-                <label class="form-label">Deskripsi</label>
+                <label class="form-label">{{ $t('dashboard.packages.description') }}</label>
                 <textarea v-model="form.description" class="form-control" rows="2"></textarea>
               </div>
               
-              <h6 class="mt-3 mb-2">Harga & Durasi</h6>
+              <h6 class="mt-3 mb-2">{{ $t('dashboard.packages.price_duration') }}</h6>
               <div class="row">
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Harga (Rp) *</label>
+                  <label class="form-label">{{ $t('dashboard.packages.price_rp') }}</label>
                   <input v-model.number="form.price" type="number" step="0.01" class="form-control" required />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Diskon (%)</label>
+                  <label class="form-label">{{ $t('dashboard.packages.discount') }}</label>
                   <input v-model.number="form.discount_percent" type="number" min="0" max="100" class="form-control" />
                 </div>
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Masa Aktif (Hari)</label>
+                  <label class="form-label">{{ $t('dashboard.packages.duration_days') }}</label>
                   <div class="input-group">
                     <input 
                       :disabled="isDaysUnlimited"
@@ -184,197 +184,197 @@
                         id="unlimitedCheck" 
                         v-model="isDaysUnlimited"
                       >
-                      <label class="mb-0 text-xs cursor-pointer" for="unlimitedCheck">Unlimited</label>
+                      <label class="mb-0 text-xs cursor-pointer" for="unlimitedCheck">{{ $t('dashboard.packages.unlimited') }}</label>
                     </div>
                   </div>
                   <small class="text-muted" v-if="!isDaysUnlimited">Misal: 30, 90, 365</small>
-                  <small class="text-success font-weight-bold" v-else>Paket ini aktif selamanya</small>
+                  <small class="text-success font-weight-bold" v-else>{{ $t('dashboard.packages.unlimited_hint') }}</small>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-4 mb-3">
-                  <label class="form-label">Masa Trial (Hari)</label>
+                  <label class="form-label">{{ $t('dashboard.packages.trial_period') }}</label>
                   <input v-model.number="form.trial_days" type="number" min="0" class="form-control" />
-                  <small class="text-muted">0 jika tidak ada trial</small>
+                  <small class="text-muted">{{ $t('dashboard.packages.no_trial') }}</small>
                 </div>
               </div>
 
-              <h6 class="mt-3 mb-2">Batasan Kuota</h6>
+              <h6 class="mt-3 mb-2">{{ $t('dashboard.packages.quota_limits') }}</h6>
               <div class="row">
                 <div class="col-md-3 mb-3">
-                  <label class="form-label">Max Pelanggan</label>
+                  <label class="form-label">{{ $t('dashboard.packages.max_customers') }}</label>
                   <input v-model.number="form.max_customers" type="number" class="form-control" />
                   <small class="text-muted">-1 = Unlimited</small>
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="form-label">Max Pengguna</label>
+                  <label class="form-label">{{ $t('dashboard.packages.max_users') }}</label>
                   <input v-model.number="form.max_users" type="number" class="form-control" />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="form-label">Max Lokasi</label>
+                  <label class="form-label">{{ $t('dashboard.packages.max_locations') }}</label>
                   <input v-model.number="form.max_locations" type="number" class="form-control" />
                 </div>
                 <div class="col-md-3 mb-3">
-                  <label class="form-label">Max Invoice</label>
+                  <label class="form-label">{{ $t('dashboard.packages.max_invoices') }}</label>
                   <input v-model.number="form.max_invoices" type="number" class="form-control" />
                 </div>
               </div>
 
-              <h6 class="mt-3 mb-2">Fitur Utama & Support</h6>
+              <h6 class="mt-3 mb-2">{{ $t('dashboard.packages.features_support') }}</h6>
               <div class="row">
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.email_support" class="form-check-input" type="checkbox" id="emailSupport" />
-                    <label class="form-check-label" for="emailSupport">Email Support</label>
-                    <small class="text-muted d-block mt-1">Layanan bantuan via email</small>
+                    <label class="form-check-label" for="emailSupport">{{ $t('dashboard.packages.email_support') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.email_support_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.whatsapp_support" class="form-check-input" type="checkbox" id="whatsappSupport" />
-                    <label class="form-check-label" for="whatsappSupport">WhatsApp Support</label>
-                    <small class="text-muted d-block mt-1">Layanan bantuan via WhatsApp</small>
+                    <label class="form-check-label" for="whatsappSupport">{{ $t('dashboard.packages.whatsapp_support') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.whatsapp_support_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.custom_branding" class="form-check-input" type="checkbox" id="customBranding" />
-                    <label class="form-check-label" for="customBranding">Custom Branding</label>
-                    <small class="text-muted d-block mt-1">Ganti logo di dashboard client</small>
+                    <label class="form-check-label" for="customBranding">{{ $t('dashboard.packages.custom_branding') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.custom_branding_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_api_access" class="form-check-input" type="checkbox" id="apiAccess" />
-                    <label class="form-check-label" for="apiAccess">API Access</label>
-                    <small class="text-muted d-block mt-1">Akses API untuk integrasi pihak ke-3</small>
+                    <label class="form-check-label" for="apiAccess">{{ $t('dashboard.packages.api_access') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.api_access_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.multi_user_access" class="form-check-input" type="checkbox" id="multiUserAccess" />
-                    <label class="form-check-label" for="multiUserAccess">Multi User Access</label>
-                    <small class="text-muted d-block mt-1">Akses untuk banyak staff/karyawan</small>
+                    <label class="form-check-label" for="multiUserAccess">{{ $t('dashboard.packages.multi_user_access') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.multi_user_access_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_free_subdomain" class="form-check-input" type="checkbox" id="freeSubdomain" />
-                    <label class="form-check-label" for="freeSubdomain">Free Subdomain</label>
-                    <small class="text-muted d-block mt-1">Subdomain gratis (nama.isp.com)</small>
+                    <label class="form-check-label" for="freeSubdomain">{{ $t('dashboard.packages.free_subdomain') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.free_subdomain_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_custom_domain" class="form-check-input" type="checkbox" id="customDomain" />
-                    <label class="form-check-label" for="customDomain">Custom Domain</label>
-                    <small class="text-muted d-block mt-1">Gunakan domain sendiri (isp.com)</small>
+                    <label class="form-check-label" for="customDomain">{{ $t('dashboard.packages.custom_domain') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.custom_domain_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-3 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_maps_interaktif" class="form-check-input" type="checkbox" id="mapsInteraktif" />
-                    <label class="form-check-label" for="mapsInteraktif">Maps Interaktif</label>
-                    <small class="text-muted d-block mt-1">Peta persebaran pelanggan (ODP/Map)</small>
+                    <label class="form-check-label" for="mapsInteraktif">{{ $t('dashboard.packages.maps_interactive') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.maps_interactive_desc') }}</small>
                   </div>
                 </div>
               </div>
 
-              <h6 class="mt-3 mb-2">Modul Teknis & Monitoring</h6>
+              <h6 class="mt-3 mb-2">{{ $t('dashboard.packages.technical_modules') }}</h6>
               <div class="row">
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_dynamic_forwarding" class="form-check-input" type="checkbox" id="dynamicForwarding" />
-                    <label class="form-check-label" for="dynamicForwarding">Dynamic Forwarding</label>
-                    <small class="text-muted d-block mt-1">Forwarding port dinamis untuk ONT</small>
+                    <label class="form-check-label" for="dynamicForwarding">{{ $t('dashboard.packages.dynamic_forwarding') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.dynamic_forwarding_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_whatsapp_gateway" class="form-check-input" type="checkbox" id="whatsappGateway" />
-                    <label class="form-check-label" for="whatsappGateway">WhatsApp Gateway</label>
-                    <small class="text-muted d-block mt-1">Kirim notifikasi WA otomatis</small>
+                    <label class="form-check-label" for="whatsappGateway">{{ $t('dashboard.packages.whatsapp_gateway') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.whatsapp_gateway_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_payment_gateways" class="form-check-input" type="checkbox" id="paymentGateways" />
-                    <label class="form-check-label" for="paymentGateways">Payment Gateways</label>
-                    <small class="text-muted d-block mt-1">Terima pembayaran online (VA/E-wallet)</small>
+                    <label class="form-check-label" for="paymentGateways">{{ $t('dashboard.packages.payment_gateways_feat') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.payment_gateways_feat_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_custom_landing_page" class="form-check-input" type="checkbox" id="customLandingPage" />
-                    <label class="form-check-label" for="customLandingPage">Custom Landing Page</label>
-                    <small class="text-muted d-block mt-1">Website profil ISP custom</small>
+                    <label class="form-check-label" for="customLandingPage">{{ $t('dashboard.packages.custom_landing_page') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.custom_landing_page_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_realtime_monitoring" class="form-check-input" type="checkbox" id="realtimeMonitoring" />
-                    <label class="form-check-label" for="realtimeMonitoring">Realtime Monitoring</label>
-                    <small class="text-muted d-block mt-1">Monitor traffic/status alat realtime</small>
+                    <label class="form-check-label" for="realtimeMonitoring">{{ $t('dashboard.packages.realtime_monitoring') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.realtime_monitoring_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_radius" class="form-check-input" type="checkbox" id="radius" />
-                    <label class="form-check-label" for="radius">Radius</label>
-                    <small class="text-muted d-block mt-1">Integrasi server Radius (Mikrotik/dll)</small>
+                    <label class="form-check-label" for="radius">{{ $t('dashboard.packages.radius') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.radius_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_acs" class="form-check-input" type="checkbox" id="acs" />
-                    <label class="form-check-label" for="acs">ACS Management</label>
-                    <small class="text-muted d-block mt-1">Auto Configuration Server (TR-069)</small>
+                    <label class="form-check-label" for="acs">{{ $t('dashboard.packages.acs_management') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.acs_management_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_customer_portal" class="form-check-input" type="checkbox" id="customerPortal" />
-                    <label class="form-check-label" for="customerPortal">Customer Portal</label>
-                    <small class="text-muted d-block mt-1">Akses dashboard untuk pelanggan</small>
+                    <label class="form-check-label" for="customerPortal">{{ $t('dashboard.packages.customer_portal') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.customer_portal_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-4 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_android_app" class="form-check-input" type="checkbox" id="androidApp" />
-                    <label class="form-check-label" for="androidApp">Android App</label>
-                    <small class="text-muted d-block mt-1">Aplikasi Android untuk pelanggan</small>
+                    <label class="form-check-label" for="androidApp">{{ $t('dashboard.packages.android_app') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.android_app_desc') }}</small>
                   </div>
                 </div>
               </div>
 
-              <h6 class="mt-3 mb-2">Administrasi & Whitelabel</h6>
+              <h6 class="mt-3 mb-2">{{ $t('dashboard.packages.admin_whitelabel') }}</h6>
               <div class="row">
                 <div class="col-md-6 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_automated_billing" class="form-check-input" type="checkbox" id="automatedBilling" />
-                    <label class="form-check-label" for="automatedBilling">Automated Billing</label>
-                    <small class="text-muted d-block mt-1">Invoice & tagihan otomatis</small>
+                    <label class="form-check-label" for="automatedBilling">{{ $t('dashboard.packages.automated_billing') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.automated_billing_desc') }}</small>
                   </div>
                 </div>
                 <div class="col-md-6 mb-2">
                   <div class="form-check">
                     <input v-model="form.feature_whitelabel" class="form-check-input" type="checkbox" id="whiteLabel" />
-                    <label class="form-check-label" for="whiteLabel">White Label</label>
-                    <small class="text-muted d-block mt-1">Hapus branding developer dari sistem</small>
+                    <label class="form-check-label" for="whiteLabel">{{ $t('dashboard.packages.white_label') }}</label>
+                    <small class="text-muted d-block mt-1">{{ $t('dashboard.packages.white_label_desc') }}</small>
                   </div>
                 </div>
               </div>
               
               <div class="mb-3 mt-3">
-                <label class="form-label">Daftar Fitur Ekstra (Satu per baris)</label>
-                <textarea v-model="form.features_text" class="form-control" rows="3" placeholder="Fitur tambahan lainnya..."></textarea>
+                <label class="form-label">{{ $t('dashboard.packages.extra_features') }}</label>
+                <textarea v-model="form.features_text" class="form-control" rows="3" placeholder="Other additional features..."></textarea>
               </div>
 
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <div class="form-check form-switch">
                     <input v-model="form.is_active" class="form-check-input" type="checkbox" id="isActive" />
-                    <label class="form-check-label" for="isActive">Paket Aktif</label>
+                    <label class="form-check-label" for="isActive">{{ $t('dashboard.packages.package_active') }}</label>
                   </div>
                 </div>
                 <div class="col-md-4 mb-3">
@@ -386,23 +386,23 @@
                       id="requiresManualApproval"
                     />
                     <label class="form-check-label" for="requiresManualApproval">
-                      Persetujuan Manual 
-                      <small class="text-xs text-muted">(Hanya Paket Gratis/Trial)</small>
+                      Manual Approval 
+                      <small class="text-xs text-muted">(Hanya Package Gratis/Trial)</small>
                     </label>
                   </div>
                 </div>
                 <div class="col-md-4 mb-3">
                   <div class="form-check form-switch">
                     <input v-model="form.is_popular" class="form-check-input" type="checkbox" id="isPopular" />
-                    <label class="form-check-label" for="isPopular">Populer</label>
+                    <label class="form-check-label" for="isPopular">{{ $t('dashboard.packages.popular') }}</label>
                   </div>
                 </div>
               </div>
             </form>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="closeModal">Batal</button>
-            <button type="button" class="btn btn-primary" @click="savePackage"><i class="fas fa-save me-2"></i>Simpan</button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">{{ $t('common.cancel') }}</button>
+            <button type="button" class="btn btn-primary" @click="savePackage"><i class="fas fa-save me-2"></i>{{ $t('dashboard.packages.save_package') }}</button>
           </div>
         </div>
       </div>
@@ -413,6 +413,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import { superAdminAPI } from "@/services/api";
+import notify, { confirm } from '@/utils/notify';
 const packages = ref([]);
 const loading = ref(false);
 const isDaysUnlimited = ref(false);
@@ -461,7 +462,7 @@ const form = reactive({
 });
 
 const formatCurrency = (value) => {
-  return new Intl.NumberFormat("id-ID").format(value);
+  return new Intl.NumberFormat("en-US").format(value);
 };
 
 const editPackage = (pkg) => {
@@ -487,9 +488,10 @@ const fetchPackages = async () => {
     packages.value = Array.isArray(response.data) ? response.data : [];
   } catch (error) {
     console.error("Error fetching packages:", error);
-    alert(
-      "Failed to load packages: " +
-        (error.response?.data?.message || error.message),
+    notify(
+      "error",
+      "Error",
+      "Failed to load packages: " + (error.response?.data?.message || error.message)
     );
   } finally {
     loading.value = false;
@@ -512,19 +514,20 @@ const savePackage = async () => {
 
     if (editMode.value) {
       await superAdminAPI.updateSubscriptionPackage(form.id, packageData);
-      alert("Package updated successfully!");
+      notify("success", "Success", "Package updated successfully!");
     } else {
       await superAdminAPI.createSubscriptionPackage(packageData);
-      alert("Package created successfully!");
+      notify("success", "Success", "Package created successfully!");
     }
 
     await fetchPackages();
     closeModal();
   } catch (error) {
     console.error("Error saving package:", error);
-    alert(
-      "Failed to save package: " +
-        (error.response?.data?.message || error.message),
+    notify(
+      "error",
+      "Error",
+      "Failed to save package: " + (error.response?.data?.message || error.message)
     );
   } finally {
     loading.value = false;
@@ -539,19 +542,19 @@ const togglePackage = async (pkg) => {
     pkg.is_active = !pkg.is_active;
   } catch (error) {
     console.error("Error toggling package:", error);
-    alert("Failed to toggle package status");
+    notify("error", "Error", "Failed to toggle package status");
   }
 };
 
 const deletePackage = async (id) => {
-  if (confirm("Yakin ingin menghapus package ini?")) {
+  if (await confirm('Konfirmasi', "Are you sure you want to delete this package?", 'warning')) {
     try {
       await superAdminAPI.deleteSubscriptionPackage(id);
       await fetchPackages();
-      alert("Package deleted successfully!");
+      notify("success", "Success", "Package deleted successfully!");
     } catch (error) {
       console.error("Error deleting package:", error);
-      alert("Failed to delete package");
+      notify("error", "Error", "Failed to delete package");
     }
   }
 };

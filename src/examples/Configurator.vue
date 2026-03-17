@@ -91,16 +91,10 @@ onMounted(() => {
 </script>
 <template>
   <div class="fixed-plugin">
-    <a
-      class="px-3 py-2 fixed-plugin-button text-dark position-fixed"
-      @click="toggleConfigurator"
-    >
-      <i class="py-2 fa fa-cog"></i>
-    </a>
     <div class="shadow-lg card">
       <div class="pt-3 pb-0 bg-transparent card-header">
         <div class="" :class="isRTL ? 'float-end' : 'float-start'">
-          <h5 class="mt-3 mb-0">Argon Configurator</h5>
+          <h5 class="mt-3 mb-0">Tema Konfigurasi</h5>
           <p>See our dashboard options.</p>
         </div>
         <div
@@ -196,9 +190,6 @@ onMounted(() => {
               @click="darkMode"
             />
           </div>
-        </div>
-        <div class="text-center w-100 mt-4">
-          <button class="btn btn-outline-primary w-100" @click="toggleConfigurator">Kembali</button>
         </div>
       </div>
     </div>

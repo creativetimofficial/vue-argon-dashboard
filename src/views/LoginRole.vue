@@ -1,10 +1,10 @@
 <script setup>
-import { ref, onBeforeUnmount, onBeforeMount } from "vue";
+import { ref, onBeforeUnmount, onBeforeMount, onMounted } from "vue";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import { authAPI } from "@/services/api";
 import ArgonInput from "@/components/ArgonInput.vue";
-import ArgonSwitch from "@/components/ArgonSwitch.vue";
+import ArgonCheckbox from "@/components/ArgonCheckbox.vue";
 import ArgonButton from "@/components/ArgonButton.vue";
 import Swal from "sweetalert2";
 
@@ -19,6 +19,24 @@ const loading = ref(false);
 const errorMessage = ref("");
 
 const tenantInfo = ref(null);
+
+// reCAPTCHA Site Key (same as RegisterPage)
+const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI";
+const recaptchaToken = ref("");
+
+const loadRecaptchaScript = () => {
+  if (document.getElementById('recaptcha-script')) return;
+  const script = document.createElement('script');
+  script.id = 'recaptcha-script';
+  script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+  script.async = true;
+  script.defer = true;
+  document.head.appendChild(script);
+};
+
+onMounted(() => {
+  loadRecaptchaScript();
+});
 
 onBeforeMount(async () => {
   store.state.hideConfigButton = true;
@@ -58,9 +76,16 @@ const handleLogin = async () => {
   if (!email.value || !password.value) {
     Swal.fire({
       icon: 'warning',
-      title: 'Form Tidak Lengkap',
-      text: 'Email dan password harus diisi',
-      confirmButtonColor: '#5e72e4'
+      title: 'Formulir Tidak Lengkap',
+      text: 'Email dan password wajib diisi',
+      buttonsStyling: false,
+      customClass: {
+        popup: 'swal-custom-popup',
+        title: 'swal-custom-title',
+        confirmButton: 'swal-btn-confirm mt-3',
+        icon: 'swal-custom-icon mt-0 mb-3',
+        htmlContainer: 'swal-custom-text fs-6'
+      }
     });
     return;
   }
@@ -68,6 +93,11 @@ const handleLogin = async () => {
   loading.value = true;
 
   try {
+    // Execute reCAPTCHA before login
+    if (window.grecaptcha) {
+      recaptchaToken.value = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'login' });
+    }
+
     const response = await authAPI.login({
       email: email.value,
       password: password.value,
@@ -126,25 +156,22 @@ const handleLogin = async () => {
         router.push("/super-admin/dashboard");
         break;
       case "isp_admin":
-        // Check if ISP has active subscription package
-        if (user.isp && !user.isp.subscription_package_id) {
-          // No package selected, redirect to subscription package selection
-          router.push("/client-area/dashboard");
-        } else if (user.isp && user.isp.approval_status === 'pending') {
-          // Package pending approval, show message and redirect to client area dashboard
+        if (user.isp && user.isp.approval_status === 'pending') {
           Swal.fire({
             icon: 'info',
             title: 'Menunggu Persetujuan',
             text: 'Paket Anda sedang menunggu persetujuan dari Super Admin.',
-            confirmButtonColor: '#5e72e4'
+            buttonsStyling: false,
+            customClass: {
+              popup: 'swal-custom-popup',
+              title: 'swal-custom-title',
+              confirmButton: 'swal-btn-confirm mt-3',
+              icon: 'swal-custom-icon mt-0 mb-3',
+              htmlContainer: 'swal-custom-text fs-6'
+            }
           });
-          router.push("/client-area/dashboard");
-        } else if (user.isp && user.isp.subscription_package_id) {
-          // Has package, redirect to client area dashboard
-          router.push("/client-area/dashboard");
-        } else {
-          router.push("/isp-admin/dashboard");
         }
+        router.push("/client-area/dashboard");
         break;
       case "technician":
         router.push("/technician/dashboard");
@@ -167,7 +194,7 @@ const handleLogin = async () => {
     if (error.response?.status === 429) {
       errorTitle = 'Akun Terkunci';
       icon = 'warning';
-      errorText = error.response.data.message || 'Terlalu banyak percobaan login gagal.';
+      errorText = error.response.data.message || 'Terlalu banyak percobaan login yang gagal.';
     }
     // Handle validation errors (422)
     else if (error.response?.status === 422) {
@@ -194,7 +221,14 @@ const handleLogin = async () => {
       icon: icon,
       title: errorTitle,
       text: errorText,
-      confirmButtonColor: '#5e72e4'
+      buttonsStyling: false,
+      customClass: {
+        popup: 'swal-custom-popup',
+        title: 'swal-custom-title',
+        confirmButton: 'swal-btn-confirm mt-3',
+        icon: 'swal-custom-icon mt-0 mb-3',
+        htmlContainer: 'swal-custom-text fs-6'
+      }
     });
   } finally {
     loading.value = false;
@@ -216,10 +250,10 @@ const handleLogin = async () => {
                   <div class="mb-3">
                     <router-link to="/" class="text-dark">
                       <i class="fas fa-arrow-left me-2"></i>
-                      <span class="font-weight-bold">Kembali ke Home</span>
+                      <span class="font-weight-bold">Kembali ke Beranda</span>
                     </router-link>
                   </div>
-                  <h4 class="font-weight-bolder">Login</h4>
+                  <h4 class="font-weight-bolder">Masuk</h4>
                   <p class="mb-0">Masukkan email dan password Anda</p>
                 </div>
                 <div class="card-body">
@@ -271,13 +305,12 @@ const handleLogin = async () => {
                         </template>
                       </argon-input>
                     </div>
-                    <argon-switch
-                      id="rememberMe"
-                      v-model="rememberMe"
-                      name="remember-me"
-                    >
-                      Ingat saya
-                    </argon-switch>
+                    <!-- Remember Me - ArgonCheckbox same style as RegisterPage -->
+                    <div class="mb-3">
+                      <argon-checkbox id="rememberMe" v-model="rememberMe" name="remember-me">
+                        <span class="text-sm">Ingat Saya</span>
+                      </argon-checkbox>
+                    </div>
 
                     <div class="text-center">
                       <argon-button
@@ -295,7 +328,7 @@ const handleLogin = async () => {
                         </span>
                         <span v-else>
                           <i class="fas fa-sign-in-alt me-2"></i>
-                          Login
+                          Masuk
                         </span>
                       </argon-button>
                     </div>
@@ -306,7 +339,7 @@ const handleLogin = async () => {
                     Lupa password?
                     <router-link
                       to="/forgot-password"
-                      class="text-success text-gradient font-weight-bold"
+                      class="text-success font-weight-bold"
                     >
                       Reset Password
                     </router-link>
@@ -315,7 +348,7 @@ const handleLogin = async () => {
                     Belum punya akun?
                     <router-link
                       to="/register"
-                      class="text-success text-gradient font-weight-bold"
+                      class="text-success font-weight-bold"
                     >
                       Daftar Sekarang
                     </router-link>
@@ -323,15 +356,10 @@ const handleLogin = async () => {
                 </div>
               </div>
             </div>
-            <div
-              class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column"
-            >
+            <div class="top-0 my-auto text-center col-6 d-lg-flex d-none h-100 pe-0 position-absolute end-0 justify-content-center flex-column">
               <div
-                class="position-relative bg-gradient-primary h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
-                style="
-                  background-image: url(&quot;https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg&quot;);
-                  background-size: cover;
-                "
+                class="position-relative h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden"
+                style="background-image: url('https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/signin-ill.jpg'); background-size: cover; background-position: center;"
               >
                 <span class="mask bg-gradient-success opacity-6"></span>
                 <div v-if="!tenantInfo" class="position-relative">
@@ -342,7 +370,7 @@ const handleLogin = async () => {
                    <!-- Tenant Branding -->
                    <img v-if="tenantInfo.logo" :src="tenantInfo.logo" class="mb-3" style="max-height: 80px;" alt="Logo" />
                    <h4 class="mt-3 text-white font-weight-bolder">{{ tenantInfo.name }} Admin</h4>
-                   <p class="text-white">Sign in to manage your implementation.</p>
+                   <p class="text-white">Masuk untuk mengelola implementasi Anda.</p>
                 </div>
               </div>
             </div>

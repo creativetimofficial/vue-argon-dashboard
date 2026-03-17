@@ -1,7 +1,8 @@
 .dark-version {
   background-color: $dark-version-bg-color !important;
+  color-scheme: dark;
 
-  > div[class*="bg-"] {
+  >div[class*="bg-"] {
     background-color: $dark-version-bg-color !important;
   }
 
@@ -16,6 +17,7 @@
           color: $white !important;
         }
       }
+
       .nav {
         .nav-link {
           color: $white !important;
@@ -33,6 +35,7 @@
           }
         }
       }
+
       .collapse {
         .nav-item {
           .nav-link:not(.active) {
@@ -40,6 +43,7 @@
               color: $dark !important;
             }
           }
+
           h6 {
             color: $dark !important;
           }
@@ -50,11 +54,13 @@
 
   .fixed-plugin {
     .btn {
+
       &.bg-gradient-dark,
       &.btn-outline-dark {
         color: $white !important;
         border: 1px solid $white !important;
       }
+
       &.active {
         background: $white !important;
         color: $h-color !important;
@@ -63,18 +69,17 @@
   }
 
   .bg-gradient-dark {
-    background-image: linear-gradient(
-      195deg,
-      $dark-gradient-dark,
-      $dark-gradient-state-dark
-    );
+    background-image: linear-gradient(195deg,
+        $dark-gradient-dark,
+        $dark-gradient-state-dark );
   }
 
   .card,
+  .modal-content,
   .swal2-popup,
   .dropdown .dropdown-menu,
   .kanban-board {
-    background: $dark-version-card-bg-color;
+    background: $dark-version-card-bg-color !important;
     box-shadow: $dark-version-card-box-shadow;
 
     .card-header {
@@ -109,22 +114,27 @@
   .h5,
   h6,
   .h6,
-  a:not(.dropdown-item):not(.choices__item):not(.leaflet-control-zoom-in):not(
-      .leaflet-control-zoom-out
-    ):not(.btn):not(.nav-link):not(.fixed-plugin-button),
+  a:not(.dropdown-item):not(.choices__item):not(.leaflet-control-zoom-in):not(.leaflet-control-zoom-out):not(.btn):not(.nav-link):not(.fixed-plugin-button),
   .table thead tr th,
   .kanban-title-board {
-    color: $white !important;
+    color: $dark-version-body-color !important;
   }
 
   .input-group {
+    border-radius: $border-radius-md !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    overflow: hidden;
+
     &.input-group-dynamic,
     &.input-group-static {
+      border: none !important;
+
       .form-control {
         background-image: $dark-version-input-bg-image !important;
         background-size:
           0 100%,
           100% 100%;
+
         &:focus {
           background-size:
             100% 100%,
@@ -134,14 +144,27 @@
     }
 
     &.input-group-outline {
+      border: none !important;
+
       .form-control {
-        border-color: $dark-version-border-color !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
       }
+    }
+
+    .input-group-text,
+    .form-control {
+      border: none !important;
+      background-color: transparent !important;
+    }
+
+    .input-group-text {
+      border-right: 1px solid rgba(255, 255, 255, 0.1) !important;
+      padding-right: 10px;
     }
 
     .is-valid,
     .is-invalid {
-      border-color: $dark-version-border-color !important;
+      border-color: rgba(255, 255, 255, 0.2) !important;
     }
   }
 
@@ -153,7 +176,7 @@
     }
   }
 
-  .table > :not(caption) > * > * {
+  .table> :not(caption)>*>* {
     border-color: $dark-version-border-color !important;
     color: $dark-version-table-color !important;
   }
@@ -169,13 +192,33 @@
   }
 
   .nav {
-    &.bg-white {
-      background-color: $dark-version-card-bg-color !important;
+
+    &.bg-white,
+    &.bg-gray-100 {
+      background-color: $dark-version-bg-color !important;
       box-shadow: $dark-version-card-box-shadow;
     }
 
     .nav-link[data-scroll]:hover {
       color: $h-color !important;
+    }
+
+    .nav-link.active,
+    .nav-pills .nav-link.active {
+      background-color: $dark-version-card-bg-color !important;
+      color: $white !important;
+      box-shadow: $dark-version-card-box-shadow !important;
+    }
+  }
+
+  // Target navigation containers specifically
+  .nav-pills,
+  .nav-tabs-wrapper {
+    background-color: transparent !important;
+
+    &.bg-gray-100,
+    &.bg-white {
+      background-color: rgba(0, 0, 0, 0.2) !important;
     }
   }
 
@@ -203,6 +246,7 @@
       border-bottom: 1px solid $dark-version-border-color;
       color: $white;
     }
+
     .choices__list.choices__list--dropdown {
       background: $dark-version-card-bg-color;
       box-shadow: $dark-version-card-box-shadow;
@@ -242,23 +286,24 @@
     .navbar-nav {
       .nav-item {
         .nav-link {
-          color: $white;
+          color: $dark-version-body-color;
           opacity: 0.8;
 
           &[data-bs-toggle="collapse"]:after {
-            color: $white;
+            color: $dark-version-body-color;
           }
 
           &.active {
             box-shadow: $dark-nav-link-active-shadow;
           }
         }
+
         .collapse,
         .collapsing {
           .nav {
             .nav-item {
               .nav-link {
-                color: $white;
+                color: $dark-version-body-color;
                 opacity: 0.6;
 
                 &.active {
@@ -270,6 +315,72 @@
         }
       }
     }
+  }
+
+  // Handle ad-hoc background classes often used in component markup
+  .bg-gray-100,
+  .bg-light,
+  .bg-light-primary {
+    background-color: $dark-version-bg-color !important;
+  }
+
+  .text-secondary {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  .modal-header,
+  .modal-footer {
+    border-color: $dark-version-border-color !important;
+  }
+
+  .form-control,
+  .form-select,
+  .form-select-sm,
+  .input-group-text {
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    color: $white !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.3) !important;
+    }
+
+    option {
+      background-color: $dark-version-card-bg-color !important;
+      color: $white !important;
+    }
+  }
+
+  .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+  }
+
+  // Handle hardcoded utility classes in dark mode
+  .bg-white:not(.sidenav):not(.fixed-plugin-button):not(.nav-link) {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .text-dark:not(.btn):not(.nav-link) {
+    color: $dark-version-body-color !important;
+  }
+
+  .btn-outline-dark {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+    color: $dark-version-body-color !important;
+
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+    }
+  }
+
+  // Ensure select options are readable
+  select option {
+    background-color: $dark-version-card-bg-color;
+    color: $white;
+  }
+
+  .form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.6)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
   }
 }
 

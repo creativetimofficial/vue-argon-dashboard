@@ -1,0 +1,25 @@
+@use "@configured-variables" as variables;
+
+// 👉 Badge
+.v-badge {
+  .v-badge__badge .v-icon {
+    font-size: 0.9375rem;
+  }
+
+  &.v-badge--bordered:not(.v-badge--dot) {
+    .v-badge__badge {
+      &::after {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  &.v-badge--tonal {
+    @each $color-name in variables.$theme-colors-name {
+      .v-badge__badge.bg-#{$color-name} {
+        background-color: rgba(var(--v-theme-#{$color-name}), 0.16) !important;
+        color: rgb(var(--v-theme-#{$color-name})) !important;
+      }
+    }
+  }
+}

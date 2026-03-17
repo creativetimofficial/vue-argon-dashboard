@@ -13,84 +13,21 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-      <!-- Dashboard -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/dashboard') }">
-        <router-link to="/isp-admin/dashboard" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-home-smile"></i>
-          <div>Dashboard</div>
-        </router-link>
-      </li>
-
-      <!-- Managemen Pelanggan -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/customers') }">
-        <router-link to="/isp-admin/customers" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-user"></i>
-          <div>Managemen Pelanggan</div>
-        </router-link>
-      </li>
-
-      <!-- Paket Internet -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/packages') }">
-        <router-link to="/isp-admin/packages" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-package"></i>
-          <div>Paket Internet</div>
-        </router-link>
-      </li>
-
-      <!-- Mikrotik Management -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/mikrotik') }">
-        <router-link to="/isp-admin/mikrotik" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-server"></i>
-          <div>Managemen Mikrotik</div>
-        </router-link>
-      </li>
-
-      <!-- Divider -->
-      <li class="menu-header small text-uppercase">
-        <span class="menu-header-text">Operasional</span>
-      </li>
-
-      <!-- Tiket -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/tickets') }">
-        <router-link to="/isp-admin/tickets" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-support"></i>
-          <div>Tiket Support</div>
-        </router-link>
-      </li>
-
-      <!-- Divider -->
-      <li class="menu-header small text-uppercase">
-        <span class="menu-header-text">Keuangan</span>
-      </li>
-
-      <!-- Invoice -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/invoices') }">
-        <router-link to="/isp-admin/invoices" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-file"></i>
-          <div>Invoice</div>
-        </router-link>
-      </li>
-
-      <!-- Laporan -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/reports') }">
-        <router-link to="/isp-admin/reports" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-bar-chart-alt-2"></i>
-          <div>Laporan</div>
-        </router-link>
-      </li>
-
-      <!-- Divider -->
-      <li class="menu-header small text-uppercase">
-        <span class="menu-header-text">Pengaturan</span>
-      </li>
-
-      <!-- Settings -->
-      <li class="menu-item" :class="{ active: isActive('/isp-admin/settings') }">
-        <router-link to="/isp-admin/settings" class="menu-link">
-          <i class="menu-icon tf-icons bx bx-cog"></i>
-          <div>Pengaturan</div>
-        </router-link>
-      </li>
+      <!-- Dynamic Menus -->
+      <template v-for="(item, index) in filteredMenu" :key="index">
+        <!-- Divider -->
+        <li v-if="item.isHeader" class="menu-header small text-uppercase">
+          <span class="menu-header-text">{{ item.text }}</span>
+        </li>
+        
+        <!-- Menu Item -->
+        <li v-else class="menu-item" :class="{ active: isActive(item.to) }">
+          <router-link :to="item.to" class="menu-link">
+            <i class="menu-icon tf-icons" :class="item.icon"></i>
+            <div>{{ item.text }}</div>
+          </router-link>
+        </li>
+      </template>
     </ul>
   </aside>
 </template>
@@ -104,6 +41,55 @@ const route = useRoute();
 const ispAdminStore = useISPAdminStore();
 
 const ispName = computed(() => ispAdminStore.ispName);
+const ispPackage = computed(() => {
+   // Try to get package from user object in storage if store doesn't have it
+   const userStr = localStorage.getItem("user") || sessionStorage.getItem("user");
+   if (userStr) {
+      const user = JSON.parse(userStr);
+      return user?.isp?.package;
+   }
+   return null;
+});
+
+const menuItems = [
+  { to: "/isp-admin/dashboard", icon: "bx bx-home-smile", text: "Dashboard" },
+  { to: "/isp-admin/customers", icon: "bx bx-user", text: "Managemen Pelanggan" },
+  { to: "/isp-admin/maps", icon: "bx bx-map-alt", text: "Peta Pelanggan" },
+  { to: "/isp-admin/packages", icon: "bx bx-package", text: "Paket Internet" },
+  
+  { isHeader: true, text: "Operasional" },
+  { to: "/isp-admin/monitoring", icon: "bx bx-pulse", text: "Monitoring Realtime" },
+  { to: "/isp-admin/tickets", icon: "bx bx-support", text: "Tiket Support" },
+  { to: "/isp-admin/invoices", icon: "bx bx-file", text: "Invoice & Tagihan" },
+
+  { isHeader: true, text: "Infrastruktur" },
+  { to: "/isp-admin/mikrotik", icon: "bx bx-broadcast", text: "Mikrotik Management" },
+  { to: "/isp-admin/radius", icon: "bx bx-server", text: "Radius Server" },
+  { to: "/isp-admin/acs", icon: "bx bx-chip", text: "ACS (TR-069)" },
+  { to: "/isp-admin/remote", icon: "bx bx-link-external", text: "Remote ONT / Forwarding" },
+  { to: "/isp-admin/vpn-api", icon: "bx bx-terminal", text: "VPN API" },
+  
+  { isHeader: true, text: "Layanan & Aplikasi" },
+  { to: "/isp-admin/reports", icon: "bx bx-bar-chart-alt-2", text: "Laporan" },
+  { to: "/isp-admin/portal", icon: "bx bx-desktop", text: "Portal Pelanggan" },
+  { to: "/isp-admin/android", icon: "bx bxl-android", text: "Android App" },
+  
+  { isHeader: true, text: "Sistem & User" },
+  { to: "/isp-admin/settings", icon: "bx bx-cog", text: "Pengaturan" },
+  { to: "/isp-admin/users", icon: "bx bx-user-circle", text: "Manajemen User", requiredFeature: 'multi_user_access' },
+];
+
+const filteredMenu = computed(() => {
+  return menuItems.filter(item => {
+    if (item.isHeader) return true;
+    if (!item.requiredFeature) return true;
+    
+    const pkg = ispPackage.value;
+    if (!pkg) return false;
+    
+    return pkg[item.requiredFeature] === true || pkg[item.requiredFeature] === 1;
+  });
+});
 
 const isActive = (path) => {
   return route.path.startsWith(path);

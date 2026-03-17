@@ -5,19 +5,19 @@
       <div class="col-lg-8">
         <div class="card">
           <div class="card-header pb-0">
-            <h6>Topup Balance</h6>
+            <h6>{{ $t('dashboard.client_profile.topup') }}</h6>
           </div>
           <div class="card-body">
             <div class="alert alert-info text-white mb-4 d-flex align-items-center justify-content-between">
               <div>
-                <span class="text-sm opacity-8">Current Balance</span>
+                <span class="text-sm opacity-8">{{ $t('dashboard.client_profile.balance') }}</span>
                 <h4 class="text-white mb-0">{{ formatCurrency(balance) }}</h4>
               </div>
               <i class="fas fa-wallet fa-2x opacity-5"></i>
             </div>
             <form @submit.prevent="handleTopup">
               <div class="mb-4">
-                <label class="form-label">Select Amount</label>
+                <label class="form-label">{{ $t('dashboard.topup.select_amount') }}</label>
                 <div class="row g-2">
                   <div v-for="preset in presets" :key="preset" class="col-4 col-md-3">
                     <button
@@ -33,7 +33,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Custom Amount</label>
+                <label class="form-label">{{ $t('dashboard.topup.custom_amount') }}</label>
                 <div class="input-group">
                   <span class="input-group-text">Rp</span>
                   <input
@@ -54,10 +54,10 @@
                 >
                   <span v-if="processing">
                     <i class="fas fa-spinner fa-spin me-2"></i>
-                    Processing...
+                    {{ $t('dashboard.topup.processing') }}
                   </span>
                   <span v-else>
-                    Confirm Topup
+                    {{ $t('dashboard.topup.confirm_topup') }}
                   </span>
                 </button>
               </div>
@@ -69,11 +69,11 @@
       <div class="col-lg-4 mt-4 mt-lg-0">
         <div class="card h-100">
           <div class="card-header pb-0">
-            <h6>Recent Activities</h6>
+            <h6>{{ $t('dashboard.topup.recent_activity') }}</h6>
           </div>
           <div class="card-body p-3">
-            <div v-if="history.length === 0" class="text-center py-4">
-              <p class="text-muted small">No recent topup history</p>
+            <div v-if="!history || history.length === 0" class="text-center py-4">
+              <p class="text-muted small">{{ $t('dashboard.topup.no_history') }}</p>
             </div>
             <ul class="list-group">
               <li
@@ -89,7 +89,7 @@
                     <i :class="getStatusIcon(item.status)"></i>
                   </button>
                   <div class="d-flex flex-column">
-                    <h6 class="mb-1 text-dark text-sm">Topup Balance</h6>
+                    <h6 class="mb-1 text-dark text-sm">{{ $t('dashboard.client_profile.topup') }}</h6>
                     <span class="text-xs">{{ formatDate(item.created_at) }}</span>
                     <span class="text-xs mt-1" :class="getStatusTextClass(item.status)">
                       {{ item.status ? item.status.toUpperCase() : 'PENDING' }}
@@ -120,29 +120,37 @@ const processing = ref(false)
 const isLoading = ref(false)
 const history = ref([])
 const balance = ref(0)
-const scriptLoaded = ref(false)
 
 onMounted(async () => {
   isLoading.value = true
-  await Promise.all([fetchHistory(), fetchBalance()])
-  loadMidtransScript()
-  isLoading.value = false
+    await Promise.all([fetchHistory(), fetchBalance()])
+    isLoading.value = false
 })
 
-const loadMidtransScript = () => {
-    if(document.getElementById('midtrans-script')) {
-        scriptLoaded.value = true
-        return
+const loadSnap = (clientKey) => {
+  return new Promise((resolve, reject) => {
+    if (window.snap && document.querySelector(`script[data-client-key="${clientKey}"]`)) {
+        resolve();
+        return;
     }
     
-    const scriptUrl = 'https://app.sandbox.midtrans.com/snap/snap.js'
-    const script = document.createElement('script')
-    script.src = scriptUrl
-    script.id = 'midtrans-script'
-    script.onload = () => {
-        scriptLoaded.value = true
+    // Remove existing snap script if any (to update key)
+    const oldScript = document.querySelector('script[src*="snap.js"]');
+    if (oldScript) {
+        oldScript.remove();
     }
-    document.body.appendChild(script)
+
+    const scriptUrl = clientKey && clientKey.startsWith('SB-') 
+        ? 'https://app.sandbox.midtrans.com/snap/snap.js' 
+        : 'https://app.midtrans.com/snap/snap.js';
+
+    const script = document.createElement('script');
+    script.src = scriptUrl;
+    script.setAttribute('data-client-key', clientKey);
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Failed to load Snap JS'));
+    document.head.appendChild(script);
+  });
 }
 
 
@@ -176,26 +184,33 @@ const handleTopup = async () => {
     const data = response.data
     
     if (data.success) {
-      if (data.payment_token && window.snap) {
-          window.snap.pay(data.payment_token, {
-              onSuccess: function(result) {
-                  notify('success', 'Success', "Payment Success!");
-                  console.log(result);
-                  fetchBalance();
-                  fetchHistory();
-              },
-              onPending: function(result) {
-                  notify('info', 'Pending', "Waiting for payment!");
-                  console.log(result);
-              },
-              onError: function(result) {
-                  notify('error', 'Failed', "Payment failed!");
-                  console.log(result);
-              },
-              onClose: function() {
-                  console.log('Customer closed the popup without finishing the payment');
+      if (data.gateway === 'Midtrans' && data.payment_token) {
+          try {
+              if (data.client_key) {
+                  await loadSnap(data.client_key);
+              } else {
+                  await loadSnap(import.meta.env.VITE_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-TestKey');
               }
-          });
+              
+              window.snap.pay(data.payment_token, {
+                  onSuccess: async function(result) {
+                      notify('success', 'Success', "Payment Successful! Your balance will be updated soon.");
+                      await fetchBalance();
+                      await fetchHistory();
+                  },
+                  onPending: function(result) {
+                      notify('info', 'Pending', "Waiting for payment!");
+                  },
+                  onError: function(result) {
+                      notify('error', 'Failed', "Payment failed!");
+                  },
+                  onClose: function() {
+                      console.log('Customer closed the popup without finishing the payment');
+                  }
+              });
+          } catch(e) {
+              notify('error', 'Error', 'Failed to load Midtrans payment system.');
+          }
       } else if (data.payment_url) {
          window.location.href = data.payment_url;
       } else {
@@ -239,7 +254,7 @@ const getStatusTextClass = (status) => {
 }
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
@@ -247,6 +262,6 @@ const formatCurrency = (amount) => {
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('id-ID')
+  return new Date(date).toLocaleDateString('en-US')
 }
 </script>

@@ -1,0 +1,94 @@
+@use "@configured-variables" as variables;
+@use "@core/scss/template/mixins" as templateMixins;
+
+// 👉 Tabs
+.v-tabs {
+  &.v-tabs--vertical {
+    --v-tabs-height: 38px !important;
+
+    &:not(.v-tabs-pill) {
+      block-size: 100%;
+      border-inline-end: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+    }
+  }
+
+  &.v-tabs--horizontal:not(.v-tabs-pill) {
+    border-block-end: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+
+    .v-tab__slider {
+      block-size: 3px;
+    }
+  }
+
+  /* stylelint-disable-next-line no-descending-specificity */
+  .v-btn {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    transform: none !important;
+
+    .v-icon {
+      block-size: 1.125rem !important;
+      font-size: 1.125rem !important;
+      inline-size: 1.125rem !important;
+    }
+
+    &:hover:not(.v-tab--selected) {
+      color: rgb(var(--v-theme-primary));
+
+      .v-btn__content {
+        .v-tab__slider {
+          opacity: var(--v-activated-opacity);
+        }
+      }
+    }
+
+    &.v-btn--stacked {
+      /* stylelint-disable-next-line no-descending-specificity */
+      .v-icon {
+        block-size: 1.5rem !important;
+        font-size: 1.5rem !important;
+        inline-size: 1.5rem !important;
+      }
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .v-btn__overlay,
+    .v-ripple__container {
+      opacity: 0 !important;
+    }
+
+    /* stylelint-disable-next-line no-descending-specificity */
+    .v-tab__slider {
+      inset-inline-end: 0;
+      inset-inline-start: unset;
+    }
+  }
+}
+
+// 👉 Tab Pill
+.v-tabs.v-tabs-pill {
+  .v-slide-group__content {
+    gap: 0.25rem;
+  }
+
+  @each $color-name in variables.$theme-colors-name {
+    .v-tab-item--selected.v-tab--selected.text-#{$color-name} {
+      @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+
+      background-color: rgba(var(--v-theme-#{$color-name}));
+      color: rgb(var(--v-theme-on-primary)) !important;
+    }
+  }
+
+  &.v-slide-group,
+  .v-slide-group__container {
+    box-sizing: content-box;
+    padding: 1rem;
+    margin: -1rem;
+  }
+
+  .v-tab.v-btn:not(.v-tab--selected) {
+    &:hover {
+      background-color: rgba(var(--v-theme-primary), var(--v-activated-opacity));
+    }
+  }
+}

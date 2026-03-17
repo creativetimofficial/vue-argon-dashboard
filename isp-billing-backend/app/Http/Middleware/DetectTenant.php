@@ -31,11 +31,18 @@ class DetectTenant
         
         // Extract subdomain or use full domain
         $parts = explode('.', $host);
+        $subdomain = null;
         
-        // Check if it's a subdomain (e.g., isp1.localhost or isp1.yourdomain.com)
-        if (count($parts) >= 3) {
+        // Handle subdomain detection
+        if (count($parts) === 2 && $parts[1] === 'localhost') {
+            // subdomain.localhost
             $subdomain = $parts[0];
-            
+        } elseif (count($parts) >= 3) {
+            // sub.domain.com
+            $subdomain = $parts[0];
+        }
+        
+        if ($subdomain) {
             // Find ISP by subdomain
             $isp = ISP::where('subdomain', $subdomain)
                 ->where('is_active', true)

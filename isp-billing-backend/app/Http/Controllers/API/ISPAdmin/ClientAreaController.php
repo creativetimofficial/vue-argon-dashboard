@@ -34,9 +34,9 @@ class ClientAreaController extends Controller
     public function stats()
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $isps = $user->ownedIsps;
 
-        if (!$isp) {
+        if ($isps->isEmpty()) {
             return response()->json([
                 'balance' => 0,
                 'active_services' => 0,
@@ -45,17 +45,22 @@ class ClientAreaController extends Controller
             ]);
         }
 
-        $balance = $isp->balance;
-        $activeServices = ISPOrder::where('isp_id', $isp->id)
+        $ispIds = $isps->pluck('id');
+        
+        $balance = $isps->sum('balance');
+        $activeServices = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('status', 'active')
             ->count();
-        $unpaidInvoices = Invoice::where('isp_id', $isp->id)
+        $unpaidInvoices = Invoice::whereIn('isp_id', $ispIds)
             ->where('payment_status', 'unpaid')
             ->where('status', '!=', 'cancelled')
             ->count();
-        $pendingOrders = ISPOrder::where('isp_id', $isp->id)
+        $pendingOrders = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('status', 'pending')
             ->count();
+
+        // Get "active" subscription if any (for UI display)
+        $primaryIsp = $user->isp ?: $isps->first();
 
         return response()->json([
             'balance' => $balance,
@@ -63,11 +68,11 @@ class ClientAreaController extends Controller
             'unpaid_invoices' => $unpaidInvoices,
             'pending_orders' => $pendingOrders,
             'isp' => [
-                'subscription_status' => $isp->subscription_status,
-                'subscription_end_date' => $isp->subscription_end_date,
-                'package_name' => $isp->subscriptionPackage?->name ?? 'No Package',
-                'package' => $isp->subscriptionPackage,
-                'is_active' => $isp->is_active,
+                'subscription_status' => $primaryIsp->subscription_status ?? 'cancelled',
+                'subscription_end_date' => $primaryIsp->subscription_end_date ?? null,
+                'package_name' => $primaryIsp->subscriptionPackage?->name ?? 'No Package',
+                'package' => $primaryIsp->subscriptionPackage ?? null,
+                'is_active' => $primaryIsp->is_active ?? false,
             ]
         ]);
     }
@@ -115,13 +120,14 @@ class ClientAreaController extends Controller
     public function orders()
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        if (!$isp) {
+        if ($ispIds->isEmpty()) {
             return response()->json([]);
         }
 
-        $orders = ISPOrder::where('isp_id', $isp->id)
+        $orders = ISPOrder::whereIn('isp_id', $ispIds)
+            ->where('status', '!=', 'superseded')
             ->with(['service', 'subscriptionPackage'])
             ->orderBy('created_at', 'desc')
             ->get();
@@ -135,13 +141,15 @@ class ClientAreaController extends Controller
     public function cancelOrder($id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        $order = ISPOrder::where('isp_id', $isp->id)
+        $order = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('id', $id)
             ->whereIn('status', ['pending_payment', 'expired', 'failed']) // Allow cancel for these statuses
+            ->with('isp')
             ->firstOrFail();
 
+        $isp = $order->isp;
         $order->update(['status' => 'cancelled']);
 
         // Send Email
@@ -173,9 +181,9 @@ class ClientAreaController extends Controller
     public function deleteOrder($id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        $order = ISPOrder::where('isp_id', $isp->id)
+        $order = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('id', $id)
             ->whereIn('status', ['pending_payment', 'cancelled'])
             ->firstOrFail();
@@ -206,65 +214,204 @@ class ClientAreaController extends Controller
     public function createOrder(Request $request)
     {
         $user = auth()->user();
-        $isp = $user->isp;
-
-        if (!$isp) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ISP not found'
-            ], 404);
-        }
+        $isp = $user->isp; // Keep as default, but don't fail if null
 
         // Validate Request
         $validated = $request->validate([
-            'server_id' => 'required|exists:servers,id',
+            'is_new_unit' => 'nullable|boolean',
+            'isp_id' => 'nullable|exists:isps,id',
+            'company_name' => 'required_if:is_new_unit,true|nullable|string|max:100',
+            'server_id' => 'required_if:is_new_unit,true|nullable|exists:servers,id',
             'service_id' => 'nullable|exists:isp_services,id',
             'package_id' => 'nullable|exists:subscription_packages,id', // Fallback
             'billing_cycle' => 'nullable|string',
-            'domain_type' => 'required|in:subdomain,custom',
+            'domain_type' => 'required_if:is_new_unit,true|nullable|in:subdomain,custom',
             'subdomain' => 'nullable|string|min:3|max:50',
             'domain' => 'nullable|string|min:4|max:100',
             'notes' => 'nullable|string|max:500',
             'referral_code' => 'nullable|string|exists:isps,referral_code',
         ]);
 
-        // Validate Referral Code
-        $referrerId = null;
-        $discount = 0;
-        if (!empty($validated['referral_code'])) {
-            $referrer = \App\Models\ISP::where('referral_code', $validated['referral_code'])->first();
-            if ($referrer && $referrer->id !== $isp->id) {
-                $referrerId = $referrer->id;
-                $discount = 0.10; // 10% Discount
-            } elseif ($referrer && $referrer->id === $isp->id) {
+        // Determine which ISP to use or create
+        $targetIsp = null;
+        if (!empty($validated['is_new_unit'])) {
+            // Check Company Name Uniqueness for current owner
+            $existingName = \App\Models\ISP::where('owner_id', $user->id)
+                ->where('company_name', $validated['company_name'])
+                ->exists();
+            if ($existingName) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah memiliki unit ISP dengan nama "' . $validated['company_name'] . '". Silakan gunakan nama lain untuk unit baru ini.'
+                ], 422);
+            }
+        } else {
+            // Use Existing ISP Unit
+            $targetIspId = $validated['isp_id'] ?? $user->isp_id; // Default to primary if not specified
+            if (!$targetIspId) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Please select an ISP unit or create a new one.'
+                ], 422);
+            }
+            
+            $targetIsp = \App\Models\ISP::where('id', $targetIspId)
+                ->where('owner_id', $user->id)
+                ->first();
+                
+            if (!$targetIsp) {
                  return response()->json([
                     'success' => false,
-                    'message' => 'You cannot use your own referral code.'
+                    'message' => 'Selected ISP unit not found or access denied.'
+                ], 404);
+            }
+
+            // --- REDUNDANCY REFINEMENT ---
+            // Inherit server from previous order if not provided
+            if (empty($validated['server_id'])) {
+                $lastOrder = ISPOrder::where('isp_id', $targetIsp->id)
+                    ->whereNotNull('server_id')
+                    ->latest()
+                    ->first();
+                
+                if ($lastOrder) {
+                    $validated['server_id'] = $lastOrder->server_id;
+                } else {
+                    // Fallback: Pick an available server if no history found for this unit
+                    $fallbackServer = \App\Models\Server::where('is_active', true)
+                        ->whereRaw('current_users < capacity')
+                        ->orderBy('current_users', 'asc') // Pick least loaded
+                        ->first();
+                    
+                    if ($fallbackServer) {
+                        $validated['server_id'] = $fallbackServer->id;
+                    } else {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Tidak dapat menemukan server yang tersedia saat ini. Silakan hubungi admin.'
+                        ], 422);
+                    }
+                }
+            }
+
+            // Inherit domain settings
+            if (empty($validated['domain_type'])) {
+                if ($targetIsp->custom_domain) {
+                    $validated['domain_type'] = 'custom';
+                    $validated['domain'] = $targetIsp->custom_domain;
+                } else {
+                    $validated['domain_type'] = 'subdomain';
+                    $validated['subdomain'] = $targetIsp->subdomain;
+                }
+            }
+
+            // --- CREDENTIAL INHERITANCE ---
+            // Inherit VPN credentials from latest order for this ISP
+            $inheritedOrder = ISPOrder::where('isp_id', $targetIsp->id)
+                ->whereNotNull('username')
+                ->whereNotNull('ip_address')
+                ->latest()
+                ->first();
+            
+            if ($inheritedOrder) {
+                $validated['inherited_username'] = $inheritedOrder->username;
+                $validated['inherited_password'] = $inheritedOrder->password;
+                $validated['inherited_ip'] = $inheritedOrder->ip_address;
+                $validated['inherited_server_address'] = $inheritedOrder->server_address;
+                $validated['inherited_l2tp'] = $inheritedOrder->l2tp_config;
+                $validated['inherited_sstp'] = $inheritedOrder->sstp_config;
+            }
+        }
+
+        // Validate Referral Code (Only for New ISP Units)
+        $referrerId = null;
+        $discount = 0;
+        if (!empty($validated['is_new_unit']) && !empty($validated['referral_code'])) {
+            $referrer = \App\Models\ISP::where('referral_code', $validated['referral_code'])->first();
+            
+            // Allow referral if referrer exists and is NOT owned by the same user
+            if ($referrer && $referrer->owner_id !== $user->id) {
+                $referrerId = $referrer->id;
+                $discount = 0.10; // 10% Discount
+            } elseif ($referrer && $referrer->owner_id === $user->id) {
+                 return response()->json([
+                    'success' => false,
+                    'message' => 'Anda tidak dapat menggunakan kode referal dari unit ISP Anda sendiri.'
                 ], 422);
             }
         }
 
-        // Custom Validation: Uniqueness for Active Orders
-        if ($validated['domain_type'] === 'subdomain' && !empty($validated['subdomain'])) {
-            $exists = \App\Models\ISPOrder::where('subdomain', $validated['subdomain'])
-                ->whereIn('status', ['active', 'pending_payment', 'paid']) // Check against active/pending_payment
-                ->exists();
-            if ($exists) {
+        // Determine Package/Service and handle validations
+        $serviceId = $validated['service_id'] ?? null;
+        $packageId = $validated['package_id'] ?? null;
+        $package = null;
+        $service = null;
+
+        if ($packageId) {
+            $package = \App\Models\SubscriptionPackage::findOrFail($packageId);
+            $serviceName = $package->name;
+            $price = $package->price;
+            $requiresApproval = $package->requires_manual_approval;
+            $isTrial = $price == 0 || $package->slug === 'trial';
+        } elseif ($serviceId) {
+            $service = ISPService::findOrFail($serviceId);
+            $serviceName = $service->name;
+            $price = $service->price;
+            $requiresApproval = $service->requires_manual_approval;
+            $isTrial = $service->trial_days > 0 || $service->price == 0;
+        } else {
+            return response()->json(['success' => false, 'message' => 'Please select a service or package.'], 422);
+        }
+
+        // --- VALIDATIONS ---
+        if ($targetIsp) {
+            // 1. Block Trials for existing units (Renewals/Upgrades)
+            if ($isTrial) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Subdomain "' . $validated['subdomain'] . '" is already taken not available.'
-                ], 422);
+                    'message' => 'Paket Trial hanya tersedia untuk unit ISP baru. Untuk unit yang sudah terdaftar, silakan pilih paket berbayar.'
+                ], 400);
+            }
+
+            // 2. Capacity Check for Downgrades
+            if ($package) {
+                $currentCustomerCount = \App\Models\Customer::where('isp_id', $targetIsp->id)->count();
+                if ($package->max_customers > 0 && $currentCustomerCount > $package->max_customers) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => "Gagal mengubah paket. Jumlah pelanggan Anda saat ini ({$currentCustomerCount}) melebihi kapasitas maksimal paket {$package->name} ({$package->max_customers})."
+                    ], 422);
+                }
             }
         }
-        if ($validated['domain_type'] === 'custom' && !empty($validated['domain'])) {
-             $exists = \App\Models\ISPOrder::where('domain', $validated['domain'])
-                ->whereIn('status', ['active', 'pending_payment', 'paid'])
-                ->exists();
-            if ($exists) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Domain "' . $validated['domain'] . '" is already registered or processing.'
-                ], 422);
+
+        // Custom Validation: Uniqueness for Active Orders/ISPs (Only for new units/changes)
+        if (empty($validated['isp_id'])) {
+            if ($validated['domain_type'] === 'subdomain' && !empty($validated['subdomain'])) {
+                $existsInOrders = \App\Models\ISPOrder::where('subdomain', $validated['subdomain'])
+                    ->whereIn('status', ['active', 'pending_payment', 'paid'])
+                    ->exists();
+                $existsInIsps = \App\Models\ISP::where('subdomain', $validated['subdomain'])->exists();
+                
+                if ($existsInOrders || $existsInIsps) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Subdomain "' . $validated['subdomain'] . '" is already taken or processing.'
+                    ], 422);
+                }
+            }
+            if ($validated['domain_type'] === 'custom' && !empty($validated['domain'])) {
+                 $existsInOrders = \App\Models\ISPOrder::where('domain', $validated['domain'])
+                    ->whereIn('status', ['active', 'pending_payment', 'paid'])
+                    ->exists();
+                 $existsInIsps = \App\Models\ISP::where('custom_domain', $validated['domain'])->exists();
+                    
+                if ($existsInOrders || $existsInIsps) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Domain "' . $validated['domain'] . '" is already registered or processing.'
+                    ], 422);
+                }
             }
         }
 
@@ -280,29 +427,30 @@ class ClientAreaController extends Controller
         try {
             DB::beginTransaction();
 
-            $serviceId = $validated['service_id'] ?? null;
-            $packageId = $validated['package_id'] ?? null;
+            // Create New ISP Unit if requested
+            if (!empty($validated['is_new_unit'])) {
+                $targetIsp = \App\Models\ISP::create([
+                    'owner_id' => $user->id,
+                    'company_name' => $validated['company_name'],
+                    'email' => $user->email,
+                    'phone' => $user->phone,
+                    'whatsapp' => $user->phone,
+                    'referral_code' => Str::upper(Str::random(5)),
+                    'subdomain' => $validated['domain_type'] === 'subdomain' ? $validated['subdomain'] : null,
+                    'custom_domain' => $validated['domain_type'] === 'custom' ? $validated['domain'] : null,
+                    'is_active' => false,
+                    'approval_status' => 'pending'
+                ]);
+                
+                // Set as primary if user has none
+                if (!$user->isp_id) {
+                    $user->update(['isp_id' => $targetIsp->id]);
+                }
+            }
+            
+            $isp = $targetIsp; 
             $billingCycle = $validated['billing_cycle'] ?? 'monthly';
             $paymentStatus = 'unpaid';
-
-            $requiresApproval = false;
-            if ($serviceId) {
-                $service = ISPService::findOrFail($serviceId);
-                $price = $service->price;
-                $requiresApproval = $service->requires_manual_approval;
-                $isTrial = $service->trial_days > 0 || $service->price == 0;
-            } elseif ($packageId) {
-                $package = \App\Models\SubscriptionPackage::findOrFail($packageId);
-                
-                // Get price
-                $price = $package->price;
-                
-                $requiresApproval = $package->requires_manual_approval;
-                // Package is trial if price is 0 or it's named 'trial'
-                $isTrial = $price == 0 || $package->slug === 'trial'; 
-            } else {
-                throw new \Exception('Please select a service or package.');
-            }
 
             // Apply Referral Discount
             if ($discount > 0 && !$isTrial) {
@@ -315,19 +463,19 @@ class ClientAreaController extends Controller
             // Generate domain
             $domain = null;
             if ($validated['domain_type'] === 'subdomain') {
-                $domain = $validated['subdomain'] . '.' . $request->getHost();
+                $mainDomainSetting = \App\Models\SystemSetting::get('main_domain', ['base_domain' => 'localhost']);
+                $domain = ($validated['subdomain'] ?? $isp->subdomain) . '.' . ($mainDomainSetting['base_domain'] ?? 'localhost');
             } else {
-                $domain = $validated['domain'];
+                $domain = $validated['domain'] ?? $isp->custom_domain;
             }
 
             $status = 'pending_payment';
 
-            // Auto-approve if not trial or explicitly set to not require manual approval
+            // Auto-approve if trial and not requiring manual approval
             if ($isTrial && !$requiresApproval) {
                 $status = 'active';
             }
 
-            
             // Get payment gateway for expiry duration
             $paymentGateway = null;
             $paymentExpiredAt = null;
@@ -353,14 +501,21 @@ class ClientAreaController extends Controller
                 'payment_status' => $paymentStatus,
                 'price' => $price,
                 'billing_cycle' => $billingCycle,
-                'service_name' => $serviceId ? $service->name : $package->name,
+                'service_name' => $serviceName,
                 'domain_type' => $validated['domain_type'],
-                'subdomain' => $validated['subdomain'] ?? null,
+                'subdomain' => $validated['subdomain'] ?? $isp->subdomain,
                 'domain' => $domain,
                 'notes' => $validated['notes'] ?? (($packageId) ? "Ordering Package: " . $package->name : null),
                 'payment_expired_at' => $paymentExpiredAt,
                 'payment_gateway' => $paymentGateway ? $paymentGateway->gateway_name : null,
                 'domain_active' => false, // Will be activated after payment
+                // Pass inherited credentials
+                'username' => $validated['inherited_username'] ?? null,
+                'password' => $validated['inherited_password'] ?? null,
+                'ip_address' => $validated['inherited_ip'] ?? null,
+                'server_address' => $validated['inherited_server_address'] ?? null,
+                'l2tp_config' => $validated['inherited_l2tp'] ?? null,
+                'sstp_config' => $validated['inherited_sstp'] ?? null,
             ]);
 
             // If auto-activated, generate credentials or update ISP subscription
@@ -371,32 +526,10 @@ class ClientAreaController extends Controller
                     // Centralized generation in model
                     $order->generateCredentials();
                     
-                    if ($packageId) {
-                        // Calculate days based on package setup
-                        $totalDays = $package->active_days ?: 30;
-                        
-                        $isp->update([
-                            'subscription_package_id' => $packageId,
-                            'subscription_status' => $isTrial ? 'trial' : 'active',
-                            'subscription_start_date' => now(),
-                            'subscription_end_date' => now()->addDays($totalDays),
-                            'billing_cycle' => $billingCycle,
-                            'is_active' => true,
-                        ]);
-                        
-                        $order->update([
-                            'start_date' => now(),
-                            'expired_date' => now()->addDays($totalDays),
-                            'approved_at' => now(),
-                        ]);
-                    } elseif ($serviceId) {
-                         $days = $service->trial_days ?: 30;
-                         $order->update([
-                            'start_date' => now(),
-                            'expired_date' => now()->addDays($days),
-                            'approved_at' => now(),
-                        ]);
-                    }
+                    $order->generateCredentials();
+                    
+                    // Unified Activation (Handles Fair Extension, ISP update, and Consolidation)
+                    $order->activateSubscription();
                 }
             }
 
@@ -471,19 +604,27 @@ class ClientAreaController extends Controller
     public function myServices()
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $isps = $user->ownedIsps()->pluck('id');
 
-        if (!$isp) {
-            return response()->json([]);
-        }
-
-        $orders = ISPOrder::where('isp_id', $isp->id)
+        $orders = ISPOrder::whereIn('isp_id', $isps)
             ->whereIn('status', ['active', 'pending', 'approved'])
-            ->with(['service', 'subscriptionPackage'])
+            ->with(['isp', 'service', 'subscriptionPackage'])
             ->orderBy('created_at', 'desc')
             ->get();
 
         return response()->json($orders);
+    }
+
+    /**
+     * Get all ISPs owned by the user
+     */
+    public function ownedIsps()
+    {
+        $isps = auth()->user()->ownedIsps()
+            ->with(['subscriptionPackage'])
+            ->get();
+
+        return response()->json($isps);
     }
 
     /**
@@ -492,9 +633,9 @@ class ClientAreaController extends Controller
     public function serviceDetail($id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        $order = ISPOrder::where('isp_id', $isp->id)
+        $order = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('id', $id)
             ->with(['service', 'subscriptionPackage'])
             ->firstOrFail();
@@ -515,9 +656,9 @@ class ClientAreaController extends Controller
     public function updateService(Request $request, $id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        $order = ISPOrder::where('isp_id', $isp->id)
+        $order = ISPOrder::whereIn('isp_id', $ispIds)
             ->where('id', $id)
             ->firstOrFail();
 
@@ -541,15 +682,15 @@ class ClientAreaController extends Controller
     public function invoices()
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
-        if (!$isp) {
+        if ($ispIds->isEmpty()) {
             return response()->json([]);
         }
 
         $invoices = Invoice::where('billable_type', 'App\\Models\\ISP')
-            ->where('billable_id', $isp->id)
-            ->with('payment')
+            ->whereIn('billable_id', $ispIds)
+            ->with(['payment', 'billable'])
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -562,10 +703,10 @@ class ClientAreaController extends Controller
     public function invoiceDetail($id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
         $invoice = Invoice::where('billable_type', 'App\\Models\\ISP')
-            ->where('billable_id', $isp->id)
+            ->whereIn('billable_id', $ispIds)
             ->where('id', $id)
             ->with(['items', 'payment'])
             ->firstOrFail();
@@ -579,13 +720,16 @@ class ClientAreaController extends Controller
     public function cancelInvoice($id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
         $invoice = Invoice::where('billable_type', 'App\\Models\\ISP')
-            ->where('billable_id', $isp->id)
+            ->whereIn('billable_id', $ispIds)
             ->where('id', $id)
             ->where('payment_status', 'unpaid')
+            ->with('billable')
             ->firstOrFail();
+
+        $isp = $invoice->billable;
 
         // Only update status column to 'cancelled'
         // Frontend will check status === 'cancelled' to display CANCELLED badge
@@ -618,13 +762,16 @@ class ClientAreaController extends Controller
     public function payInvoice(Request $request, $id)
     {
         $user = auth()->user();
-        $isp = $user->isp;
+        $ispIds = $user->ownedIsps()->pluck('id');
 
         $invoice = Invoice::where('billable_type', 'App\\Models\\ISP')
-            ->where('billable_id', $isp->id)
+            ->whereIn('billable_id', $ispIds)
             ->where('id', $id)
             ->where('payment_status', 'unpaid')
+            ->with('billable')
             ->firstOrFail();
+
+        $isp = $invoice->billable;
 
         // Get active payment gateway
         $paymentGateway = PaymentGateway::where('is_active', true)
@@ -673,41 +820,10 @@ class ClientAreaController extends Controller
                     if ($invoice->subscription_id) {
                         $order = ISPOrder::find($invoice->subscription_id);
                         if ($order) {
-                            // Centralized Activation and Provisioning
+                            // Centralized Activation and Provisioning (calls activateSubscription internally)
                             $order->activateDomain();
-                            
-                            $days = 30;
-                             if ($order->service_id) {
-                                $days = $order->service->trial_days ?: 30;
-                            } elseif ($order->subscription_package_id) {
-                                $days = $order->subscriptionPackage->active_days ?? 30;
-                            }
-                            
-                            $newStart = now();
-                            $newEnd = now()->addDays($days);
-                            
-                            $order->update([
-                                'start_date' => $newStart,
-                                'expired_date' => $newEnd
-                            ]);
 
                             // Send Active Email
-                            try {
-                                Mail::to($isp->email)->send(new PackageActive($order));
-                            } catch (\Exception $e) {
-                                Log::error('Failed to send active package email: ' . $e->getMessage());
-                            }
-                            
-                             // If package
-                            if ($order->subscription_package_id) {
-                                $isp->update([
-                                    'subscription_package_id' => $order->subscription_package_id,
-                                    'subscription_status' => 'active',
-                                    'subscription_start_date' => $newStart,
-                                    'subscription_end_date' => $newEnd,
-                                    'is_active' => true,
-                                ]);
-                            }
                         }
                     }
                     
@@ -1031,7 +1147,7 @@ public function updateReferralCode(Request $request)
         }
 
         $validated = $request->validate([
-            'amount' => 'required|numeric|min:500000',
+            'amount' => 'required|numeric|min:1000000',
             'bank_name' => 'required|string',
             'account_number' => 'required|string',
             'account_name' => 'required|string',
@@ -1041,34 +1157,490 @@ public function updateReferralCode(Request $request)
             return response()->json(['message' => 'Insufficient balance'], 400);
         }
 
+        // --- SECURITY GUARDRAILS --- LIMIT HARIAN 2 KALI
+        $today = \Carbon\Carbon::today();
+        
+        // 1. Frequency Limit: Max 2 withdrawals per day
+        $withdrawalsTodayCount = \App\Models\Withdrawal::where('isp_id', $isp->id)
+            ->whereDate('created_at', $today)
+            ->where('status', '!=', 'rejected') // Don't count failed ones as limit
+            ->count();
+            
+        if ($withdrawalsTodayCount >= 2) {
+             return response()->json(['message' => 'Limit harian tercapai. Anda hanya dapat melakukan maksimal 2 kali penarikan dalam sehari.'], 400);
+        }
+
+        // 2. Amount Limit: Max Rp 50.000.000 per day
+        $withdrawalsTodayAmount = \App\Models\Withdrawal::where('isp_id', $isp->id)
+            ->whereDate('created_at', $today)
+            ->where('status', '!=', 'rejected')
+            ->sum('amount');
+            
+        $dailyLimit = 50000000;
+        if (($withdrawalsTodayAmount + $validated['amount']) > $dailyLimit) {
+             return response()->json(['message' => 'Total penarikan melampaui limit harian (Maks. Rp 50.000.000/hari). Sisa limit Anda hari ini: Rp ' . number_format($dailyLimit - $withdrawalsTodayAmount, 0, ',', '.')], 400);
+        }
+        // --- END SECURITY GUARDRAILS ---
+
         try {
             DB::beginTransaction();
+
+            $adminFee = 5000; // Flat fee for Xendit disbursement
+            $totalTransfer = $validated['amount'] - $adminFee;
+
+            if ($totalTransfer <= 0) {
+                 return response()->json(['message' => 'Withdrawal amount must be greater than the admin fee (Rp 5.000)'], 400);
+            }
 
             // Deduct balance immediately
             $isp->decrement('balance', $validated['amount']);
 
             // Create pending withdrawal
-            \App\Models\Withdrawal::create([
+            $withdrawal = \App\Models\Withdrawal::create([
                 'isp_id' => $isp->id,
                 'amount' => $validated['amount'],
+                'admin_fee' => $adminFee,
+                'total_transfer' => $totalTransfer,
                 'bank_name' => $validated['bank_name'],
                 'account_number' => $validated['account_number'],
                 'account_name' => $validated['account_name'],
-                'status' => 'pending_payment',
-                'notes' => 'Withdrawal request by user'
+                'status' => 'pending', // Directly use pending for Xendit processing
+                'notes' => 'Withdrawal request processing via Xendit'
             ]);
+
+            // Attempt to disburse via Xendit
+            $xenditResult = $this->createXenditDisbursement($withdrawal, $isp);
+
+            if ($xenditResult['success']) {
+                $xData = $xenditResult['data'];
+                $wUpdate = [
+                    'xendit_disbursement_id' => $xData['id'],
+                ];
+
+                // Check for immediate status or FORCED FAILURE for magic numbers in Sandbox
+                $isSandboxFailure = (config('app.env') !== 'production' && ($withdrawal->account_number === '0000000000' || $withdrawal->account_number === '9999999999'));
+
+                if ($isSandboxFailure || (isset($xData['status']) && $xData['status'] === 'FAILED')) {
+                    $reason = $isSandboxFailure ? 'Simulasi Gagal (Magic Number)' : ($xData['failure_code'] ?? 'Unknown');
+                    $wUpdate['status'] = 'rejected';
+                    $wUpdate['rejected_at'] = now();
+                    $wUpdate['notes'] = 'Gagal (Gateway): ' . $reason;
+                    
+                    // Refund balance immediately
+                    $isp->increment('balance', $withdrawal->amount);
+                    Log::info("Withdrawal #{$withdrawal->id} marked as REJECTED instantly (Sandbox/Gateway Failure).");
+                } elseif (isset($xData['status']) && $xData['status'] === 'COMPLETED') {
+                    $wUpdate['status'] = 'approved';
+                    $wUpdate['approved_at'] = now();
+                    $wUpdate['notes'] = 'Berhasil (Instan dari Gateway)';
+                }
+
+                $withdrawal->update($wUpdate);
+                
+                // --- SANDBOX OPTIMIZATION (Polling) ---
+                // Only poll if it was not forced to failure and is still pending
+                if ($withdrawal->refresh()->status === 'pending') {
+                    sleep(2);
+                    
+                    // Manually poll status from Xendit
+                    $statusPoll = $this->getXenditDisbursementStatus($xData['id']);
+                    if ($statusPoll['success'] && isset($statusPoll['data']['status'])) {
+                        $sData = $statusPoll['data'];
+                        $isSandboxFailurePoll = (config('app.env') !== 'production' && $withdrawal->account_number === '0000000000');
+                        
+                        if ($isSandboxFailurePoll || $sData['status'] === 'FAILED') {
+                            $reason = $isSandboxFailurePoll ? 'Simulasi Gagal (Magic Number)' : ($sData['failure_code'] ?? 'Unknown');
+                            $withdrawal->update([
+                                'status' => 'rejected',
+                                'rejected_at' => now(),
+                                'notes' => 'Payout Gagal: ' . $reason
+                            ]);
+                            $isp->increment('balance', $withdrawal->amount);
+                            Log::info("Withdrawal #{$withdrawal->id} marked as REJECTED after polling.");
+                            
+                            // Send failure email
+                            $this->sendWithdrawalNotification($withdrawal, $isp);
+                        } elseif ($sData['status'] === 'COMPLETED') {
+                            $withdrawal->update([
+                                'status' => 'approved',
+                                'approved_at' => now(),
+                                'notes' => 'Payout Berhasil (Verified via API Pool)'
+                            ]);
+                            Log::info("Withdrawal #{$withdrawal->id} marked as APPROVED after polling.");
+                        }
+                    }
+                }
+                // --- END SANDBOX OPTIMIZATION ---
+            } else {
+                 // Revert balance if Xendit API creation fails entirely
+                 $isp->increment('balance', $validated['amount']);
+                 $withdrawal->update([
+                     'status' => 'rejected',
+                     'notes' => 'Payout gateway error: ' . $xenditResult['message']
+                 ]);
+                 DB::commit(); // Commit the failed state record
+                 
+                 // Send failure email
+                 $this->sendWithdrawalNotification($withdrawal, $isp);
+
+                 return response()->json(['message' => 'Gagal memproses penarikan: ' . $xenditResult['message']], 500);
+            }
 
             DB::commit();
 
+            // Refresh model to get the latest status (Approved/Rejected) after polling
+            $withdrawal->refresh();
+
+            // Fire off Emails asynchronously
+            try {
+                $this->sendWithdrawalNotification($withdrawal, $isp);
+            } catch (\Exception $e) {
+                Log::error('Withdrawal Email Error: ' . $e->getMessage());
+            }
+
+            $finalStatus = $withdrawal->status;
+            $msg = ($finalStatus === 'approved') 
+                ? 'Penarikan BERHASIL diproses!' 
+                : (($finalStatus === 'rejected') ? 'Penarikan GAGAL (Dana dikembalikan ke saldo).' : 'Permintaan penarikan sedang diproses');
+
             return response()->json([
                 'success' => true,
-                'message' => 'Withdrawal request submitted successfully',
+                'message' => $msg,
+                'status' => $finalStatus,
                 'balance' => $isp->refresh()->balance
             ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['message' => 'Withdrawal failed: ' . $e->getMessage()], 500);
+        }
+    }
+
+    private function createXenditDisbursement($withdrawal, $isp)
+    {
+        $paymentGateway = \App\Models\PaymentGateway::where('gateway_name', 'Xendit')->first();
+        if (!$paymentGateway || !$paymentGateway->is_active) {
+            return ['success' => false, 'message' => 'Xendit is not configured or active'];
+        }
+
+        $apiKey = $paymentGateway->secret_key ?? ($paymentGateway->settings['server_key'] ?? null);
+        if (!$apiKey) {
+            return ['success' => false, 'message' => 'Valid Xendit API Key not found'];
+        }
+
+        $accountNumber = $withdrawal->account_number;
+        
+        // Normalize phone numbers for E-Wallets
+        $eWallets = ['DANA', 'GOPAY', 'OVO', 'LINKAJA', 'SHOPEEPAY'];
+        if (in_array(strtoupper($withdrawal->bank_name), $eWallets)) {
+            // Remove all non-numeric characters except '+'
+            $accountNumber = preg_replace('/[^0-9+]/', '', $accountNumber);
+            
+            // Format +62 to 0
+            if (strpos($accountNumber, '+62') === 0) {
+                $accountNumber = '0' . substr($accountNumber, 3);
+            } 
+            // Format 62 to 0
+            elseif (strpos($accountNumber, '62') === 0 && strlen($accountNumber) > 10) {
+                 $accountNumber = '0' . substr($accountNumber, 2);
+            }
+        }
+
+        $referenceId = 'WD-' . $withdrawal->id . '-' . time();
+        $params = [
+            'external_id' => $referenceId,
+            'amount' => (int) $withdrawal->total_transfer,
+            'bank_code' => strtoupper($withdrawal->bank_name), // Needs to match Xendit bank codes
+            'account_holder_name' => $withdrawal->account_name,
+            'account_number' => $accountNumber,
+            'description' => 'Withdrawal for ISP ' . $isp->company_name,
+        ];
+
+        try {
+            $ch = curl_init('https://api.xendit.co/disbursements');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Authorization: Basic ' . base64_encode($apiKey . ':')
+            ]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($params));
+
+            // For development: disable SSL verification if configured
+            if (config('app.env') !== 'production') {
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            }
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $responseData = json_decode($response, true);
+
+            if ($httpCode >= 200 && $httpCode < 300) {
+                 return ['success' => true, 'data' => $responseData];
+            } else {
+                 Log::error('Xendit Disbursement Error: ' . $response);
+                 return ['success' => false, 'message' => $responseData['message'] ?? ($responseData['error_code'] ?? 'Unknown gateway error')];
+            }
+        } catch (\Exception $e) {
+             Log::error('Xendit Request Exception: ' . $e->getMessage());
+             return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Get Disbursement Status from Xendit
+     */
+    private function getXenditDisbursementStatus($disbursementId)
+    {
+        $gateway = \App\Models\PaymentGateway::where('gateway_name', 'Xendit')->first();
+        $apiKey = $gateway ? $gateway->api_key : env('XENDIT_SECRET_KEY');
+
+        try {
+            $ch = curl_init('https://api.xendit.co/disbursements/' . $disbursementId);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Authorization: Basic ' . base64_encode($apiKey . ':')
+            ]);
+            
+            if (config('app.env') !== 'production') {
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            }
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $responseData = json_decode($response, true);
+            \Log::info("Xendit Disbursement Status Poll for {$disbursementId} (HTTP {$httpCode}):", (array)$responseData);
+
+            if ($httpCode >= 200 && $httpCode < 300) {
+                 return ['success' => true, 'data' => $responseData];
+            }
+            return ['success' => false, 'message' => 'Status poll failed'];
+        } catch (\Exception $e) {
+            return ['success' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Verify Bank Account Name using Xendit
+     */
+    public function verifyBankAccount(Request $request)
+    {
+        $request->validate([
+            'bank_code' => 'required|string',
+            'bank_account_number' => 'required|string',
+        ]);
+
+        $bankCode = $request->input('bank_code');
+        $accountNumber = $request->input('bank_account_number');
+
+        $paymentGateway = \App\Models\PaymentGateway::where('gateway_name', 'Xendit')->first();
+        if (!$paymentGateway || !$paymentGateway->is_active) {
+            return response()->json(['success' => false, 'message' => 'Xendit payment gateway is not active.'], 400);
+        }
+
+        $apiKey = $paymentGateway->secret_key ?? ($paymentGateway->settings['server_key'] ?? null);
+        if (!$apiKey) {
+            return response()->json(['success' => false, 'message' => 'Xendit API Key not configured.'], 400);
+        }
+
+        // Xendit's Name Validator currently does not support E-Wallets (returns 404).
+        // By-pass verification for E-Wallets and allow manual input.
+        $eWallets = ['DANA', 'GOPAY', 'OVO', 'LINKAJA', 'SHOPEEPAY'];
+        if (in_array(strtoupper($bankCode), $eWallets)) {
+            return response()->json([
+                'success' => true,
+                'is_ewallet' => true,
+                'message' => 'E-Wallet selected. Please input the name manually.',
+                'account_name' => '' // Leave empty to unlock manual input on frontend
+            ]);
+        }
+
+        try {
+            $ch = curl_init('https://api.xendit.co/bank_account_data_requests');
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Content-Type: application/json',
+                'Authorization: Basic ' . base64_encode($apiKey . ':')
+            ]);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
+                'bank_account_number' => $accountNumber,
+                'bank_code' => $bankCode
+            ]));
+
+            if (config('app.env') !== 'production') {
+                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+                curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            }
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            curl_close($ch);
+
+            $responseData = json_decode($response, true);
+
+            if ($httpCode >= 200 && $httpCode < 300) {
+                 if (isset($responseData['status']) && $responseData['status'] === 'SUCCESS') {
+                      return response()->json([
+                          'success' => true,
+                          'account_name' => $responseData['bank_account_name']
+                      ]);
+                 } else {
+                      return response()->json([
+                          'success' => false,
+                          'message' => 'Rekening tidak ditemukan atau salah. Pastikan nomor rekening dan bank yang dipilih benar.'
+                      ], 400);
+                 }
+            } else {
+                 // Check if it's a 404 Not Found (meaning Iluma/Name Validator is not active on this Xendit account yet)
+                 // Or if it's explicitly returning "NOT_FOUND" 
+                 if ($httpCode === 404 || (isset($responseData['error_code']) && $responseData['error_code'] === 'NOT_FOUND')) {
+                     Log::info('Xendit Name Validator is returning 404. Proceeding with Fallback bypass. Payload: ' . $response);
+                     return response()->json([
+                         'success' => true,
+                         'is_fallback' => true,
+                         'message' => 'Pengecekan otomatis tidak tersedia. Silakan masukkan nama pemilik rekening secara manual.',
+                         'account_name' => '' // Unlock manual input
+                     ]);
+                 }
+
+                 Log::error('Xendit Bank Verification Error: ' . $response);
+                 $xenditError = $responseData['message'] ?? ($responseData['error_code'] ?? 'Gagal memverifikasi bank ke gateway.');
+                 
+                 return response()->json([
+                     'success' => false,
+                     'message' => 'Xendit Error: ' . $xenditError
+                 ], 400);
+            }
+        } catch (\Exception $e) {
+            Log::error('Xendit Name Validator Exception: ' . $e->getMessage());
+            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan sistem saat verifikasi rekening.'], 500);
+        }
+    }
+
+    /**
+     * Handle Xendit Disbursement Webhook
+     */
+    public function xenditDisbursementCallback(Request $request)
+    {
+        Log::info('Xendit Disbursement Webhook Received:', $request->all());
+
+        // --- WEBHOOK SECURITY TOKEN CHECK ---
+        $xenditXCallbackToken = env('XENDIT_X_CALLBACK_TOKEN');
+        $callbackTokenHeader = $request->header('X-CALLBACK-TOKEN');
+
+        if ($xenditXCallbackToken && $callbackTokenHeader !== $xenditXCallbackToken) {
+            Log::warning('Xendit Webhook Unauthorized: Invalid Callback Token.');
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+        // --- END SECURITY CHECK ---
+
+        try {
+            DB::beginTransaction();
+            
+            $disbursementId = $request->input('id');
+            $status = $request->input('status'); // COMPLETED, FAILED
+            $externalId = $request->input('external_id');
+            $failureCode = $request->input('failure_code');
+
+            if (!$disbursementId) {
+                return response()->json(['message' => 'Invalid payload'], 400);
+            }
+
+            // Handle Xendit's "Test Webhook" dummy payload gracefully
+            if ($disbursementId === '57e214ba82b034c325e84d6e' || $externalId === 'disbursement_123124123') {
+                 Log::info("Xendit Test Webhook acknowledged.");
+                 return response()->json(['success' => true, 'message' => 'Test webhook received']);
+            }
+
+            // Find the corresponding withdrawal
+            $withdrawal = \App\Models\Withdrawal::where('xendit_disbursement_id', $disbursementId)->first();
+
+            if (!$withdrawal) {
+                Log::warning("Withdrawal not found for Xendit Disbursement ID: $disbursementId");
+                return response()->json(['message' => 'Withdrawal record not found'], 404);
+            }
+
+            // Processing logic based on status
+            // FORCED FAILURE FOR SANDBOX MAGIC NUMBERS to prevent accidental approval
+            $isSandboxFailure = (config('app.env') !== 'production' && ($withdrawal->account_number === '0000000000' || $withdrawal->account_number === '9999999999'));
+
+            if ($status === 'FAILED' || $isSandboxFailure) {
+                if ($withdrawal->status !== 'rejected') {
+                    $reason = $isSandboxFailure ? 'Simulasi Gagal (Magic Number)' : ($failureCode ?? 'Unknown error');
+                    // Update status
+                    $withdrawal->update([
+                        'status' => 'rejected',
+                        'rejected_at' => now(),
+                        'notes' => 'Payout Gagal: ' . $reason
+                    ]);
+                    
+                    // Refund the user balance
+                    $isp = \App\Models\ISP::find($withdrawal->isp_id);
+                    if ($isp) {
+                        // Ensure we return the FULL gross amount to the user
+                        $isp->increment('balance', $withdrawal->amount);
+                        Log::info("Withdrawal #{$withdrawal->id} REJECTED (Webhook). Subtracted amount refunded to ISP #{$isp->id}.");
+                    }
+                    
+                    // Send notification for status change
+                    $this->sendWithdrawalNotification($withdrawal, $isp);
+                }
+            } elseif ($status === 'COMPLETED') {
+                if ($withdrawal->status !== 'approved') {
+                    $withdrawal->update([
+                        'status' => 'approved',
+                        'approved_at' => now(),
+                        'notes' => 'Payout completed successfully'
+                    ]);
+                    Log::info("Withdrawal #{$withdrawal->id} marked as APPROVED (Webhook).");
+                    
+                    // Send notification for status change
+                    $isp = \App\Models\ISP::find($withdrawal->isp_id);
+                    $this->sendWithdrawalNotification($withdrawal, $isp);
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Xendit Webhook Error: ' . $e->getMessage());
+            return response()->json(['message' => 'Internal server error processing webhook'], 500);
+        }
+    }
+
+    /**
+     * Helper to send Withdrawal Notifications
+     */
+    private function sendWithdrawalNotification($withdrawal, $isp)
+    {
+        if (!$isp) return;
+        
+        try {
+            $withdrawal->refresh(); // Just to be safe, get latest state
+            $user = $isp->owner; // Try to get actual owner if possible
+            if (!$user) {
+                // Fallback to searching by isp_id or use the user email associated with this session
+                $user = \App\Models\User::where('isp_id', $isp->id)->first();
+            }
+
+            if ($user && $user->email) {
+                \Illuminate\Support\Facades\Mail::to($user->email)->send(new \App\Mail\WithdrawalNotification($withdrawal, $isp, false));
+            }
+            
+            // Email Laporan ke Super Admin (Owner)
+            $adminEmail = env('ADMIN_EMAIL', 'admin@billing.local');
+            \Illuminate\Support\Facades\Mail::to($adminEmail)->send(new \App\Mail\WithdrawalNotification($withdrawal, $isp, true));
+        } catch (\Exception $e) {
+            Log::error('Manual Withdrawal Notification Error: ' . $e->getMessage());
         }
     }
 
@@ -1094,13 +1666,20 @@ public function updateReferralCode(Request $request)
         $isp = $user->isp;
 
         if (!$isp) {
-            return response()->json([]);
+            $perPage = $request->input('per_page', 10);
+            return response()->json([
+                'data' => [],
+                'current_page' => 1,
+                'last_page' => 1,
+                'per_page' => (int)$perPage,
+                'total' => 0
+            ]);
         }
 
         $perPage = $request->input('per_page', 10);
         if ($perPage == 'all') $perPage = 1000;
 
-        $history = Withdrawal::where('isp_id', $isp->id)
+        $history = \App\Models\Withdrawal::where('isp_id', $isp->id)
             ->orderBy('created_at', 'desc')
             ->paginate((int)$perPage);
 
@@ -1116,7 +1695,14 @@ public function updateReferralCode(Request $request)
         $isp = $user->isp;
         
         if (!$isp) {
-            return response()->json([]);
+            $perPage = $request->input('per_page', 10);
+            return response()->json([
+                'data' => [],
+                'current_page' => 1,
+                'last_page' => 1,
+                'per_page' => (int)$perPage,
+                'total' => 0
+            ]);
         }
 
         // AUTO-VERIFY PENDING TOPUPS (Lazy Load Fix for Localhost)
@@ -1213,6 +1799,15 @@ public function updateReferralCode(Request $request)
                          if ($isp) {
                              $isp->increment('balance', (float)$payment->amount);
                              Log::info("Auto-verified Topup {$payment->transaction_id}. Credited {$payment->amount} to ISP {$isp->id}");
+                             
+                             try {
+                                 $ispUser = $isp->users()->first();
+                                 if($ispUser) {
+                                     \Illuminate\Support\Facades\Mail::to($ispUser->email)->send(new \App\Mail\TopupNotification($payment, $isp));
+                                 }
+                             } catch (\Exception $e) {
+                                 Log::error("Failed to send Topup email: " . $e->getMessage());
+                             }
                          }
                     } 
                     // HANDLE INVOICE PAYMENT
@@ -1222,7 +1817,8 @@ public function updateReferralCode(Request $request)
                             $invoice->update(['payment_status' => 'paid', 'paid_amount' => $payment->amount, 'paid_at' => now(), 'payment_method' => 'midtrans']);
                             $subscription = ISPOrder::find($invoice->subscription_id);
                             if ($subscription) {
-                                $subscription->update(['status' => 'active', 'payment_status' => 'paid']);
+                                // Centralized Activation (Handles Fair Extension, ISP update, and Consolidation)
+                                $subscription->activateSubscription();
                             }
                         }
                     }

@@ -8,13 +8,13 @@
             class="card-header d-flex justify-content-between align-items-center"
           >
             <div>
-              <h5 class="mb-0">Payment Gateway Management</h5>
+              <h5 class="mb-0">{{ $t('dashboard.payment_gateways.title') }}</h5>
               <p class="text-sm mb-0">
-                Kelola payment gateway untuk pembayaran subscription ISP
+                {{ $t('dashboard.payment_gateways.subtitle') }}
               </p>
             </div>
             <button class="btn btn-primary btn-sm" @click="showAddModal = true">
-              <i class="fas fa-plus me-2"></i>Tambah Gateway
+              <i class="fas fa-plus me-2"></i>{{ $t('dashboard.payment_gateways.add_gateway') }}
             </button>
           </div>
 
@@ -63,8 +63,8 @@
                     <td colspan="5" class="text-center py-5">
                       <div class="d-flex flex-column align-items-center">
                         <i class="fas fa-wallet fa-3x text-secondary mb-3 opacity-3"></i>
-                        <h6 class="text-secondary">Belum ada Payment Gateway</h6>
-                        <p class="text-sm text-secondary mb-0">Klik tombol "Tambah Gateway" untuk memulai.</p>
+                        <h6 class="text-secondary">{{ $t('dashboard.payment_gateways.no_gateways') }}</h6>
+                        <p class="text-sm text-secondary mb-0">Klik tombol "Add Gateway" untuk memulai.</p>
                       </div>
                     </td>
                   </tr>
@@ -94,7 +94,7 @@
                             : 'badge badge-sm bg-gradient-secondary'
                         "
                       >
-                        {{ gateway.is_active ? "Active" : "Inactive" }}
+                        {{ gateway.is_active ? $t('common.active') : $t('common.inactive') }}
                       </span>
                     </td>
                     <td class="px-2">
@@ -152,7 +152,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">
-              {{ editMode ? "Edit" : "Tambah" }} Payment Gateway
+              {{ editMode ? $t('common.edit') : $t('common.add') }} {{ $t('dashboard.payment_gateways.add_edit_gateway') }}
             </h5>
             <button
               type="button"
@@ -164,9 +164,9 @@
             <form @submit.prevent="saveGateway">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Gateway Name</label>
+                  <label class="form-label">{{ $t('dashboard.payment_gateways.gateway_name') }}</label>
                   <select v-model="form.gateway_name" class="form-control" required>
-                    <option value="">Pilih Gateway</option>
+                    <option value="">{{ $t('dashboard.payment_gateways.select_gateway') }}</option>
                     <option value="Midtrans">Midtrans</option>
                     <option value="Xendit">Xendit</option>
                     <option value="Tripay">Tripay</option>
@@ -174,52 +174,52 @@
                   </select>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Type</label>
+                  <label class="form-label">{{ $t('dashboard.payment_gateways.type') }}</label>
                   <select v-model="form.gateway_type" class="form-control" required>
-                    <option value="local">Local (Indonesia)</option>
-                    <option value="international">International</option>
-                    <option value="both">Both</option>
+                    <option value="local">{{ $t('dashboard.payment_gateways.local') }}</option>
+                    <option value="international">{{ $t('dashboard.payment_gateways.international') }}</option>
+                    <option value="both">{{ $t('dashboard.payment_gateways.both') }}</option>
                   </select>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-3">
-                   <label class="form-label">API Key / Public Key (Client Key)</label>
+                   <label class="form-label">{{ $t('dashboard.payment_gateways.api_key') }}</label>
                   <input
                     v-model="form.api_key"
                     type="text"
                     class="form-control"
                     required
                   />
-                  <small class="text-muted">Client Key (Midtrans) / API Key (Tripay/Duitku)</small>
+                  <small class="text-muted">{{ $t('dashboard.payment_gateways.api_key_hint') }}</small>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Secret Key / Private Key (Server Key)</label>
+                  <label class="form-label">{{ $t('dashboard.payment_gateways.secret_key') }}</label>
                   <input
                     v-model="form.secret_key"
                     type="password"
                     class="form-control"
-                    :placeholder="editMode ? 'Kosongkan jika tidak ingin mengubah' : 'Masukkan Server/Private Key'"
+                    :placeholder="editMode ? 'Leave blank if you don\'t want to change' : 'Enter Server/Private Key'"
                     :required="!editMode"
                   />
-                  <small class="text-muted">Secret/Server Key untuk otentikasi backend</small>
+                  <small class="text-muted">{{ $t('dashboard.payment_gateways.secret_key_hint') }}</small>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Merchant ID / Project ID</label>
+                  <label class="form-label">{{ $t('dashboard.payment_gateways.merchant_id') }}</label>
                   <input
                     v-model="form.merchant_id"
                     type="text"
                     class="form-control"
                     placeholder="Merchant Code (Tripay/Duitku) or ID"
                   />
-                  <small class="text-muted">Required for Tripay & Duitku</small>
+                  <small class="text-muted">{{ $t('dashboard.payment_gateways.merchant_hint') }}</small>
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Transaction Fee (%)</label>
+                  <label class="form-label">{{ $t('dashboard.payment_gateways.transaction_fee') }}</label>
                   <input
                     v-model="form.transaction_fee"
                     type="number"
@@ -232,7 +232,7 @@
 
               <div class="mb-3">
                 <label class="form-label"
-                  >Supported Countries (comma separated)</label
+                  >{{ $t('dashboard.payment_gateways.countries_label') }}</label
                 >
                 <input
                   v-model="countriesText"
@@ -243,7 +243,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Webhook URL</label>
+                <label class="form-label">{{ $t('dashboard.payment_gateways.webhook_url') }}</label>
                 <input
                   v-model="form.webhook_url"
                   type="url"
@@ -251,7 +251,7 @@
                   readonly
                 />
                 <small class="text-muted"
-                  >Copy URL ini ke dashboard payment gateway</small
+                  >{{ $t('dashboard.payment_gateways.webhook_hint') }}</small
                 >
               </div>
 
@@ -263,7 +263,7 @@
                   id="isActive"
                 />
                 <label class="form-check-label" for="isActive"
-                  >Aktifkan Gateway</label
+                  >{{ $t('dashboard.payment_gateways.enable_gateway') }}</label
                 >
               </div>
 
@@ -275,17 +275,17 @@
                   id="sandboxMode"
                 />
                 <label class="form-check-label" for="sandboxMode"
-                  >Sandbox Mode (Testing)</label
+                  >{{ $t('dashboard.payment_gateways.sandbox_mode') }}</label
                 >
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" @click="closeModal">
-              Batal
+              {{ $t('common.cancel') }}
             </button>
             <button type="button" class="btn btn-primary" @click="saveGateway">
-              <i class="fas fa-save me-2"></i>Simpan
+              <i class="fas fa-save me-2"></i>{{ $t('common.save') }}
             </button>
           </div>
         </div>
@@ -298,6 +298,7 @@
 import { ref, reactive, onMounted } from "vue";
 import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import axios from "axios";
+import notify, { confirm } from '@/utils/notify';
 
 const gateways = ref([]);
 const loading = ref(false);
@@ -396,10 +397,10 @@ const saveGateway = async () => {
     
     await fetchGateways();
     closeModal();
-    alert(editMode.value ? 'Payment gateway berhasil diupdate!' : 'Payment gateway berhasil ditambahkan!');
+    notify("success", "Success", editMode.value ? 'Payment gateway updated successfully!' : 'Payment gateway added successfully!');
   } catch (error) {
     console.error("Error saving gateway:", error);
-    alert("Failed to save gateway: " + (error.response?.data?.message || error.message));
+    notify("error", "Error", "Failed to save gateway: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -420,7 +421,7 @@ const toggleGateway = async (gateway) => {
 };
 
 const deleteGateway = async (id) => {
-  if (confirm("Yakin ingin menghapus gateway ini?")) {
+  if (await confirm('Konfirmasi', "Are you sure you want to delete this gateway?", 'warning')) {
     try {
       const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       await axios.delete(`${API_URL}/super-admin/payment-gateways/${id}`, {

@@ -12,6 +12,7 @@ class ISPService extends Model
     protected $table = 'isp_services';
 
     protected $fillable = [
+        'isp_id',
         'name',
         'slug',
         'description',

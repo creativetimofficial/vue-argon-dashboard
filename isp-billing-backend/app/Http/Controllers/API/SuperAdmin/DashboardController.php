@@ -108,4 +108,90 @@ class DashboardController extends Controller
             ], 500);
         }
     }
+
+    public function search(Request $request)
+    {
+        $q = strtolower($request->query('q', ''));
+        
+        if (empty($q)) {
+            return response()->json(['results' => []]);
+        }
+
+        $results = [];
+
+        // 1. Menu Search (Super Admin)
+        $menus = [
+            ['name' => 'ISP Management', 'description' => 'Kelola seluruh ISP terdaftar', 'to' => '/super-admin/isp-management', 'keywords' => ['isp', 'perusahaan', 'mitra']],
+            ['name' => 'Subscription Packages', 'description' => 'Atur paket berlangganan ISP', 'to' => '/super-admin/subscription-packages', 'keywords' => ['paket', 'langganan', 'harga', 'package']],
+            ['name' => 'ISP Order Management', 'description' => 'Kelola pesanan layanan dari ISP', 'to' => '/super-admin/isp-orders', 'keywords' => ['pesanan', 'order', 'masuk', 'pesanan masuk', 'trial']],
+            ['name' => 'Withdrawal Requests', 'description' => 'Kelola permintaan penarikan saldo ISP', 'to' => '/super-admin/withdrawals', 'keywords' => ['penarikan', 'withdrawal', 'payout', 'bank']],
+            ['name' => 'Server Manager', 'description' => 'Konfigurasi server Mikrotik/VPN', 'to' => '/super-admin/servers', 'keywords' => ['server', 'mikrotik', 'vpn', 'koneksi']],
+            ['name' => 'Payment Gateways', 'description' => 'Atur metode pembayaran sistem', 'to' => '/super-admin/payment-gateways', 'keywords' => ['pembayaran', 'xendit', 'midtrans', 'bank']],
+            ['name' => 'Landing Page Editor', 'description' => 'Edit tampilan utama website', 'to' => '/super-admin/landing-page-editor', 'keywords' => ['tampilan', 'landing', 'depan', 'desain']],
+            ['name' => 'System Dashboard', 'description' => 'Ringkasan statistik sistem', 'to' => '/super-admin/dashboard', 'keywords' => ['statistik', 'grafik', 'dashboard', 'home']],
+        ];
+
+        foreach ($menus as $menu) {
+            $match = str_contains(strtolower($menu['name']), $q) || 
+                     str_contains(strtolower($menu['description']), $q) || 
+                     collect($menu['keywords'])->contains(fn($k) => str_contains($k, $q));
+            
+            if ($match) {
+                $results[] = [
+                    'name' => $menu['name'],
+                    'description' => 'Menu: ' . $menu['description'],
+                    'icon' => 'bx-menu',
+                    'to' => $menu['to']
+                ];
+            }
+        }
+
+        // 2. Data Search - ISPs
+        $isps = ISP::where('company_name', 'like', "%{$q}%")
+            ->orWhere('email', 'like', "%{$q}%")
+            ->limit(3)
+            ->get();
+
+        foreach ($isps as $isp) {
+            $results[] = [
+                'name' => $isp->company_name,
+                'description' => 'ISP: ' . $isp->email,
+                'icon' => 'bx-building',
+                'to' => '/super-admin/isp-management'
+            ];
+        }
+
+        // 3. Data Search - ISPOrders (Pesanan)
+        $orders = \App\Models\ISPOrder::where('reference', 'like', "%{$q}%")
+            ->orWhere('service_name', 'like', "%{$q}%")
+            ->orWhere('status', 'like', "%{$q}%")
+            ->limit(3)
+            ->get();
+
+        foreach ($orders as $order) {
+            $results[] = [
+                'name' => "Pesanan #" . $order->reference,
+                'description' => "Order: {$order->service_name} ({$order->status})",
+                'icon' => 'bx-cart',
+                'to' => '/super-admin/isp-orders'
+            ];
+        }
+
+        // 4. Data Search - Withdrawals (Penarikan)
+        $withdrawals = \App\Models\Withdrawal::where('bank_name', 'like', "%{$q}%")
+            ->orWhere('account_name', 'like', "%{$q}%")
+            ->limit(3)
+            ->get();
+
+        foreach ($withdrawals as $wd) {
+            $results[] = [
+                'name' => "Penarikan " . $wd->bank_name,
+                'description' => "Transfer ke: {$wd->account_name} (Rp " . number_format($wd->amount, 0, ',', '.') . ")",
+                'icon' => 'bx-wallet',
+                'to' => '/super-admin/withdrawals'
+            ];
+        }
+
+        return response()->json(['results' => $results]);
+    }
 }

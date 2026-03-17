@@ -1,0 +1,43 @@
+@use "@layouts/styles/mixins" as layoutMixins;
+
+// 👉 Table
+.v-table {
+  th {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity)) !important;
+    font-size: 0.8125rem;
+    letter-spacing: 0.2px;
+    line-height: 24px;
+    text-transform: uppercase;
+
+    .v-data-table-header__content {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .v-data-table-footer {
+    row-gap: 8px !important;
+  }
+}
+
+// 👉 Datatable
+.v-data-table,
+.v-table {
+  table {
+    thead,
+    tbody {
+      tr {
+        th,
+        td {
+          &:first-child:has(.v-checkbox-btn) {
+            padding-inline: 15px 0 !important;
+          }
+
+          @include layoutMixins.rtl {
+            padding-inline: 20px 16px !important;
+          }
+        }
+      }
+    }
+  }
+}

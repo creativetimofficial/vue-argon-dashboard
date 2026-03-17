@@ -5,6 +5,8 @@ const store = useStore();
 
 const isRTL = computed(() => store.state.isRTL);
 const layout = computed(() => store.state.layout);
+const settings = computed(() => store.state.documentationSettings);
+
 defineProps({
   card: {
     type: Object,
@@ -33,51 +35,40 @@ defineProps({
         alt="sidebar_illustration"
       />
 
-      <h6 v-if="isRTL" class="mb-0 text-dark up">تحتاج مساعدة ؟</h6>
-
-      <h6 v-else class="mb-0 text-dark up">Need Help ?</h6>
-
-      <p v-if="isRTL" class="text-xs font-weight-bold">
-        يرجى التحقق من مستنداتنا
-      </p>
-
-      <p v-else class="text-xs font-weight-bold">Please check our docs</p>
+      <h6 class="mb-0 text-dark up">{{ settings.help_title }}</h6>
+      <p class="text-xs font-weight-bold">{{ settings.help_description }}</p>
     </div>
 
+    <!-- Documentation Button -->
     <a
-      v-if="isRTL"
-      href="https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/"
+      v-if="settings.docs_link"
+      :href="settings.docs_link"
       target="_blank"
       class="mb-3 btn btn-dark btn-sm w-100"
     >
-      توثيق
+      <i class="fas fa-book me-2"></i> Documentation
     </a>
 
+    <!-- Youtube Button -->
     <a
-      v-else
-      href="https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/"
+      v-if="settings.youtube_link"
+      :href="settings.youtube_link"
       target="_blank"
-      class="mb-3 btn btn-dark btn-sm w-100"
+      class="btn btn- youtube-btn btn-sm w-100 mb-2"
     >
-      Documentation
-    </a>
-
-    <a
-      v-if="isRTL"
-      href="https://www.creative-tim.com/product/vue-argon-dashboard-pro"
-      target="_blank"
-      class="mb-3 btn btn-success btn-sm w-100"
-    >
-      التطور للاحترافية
-    </a>
-
-    <a
-      v-else
-      href="https://www.creative-tim.com/product/vue-argon-dashboard-pro"
-      target="_blank"
-      class="mb-3 btn btn-success btn-sm w-100"
-    >
-      Upgrade to pro
+      <i class="fab fa-youtube me-2"></i> Youtube
     </a>
   </div>
 </template>
+
+<style scoped>
+.youtube-btn {
+  background-color: #ff0000;
+  color: #ffffff;
+  border: none;
+}
+.youtube-btn:hover {
+  background-color: #cc0000;
+  color: #ffffff;
+}
+</style>

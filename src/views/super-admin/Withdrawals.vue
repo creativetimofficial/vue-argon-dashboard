@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-header pb-0">
             <div class="d-flex justify-content-between">
-              <h6>Withdrawal Requests</h6>
+              <h6>{{ $t('dashboard.withdrawals.title') }}</h6>
               <div>
                  <!-- Filter placeholder -->
               </div>
@@ -39,7 +39,7 @@
                     <td>
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">{{ wd.isp?.name || 'Unknown' }}</h6>
+                          <h6 class="mb-0 text-sm">{{ wd.isp?.company_name || 'Unknown' }}</h6>
                           <p class="text-xs text-secondary mb-0">{{ wd.isp?.email }}</p>
                         </div>
                       </div>
@@ -83,7 +83,7 @@
                       </div>
                       <div v-else class="text-center">
                           <span class="text-xs text-muted">
-                              {{ wd.status === 'rejected' ? 'Rejected' : 'Completed' }}
+                              {{ wd.status === 'rejected' ? $t('dashboard.withdrawals.rejected') : $t('dashboard.withdrawals.completed') }}
                               {{ wd.status === 'rejected' ? (wd.rejected_at ? 'on ' + formatDate(wd.rejected_at) : '') : (wd.approved_at ? 'on ' + formatDate(wd.approved_at) : '') }}
                           </span>
                       </div>
@@ -91,7 +91,7 @@
                   </tr>
                   <tr v-if="withdrawals.length === 0">
                       <td colspan="6" class="text-center py-4">
-                          <p class="text-muted mb-0">No withdrawal requests found</p>
+                          <p class="text-muted mb-0">{{ $t('dashboard.withdrawals.no_withdrawals') }}</p>
                       </td>
                   </tr>
                 </tbody>
@@ -174,18 +174,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Reject Withdrawal</h5>
+                    <h5 class="modal-title">{{ $t('dashboard.withdrawals.reject_withdrawal') }}</h5>
                     <button type="button" class="btn-close" @click="showRejectModal = false"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="form-label">Reason for Rejection</label>
-                        <textarea v-model="rejectReason" class="form-control" rows="3" placeholder="Incorrect bank details..."></textarea>
+                        <label class="form-label">{{ $t('dashboard.withdrawals.rejection_reason') }}</label>
+                        <textarea id="reject_reason" name="reject_reason" v-model="rejectReason" class="form-control" rows="3" placeholder="Incorrect bank details..."></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="showRejectModal = false">Cancel</button>
-                    <button type="button" class="btn btn-danger" @click="confirmReject">Confirm Reject</button>
+                    <button type="button" class="btn btn-secondary" @click="showRejectModal = false">{{ $t('common.cancel') }}</button>
+                    <button type="button" class="btn btn-danger" @click="confirmReject">{{ $t('dashboard.withdrawals.confirm_reject') }}</button>
                 </div>
             </div>
         </div>
@@ -196,6 +196,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import notify, { confirm } from '@/utils/notify'
 
 const withdrawals = ref([])
 const pagination = ref({})
@@ -226,15 +227,15 @@ const fetchWithdrawals = async (page = 1) => {
 }
 
 const approveWithdrawal = async (wd) => {
-    if(!confirm(`Approve withdrawal of ${formatCurrency(wd.amount)} for ${wd.isp?.name}? ensure you have transferred the funds manually.`)) return;
+    if(!await confirm('Konfirmasi', `Approve withdrawal of ${formatCurrency(wd.amount)} for ${wd.isp?.name}? ensure you have transferred the funds manually.`, 'question')) return;
     
     try {
         await api.post(`/super-admin/withdrawals/${wd.id}/approve`);
-        alert('Withdrawal approved!');
+        notify('success', 'Success', 'Withdrawal approved!');
         fetchWithdrawals(pagination.value.current_page);
     } catch (error) {
         console.error("Approve error", error);
-        alert(error.response?.data?.message || 'Failed to approve');
+        notify('error', 'Error', error.response?.data?.message || 'Failed to approve');
     }
 }
 
@@ -246,7 +247,7 @@ const openRejectModal = (wd) => {
 
 const confirmReject = async () => {
     if (!rejectReason.value) {
-        alert("Please provide a reason");
+        notify('warning', 'Warning', "Please provide a reason");
         return;
     }
     
@@ -254,17 +255,17 @@ const confirmReject = async () => {
         await api.post(`/super-admin/withdrawals/${selectedWithdrawal.value.id}/reject`, {
             reason: rejectReason.value
         });
-        alert('Withdrawal rejected and refunded!');
+        notify('success', 'Success', 'Withdrawal rejected and refunded!');
         showRejectModal.value = false;
         fetchWithdrawals(pagination.value.current_page);
     } catch (error) {
         console.error("Reject error", error);
-         alert(error.response?.data?.message || 'Failed to reject');
+         notify('error', 'Error', error.response?.data?.message || 'Failed to reject');
     }
 }
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
@@ -272,6 +273,6 @@ const formatCurrency = (amount) => {
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleString('id-ID')
+  return new Date(date).toLocaleString('en-US')
 }
 </script>

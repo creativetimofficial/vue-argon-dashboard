@@ -1,0 +1,63 @@
+@use "sass:list";
+@use "sass:map";
+@use "@styles/variables/vuetify";
+@use "@configured-variables" as variables;
+
+// 👉 Checkbox
+.v-checkbox {
+  // We adjusted it to vertically align the label
+
+  .v-selection-control--disabled {
+    --v-disabled-opacity: 0.45;
+  }
+
+  // Remove extra space below the label
+  .v-input__details {
+    min-block-size: unset !important;
+    padding-block-start: 0 !important;
+  }
+}
+
+// 👉 checkbox size and box shadow
+.v-checkbox-btn {
+  // 👉 Checkbox icon opacity
+  .v-selection-control__input {
+    > .v-icon {
+      opacity: 1;
+    }
+
+    > .custom-checkbox-indeterminate {
+      color: rgb(var(--v-theme-primary));
+    }
+  }
+
+  &.v-selection-control--dirty {
+    @each $color-name in variables.$theme-colors-name {
+      .v-selection-control__wrapper.text-#{$color-name} {
+        .v-selection-control__input {
+          /* ℹ️ Using filter: drop-shadow() instead of box-shadow because box-shadow creates white background for SVG; */
+          .v-icon {
+            filter: drop-shadow(0 2px 4px rgba(var(--v-theme-#{$color-name}), 0.4));
+          }
+        }
+      }
+    }
+  }
+}
+
+// checkbox icon size
+.v-checkbox,
+.v-checkbox-btn {
+  &.v-selection-control {
+    .v-selection-control__input {
+      svg {
+        font-size: 1.5rem;
+      }
+    }
+
+    .v-label {
+      color: rgba(var(--v-theme-on-background), var(--v-high-emphasis-opacity));
+      line-height: 1.375rem;
+    }
+  }
+}

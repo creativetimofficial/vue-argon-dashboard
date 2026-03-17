@@ -1,233 +1,88 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Verification</title>
-    <style>
-        /* Netflix-inspired Professional Email Design */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .email-wrapper {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #ffffff;
-        }
-
-        /* Logo Section */
-        .logo-section {
-            padding: 40px 40px 20px 40px;
-        }
-
-        .logo-text {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -0.5px;
-        }
-
-        /* Content Section */
-        .content-section {
-            padding: 20px 40px 40px 40px;
-        }
-
-        .main-heading {
-            font-size: 32px;
-            font-weight: 700;
-            color: #000000;
-            line-height: 1.2;
-            margin: 0 0 24px 0;
-            letter-spacing: -0.5px;
-        }
-
-        .description {
-            font-size: 18px;
-            color: #333333;
-            line-height: 1.5;
-            margin: 0 0 32px 0;
-        }
-
-        /* Verification Button - Netflix Style */
-        .button-container {
-            margin: 0 0 32px 0;
-        }
-
-        .verify-button {
-            display: inline-block;
-            width: 100%;
-            padding: 18px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 600;
-            text-align: center;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-        }
-
-        .verify-button:hover {
-            background: linear-gradient(135deg, #5568d3 0%, #653a8b 100%);
-        }
-
-        /* Expiry Notice */
-        .expiry-notice {
-            font-size: 14px;
-            color: #737373;
-            margin: 0 0 32px 0;
-            line-height: 1.5;
-        }
-
-        /* Divider */
-        .divider {
-            border: 0;
-            border-top: 1px solid #e5e5e5;
-            margin: 32px 0;
-        }
-
-        /* Alternative Link Section */
-        .alt-link-section {
-            margin: 0 0 32px 0;
-        }
-
-        .alt-link-title {
-            font-size: 14px;
-            color: #737373;
-            margin: 0 0 8px 0;
-        }
-
-        .alt-link {
-            font-size: 14px;
-            color: #667eea;
-            word-break: break-all;
-            text-decoration: none;
-        }
-
-        /* Help Text */
-        .help-text {
-            font-size: 14px;
-            color: #737373;
-            line-height: 1.5;
-            margin: 0;
-        }
-
-        /* Footer */
-        .footer-section {
-            padding: 32px 40px;
-            background-color: #f7f7f7;
-            border-top: 1px solid #e5e5e5;
-        }
-
-        .footer-text {
-            font-size: 13px;
-            color: #737373;
-            text-align: center;
-            margin: 0 0 8px 0;
-            line-height: 1.5;
-        }
-
-        .footer-company {
-            font-size: 13px;
-            color: #000000;
-            font-weight: 600;
-            text-align: center;
-            margin: 0;
-        }
-
-        /* Responsive */
-        @media only screen and (max-width: 600px) {
-            .logo-section,
-            .content-section {
-                padding-left: 24px;
-                padding-right: 24px;
-            }
-
-            .main-heading {
-                font-size: 28px;
-            }
-
-            .description {
-                font-size: 16px;
-            }
-
-            .verify-button {
-                font-size: 16px;
-                padding: 16px 20px;
-            }
-
-            .footer-section {
-                padding: 24px;
-            }
-        }
-    </style>
+    <title>Verifikasi Email</title>
 </head>
-<body>
-    <div class="email-wrapper">
-        <!-- Logo -->
-        <div class="logo-section">
-            <!-- Logo akan otomatis fallback ke text jika gambar tidak ada -->
-            <img src="{{ config('app.url') }}/images/logo-email.png" 
-                 alt="{{ config('app.name', 'Paynet') }}" 
-                 style="max-width: 180px; height: auto; display: block;"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="logo-text" style="display: none;">{{ config('app.name', 'Paynet') }}</div>
-        </div>
+<body style="margin:0;padding:0;background-color:#f4f7f6;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;-webkit-font-smoothing:antialiased;">
+    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td align="center" style="padding:40px 16px;">
+                <table role="presentation" border="0" cellspacing="0" cellpadding="0" style="background:#ffffff;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,0.08);overflow:hidden;max-width:600px;width:100%;">
 
-        <!-- Main Content -->
-        <div class="content-section">
-            <!-- Main Heading -->
-            <h1 class="main-heading">Verify your email address</h1>
+                    <!-- Green Header -->
+                    <tr>
+                        <td align="center" style="padding:40px 40px 30px;background:linear-gradient(135deg,#2dce89 0%,#1a9e65 100%);">
+                            <div style="width:64px;height:64px;background:rgba(255,255,255,0.2);border-radius:50%;display:inline-block;line-height:64px;text-align:center;margin-bottom:16px;">
+                                <span style="font-size:32px;line-height:64px;">✉️</span>
+                            </div>
+                            <h1 style="color:#ffffff;margin:0;font-size:26px;font-weight:700;letter-spacing:-0.5px;">Verifikasi Email Anda</h1>
+                            <p style="color:rgba(255,255,255,0.85);margin:8px 0 0;font-size:14px;">{{ config('app.name', 'ISP Billing') }}</p>
+                        </td>
+                    </tr>
 
-            <!-- Description -->
-            <p class="description">
-                To start using {{ config('app.name', 'Paynet') }}, please confirm your email address.
-            </p>
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding:40px;">
+                            <!-- Logo (optional fallback) -->
+                            <div style="margin-bottom:24px;">
+                                <img src="{{ config('app.url') }}/images/logo-email.png"
+                                     alt="{{ config('app.name', 'ISP Billing') }}"
+                                     style="max-width:140px;height:auto;display:block;"
+                                     onerror="this.style.display='none';">
+                            </div>
 
-            <!-- Verification Button -->
-            <div class="button-container">
-                <a href="{{ $verificationUrl }}" class="verify-button">Verify Email</a>
-            </div>
+                            <h2 style="font-size:22px;font-weight:700;color:#111827;margin:0 0 12px;letter-spacing:-0.5px;">
+                                Satu langkah lagi! 🚀
+                            </h2>
+                            <p style="font-size:16px;color:#374151;line-height:1.7;margin:0 0 28px;">
+                                Terima kasih telah mendaftar di <strong>{{ config('app.name', 'ISP Billing') }}</strong>.
+                                Harap verifikasi alamat email Anda untuk mulai menggunakan layanan.
+                            </p>
 
-            <!-- Expiry Notice -->
-            <p class="expiry-notice">
-                This link will expire in 48 hours.
-            </p>
+                            <!-- Verify Button -->
+                            <div style="text-align:center;margin:0 0 28px;">
+                                <a href="{{ $verificationUrl }}"
+                                   style="display:inline-block;padding:16px 48px;background:linear-gradient(135deg,#2dce89 0%,#1a9e65 100%);color:#ffffff;text-decoration:none;font-size:17px;font-weight:700;border-radius:10px;letter-spacing:0.3px;box-shadow:0 4px 15px rgba(45,206,137,0.35);">
+                                    ✓ Verifikasi Email
+                                </a>
+                            </div>
 
-            <!-- Divider -->
-            <hr class="divider">
+                            <!-- Expiry Notice -->
+                            <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:8px;padding:14px 16px;margin-bottom:28px;">
+                                <p style="color:#92400e;font-size:13px;margin:0;line-height:1.5;">
+                                    ⚠️ Link ini akan <strong>kadaluwarsa dalam 48 jam</strong>.
+                                </p>
+                            </div>
 
-            <!-- Alternative Link -->
-            <div class="alt-link-section">
-                <p class="alt-link-title">If the button above doesn't work, copy and paste this link into your browser:</p>
-                <a href="{{ $verificationUrl }}" class="alt-link">{{ $verificationUrl }}</a>
-            </div>
+                            <hr style="border:0;border-top:1px solid #e5e7eb;margin:28px 0;">
 
-            <!-- Help Text -->
-            <p class="help-text">
-                If you didn't create an account, you can safely ignore this email.
-            </p>
-        </div>
+                            <!-- Alternative Link -->
+                            <p style="font-size:13px;color:#6b7280;margin:0 0 8px;">
+                                Jika tombol di atas tidak berfungsi, salin dan tempel link berikut ke browser Anda:
+                            </p>
+                            <p style="font-size:13px;margin:0 0 24px;">
+                                <a href="{{ $verificationUrl }}" style="color:#1a9e65;word-break:break-all;text-decoration:none;">{{ $verificationUrl }}</a>
+                            </p>
 
-        <!-- Footer -->
-        <div class="footer-section">
-            <p class="footer-company">{{ config('app.name', 'Paynet') }}</p>
-            <p class="footer-text">© {{ date('Y') }} {{ config('app.name', 'Paynet') }}. All rights reserved.</p>
-        </div>
-    </div>
+                            <p style="font-size:13px;color:#9ca3af;margin:0;line-height:1.6;">
+                                Jika Anda tidak membuat akun ini, Anda dapat mengabaikan email ini dengan aman.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background:linear-gradient(135deg,#f0fff8 0%,#f4f7f6 100%);padding:24px 40px;border-top:1px solid #e5e7eb;">
+                            <p style="margin:0;color:#9ca3af;font-size:12px;text-align:center;line-height:1.6;">
+                                © {{ date('Y') }} <strong style="color:#1a9e65;">{{ config('app.name', 'ISP Billing') }}</strong>. All rights reserved.
+                            </p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

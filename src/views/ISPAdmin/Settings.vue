@@ -1,339 +1,458 @@
 <template>
-  <div>
-    <h4 class="py-3 mb-4">
-      <span class="text-muted fw-light">ISP Admin /</span> Pengaturan
-    </h4>
+  <v-container fluid class="pa-6">
+    <div class="d-flex align-center mb-6">
+      <h4 class="text-h4 font-weight-bold mb-0">
+        <span class="text-medium-emphasis font-weight-light">ISP Admin /</span> System Settings
+      </h4>
+    </div>
 
     <!-- Settings Tabs -->
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card mb-4">
-          <div class="card-body">
-            <ul class="nav nav-pills mb-4" role="tablist">
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="nav-link active"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#profile"
-                >
-                  <i class="bx bx-user me-1"></i>Profil
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="nav-link"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#company"
-                >
-                  <i class="bx bx-building me-1"></i>Perusahaan
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="nav-link"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#security"
-                >
-                  <i class="bx bx-lock me-1"></i>Keamanan
-                </button>
-              </li>
-              <li class="nav-item">
-                <button
-                  type="button"
-                  class="nav-link"
-                  role="tab"
-                  data-bs-toggle="tab"
-                  data-bs-target="#theme"
-                >
-                  <i class="bx bx-palette me-1"></i>Tampilan
-                </button>
-              </li>
-            </ul>
+    <v-tabs v-model="activeTab" color="primary" class="mb-6 border-b" show-arrows>
+      <v-tab value="account"><v-icon start>bx bx-user</v-icon> Account</v-tab>
+      <v-tab value="branding"><v-icon start>bx bx-paint</v-icon> Branding</v-tab>
+      <v-tab value="billing"><v-icon start>bx bx-credit-card</v-icon> Payment Gateway</v-tab>
+      <v-tab value="landing"><v-icon start>bx bx-layout</v-icon> Landing Page</v-tab>
+      <v-tab value="notifications"><v-icon start>bx bx-bell</v-icon> Notifications</v-tab>
+      <v-tab value="security"><v-icon start>bx bx-lock-alt</v-icon> Security</v-tab>
+    </v-tabs>
 
-            <div class="tab-content">
-              <!-- Profile Tab -->
-              <div class="tab-pane fade show active" id="profile" role="tabpanel">
-                <form @submit.prevent="updateProfile">
-                  <div class="row">
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Nama Lengkap</label>
-                      <input type="text" class="form-control" v-model="profileData.name" placeholder="Nama lengkap" />
-                    </div>
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Email</label>
-                      <input type="email" class="form-control" v-model="profileData.email" placeholder="Email" disabled />
-                    </div>
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">No. Telepon</label>
-                      <input type="tel" class="form-control" v-model="profileData.phone" placeholder="No. telepon" />
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary" :disabled="loading">Simpan Perubahan</button>
-                    </div>
-                  </div>
-                </form>
+    <v-window v-model="activeTab">
+      <!-- Account Tab -->
+      <v-window-item value="account">
+        <v-card>
+          <v-card-text class="pa-6">
+            <div class="d-flex align-center mb-6">
+              <v-avatar size="100" rounded color="primary" class="mr-4">
+                <v-img v-if="profileData.avatar" :src="profileData.avatar"></v-img>
+                <span v-else class="text-h3 text-white">{{ profileData.name?.charAt(0) }}</span>
+              </v-avatar>
+              <div>
+                <v-btn color="primary" class="mr-2 px-6" @click="$refs.avatarInput.click()">
+                  Upload Profile Photo
+                </v-btn>
+                <v-btn variant="tonal" color="secondary" @click="resetAvatar">Reset</v-btn>
+                <input type="file" ref="avatarInput" class="d-none" accept="image/*" @change="handleAvatarUpload" />
+                <div class="text-caption text-medium-emphasis mt-2">JPG, GIF or PNG format. Max 800K</div>
               </div>
-
-              <!-- Company Tab -->
-              <div class="tab-pane fade" id="company" role="tabpanel">
-                <form @submit.prevent="updateCompany">
-                  <div class="row">
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Nama Perusahaan</label>
-                      <input type="text" class="form-control" v-model="themeData.company_name" placeholder="Nama perusahaan" />
-                    </div>
-                    <div class="col-md-6 mb-4">
-                    </div>
-                    <div class="col-md-12 mb-4">
-                      <label class="form-label">Alamat</label>
-                      <textarea class="form-control" rows="3" v-model="companyAddress" placeholder="Alamat lengkap"></textarea>
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary" :disabled="loading">Simpan Perubahan</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-              <!-- Security Tab -->
-              <div class="tab-pane fade" id="security" role="tabpanel">
-                <form @submit.prevent="updatePassword">
-                  <div class="row">
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Password Lama</label>
-                      <input type="password" class="form-control" v-model="passwordData.current_password" />
-                    </div>
-                    <div class="col-md-6 mb-4"></div>
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Password Baru</label>
-                      <input type="password" class="form-control" v-model="passwordData.password" />
-                    </div>
-                    <div class="col-md-6 mb-4">
-                      <label class="form-label">Konfirmasi Password Baru</label>
-                      <input type="password" class="form-control" v-model="passwordData.password_confirmation" />
-                    </div>
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-primary" :disabled="loading">Ubah Password</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-
-               <!-- Theme Tab -->
-              <div class="tab-pane fade" id="theme" role="tabpanel">
-                 <form @submit.prevent="updateTheme">
-                    <div class="row mb-4">
-                        <div class="col-12 mb-4">
-                            <h6 class="fw-semibold">Template Landing Page</h6>
-                            <p class="text-muted small">Pilih tampilan halaman depan untuk pelanggan Anda.</p>
-                        </div>
-                        
-                        <!-- Sneat Theme -->
-                        <div class="col-md-4 mb-4">
-                            <label class="form-check-label custom-option-content p-1" for="themeSneat">
-                                <input 
-                                    name="themeRadio" 
-                                    class="form-check-input d-none" 
-                                    type="radio" 
-                                    value="sneat" 
-                                    id="themeSneat" 
-                                    v-model="themeData.landing_page_template"
-                                />
-                                <div class="card h-100 border-2" :class="themeData.landing_page_template == 'sneat' ? 'border-primary' : ''">
-                                    <div class="card-body text-center">
-                                        <div class="theme-preview bg-light rounded mb-3 d-flex align-items-center justify-content-center" style="height: 120px;">
-                                            <i class='bx bx-layout fs-1 text-secondary'></i>
-                                        </div>
-                                        <h5 class="fw-bold mb-1">Sneat</h5>
-                                        <small class="text-muted">Clean & Minimalist</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-top-0 text-center" v-if="themeData.landing_page_template == 'sneat'">
-                                        <span class="badge bg-primary">Terpilih</span>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Modern Theme -->
-                        <div class="col-md-4 mb-4">
-                             <label class="form-check-label custom-option-content p-1" for="themeModern">
-                                <input 
-                                    name="themeRadio" 
-                                    class="form-check-input d-none" 
-                                    type="radio" 
-                                    value="modern" 
-                                    id="themeModern" 
-                                    v-model="themeData.landing_page_template"
-                                />
-                                <div class="card h-100 border-2" :class="themeData.landing_page_template == 'modern' ? 'border-primary' : ''">
-                                    <div class="card-body text-center">
-                                         <div class="theme-preview bg-white border rounded mb-3 d-flex align-items-center justify-content-center" style="height: 120px;">
-                                            <i class='bx bx-buildings fs-1 text-primary'></i>
-                                        </div>
-                                        <h5 class="fw-bold mb-1">Modern</h5>
-                                        <small class="text-muted">Corporate & Professional</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-top-0 text-center" v-if="themeData.landing_page_template == 'modern'">
-                                        <span class="badge bg-primary">Terpilih</span>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-
-                        <!-- Creative Theme -->
-                        <div class="col-md-4 mb-4">
-                             <label class="form-check-label custom-option-content p-1" for="themeCreative">
-                                <input 
-                                    name="themeRadio" 
-                                    class="form-check-input d-none" 
-                                    type="radio" 
-                                    value="creative" 
-                                    id="themeCreative" 
-                                    v-model="themeData.landing_page_template"
-                                />
-                                <div class="card h-100 border-2" :class="themeData.landing_page_template == 'creative' ? 'border-primary' : ''">
-                                    <div class="card-body text-center">
-                                         <div class="theme-preview bg-dark rounded mb-3 d-flex align-items-center justify-content-center" style="height: 120px;">
-                                            <i class='bx bx-paint fs-1 text-info'></i>
-                                        </div>
-                                        <h5 class="fw-bold mb-1">Creative</h5>
-                                        <small class="text-muted">Vibrant & Dynamic</small>
-                                    </div>
-                                    <div class="card-footer bg-transparent border-top-0 text-center" v-if="themeData.landing_page_template == 'creative'">
-                                        <span class="badge bg-primary">Terpilih</span>
-                                    </div>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary" :disabled="loading">
-                                <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                Simpan Tampilan
-                            </button>
-                        </div>
-                    </div>
-                 </form>
-              </div>
-
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+
+            <v-divider class="mb-6"></v-divider>
+
+            <v-form @submit.prevent="saveAccount">
+              <v-row>
+                <v-col cols="12" md="6">
+                  <v-text-field label="Full Name" v-model="profileData.name" variant="outlined" density="comfortable"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field label="Email" v-model="profileData.email" variant="outlined" density="comfortable" disabled></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field label="Phone Number" v-model="profileData.phone" variant="outlined" density="comfortable" prefix="+62"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <v-text-field label="Company Name" v-model="themeData.company_name" variant="outlined" density="comfortable"></v-text-field>
+                </v-col>
+                <v-col cols="12">
+                  <v-textarea label="Office Address" v-model="companyAddress" variant="outlined" density="comfortable" rows="2"></v-textarea>
+                </v-col>
+                <v-col cols="12">
+                  <v-btn color="primary" type="submit" :loading="loading">Save Changes</v-btn>
+                </v-col>
+              </v-row>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+
+      <!-- Branding Tab -->
+      <v-window-item value="branding">
+        <v-card>
+          <v-card-text class="pa-6">
+            <div class="d-flex justify-space-between align-center mb-4">
+              <div class="text-h6">ISP Identity & Branding</div>
+              <v-chip v-if="!canUseBranding" color="warning" size="small" variant="tonal" prepend-icon="bx bx-lock-alt">Premium Feature</v-chip>
+            </div>
+            
+            <div class="position-relative">
+              <v-row :class="{ 'locked-content': !canUseBranding }">
+                <v-col cols="12" md="6">
+                  <div class="mb-4">
+                    <div class="text-subtitle-2 mb-2">Logo Dashboard</div>
+                    <v-card border flat class="pa-4 d-flex align-center justify-center" min-height="150" color="grey-lighten-4">
+                       <v-img v-if="branding.logo" :src="branding.logo" max-height="80" contain></v-img>
+                       <v-icon v-else size="48" color="medium-emphasis">bx bx-image-add</v-icon>
+                    </v-card>
+                    <v-btn block variant="tonal" size="small" class="mt-2" prepend-icon="bx bx-upload" :disabled="!canUseBranding">Upload Logo</v-btn>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="6">
+                  <div class="mb-4">
+                    <div class="text-subtitle-2 mb-2">Favicon (Ikon Browser)</div>
+                    <v-card border flat class="pa-4 d-flex align-center justify-center" min-height="150" color="grey-lighten-4">
+                       <v-img v-if="branding.favicon" :src="branding.favicon" width="32" height="32" contain></v-img>
+                       <v-icon v-else size="48" color="medium-emphasis">bx bx-globe</v-icon>
+                    </v-card>
+                    <v-btn block variant="tonal" size="small" class="mt-2" prepend-icon="bx bx-upload" :disabled="!canUseBranding">Upload Favicon</v-btn>
+                  </div>
+                </v-col>
+                <v-col cols="12">
+                  <v-select label="Primary Color Theme" :items="['Sneat Blue (Default)', 'Forest Green', 'Royal Purple', 'Sunset Orange']" variant="outlined" density="comfortable" :disabled="!canUseBranding"></v-select>
+                </v-col>
+                <v-col cols="12">
+                  <v-btn color="primary" :disabled="!canUseBranding">Save Branding</v-btn>
+                </v-col>
+              </v-row>
+
+              <!-- Locked Overlay -->
+              <div v-if="!canUseBranding" class="lock-overlay d-flex flex-column align-center justify-center">
+                <v-icon size="48" color="primary" class="mb-2">bx bx-lock-alt</v-icon>
+                <div class="text-h6 font-weight-bold">Branding Feature Locked</div>
+                <p class="text-center text-body-2 mb-4 px-10">Use your own logo and brand colors in the dashboard. Upgrade to the <b>Enterprise</b> plan to unlock this feature.</p>
+                <v-btn color="primary" prepend-icon="bx bx-up-arrow-alt" @click="goToUpgrade">Upgrade Plan Now</v-btn>
+              </div>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+
+      <!-- Payment Gateway Tab -->
+      <v-window-item value="billing">
+        <v-card>
+          <v-card-text class="pa-6">
+            <div class="text-h6 mb-4">Automatic Payment Integration</div>
+            <p class="text-medium-emphasis mb-6">Enable Tripay or Duitku integration so customers can pay bills automatically through Virtual Accounts, E-Wallets, or QRIS.</p>
+            
+            <v-row>
+              <v-col cols="12" md="6">
+                <v-card border flat class="pa-4 mb-4 h-100 d-flex flex-column">
+                  <div class="d-flex align-center mb-6">
+                    <v-img src="https://tripay.co.id/images/logo/logo-tripay.png" height="30" contain class="me-3" style="max-width: 120px"></v-img>
+                    <v-spacer></v-spacer>
+                    <v-switch color="primary" label="Active" hide-details density="compact"></v-switch>
+                  </div>
+                  <v-text-field label="Merchant Code" density="comfortable" variant="outlined" class="mb-2"></v-text-field>
+                  <v-text-field label="API Key" density="comfortable" variant="outlined" type="password" class="mb-2"></v-text-field>
+                  <v-text-field label="Private Key" density="comfortable" variant="outlined" type="password"></v-text-field>
+                </v-card>
+              </v-col>
+              <v-col cols="12" md="6">
+                <v-card border flat class="pa-4 h-100 d-flex flex-column">
+                   <div class="d-flex align-center mb-6">
+                    <v-img src="https://duitku.com/wp-content/uploads/2021/03/logo-duitku.png" height="30" contain class="me-3" style="max-width: 120px"></v-img>
+                    <v-spacer></v-spacer>
+                    <v-switch color="primary" label="Active" hide-details density="compact"></v-switch>
+                  </div>
+                  <v-text-field label="Merchant Code" density="comfortable" variant="outlined" class="mb-2"></v-text-field>
+                  <v-text-field label="API Key" density="comfortable" variant="outlined" type="password"></v-text-field>
+                </v-card>
+              </v-col>
+              <v-col cols="12">
+                <v-btn color="primary" prepend-icon="bx bx-save">Save Configuration</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+
+      <!-- Landing Page Tab -->
+      <v-window-item value="landing">
+        <v-card>
+          <v-card-text class="pa-6">
+            <div class="text-h6 mb-4">Landing Page Customization</div>
+            <p class="text-medium-emphasis mb-6">This page will appear when potential customers access your domain/subdomain address.</p>
+            
+            <v-row>
+              <v-col cols="12" md="4">
+                 <v-select label="Template" :items="['Modern Fiber (Default)', 'Dark Tech ISP', 'Minimalist Clean']" variant="outlined" density="comfortable"></v-select>
+              </v-col>
+              <v-col cols="12" md="8">
+                 <v-file-input label="Main Banner (Hero Image)" prepend-inner-icon="bx bx-image" variant="outlined" density="comfortable"></v-file-input>
+              </v-col>
+              <v-col cols="12">
+                 <v-textarea label="Company Description" rows="3" variant="outlined" placeholder="Example: We are the fastest internet provider in your city..."></v-textarea>
+              </v-col>
+              <v-col cols="12" class="d-flex ga-2">
+                <v-btn color="primary" prepend-icon="bx bx-cloud-upload">Publish Page</v-btn>
+                <v-btn variant="tonal" color="primary" prepend-icon="bx bx-show">Preview</v-btn>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+
+      <!-- Notifications Tab -->
+      <v-window-item value="notifications">
+        <v-card>
+          <v-card-text class="pa-6">
+            <div class="text-h6 mb-6">Pengaturan Notifications Otomatis</div>
+            
+            <div class="mb-8">
+              <div class="text-subtitle-1 font-weight-bold mb-4 d-flex align-center">
+                <v-icon color="primary" class="mr-2">bx bx-envelope</v-icon> Email Notifications
+              </div>
+              <v-list class="pa-0 bg-transparent border rounded">
+                <v-list-item>
+                  <template v-slot:append><v-switch color="primary" v-model="notifSettings.new_order" hide-details></v-switch></template>
+                  <v-list-item-title>New Registration</v-list-item-title>
+                  <v-list-item-subtitle>Send email when a customer registers through the portal</v-list-item-subtitle>
+                </v-list-item>
+                <v-divider></v-divider>
+                <v-list-item>
+                  <template v-slot:append><v-switch color="primary" v-model="notifSettings.payment" hide-details></v-switch></template>
+                  <v-list-item-title>Payment Successful</v-list-item-title>
+                  <v-list-item-subtitle>Send payment proof automatically to customer email</v-list-item-subtitle>
+                </v-list-item>
+              </v-list>
+            </div>
+
+            <div class="position-relative mt-6">
+              <div class="text-subtitle-1 font-weight-bold mb-4 d-flex align-center" :class="{ 'text-disabled': !canUseWA }">
+                <v-icon :color="canUseWA ? 'success' : 'grey'" class="mr-2">bx bxl-whatsapp</v-icon> WhatsApp Gateway (Premium)
+              </div>
+              
+              <div :class="{ 'locked-content': !canUseWA }">
+                <v-card border flat class="pa-6">
+                  <v-row>
+                    <v-col cols="12" md="6">
+                      <v-text-field label="WhatsApp API Gateway URL" placeholder="https://api.wa-gateway.com/send" variant="outlined" density="comfortable" :disabled="!canUseWA"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                      <v-text-field label="API Key / Token" type="password" variant="outlined" density="comfortable" :disabled="!canUseWA"></v-text-field>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-checkbox label="Send automatic bill reminder (3 days before due date)" density="compact" hide-details :disabled="!canUseWA"></v-checkbox>
+                      <v-checkbox label="Send isolation notification if overdue" density="compact" hide-details :disabled="!canUseWA"></v-checkbox>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </div>
+
+              <!-- Locked Overlay -->
+              <div v-if="!canUseWA" class="lock-overlay d-flex flex-column align-center justify-center">
+                <v-icon size="40" color="primary" class="mb-2">bx bx-lock-alt</v-icon>
+                <div class="font-weight-bold">WhatsApp Gateway Belum Active</div>
+                <p class="text-center text-caption mb-3">Send bills and automatic reminders directly to customers' WhatsApp.</p>
+                <v-btn color="primary" size="small" @click="goToUpgrade">Unlock This Feature</v-btn>
+              </div>
+            </div>
+
+            <v-btn color="primary" class="mt-8" @click="saveNotif" :loading="loading">Save Preferences</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+
+      <!-- Security Tab -->
+      <v-window-item value="security">
+        <v-card>
+          <v-card-title class="px-6 pt-6">Change Password</v-card-title>
+          <v-card-text class="pa-6">
+            <v-form @submit.prevent="savePassword">
+              <v-row>
+                <v-col cols="12" md="6">
+                   <v-text-field label="Current Password" type="password" v-model="passwordData.current_password" variant="outlined" density="comfortable"></v-text-field>
+                </v-col>
+              </v-row>
+              <v-row>
+                <v-col cols="12" md="6">
+                   <v-text-field label="New Password" type="password" v-model="passwordData.password" variant="outlined" density="comfortable"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="6">
+                   <v-text-field label="Konfirmasi New Password" type="password" v-model="passwordData.password_confirmation" variant="outlined" density="comfortable"></v-text-field>
+                </v-col>
+              </v-row>
+              <div class="mt-4">
+                <v-btn color="primary" type="submit" :loading="loading">Update Password</v-btn>
+              </div>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-window-item>
+    </v-window>
+  </v-container>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { ispAdminAPI } from '@/services/api';
+import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2';
 
+const router = useRouter();
+const activeTab = ref('account');
 const loading = ref(false);
+
 const profileData = ref({
     name: '',
     email: '',
     phone: '',
+    avatar: null
 });
+
 const companyAddress = ref('');
 const passwordData = ref({
     current_password: '',
     password: '',
     password_confirmation: '',
 });
+
 const themeData = ref({
     company_name: '',
-    landing_page_template: 'sneat',
-    // colors...
 });
+
+const branding = ref({
+    logo: null,
+    favicon: null
+});
+
+const notifSettings = ref({
+  new_order: true,
+  payment: true
+});
+
+const subscription = ref(null);
+
+// 👉 Computed Feature Checks
+const canUseWA = computed(() => subscription.value?.feature_whatsapp_gateway === true);
+const canUseBranding = computed(() => subscription.value?.feature_whitelabel === true);
 
 onMounted(async () => {
     fetchProfile();
-    fetchTheme();
 });
 
 const fetchProfile = async () => {
     try {
-        const response = await ispAdminAPI.getDashboard(); // user info is in dashboard response or we need a profile endpoint
-        if (response.data && response.data.user) {
+        const response = await ispAdminAPI.getDashboard();
+        if (response.data) {
+            const user = response.data.user;
             profileData.value = {
-                name: response.data.user.name,
-                email: response.data.user.email,
-                phone: response.data.user.phone, // Assuming phone is on user
+                name: user?.name || '',
+                email: user?.email || '',
+                phone: user?.phone || '',
+                avatar: user?.avatar || null
             };
             if (response.data.isp) {
-                themeData.value.company_name = response.data.isp.name;
-                companyAddress.value = response.data.isp.address;
+                const isp = response.data.isp;
+                themeData.value.company_name = isp.company_name || isp.name;
+                companyAddress.value = isp.address;
+                
+                // Load branding
+                branding.value = {
+                    logo: isp.logo,
+                    favicon: isp.favicon
+                };
+
+                // Load notification settings
+                if (isp.notification_settings) {
+                    notifSettings.value = {
+                        ...notifSettings.value,
+                        ...isp.notification_settings
+                    };
+                }
             }
+            // Load subscription features
+            subscription.value = response.data.subscription;
         }
     } catch (error) {
         console.error("Failed to fetch profile", error);
     }
 };
 
-const fetchTheme = async () => {
-    try {
-        const response = await ispAdminAPI.getTheme();
-        if (response.data) {
-            themeData.value = {
-                ...themeData.value,
-                ...response.data, // Merge API data
-            };
-            // Ensure valid template
-            if (!['sneat', 'modern', 'creative'].includes(themeData.value.landing_page_template)) {
-                themeData.value.landing_page_template = 'sneat';
-            }
-        }
-    } catch (error) {
-        console.error("Failed to fetch theme", error);
-    }
+const handleAvatarUpload = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      profileData.value.avatar = event.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
 };
 
-const updateProfile = async () => {
-    // Implement API call
-    alert("Update profile not implemented yet");
+const resetAvatar = () => {
+  profileData.value.avatar = null;
 };
 
-const updateCompany = async () => {
-    // Implement API call for company details
-     // Re-using theme update for company name for now as it's part of theme/settings
-    updateTheme();
-};
-
-const updatePassword = async () => {
-     // Implement API call
-    alert("Update password not implemented yet");
-};
-
-const updateTheme = async () => {
+const saveAccount = async () => {
     loading.value = true;
     try {
-        await ispAdminAPI.updateTheme(themeData.value);
-        alert("Pengaturan tampilan berhasil disimpan!");
+        const payload = {
+            name: profileData.value.name,
+            phone: profileData.value.phone,
+            company_name: themeData.value.company_name,
+            address: companyAddress.value
+        };
+        await ispAdminAPI.updateProfile(payload);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Account data has been updated.',
+          showConfirmButton: false,
+          timer: 1500
+        });
     } catch (error) {
-        console.error("Failed to update theme", error);
-        alert("Gagal menyimpan pengaturan.");
+        Swal.fire({ title: 'Failed!', text: 'Failed to update account data.', icon: 'error' });
     } finally {
         loading.value = false;
     }
 };
+
+const savePassword = async () => {
+    if (passwordData.value.password !== passwordData.value.password_confirmation) {
+        return Swal.fire({ title: 'Error!', text: 'Password confirmation does not match!', icon: 'error' });
+    }
+    loading.value = true;
+    try {
+        await ispAdminAPI.updatePassword(passwordData.value);
+        Swal.fire({ title: 'Success!', text: 'Password has been changed.', icon: 'success' });
+        passwordData.value = { current_password: '', password: '', password_confirmation: '' };
+    } catch (error) {
+        Swal.fire({ title: 'Failed!', text: 'Failed to change password.', icon: 'error' });
+    } finally {
+        loading.value = false;
+    }
+};
+
+const saveNotif = async () => {
+    loading.value = true;
+    try {
+        await ispAdminAPI.updateNotificationSettings(notifSettings.value);
+        Swal.fire({ icon: 'success', title: 'Success!', text: 'Notification preferences saved.', timer: 1500, showConfirmButton: false });
+    } catch (err) {
+        Swal.fire({ title: 'Failed!', text: 'Failed to save settings.', icon: 'error' });
+    } finally {
+        loading.value = false;
+    }
+};
+
+const goToUpgrade = () => {
+    router.push('/isp-admin/client-area/packages');
+};
 </script>
 
 <style scoped>
-.cursor-pointer {
-    cursor: pointer;
+.ga-2 { gap: 8px; }
+
+/* 👉 Locked Feature Styles */
+.locked-content {
+  filter: blur(2px);
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
 }
-.theme-preview {
-    transition: transform 0.2s;
+
+.lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(var(--v-theme-surface), 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 5;
+  border-radius: 8px;
 }
-.card:hover .theme-preview {
-    transform: scale(1.05);
+
+.text-disabled {
+  color: rgba(var(--v-theme-on-surface), 0.38) !important;
 }
 </style>

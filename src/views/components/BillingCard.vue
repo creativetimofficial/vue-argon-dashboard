@@ -81,6 +81,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import { confirm } from '@/utils/notify'
 
 // Data ISP (dummy awal, bisa diganti API)
 const ispList = ref([
@@ -131,8 +132,8 @@ function saveISP() {
   }
   showModal.value = false
 }
-function deleteISP(id) {
-  if (confirm('Yakin ingin menghapus ISP ini?')) {
+async function deleteISP(id) {
+  if (await confirm('Konfirmasi', 'Yakin ingin menghapus ISP ini?', 'warning')) {
     ispList.value = ispList.value.filter(i => i.id !== id)
   }
 }

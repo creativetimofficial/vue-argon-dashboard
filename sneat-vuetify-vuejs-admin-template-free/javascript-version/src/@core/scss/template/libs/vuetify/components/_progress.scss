@@ -1,0 +1,13 @@
+// @use "@core/scss/template/mixins" as templateMixins;
+@use "@configured-variables" as variables;
+
+// 👉 Progress
+// .v-progress-linear {
+// .v-progress-linear__determinate {
+//   @each $color-name in variables.$theme-colors-name {
+//     &.bg-#{$color-name} {
+//       // @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+//     }
+//   }
+// }
+// }

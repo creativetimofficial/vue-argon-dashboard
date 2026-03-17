@@ -12,39 +12,36 @@ class ISP extends Model
     protected $table = 'isps';
 
     protected $fillable = [
-        'name',
+        'owner_id',
         'company_name',
-        'email',
-        'phone',
+        'business_license',
         'address',
         'city',
         'province',
         'postal_code',
-        'logo',
+        'phone',
+        'whatsapp',
+        'email',
+        'referral_code',
         'website',
-        'subdomain',
-        'custom_domain',
-        'custom_domain_verified',
-        'package_id',
+        'logo',
         'subscription_package_id',
         'subscription_status',
         'subscription_start_date',
         'subscription_end_date',
-        'trial_end_date',
-        'tax_id',
-        'business_license',
-        'is_verified',
-        'verified_at',
-        'current_customers_count',
-        'current_users_count',
-        'current_locations_count',
+        'billing_cycle',
         'approval_status',
+        'rejection_reason',
         'approved_at',
         'approved_by',
-        'rejection_reason',
-        'referral_code',
         'is_active',
-        'balance',
+        'subdomain',
+        'custom_domain',
+        'favicon',
+        'theme_color',
+        'notification_settings',
+        'wa_gateway_url',
+        'wa_api_key',
     ];
 
     protected $casts = [
@@ -53,6 +50,7 @@ class ISP extends Model
         'trial_end_date' => 'date',
         'approved_at' => 'datetime',
         'is_active' => 'boolean',
+        'notification_settings' => 'array',
     ];
 
     public function subscriptionPackage()
@@ -73,5 +71,10 @@ class ISP extends Model
     public function orders()
     {
         return $this->hasMany(ISPOrder::class, 'isp_id');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 }

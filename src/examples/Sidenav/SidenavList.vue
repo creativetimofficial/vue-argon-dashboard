@@ -2,16 +2,33 @@
 import { computed, ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
+import api from "@/services/api";
+import { useI18n } from "vue-i18n";
+
+const { t } = useI18n();
 
 import SidenavItem from "./SidenavItem.vue";
 import SidenavCard from "./SidenavCard.vue";
+import { confirm } from "@/utils/notify";
 
 const store = useStore();
 const route = useRoute();
 const isRTL = computed(() => store.state.isRTL);
 const user = ref(null);
 
+const fetchDocumentationSettings = async () => {
+  try {
+    const res = await api.get('/system/documentation');
+    if (res.data.settings) {
+      store.commit('setDocumentationSettings', res.data.settings);
+    }
+  } catch (err) {
+    console.error('Failed to fetch documentation settings', err);
+  }
+};
+
 onMounted(() => {
+  fetchDocumentationSettings();
   // Check localStorage first (Remember Me = true)
   let userStr = localStorage.getItem("user");
   
@@ -38,60 +55,98 @@ const superAdminMenu = [
   {
     to: "/super-admin/dashboard",
     icon: "ni ni-tv-2 text-primary",
-    text: "Dashboard",
+    text: "nav.dashboard",
   },
   {
     to: "/super-admin/isp-management",
     icon: "ni ni-building text-success",
-    text: "ISP Management",
+    text: "nav.isp_unit_management",
   },
   {
     to: "/super-admin/isp-orders",
     icon: "ni ni-cart text-info",
-    text: "ISP Orders",
+    text: "nav.incoming_orders",
   },
   {
     to: "/super-admin/servers",
     icon: "ni ni-world-2 text-primary",
-    text: "Server Manager",
+    text: "nav.server_management",
   },
   {
     to: "/super-admin/subscription-packages",
     icon: "ni ni-box-2 text-info",
-    text: "Subscription Packages",
+    text: "nav.subscription_packages",
   },
   {
     to: "/super-admin/payment-gateways",
     icon: "ni ni-credit-card text-warning",
-    text: "Payment Gateways",
+    text: "nav.payment_gateways",
   },
   {
     to: "/super-admin/withdrawals",
     icon: "ni ni-money-coins text-success",
-    text: "Withdrawals",
+    text: "nav.withdrawal_requests",
   },
   {
     to: "/super-admin/landing-page-editor",
     icon: "ni ni-palette text-danger",
-    text: "Landing Page Editor",
+    text: "nav.main_page_editor",
+  },
+  {
+    to: "/super-admin/system-settings",
+    icon: "ni ni-settings-gear-65 text-secondary",
+    text: "nav.system_settings",
   },
 ];
 
 const ispAdminMenu = [
   {
     to: "/isp-admin/dashboard",
-    icon: "ni ni-tv-2 text-primary",
-    text: "Dashboard",
+    icon: "bx bx-home-circle text-primary",
+    text: "nav.home",
   },
   {
     to: "/isp-admin/customers",
-    icon: "ni ni-single-02 text-success",
-    text: "Customers",
+    icon: "bx bx-user text-success",
+    text: "nav.customers",
+  },
+  {
+    to: "/isp-admin/mikrotik",
+    icon: "bx bx-broadcast text-primary",
+    text: "nav.mikrotik_management",
+    requiredFeature: "feature_realtime_monitoring",
+  },
+  {
+    to: "/isp-admin/packages",
+    icon: "bx bx-package text-info",
+    text: "nav.internet_packages",
   },
   {
     to: "/isp-admin/billing",
-    icon: "ni ni-credit-card text-warning",
-    text: "Billing",
+    icon: "bx bx-credit-card text-warning",
+    text: "nav.billing",
+  },
+  {
+    to: "/isp-admin/tickets",
+    icon: "bx bx-chat text-danger",
+    text: "nav.support_tickets",
+  },
+  {
+    to: "/isp-admin/reports",
+    icon: "bx bx-bar-chart-alt-2 text-success",
+    text: "nav.reports",
+    requiredFeature: "feature_analytics",
+  },
+  {
+    to: "/isp-admin/users",
+    icon: "bx bx-user-check text-dark",
+    text: "nav.user_management",
+    requiredFeature: "multi_user_access",
+  },
+  {
+    to: "/isp-admin/settings",
+    icon: "bx bx-cog text-secondary",
+    text: "nav.settings",
   },
 ];
 
@@ -99,7 +154,7 @@ const technicianMenu = [
   {
     to: "/technician/dashboard",
     icon: "ni ni-tv-2 text-primary",
-    text: "Dashboard",
+    text: "nav.dashboard",
   },
 ];
 
@@ -107,12 +162,12 @@ const customerMenu = [
   {
     to: "/customer/dashboard",
     icon: "ni ni-tv-2 text-primary",
-    text: "Dashboard",
+    text: "nav.home",
   },
   {
     to: "/customer/billing",
     icon: "ni ni-credit-card text-success",
-    text: "My Billing",
+    text: "nav.my_invoices",
   },
 ];
 
@@ -120,27 +175,27 @@ const clientAreaMenu = [
   {
     to: "/client-area/dashboard",
     icon: "ni ni-tv-2 text-primary",
-    text: "Dashboard",
+    text: "nav.dashboard",
   },
   {
     to: "/client-area/orders",
     icon: "ni ni-cart text-info",
-    text: "Orders",
+    text: "nav.buy_add_unit",
   },
   {
     to: "/client-area/services",
     icon: "ni ni-app text-success",
-    text: "Services",
+    text: "nav.services",
   },
   {
     to: "/client-area/invoices",
     icon: "ni ni-paper-diploma text-warning",
-    text: "Invoices",
+    text: "nav.invoices_history",
   },
   {
     to: "/client-area/topup",
     icon: "ni ni-credit-card text-danger",
-    text: "Topup Balance",
+    text: "nav.balance",
   },
 ];
 
@@ -151,22 +206,38 @@ const menuItems = computed(() => {
 
   if (!user.value) return [];
 
+  let items = [];
   switch (user.value.role) {
     case "super_admin":
-      return superAdminMenu;
+      items = superAdminMenu;
+      break;
     case "isp_admin":
-      return ispAdminMenu;
+      items = ispAdminMenu;
+      break;
     case "technician":
-      return technicianMenu;
+      items = technicianMenu;
+      break;
     case "customer":
-      return customerMenu;
+      items = customerMenu;
+      break;
     default:
       return [];
   }
+
+  // Filter based on features if ISP admin
+  if (user.value.role === "isp_admin" && user.value.isp && user.value.isp.package) {
+    const pkg = user.value.isp.package;
+    return items.filter(item => {
+      if (!item.requiredFeature) return true;
+      return pkg[item.requiredFeature] === true || pkg[item.requiredFeature] === 1;
+    });
+  }
+
+  return items;
 });
 
-const logout = () => {
-  if (confirm("Yakin ingin logout?")) {
+const logout = async () => {
+  if (await confirm(t("common.are_you_sure_logout"))) {
     localStorage.removeItem("auth_token");
     localStorage.removeItem("user");
     window.location.href = "/login";
@@ -184,7 +255,7 @@ const logout = () => {
         <sidenav-item
           :to="item.to"
           :class="$route.path === item.to ? 'active' : ''"
-          :navText="item.text"
+          :navText="$t(item.text)"
         >
           <template v-slot:icon>
             <i :class="item.icon + ' text-sm opacity-10'"></i>
@@ -198,7 +269,7 @@ const logout = () => {
           class="text-xs ps-4 text-uppercase font-weight-bolder opacity-6"
           :class="isRTL ? 'me-4' : 'ms-2'"
         >
-          {{ isRTL ? "صفحات المرافق" : "ACCOUNT" }}
+          {{ $t('nav.my_account') }}
         </h6>
       </li>
 
@@ -216,7 +287,7 @@ const logout = () => {
                     : '/customer/profile'
           "
           :class="getRoute() === 'profile' ? 'active' : ''"
-          :navText="isRTL ? 'حساب تعريفي' : 'Profile'"
+          :navText="$t('nav.profile')"
         >
           <template v-slot:icon>
             <i class="ni ni-single-02 text-dark text-sm opacity-10"></i>
@@ -231,7 +302,7 @@ const logout = () => {
           >
             <i class="ni ni-button-power text-danger text-sm opacity-10"></i>
           </div>
-          <span class="nav-link-text ms-1">Logout</span>
+          <span class="nav-link-text ms-1">{{ $t('nav.logout') }}</span>
         </a>
       </li>
     </ul>
@@ -239,12 +310,12 @@ const logout = () => {
 
   <div
     class="pt-3 mx-3 mt-3 sidenav-footer"
-    v-if="user?.role === 'super_admin'"
+    v-if="user"
   >
     <sidenav-card
       :card="{
-        title: 'Super Admin',
-        description: 'Manage ISP Billing Platform',
+        title: user?.role === 'super_admin' ? 'Super Admin' : 'Client Area',
+        description: 'Need help or docs?',
         links: [],
       }"
     />

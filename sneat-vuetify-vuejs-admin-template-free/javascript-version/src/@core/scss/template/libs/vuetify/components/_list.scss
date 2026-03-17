@@ -1,0 +1,30 @@
+// 👉 List
+.v-list-item {
+  --v-hover-opacity: 0.06 !important;
+
+  .v-checkbox-btn.v-selection-control--density-compact {
+    margin-inline-end: 0.5rem;
+  }
+
+  .v-list-item__overlay {
+    transition: none;
+  }
+
+  .v-list-item__prepend {
+    .v-icon {
+      font-size: 1.25rem;
+    }
+  }
+
+  &.v-list-item--active {
+    &.v-list-group__header {
+      color: rgb(var(--v-theme-primary));
+    }
+
+    &:not(.v-list-group__header) {
+      .v-list-item-subtitle {
+        color: rgb(var(--v-theme-primary));
+      }
+    }
+  }
+}

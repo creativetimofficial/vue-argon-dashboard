@@ -1,445 +1,554 @@
-<template>
-  <div class="isp-landing-page">
-    <!-- Navbar -->
-    <nav class="layout-navbar navbar navbar-expand-xl navbar-light bg-white shadow-sm fixed-top" style="z-index: 1030;">
-      <div class="container-xxl">
-      <div class="navbar-nav-right d-flex align-items-center justify-content-between w-100" id="navbar-collapse">
-        <div class="navbar-brand app-brand demo d-flex py-0 me-4">
-          <span class="app-brand-logo demo">
-             <!-- Placeholder Logo Icon -->
-            <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <defs>
-                <path d="M13.7918663,0.358365126 L3.39788168,7.44174259 C0.566865006,9.69408886 -0.379795268,12.4788597 0.557900856,15.7960551 C0.68998853,16.2305145 1.09562888,17.7872135 3.12357076,19.2293357 C3.8146334,19.7207684 5.32369333,20.3834223 7.65075054,21.2172976 L7.59773219,21.2525164 L2.63468769,24.5493413 C0.445452254,26.3002124 0.0884951797,28.5083815 1.56381646,31.1738486 C2.83770406,32.8170431 5.20850219,33.2640127 7.09180128,32.5391577 C8.347334,32.0559211 11.4559176,30.0011079 16.4175519,26.3747182 C18.0338572,24.4997857 18.6973423,22.4544883 18.4080071,20.2388261 C17.963753,17.5346866 16.1776345,15.5799961 13.0496516,14.3747546 L10.9194936,13.4715819 L18.6192054,7.984237 L13.7918663,0.358365126 Z" id="path-1"></path>
-                <path d="M5.47320593,6.00457225 C4.05321814,8.216144 4.36334763,10.0722806 6.40359441,11.5729822 C8.61520715,12.571656 10.0999176,13.2171421 10.8577257,13.5094407 L15.5088241,14.433041 L18.6192054,7.984237 C15.5364148,3.11535317 13.9273018,0.573395879 13.7918663,0.358365126 C13.5790555,0.511491653 10.8061687,2.3935607 5.47320593,6.00457225 Z" id="path-3"></path>
-                <path d="M7.50063644,21.2294429 L12.3234468,23.3159332 C14.1688022,24.7579751 14.397098,26.4880487 13.008334,28.506154 C11.6195701,30.5242593 10.3099883,31.790241 9.07958868,32.3040991 C5.78142938,33.4346997 4.13234973,34 4.13234973,34 C4.13234973,34 2.75489982,33.0538207 2.37032616e-14,31.1614621 C-0.55822714,27.8186216 -0.55822714,26.0572515 -4.05231404e-15,25.8773518 C0.83734071,25.6075023 2.77988457,22.8248993 3.3049379,22.52991 C3.65497346,22.3332504 5.05353963,21.8997614 7.50063644,21.2294429 Z" id="path-4"></path>
-                <path d="M20.6,7.13333333 L25.6,13.8 C26.2627417,14.6836556 26.0836556,15.9372583 25.2,16.6 C24.8538077,16.8596443 24.4327404,17 24,17 L14,17 C12.8954305,17 12,16.1045695 12,15 C12,14.5672596 12.1403557,14.1461923 12.4,13.8 L17.4,7.13333333 C18.0627417,6.24967773 19.3163444,6.07059163 20.2,6.73333333 Z" id="path-5"></path>
-              </defs>
-              <g id="g-app-brand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                <g id="Brand-Logo" transform="translate(-27.000000, -15.000000)">
-                  <g id="Icon" transform="translate(27.000000, 15.000000)">
-                    <g id="Mask" transform="translate(0.000000, 8.000000)">
-                      <mask id="mask-2" fill="white">
-                        <use xlink:href="#path-1"></use>
-                      </mask>
-                      <use fill="#696cff" xlink:href="#path-1"></use>
-                      <g id="Path-3" mask="url(#mask-2)">
-                        <use fill="#696cff" xlink:href="#path-3"></use>
-                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-3"></use>
-                      </g>
-                      <g id="Path-4" mask="url(#mask-2)">
-                        <use fill="#696cff" xlink:href="#path-4"></use>
-                        <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-4"></use>
-                      </g>
-                    </g>
-                    <g id="Triangle" transform="translate(19.000000, 11.000000) rotate(-300.000000) translate(-19.000000, -11.000000) ">
-                      <use fill="#696cff" xlink:href="#path-5"></use>
-                      <use fill-opacity="0.2" fill="#FFFFFF" xlink:href="#path-5"></use>
-                    </g>
-                  </g>
-                </g>
-              </g>
-            </svg>
-          </span>
-          <span class="app-brand-text demo menu-text fw-bolder ms-2 text-capitalize" v-if="ispName">{{ ispName }}</span>
-          <span class="app-brand-text demo menu-text fw-bolder ms-2" v-else>ISP Undefined</span>
-        </div>
-
-        <!-- Mobile Menu Toggle -->
-        <button 
-          class="navbar-toggler d-xl-none ms-auto" 
-          type="button" 
-          @click="mobileMenuOpen = !mobileMenuOpen"
-          aria-label="Toggle navigation"
-        >
-          <i class="bx" :class="mobileMenuOpen ? 'bx-x' : 'bx-menu'"></i>
-        </button>
-
-        <!-- Desktop Navigation -->
-        <div class="d-none d-xl-flex align-items-center ms-auto">
-          <ul class="navbar-nav flex-row align-items-center mb-0">
-            <li class="nav-item me-3">
-              <a href="#features" class="nav-link text-body fw-semibold">Fitur</a>
-            </li>
-            <li class="nav-item me-3">
-              <a href="#pricing" class="nav-link text-body fw-semibold">Paket</a>
-            </li>
-            <li class="nav-item me-3">
-              <a href="#contact" class="nav-link text-body fw-semibold">Kontak</a>
-            </li>
-          </ul>
-          <div class="d-flex ms-2 align-items-center" style="padding-top: 12px;">
-            <router-link to="/login" class="btn btn-outline-primary me-2">Masuk</router-link>
-            <router-link to="/register" class="btn btn-primary">Daftar</router-link>
-          </div>
-        </div>
-      </div>
-
-      <!-- Mobile Menu Dropdown -->
-      <div class="container-xxl px-4" v-show="mobileMenuOpen">
-        <div class="mobile-menu d-xl-none py-3 px-3 border-top">
-          <ul class="navbar-nav">
-            <li class="nav-item mb-2">
-              <a href="#features" class="nav-link text-body fw-semibold" @click="mobileMenuOpen = false">Fitur</a>
-            </li>
-            <li class="nav-item mb-2">
-              <a href="#pricing" class="nav-link text-body fw-semibold" @click="mobileMenuOpen = false">Paket</a>
-            </li>
-            <li class="nav-item mb-3">
-              <a href="#contact" class="nav-link text-body fw-semibold" @click="mobileMenuOpen = false">Kontak</a>
-            </li>
-          </ul>
-          <div class="d-flex gap-2 mt-2">
-            <router-link to="/login" class="btn btn-outline-primary flex-fill" @click="mobileMenuOpen = false">Masuk</router-link>
-            <router-link to="/register" class="btn btn-primary flex-fill" @click="mobileMenuOpen = false">Daftar</router-link>
-          </div>
-        </div>
-      </div>
-      </div>
-    </nav>
-
-
-    <!-- Hero Section -->
-    <div class="container-xxl flex-grow-1 container-p-y" style="margin-top: 80px;">
-      <div class="row align-items-center py-5">
-        <div class="col-lg-6 mb-4 order-0 text-center text-lg-start">
-            <h1 class="display-4 fw-bold text-primary mb-3">Internet Cepat,<br>Koneksi Tepat.</h1>
-            <p class="fs-5 text-muted mb-4">
-                {{ ispName }} menghadirkan layanan internet broadband fiber optik dengan kecepatan tinggi dan stabil untuk rumah dan bisnismu.
-            </p>
-            <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
-                <router-link to="/register" class="btn btn-lg btn-primary shadow-sm hero-btn">Mulai Berlangganan</router-link>
-                <a href="#pricing" class="btn btn-lg btn-outline-secondary hero-btn">Lihat Paket</a>
-            </div>
-             <div class="row mt-5">
-                <div class="col-4">
-                    <h3 class="mb-0 fw-bold">100+</h3>
-                    <small class="text-muted">Pelanggan</small>
-                </div>
-                <div class="col-4">
-                     <h3 class="mb-0 fw-bold">99%</h3>
-                    <small class="text-muted">Uptime</small>
-                </div>
-                <div class="col-4">
-                     <h3 class="mb-0 fw-bold">24/7</h3>
-                     <small class="text-muted">Support</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 text-center">
-             <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=450&fit=crop" alt="Hero Image" class="img-fluid rounded-3 shadow-sm" style="max-height: 450px; object-fit: cover;">
-        </div>
-      </div>
-
-      <!-- Features Section -->
-      <div id="features" class="py-5">
-        <div class="text-center mb-5">
-            <span class="badge bg-label-primary rounded-pill mb-2">Kenapa Memilih Kami?</span>
-            <h3 class="fw-bold">Layanan Internet Terbaik Untukmu</h3>
-            <p class="text-muted">Kami menjamin pengalaman berselancar yang lancar tanpa hambatan.</p>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-primary rounded mb-3">
-                             <i class='bx bx-rocket fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Kecepatan Tinggi</h5>
-                         <p class="text-muted">Akses internet up to 1Gbps dengan jaringan Fiber Optik terbaru.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-success rounded mb-3">
-                             <i class='bx bx-money fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Harga Terjangkau</h5>
-                         <p class="text-muted">Paket internet hemat mulai dari 100ribuan tanpa biaya tersembunyi.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-info rounded mb-3">
-                             <i class='bx bx-support fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Support 24/7</h5>
-                         <p class="text-muted">Tim teknis kami siap membantu kendala jaringan Anda kapan saja.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-warning rounded mb-3">
-                             <i class='bx bx-wifi fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Stabil & Unlimited</h5>
-                         <p class="text-muted">Koneksi stabil tanpa batasan kuota (FUP) untuk aktivitas digitalmu.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-danger rounded mb-3">
-                             <i class='bx bx-shield-quarter fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Aman & Privat</h5>
-                         <p class="text-muted">Jaringan yang aman dengan proteksi firewall untuk melindungi data Anda.</p>
-                    </div>
-                </div>
-            </div>
-             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="card h-100 border-0 shadow-sm p-3">
-                    <div class="card-body">
-                         <div class="avatar avatar-md bg-label-secondary rounded mb-3">
-                             <i class='bx bx-game typcn-anchor fs-3 m-2'></i>
-                         </div>
-                         <h5 class="fw-bold">Low Latency</h5>
-                         <p class="text-muted">Ping rendah yang sangat cocok untuk gaming dan streaming 4K.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-
-      <!-- Pricing Section (Mocked) -->
-      <div id="pricing" class="py-5 bg-white rounded-3 px-4">
-         <div class="text-center mb-5">
-            <span class="badge bg-label-primary rounded-pill mb-2">Pilihan Paket</span>
-            <h3 class="fw-bold">Pilih Paket Sesuai Kebutuhan</h3>
-            <p class="text-muted">Berlangganan sekarang dan nikmati promo menariknya.</p>
-        </div>
-        <div class="row justify-content-center">
-            <!-- Paket 1 -->
-            <div class="col-md-4 mb-4">
-                <div class="card border shadow-none h-100">
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <h5 class="fw-bold">Rumahan</h5>
-                             <h2 class="fw-bold text-primary mb-0">Rp 150.000<small class="text-muted fs-6">/bulan</small></h2>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kecepatan up to 10 Mbps</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kuota Unlimited</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Ideal untuk 2-3 Perangkat</li>
-                             <li class="mb-2"><i class="bx bx-x text-muted me-2"></i> IP Public Static</li>
-                        </ul>
-                         <div class="d-grid">
-                            <router-link to="/register" class="btn btn-outline-primary">Pilih Paket</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             <!-- Paket 2 -->
-             <div class="col-md-4 mb-4">
-                <div class="card border border-primary shadow-sm h-100 relative">
-                     <div class="badge bg-primary position-absolute top-0 start-50 translate-middle px-3 rounded-pill">Populer</div>
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <h5 class="fw-bold">Keluarga</h5>
-                             <h2 class="fw-bold text-primary mb-0">Rp 250.000<small class="text-muted fs-6">/bulan</small></h2>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kecepatan up to 30 Mbps</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kuota Unlimited</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Ideal untuk 4-6 Perangkat</li>
-                             <li class="mb-2"><i class="bx bx-x text-muted me-2"></i> IP Public Static</li>
-                        </ul>
-                         <div class="d-grid">
-                            <router-link to="/register" class="btn btn-primary">Pilih Paket</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-             <!-- Paket 3 -->
-             <div class="col-md-4 mb-4">
-                <div class="card border shadow-none h-100">
-                    <div class="card-body">
-                        <div class="text-center mb-4">
-                            <h5 class="fw-bold">Gamer & Bisnis</h5>
-                             <h2 class="fw-bold text-primary mb-0">Rp 500.000<small class="text-muted fs-6">/bulan</small></h2>
-                        </div>
-                        <ul class="list-unstyled mb-4">
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kecepatan up to 100 Mbps</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Kuota Unlimited</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> Prioritas Trafik</li>
-                             <li class="mb-2"><i class="bx bx-check text-primary me-2"></i> IP Public Static</li>
-                        </ul>
-                         <div class="d-grid">
-                            <router-link to="/register" class="btn btn-outline-primary">Pilih Paket</router-link>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-      
-       <!-- CTA Section -->
-      <section class="py-5">
-         <div class="card bg-primary text-white overflow-hidden">
-            <div class="card-body py-5 px-md-5 text-center text-md-start">
-               <div class="row align-items-center">
-                  <div class="col-md-8">
-                     <h3 class="text-white fw-bold mb-2">Siap untuk koneksi lebih cepat?</h3>
-                     <p class="mb-md-0 text-white opacity-75">Bergabunglah dengan ratusan pelanggan lain yang telah mempercayakan koneksi internet mereka kepada kami.</p>
-                  </div>
-                  <div class="col-md-4 text-center text-md-end mt-4 mt-md-0">
-                     <router-link to="/register" class="btn btn-white text-primary fw-bold">Daftar Sekarang</router-link>
-                  </div>
-               </div>
-            </div>
-         </div>
-      </section>
-
-    </div>
-    
-     <!-- Footer -->
-    <footer id="contact" class="content-footer footer bg-footer-theme border-top mt-5">
-      <div class="container-xxl py-5">
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <h5 class="fw-bold mb-3">{{ ispName }}</h5>
-                <p class="text-muted">
-                    Penyedia layanan internet (ISP) terpercaya dengan komitmen memberikan koneksi stabil dan layanan terbaik.
-                </p>
-            </div>
-             <div class="col-md-2 mb-4">
-                <h6 class="fw-bold mb-3">Layanan</h6>
-                <ul class="list-unstyled text-muted">
-                    <li class="mb-2"><a href="#" class="text-muted">Internet Rumah</a></li>
-                     <li class="mb-2"><a href="#" class="text-muted">Internet Bisnis</a></li>
-                      <li class="mb-2"><a href="#" class="text-muted">Dedicated Server</a></li>
-                </ul>
-            </div>
-             <div class="col-md-2 mb-4">
-                <h6 class="fw-bold mb-3">Perusahaan</h6>
-                <ul class="list-unstyled text-muted">
-                    <li class="mb-2"><a href="#" class="text-muted">Tentang Kami</a></li>
-                     <li class="mb-2"><a href="#" class="text-muted">Karir</a></li>
-                      <li class="mb-2"><a href="#" class="text-muted">Kontak</a></li>
-                </ul>
-            </div>
-             <div class="col-md-4 mb-4">
-                <h6 class="fw-bold mb-3">Hubungi Kami</h6>
-                 <ul class="list-unstyled text-muted">
-                    <li class="mb-2"><i class='bx bx-phone me-2'></i> 0812-3456-7890</li>
-                     <li class="mb-2"><i class='bx bx-envelope me-2'></i> support@{{ ispName.toLowerCase().replace(/\s+/g, '') }}.com</li>
-                      <li class="mb-2"><i class='bx bx-map me-2'></i> Jakarta, Indonesia</li>
-                </ul>
-            </div>
-        </div>
-        <hr class="my-4">
-        <div class="text-center text-muted">
-           © {{ new Date().getFullYear() }}, {{ ispName }}. All rights reserved.
-        </div>
-      </div>
-    </footer>
-  </div>
-</template>
-
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 
 defineProps({
-    ispName: String
+  ispName: {
+    type: String,
+    default: 'Payneto'
+  }
 });
 
-const mobileMenuOpen = ref(false);
+const isMenuOpen = ref(false);
+const isScrolled = ref(false);
+
+const handleScroll = () => {
+  isScrolled.value = window.scrollY > 20;
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
+const features = [
+  { icon: 'bx-rocket', title: 'Kecepatan Tinggi', desc: 'Akses internet hingga 1Gbps dengan jaringan Fiber Optic terbaru.', color: 'primary' },
+  { icon: 'bx-money', title: 'Harga Terjangkau', desc: 'Paket internet hemat mulai dari 100rb tanpa biaya tersembunyi.', color: 'success' },
+  { icon: 'bx-support', title: 'Dukungan 24/7', desc: 'Tim teknis kami siap membantu kendala jaringan Anda kapan saja.', color: 'info' },
+  { icon: 'bx-wifi', title: 'Stabil & Unlimited', desc: 'Koneksi stabil tanpa batasan kuota (FUP) untuk aktivitas digital Anda.', color: 'warning' },
+  { icon: 'bx-shield-quarter', title: 'Aman & Privat', desc: 'Jaringan aman dengan perlindungan firewall untuk menjaga data Anda.', color: 'error' },
+  { icon: 'bx-game', title: 'Low Latency', desc: 'Ping rendah yang sangat cocok untuk gaming dan streaming 4K.', color: 'secondary' },
+];
+
+const packages = [
+  { name: 'Home', price: '150.000', speed: '10 Mbps', devices: '2-3', popular: false },
+  { name: 'Family', price: '250.000', speed: '30 Mbps', devices: '4-6', popular: true },
+  { name: 'Gamer & Business', price: '500.000', speed: '100 Mbps', priority: true, popular: false },
+];
 </script>
 
+<template>
+  <VApp>
+    <!-- Custom Navbar (Sneat Style) -->
+    <header :class="['landing-navbar', { 'navbar-scrolled': isScrolled }]">
+      <div class="navbar-container">
+        <!-- Logo -->
+        <a href="#" class="navbar-brand">
+          <div class="brand-icon">
+            <i class="bx bx-wifi"></i>
+          </div>
+          <span class="brand-text">{{ ispName }}</span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <nav class="desktop-menu">
+          <a href="#features" class="nav-link">Fitur</a>
+          <a href="#pricing" class="nav-link">Paket</a>
+          <a href="#contact" class="nav-link">Kontak</a>
+          <div class="divider"></div>
+          <router-link to="/login" class="btn-login">Masuk</router-link>
+          <router-link to="/register" class="btn-register">Daftar</router-link>
+        </nav>
+
+        <!-- Mobile Toggle Button -->
+        <button class="mobile-toggle" @click="isMenuOpen = !isMenuOpen">
+          <i class="bx" :class="isMenuOpen ? 'bx-x' : 'bx-menu'"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu" :class="{ 'is-open': isMenuOpen }">
+      <nav class="mobile-nav">
+        <a href="#features" class="mobile-link" @click="isMenuOpen = false">Fitur</a>
+        <a href="#pricing" class="mobile-link" @click="isMenuOpen = false">Paket</a>
+        <a href="#contact" class="mobile-link" @click="isMenuOpen = false">Kontak</a>
+      </nav>
+      <div class="mobile-actions">
+        <router-link to="/login" class="btn-login-mobile" @click="isMenuOpen = false">Masuk</router-link>
+        <router-link to="/register" class="btn-register-mobile" @click="isMenuOpen = false">Daftar</router-link>
+      </div>
+    </div>
+
+    <VMain class="bg-background pt-16" style="min-height: 100vh;">
+      <!-- Hero Section -->
+      <section class="py-12 py-md-24">
+        <VContainer>
+          <VRow align="center">
+            <VCol cols="12" md="6" class="text-center text-md-left pr-md-8">
+              <h1 class="text-h4 text-sm-h3 text-md-h2 font-weight-bold text-primary mb-6" style="line-height: 1.2">
+                Internet Cepat,<br>Koneksi Tepat.
+              </h1>
+              <p class="text-body-1 text-medium-emphasis mb-8 px-4 px-md-0">
+                {{ ispName }} menghadirkan layanan internet broadband fiber optic berkecepatan tinggi dan stabil untuk kebutuhan rumah dan bisnis Anda.
+              </p>
+              <div class="d-flex flex-column flex-sm-row justify-center justify-md-start mb-12 mb-md-0 px-4 px-md-0" style="gap: 1.5rem;">
+                <VBtn size="large" color="primary" to="/register" class="font-weight-bold w-100 w-sm-auto">Mulai Berlangganan</VBtn>
+                <VBtn size="large" variant="outlined" href="#pricing" class="font-weight-bold w-100 w-sm-auto">Lihat Paket</VBtn>
+              </div>
+              
+              <VRow class="mt-8 mx-0 d-none d-md-flex">
+                <VCol cols="4" class="px-0">
+                  <h3 class="text-h4 font-weight-bold mb-1">100+</h3>
+                  <span class="text-caption text-medium-emphasis text-uppercase">Customers</span>
+                </VCol>
+                <VCol cols="4" class="px-0 border-s border-e">
+                  <h3 class="text-h4 font-weight-bold mb-1">99%</h3>
+                  <span class="text-caption text-medium-emphasis text-uppercase">Uptime</span>
+                </VCol>
+                <VCol cols="4" class="px-0">
+                  <h3 class="text-h4 font-weight-bold mb-1">24/7</h3>
+                  <span class="text-caption text-medium-emphasis text-uppercase">Support</span>
+                </VCol>
+              </VRow>
+            </VCol>
+            
+            <VCol cols="12" md="6">
+              <VImg 
+                src="https://images.unsplash.com/photo-1551434678-e076c223a692?w=800&h=600&fit=crop" 
+                alt="Internet Connection"
+                class="rounded-lg elevation-4 w-100"
+                cover
+                :aspect-ratio="4/3"
+              />
+            </VCol>
+          </VRow>
+        </VContainer>
+      </section>
+
+      <!-- Features Section -->
+      <section id="features" class="py-16 bg-surface">
+        <VContainer>
+          <div class="text-center mb-12">
+            <VChip color="primary" variant="tonal" size="small" class="mb-4 font-weight-bold text-uppercase">Mengapa Memilih Kami?</VChip>
+            <h2 class="text-h4 font-weight-bold mb-4">Layanan Internet Terbaik Untuk Anda</h2>
+            <p class="text-body-1 text-medium-emphasis">Kami menjamin pengalaman berselancar yang mulus tanpa hambatan.</p>
+          </div>
+
+          <VRow>
+            <VCol v-for="feat in features" :key="feat.title" cols="12" sm="6" md="4">
+              <VCard variant="outlined" class="h-100 border-opacity-50 hover-card" color="transparent">
+                <VCardText class="pa-6">
+                  <VAvatar :color="feat.color" variant="tonal" rounded size="48" class="mb-4">
+                    <VIcon size="28">{{ feat.icon }}</VIcon>
+                  </VAvatar>
+                  <h3 class="text-h6 font-weight-bold mb-2">{{ feat.title }}</h3>
+                  <p class="text-body-2 text-medium-emphasis mb-0">{{ feat.desc }}</p>
+                </VCardText>
+              </VCard>
+            </VCol>
+          </VRow>
+        </VContainer>
+      </section>
+
+      <!-- Pricing Section -->
+      <section id="pricing" class="py-16">
+        <VContainer>
+          <div class="text-center mb-12">
+            <VChip color="primary" variant="tonal" size="small" class="mb-4 font-weight-bold text-uppercase">Pilihan Paket</VChip>
+            <h2 class="text-h4 font-weight-bold mb-4">Pilih Paket Sesuai Kebutuhan</h2>
+            <p class="text-body-1 text-medium-emphasis">Berlangganan sekarang dan nikmati promo menariknya.</p>
+          </div>
+
+          <VRow justify="center">
+            <VCol v-for="pkg in packages" :key="pkg.name" cols="12" md="4">
+              <VCard 
+                :variant="pkg.popular ? 'elevated' : 'outlined'" 
+                :color="pkg.popular ? 'surface' : 'transparent'"
+                :elevation="pkg.popular ? 8 : 0"
+                :class="['h-100 position-relative hover-card', pkg.popular ? 'border-primary border-opacity-100 border-sm' : 'border-opacity-50']"
+                style="overflow: visible;"
+              >
+                <div v-if="pkg.popular" class="position-absolute w-100 text-center" style="top: -12px; z-index: 1;">
+                  <VChip 
+                    color="primary" 
+                    size="small" 
+                    variant="flat"
+                    class="font-weight-bold px-4 elevation-2"
+                  >
+                    PALING POPULER
+                  </VChip>
+                </div>
+                
+                <VCardItem class="text-center pt-8 pb-4">
+                  <VCardTitle class="text-h5 font-weight-bold mb-4">{{ pkg.name }}</VCardTitle>
+                  <div class="d-flex justify-center align-end gap-1">
+                    <span class="text-h3 font-weight-bold text-primary">Rp{{ pkg.price }}</span>
+                    <span class="text-body-2 text-medium-emphasis mb-2">/bln</span>
+                  </div>
+                </VCardItem>
+
+                <VCardText class="px-6 pb-8">
+                  <VList density="compact" class="mb-6" style="background: transparent !important;">
+                    <VListItem class="px-0" style="background: transparent !important;">
+                      <template #prepend><VIcon color="primary" size="20" class="mr-3">bx-check</VIcon></template>
+                      <VListItemTitle class="text-body-2 font-weight-medium">Kecepatan hingga {{ pkg.speed }}</VListItemTitle>
+                    </VListItem>
+                    <VListItem class="px-0" style="background: transparent !important;">
+                      <template #prepend><VIcon color="primary" size="20" class="mr-3">bx-check</VIcon></template>
+                      <VListItemTitle class="text-body-2 font-weight-medium">Kuota Unlimited</VListItemTitle>
+                    </VListItem>
+                    <VListItem v-if="pkg.devices" class="px-0" style="background: transparent !important;">
+                      <template #prepend><VIcon color="primary" size="20" class="mr-3">bx-check</VIcon></template>
+                      <VListItemTitle class="text-body-2 font-weight-medium">Ideal untuk {{ pkg.devices }} Perangkat</VListItemTitle>
+                    </VListItem>
+                    <VListItem v-if="pkg.priority" class="px-0" style="background: transparent !important;">
+                      <template #prepend><VIcon color="primary" size="20" class="mr-3">bx-check</VIcon></template>
+                      <VListItemTitle class="text-body-2 font-weight-medium">Prioritas Trafik</VListItemTitle>
+                    </VListItem>
+                    <VListItem class="px-0" :class="pkg.priority ? '' : 'text-medium-emphasis text-decoration-line-through'" style="background: transparent !important;">
+                      <template #prepend><VIcon :color="pkg.priority ? 'primary' : 'medium-emphasis'" size="20" class="mr-3">{{ pkg.priority ? 'bx-check' : 'bx-x' }}</VIcon></template>
+                      <VListItemTitle class="text-body-2 font-weight-medium">Public Static IP</VListItemTitle>
+                    </VListItem>
+                  </VList>
+                  
+                  <VBtn 
+                    block 
+                    :variant="pkg.popular ? 'elevated' : 'outlined'" 
+                    color="primary" 
+                    size="large"
+                    to="/register"
+                  >
+                    Pilih Paket
+                  </VBtn>
+                </VCardText>
+              </VCard>
+            </VCol>
+          </VRow>
+        </VContainer>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-16">
+        <VContainer>
+          <VCard color="primary" class="text-white overflow-hidden elevation-6 rounded-xl">
+            <VCardText class="pa-8 pa-md-12 text-center text-md-left">
+              <VRow align="center">
+                <VCol cols="12" md="8">
+                  <h2 class="text-h4 font-weight-bold mb-4">Siap untuk koneksi lebih cepat?</h2>
+                  <p class="text-body-1 opacity-90 mb-0" style="max-width: 600px">
+                    Bergabunglah dengan ratusan pelanggan lain yang telah mempercayakan koneksi internetnya kepada kami.
+                  </p>
+                </VCol>
+                <VCol cols="12" md="4" class="text-center text-md-right mt-6 mt-md-0">
+                  <VBtn color="white" variant="elevated" class="text-primary font-weight-bold px-8" size="x-large" to="/register">
+                    Daftar Sekarang
+                  </VBtn>
+                </VCol>
+              </VRow>
+            </VCardText>
+          </VCard>
+        </VContainer>
+      </section>
+    </VMain>
+
+    <!-- Footer -->
+    <VFooter class="bg-surface pt-16 pb-8 border-t d-block" elevation="2">
+      <VContainer id="contact">
+        <VRow class="mb-8">
+          <VCol cols="12" md="4" class="mb-6 mb-md-0 pr-md-8 text-center text-md-left">
+            <div class="d-flex align-center justify-center justify-md-start" style="gap: 1rem; margin-bottom: 2rem;">
+              <VAvatar color="primary" rounded size="36">
+                <VIcon color="white" size="20">bx-wifi</VIcon>
+              </VAvatar>
+              <span class="text-h6 font-weight-bold text-primary">{{ ispName }}</span>
+            </div>
+            <p class="text-body-2 text-medium-emphasis">
+              Penyedia layanan internet (ISP) terpercaya dengan komitmen memberikan koneksi stabil dan layanan terbaik.
+            </p>
+          </VCol>
+          
+          <VCol cols="12" sm="4" md="2" class="mb-6 mb-sm-0 text-center text-md-left">
+            <h4 class="text-subtitle-1 font-weight-bold mb-4">Layanan</h4>
+            <div class="d-flex flex-column gap-2 text-body-2 text-medium-emphasis">
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Internet Rumah</a>
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Bisnis</a>
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Dedicated Server</a>
+            </div>
+          </VCol>
+          
+          <VCol cols="12" sm="4" md="2" class="mb-6 mb-sm-0 text-center text-md-left">
+            <h4 class="text-subtitle-1 font-weight-bold mb-4">Perusahaan</h4>
+            <div class="d-flex flex-column gap-2 text-body-2 text-medium-emphasis">
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Tentang Kami</a>
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Karir</a>
+              <a href="#" class="text-decoration-none text-inherit hover-primary">Kontak</a>
+            </div>
+          </VCol>
+          
+          <VCol cols="12" sm="4" md="4">
+            <h4 class="text-subtitle-1 font-weight-bold mb-4 text-center text-md-left">Hubungi Kami</h4>
+            <VList density="compact" class="bg-transparent pa-0">
+              <VListItem class="px-0 min-h-0 mb-2 justify-center justify-md-start">
+                <template #prepend><VIcon size="20" class="mr-3 text-primary">bx-phone</VIcon></template>
+                <VListItemTitle class="text-body-2 text-medium-emphasis">0812-3456-7890</VListItemTitle>
+              </VListItem>
+              <VListItem class="px-0 min-h-0 mb-2 justify-center justify-md-start">
+                <template #prepend><VIcon size="20" class="mr-3 text-primary">bx-envelope</VIcon></template>
+                <VListItemTitle class="text-body-2 text-medium-emphasis">support@{{ ispName.toLowerCase().replace(/\s+/g, '') }}.com</VListItemTitle>
+              </VListItem>
+              <VListItem class="px-0 min-h-0 justify-center justify-md-start">
+                <template #prepend><VIcon size="20" class="mr-3 text-primary">bx-map</VIcon></template>
+                <VListItemTitle class="text-body-2 text-medium-emphasis">Jakarta, Indonesia</VListItemTitle>
+              </VListItem>
+            </VList>
+          </VCol>
+        </VRow>
+        
+        <VDivider class="mb-6" />
+        
+        <div class="text-center text-caption text-medium-emphasis">
+          © {{ new Date().getFullYear() }} {{ ispName }}. All rights reserved.
+        </div>
+      </VContainer>
+    </VFooter>
+  </VApp>
+</template>
+
 <style scoped>
-/* Scoped styles to ensure Sneat look avoids conflicts with Argon if any */
-.isp-landing-page {
-    background-color: #f5f5f9; /* Sneat default bg */
-    min-height: 100vh;
+/* ========== GLOBAL SNEAT-LIKE STYLES ========== */
+.hover-card {
+  transition: all 0.3s ease;
+}
+.hover-card:hover {
+  transform: translateY(-5px);
+  border-color: rgb(var(--v-theme-primary)) !important;
+  box-shadow: 0 10px 20px -5px rgba(var(--v-theme-primary), 0.15);
+}
+.hover-primary {
+  transition: color 0.2s ease;
+}
+.hover-primary:hover {
+  color: rgb(var(--v-theme-primary)) !important;
+}
+.text-inherit {
+  color: inherit;
+}
+html { scroll-behavior: smooth; }
+
+/* ========== CUSTOM NAVBAR STYLES ========== */
+.landing-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: transparent;
+  transition: all 0.3s ease-in-out;
+  padding: 1rem 0;
+  border-bottom: 1px solid transparent;
+}
+
+.landing-navbar.navbar-scrolled {
+  background-color: rgba(var(--v-theme-surface), 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 0;
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+}
+
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.brand-icon {
+  width: 36px;
+  height: 36px;
+  background-color: #696cff; /* Sneat Primary */
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.25rem;
+}
+
+.brand-text {
+  font-weight: 700;
+  color: rgb(var(--v-theme-on-background)); /* Dynamic Theme Text */
+}
+
+/* Desktop Menu */
+.desktop-menu {
+  display: none;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .desktop-menu {
     display: flex;
-    flex-direction: column;
+  }
 }
 
-/* Fixed navbar at top */
-.layout-navbar {
-    background: rgba(255, 255, 255, 0.98) !important;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+.nav-link {
+  color: rgba(var(--v-theme-on-background), 0.75);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-/* Mobile menu styling */
+.nav-link:hover {
+  color: #696cff;
+}
+
+.divider {
+  width: 1px;
+  height: 24px;
+  background-color: #d9dee3;
+  margin: 0 0.5rem;
+}
+
+.btn-login {
+  color: #696cff;
+  border: 1px solid #696cff;
+  background-color: transparent;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-login:hover {
+  background-color: rgba(105, 108, 255, 0.1);
+}
+
+.btn-register {
+  color: white;
+  background-color: #696cff;
+  border: 1px solid #696cff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(105, 108, 255, 0.2);
+}
+
+.btn-register:hover {
+  background-color: #5f61e6;
+  border-color: #5f61e6;
+  box-shadow: 0 4px 8px rgba(105, 108, 255, 0.3);
+}
+
+/* Mobile Toggle */
+.mobile-toggle {
+  display: block;
+  background: none;
+  border: none;
+  color: rgb(var(--v-theme-on-background)); /* Theme text color */
+  font-size: 1.75rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+@media (min-width: 992px) {
+  .mobile-toggle {
+    display: none;
+  }
+}
+
+/* Mobile Menu Overlay */
 .mobile-menu {
-    animation: slideDown 0.3s ease;
-    background: #fff;
-    border-radius: 0.5rem;
-    margin-top: 0.5rem;
+  position: fixed;
+  top: 70px; /* Below navbar */
+  left: 0;
+  width: 100%;
+  background-color: var(--v-theme-surface);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.08);
+  z-index: 999;
+  padding: 1rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  
+  /* Initial state: hidden and translated up */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.mobile-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
 
-.navbar-toggler {
-    border: none;
-    padding: 0.5rem;
-    font-size: 1.5rem;
-    background: transparent;
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.navbar-toggler:focus {
-    box-shadow: none;
+.mobile-link {
+  color: rgb(var(--v-theme-on-surface));
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
-.text-primary {
-    color: #696cff !important;
+.mobile-link:hover, .mobile-link:active {
+  background-color: rgba(105, 108, 255, 0.08);
+  color: #696cff;
 }
 
-.bg-primary {
-    background-color: #696cff !important;
-}
-.btn-primary {
-    background-color: #696cff !important;
-    border-color: #696cff !important;
-}
-.btn-outline-primary {
-     color: #696cff !important;
-    border-color: #696cff !important;
-}
-.btn-outline-primary:hover {
-    background-color: #696cff !important;
-    color: #fff !important;
-}
-.bg-label-primary {
-    background-color: #e7e7ff !important;
-    color: #696cff !important;
+.mobile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eceef1;
 }
 
-/* Responsive hero buttons */
-.hero-btn {
-    font-size: 1.125rem !important;
-    padding: 0.75rem 1.5rem !important;
+.btn-login-mobile {
+  text-align: center;
+  color: #696cff;
+  border: 1px solid #696cff;
+  background-color: transparent;
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
 }
 
-@media (max-width: 576px) {
-    .hero-btn {
-        font-size: 0.95rem !important;
-        padding: 0.6rem 1.2rem !important;
-    }
-}
-
-@media (max-width: 400px) {
-    .hero-btn {
-        font-size: 0.875rem !important;
-        padding: 0.5rem 1rem !important;
-    }
+.btn-register-mobile {
+  text-align: center;
+  color: white;
+  background-color: #696cff;
+  border: 1px solid #696cff;
+  padding: 0.625rem 1.25rem;
+  border-radius: 6px;
+  font-weight: 500;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(105, 108, 255, 0.2);
 }
 </style>

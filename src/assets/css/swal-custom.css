@@ -1,0 +1,126 @@
+/* ============================================
+   SweetAlert2 Custom Confirm Dialog Styles
+   Theme-aware: supports light + dark mode
+   ============================================ */
+
+/* ---- Popup Container ---- */
+.swal-custom-popup {
+    border-radius: 16px !important;
+    padding: 28px 28px 24px !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
+    font-family: 'Open Sans', 'Inter', sans-serif !important;
+    min-width: 340px !important;
+    max-width: 420px !important;
+    backdrop-filter: blur(8px);
+}
+
+/* ---- Title ---- */
+.swal-custom-title {
+    font-size: 1.05rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 6px !important;
+    line-height: 1.4 !important;
+}
+
+/* ---- Text/Body ---- */
+.swal-custom-text {
+    font-size: 0.85rem !important;
+    opacity: 0.75 !important;
+    margin-bottom: 0 !important;
+}
+
+/* ---- Icon ---- */
+.swal-custom-icon {
+    margin: -5px auto 5px !important;
+    transform: scale(0.75) !important;
+}
+
+/* ---- Actions Row ---- */
+.swal-custom-actions {
+    margin-top: 24px !important;
+    gap: 12px !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* ---- Confirm Button (Green) ---- */
+.swal-btn-confirm {
+    background-color: #2dce89 !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 9px 22px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.18s ease, transform 0.1s ease, box-shadow 0.18s ease !important;
+    box-shadow: 0 4px 14px rgba(45, 206, 137, 0.3) !important;
+    letter-spacing: 0.01em !important;
+}
+
+.swal-btn-confirm:hover {
+    background-color: #26af72 !important;
+    box-shadow: 0 6px 18px rgba(45, 206, 137, 0.4) !important;
+    transform: translateY(-1px) !important;
+}
+
+.swal-btn-confirm:active {
+    transform: translateY(0) !important;
+}
+
+.swal-btn-confirm:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(45, 206, 137, 0.3) !important;
+}
+
+/* ---- Cancel Button ---- */
+.swal-btn-cancel {
+    background-color: #f0f4f8 !important;
+    color: #6c757d !important;
+    border: 1px solid #dee2e6 !important;
+    border-radius: 8px !important;
+    padding: 9px 22px !important;
+    font-size: 0.82rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: background-color 0.18s ease, transform 0.1s ease !important;
+    letter-spacing: 0.01em !important;
+}
+
+.swal-btn-cancel:hover {
+    background-color: #e2e8f0 !important;
+    color: #495057 !important;
+    transform: translateY(-1px) !important;
+}
+
+.swal-btn-cancel:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(108, 117, 125, 0.2) !important;
+}
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+.dark-version .swal-custom-popup {
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45) !important;
+}
+
+.dark-version .swal-btn-cancel {
+    background-color: #2a3a50 !important;
+    color: #a0aec0 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark-version .swal-btn-cancel:hover {
+    background-color: #344055 !important;
+    color: #cbd5e0 !important;
+}
+
+/* ============================================
+   Toast (notification) - dark mode
+   ============================================ */
+.dark-version .colored-toast {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+}

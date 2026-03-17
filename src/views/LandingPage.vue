@@ -3,24 +3,75 @@
     <!-- Scroll Progress Indicator -->
     <div class="scroll-progress" id="scroll-progress"></div>
     
-    <!-- Navbar -->
-    <nav class="navbar-modern">
+    <nav class="navbar-modern" :class="{ 'navbar-mobile-open': mobileMenuOpen }">
       <div class="container-custom">
         <div class="navbar-content">
-          <a href="/" class="brand">
-            <i class="fas fa-broadcast-tower"></i>
-            {{ pageData.footer_company_name || 'ISP Billing' }}
+          <a href="/" class="brand" style="gap: 0;">
+            <img src="/favicon.png" alt="Payneto Logo" class="brand-logo" style="height: 48px; margin-right: -12px; position: relative; z-index: 2;" />
+            <span class="brand-text" style="font-size: 1.8rem;">ayneto</span>
           </a>
-          <div class="nav-links">
+          
+          <!-- Hamburger Menu Button -->
+          <button class="menu-toggle" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle Menu">
+            <i class="fas" :class="mobileMenuOpen ? 'fa-times' : 'fa-bars'"></i>
+          </button>
+
+          <!-- Desktop Navigation -->
+          <div class="nav-links desktop-only">
             <a v-if="pageData.show_features" href="#features">Fitur</a>
             <a v-if="pageData.show_pricing" href="#pricing">Harga</a>
             <a v-if="pageData.show_faqs" href="#faq">FAQ</a>
-            <router-link to="/login" class="btn-outline">Login</router-link>
+            <router-link to="/login" class="btn-outline">Masuk</router-link>
             <button @click="goToRegister" class="btn-primary">Daftar Gratis</button>
           </div>
         </div>
       </div>
+
     </nav>
+    
+    <!-- Mobile Navigation Menu - Hostinger-like minimal redesign -->
+    <Transition name="fade-slide">
+      <div v-if="mobileMenuOpen" class="mobile-menu-overlay">
+        <!-- Menu Header -->
+        <div class="mobile-menu-header">
+          <div class="brand" style="gap: 0;">
+            <img src="/favicon.png" alt="Payneto Logo" class="brand-logo" style="height: 48px; margin-right: -12px;" />
+            <span class="brand-text" style="font-size: 1.8rem;">ayneto</span>
+          </div>
+          <button class="menu-close" @click="mobileMenuOpen = false" aria-label="Close Menu">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div class="mobile-nav-body">
+          <div class="menu-links-card">
+            <div class="menu-section-label">Menu</div>
+            <a v-if="pageData.show_features" href="#features" @click="mobileMenuOpen = false">
+              <span>Fitur</span>
+              <i class="fas fa-chevron-right mobile-chevron"></i>
+            </a>
+            <a v-if="pageData.show_pricing" href="#pricing" @click="mobileMenuOpen = false">
+              <span>Harga</span>
+              <i class="fas fa-chevron-right mobile-chevron"></i>
+            </a>
+            <a v-if="pageData.show_faqs" href="#faq" @click="mobileMenuOpen = false">
+              <span>FAQ</span>
+              <i class="fas fa-chevron-right mobile-chevron"></i>
+            </a>
+          </div>
+
+          <!-- Actions Area -->
+          <div class="mobile-menu-actions">
+            <router-link to="/login" class="mobile-btn-outline-sleek" @click="mobileMenuOpen = false">
+              Masuk
+            </router-link>
+            <button @click="goToRegister(); mobileMenuOpen = false" class="mobile-btn-primary-sleek">
+              Daftar Gratis
+            </button>
+          </div>
+        </div>
+      </div>
+    </Transition>
 
     <!-- Hero Section -->
     <section class="hero-gradient">
@@ -51,13 +102,13 @@
                 {{ pageData.hero_cta_text }}
               </button>
               <button v-if="pageData.show_pricing" @click="scrollTo('pricing')" class="btn-hero-secondary">
-                Lihat Harga
+                Lihat Pricing
               </button>
             </div>
           </div>
           <div class="hero-visual animate-slide-up delay-3">
             <div class="dashboard-mockup" ref="dashboardMockup" @mousemove="handleMouseMove" @mouseleave="handleMouseLeave">
-              <img :src="pageData.hero_image || 'https://via.placeholder.com/600x400/f0f0f0/667eea?text=Dashboard+Preview'" alt="Dashboard Preview" />
+              <img :src="pageData.hero_image || 'https://placehold.co/600x400/f0f0f0/667eea?text=Dashboard+Preview'" alt="Dashboard Preview" />
             </div>
           </div>
         </div>
@@ -99,7 +150,7 @@
     <section id="pricing" v-if="pageData.show_pricing && pageData.pricing_plans && pageData.pricing_plans.length" class="pricing-section observe-me">
       <div class="container-custom">
         <div class="section-header">
-          <h2>Pilih Paket yang Sesuai</h2>
+          <h2>Pilih Paket yang Tepat</h2>
           <p>Harga transparan, tanpa biaya tersembunyi</p>
         </div>
         <div class="pricing-grid">
@@ -131,7 +182,7 @@
       <div class="container-custom">
         <div class="section-header">
           <h2>Apa Kata Mereka?</h2>
-          <p>Dipercaya oleh ratusan ISP di Indonesia</p>
+          <p>Dipercaya oleh ratusan ISP di seluruh Indonesia</p>
         </div>
         <div class="testimonials-grid">
           <div v-for="(testi, index) in pageData.testimonials" :key="index" class="testimonial-card">
@@ -178,7 +229,7 @@
     <section class="cta-section">
       <div class="container-custom">
         <div class="cta-content">
-          <h2>Siap Memulai?</h2>
+          <h2>Siap untuk Memulai?</h2>
           <p>Bergabunglah dengan ratusan ISP yang sudah menggunakan platform kami</p>
           <button @click="goToRegister" class="btn-cta">
             Daftar Gratis Sekarang
@@ -193,8 +244,8 @@
         <div class="footer-grid">
           <div class="footer-col">
             <h3>
-              <i class="fas fa-broadcast-tower"></i>
-              {{ pageData.footer_company_name }}
+              <img src="/favicon.png" alt="Payneto Logo" class="brand-logo" style="height: 38px; vertical-align: middle; margin-right: -18px;" />
+              ayneto
             </h3>
             <p>{{ pageData.meta_description }}</p>
             <div class="social-links" v-if="pageData.footer_social_links">
@@ -250,6 +301,7 @@ import axios from "axios";
 const router = useRouter();
 const pageData = ref(null);
 const activeFaq = ref(null);
+const mobileMenuOpen = ref(false);
 const API_URL = "http://localhost:8000/api";
 const scrollProgress = ref(0);
 const dashboardMockup = ref(null);
@@ -297,7 +349,7 @@ const fetchLandingPage = async () => {
 };
 
 const formatPrice = (amount) => {
-  return new Intl.NumberFormat("id-ID").format(amount);
+  return new Intl.NumberFormat("en-US").format(amount);
 };
 
 const scrollTo = (id) => {
@@ -443,13 +495,11 @@ html {
   top: 0;
   left: 0;
   right: 0;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border-bottom: 1px solid rgba(94, 114, 228, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
-  z-index: 1000;
-  padding: calc(16px * var(--spacing-scale)) 0;
+  background: rgba(255, 255, 255, 1); /* Force solid white */
+  border-bottom: 2px solid #2dce89; /* Themed bottom border */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 10000; /* High z-index */
+  padding: 12px 0;
   transition: all 0.3s ease;
 }
 
@@ -493,6 +543,224 @@ html {
   display: flex;
   align-items: center;
   gap: calc(28px * var(--spacing-scale));
+}
+
+.nav-links a {
+  color: #344767;
+  text-decoration: none;
+  font-weight: 600;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* BRAND ENHANCEMENTS */
+.brand-logo {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
+.brand-text {
+  font-weight: 800;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #2DCE89, #2dcecc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* MOBILE MENU TOGGLE */
+.menu-toggle {
+  display: none;
+  background-color: #ffffff !important; /* Solid white background for the button */
+  border: 1px solid rgba(0,0,0,0.1);
+  font-size: 1.5rem;
+  color: #2dce89 !important; /* Theme green color (Argon success/primary) */
+  cursor: pointer;
+  z-index: 10001;
+  width: 45px;
+  height: 45px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.menu-toggle:hover {
+  background: #f8f9fe !important;
+  transform: scale(1.05);
+  color: #2dcecc !important; /* Slightly different green on hover */
+}
+
+/* RESPONSIVE NAVBAR */
+@media (max-width: 991px) {
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .menu-toggle {
+    display: flex;
+  }
+
+  .navbar-content {
+    justify-content: space-between;
+  }
+
+  /* Mobile Menu Overlay - Full Screen Solid White */
+  .mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #f8f9fe !important; /* Soft solid grey background */
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  .mobile-menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .menu-close {
+    background: #f8f9fe;
+    border: 1px solid #e9ecef;
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8898aa;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .menu-close:hover {
+    background: #ffffff;
+    color: #2dce89;
+    border-color: #2dce89;
+  }
+
+  .mobile-nav-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .menu-links-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.05);
+  }
+
+  .menu-section-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #adb5bd;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    padding-left: 0.5rem;
+  }
+
+  .menu-links-card a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #32325d !important;
+    text-decoration: none;
+    border-bottom: 1px solid #f6f9fc;
+  }
+
+  .menu-links-card a:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-chevron {
+    font-size: 0.8rem;
+    color: #ced4da; /* Very light subtle grey */
+    opacity: 0.6;
+    transition: all 0.2s;
+  }
+
+  .menu-links-card a:hover .mobile-chevron {
+    color: #2dce89;
+    opacity: 1;
+    transform: translateX(3px);
+  }
+
+  .mobile-menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mobile-btn-outline-sleek {
+    width: 100%;
+    padding: 14px;
+    background: #ffffff;
+    color: #2dce89;
+    border: 2px solid #2dce89;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .mobile-btn-outline-sleek:hover {
+    background: #f8f9fe;
+    color: #2dcecc;
+    border-color: #2dcecc;
+  }
+
+  .mobile-btn-primary-sleek {
+    width: 100%;
+    padding: 16px;
+    background: #2dce89;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 15px rgba(45, 206, 137, 0.25);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  /* Transition */
+  .fade-slide-enter-active,
+  .fade-slide-leave-active {
+    transition: all 0.3s ease;
+  }
+
+  .fade-slide-enter-from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  .fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
 }
 
 .nav-links a {
@@ -1005,23 +1273,30 @@ a.btn-outline:focus {
 
 .price {
   margin-bottom: calc(32px * var(--spacing-scale));
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 .currency {
-  font-size: calc(20px * var(--spacing-scale));
+  font-size: clamp(16px, 4vw, 20px);
   font-weight: 600;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 .amount {
-  font-size: calc(48px * var(--spacing-scale));
+  font-size: clamp(32px, 8vw, 48px);
   font-weight: 800;
   color: var(--color-text);
+  letter-spacing: -1px;
 }
 
 .period {
-  font-size: calc(16px * var(--spacing-scale));
+  font-size: clamp(14px, 3.5vw, 16px);
   color: #6c757d;
+  white-space: nowrap;
 }
 
 .features-list {

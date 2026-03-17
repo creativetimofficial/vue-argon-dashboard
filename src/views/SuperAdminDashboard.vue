@@ -5,9 +5,9 @@
         <div class="row">
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="Total ISP"
+              :title="$t('dashboard.total_isps')"
               :value="stats.total_isps?.toString() || '0'"
-              description="<span class='text-sm font-weight-bolder text-success'>+5%</span> dari bulan lalu"
+              :description="`<span class='text-sm font-weight-bolder text-success'>+5%</span> ${$t('dashboard.from_last_month', { value: '' })}`"
               :icon="{
                 component: 'ni ni-building',
                 background: 'bg-gradient-primary',
@@ -17,9 +17,9 @@
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="Langganan Aktif"
+              :title="$t('dashboard.active_subscriptions')"
               :value="stats.active_subscriptions?.toString() || '0'"
-              description="<span class='text-sm font-weight-bolder text-success'>+3%</span> dari bulan lalu"
+              :description="`<span class='text-sm font-weight-bolder text-success'>+3%</span> ${$t('dashboard.from_last_month', { value: '' })}`"
               :icon="{
                 component: 'ni ni-world',
                 background: 'bg-gradient-danger',
@@ -29,9 +29,9 @@
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="Pesanan Baru"
+              :title="$t('dashboard.new_orders')"
               :value="stats.new_orders?.toString() || '0'"
-              description="<span class='text-sm font-weight-bolder text-danger'>-2%</span> dari kemarin"
+              :description="`<span class='text-sm font-weight-bolder text-danger'>-2%</span> ${$t('dashboard.from_yesterday', { value: '' })}`"
               :icon="{
                 component: 'ni ni-paper-diploma',
                 background: 'bg-gradient-success',
@@ -41,9 +41,9 @@
           </div>
           <div class="col-lg-3 col-md-6 col-12">
             <mini-statistics-card
-              title="Total Pendapatan"
+              :title="$t('dashboard.total_revenue')"
               :value="formatCurrency(stats.total_revenue || 0)"
-              description="<span class='text-sm font-weight-bolder text-success'>+5%</span> dari bulan lalu"
+              :description="`<span class='text-sm font-weight-bolder text-success'>+5%</span> ${$t('dashboard.from_last_month', { value: '' })}`"
               :icon="{
                 component: 'ni ni-cart',
                 background: 'bg-gradient-warning',
@@ -58,13 +58,13 @@
              <gradient-line-chart
               :key="chartKey"
               id="chart-line"
-              title="Ringkasan Pendapatan"
-              description="<i class='fa fa-arrow-up text-success'></i> <span class='font-weight-bold'>Tahun 2026</span>"
+              :title="$t('dashboard.revenue_summary')"
+              :description="`<i class='fa fa-arrow-up text-success'></i> <span class='font-weight-bold'>Year 2026</span>`"
               :chart="{
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
                 datasets: [
                   {
-                    label: 'Pendapatan',
+                    label: 'Revenue',
                     data: (stats.monthly_revenue && stats.monthly_revenue.length) ? stats.monthly_revenue : [0,0,0,0,0,0,0,0,0,0,0,0],
                   },
                 ],
@@ -75,7 +75,7 @@
             <div class="card h-100">
               <div class="card-header pb-0 p-3">
                 <div class="d-flex justify-content-between">
-                  <h6 class="mb-0">ISP Terbaru</h6>
+                  <h6 class="mb-0">{{ $t('dashboard.latest_isps') }}</h6>
                 </div>
               </div>
               <div class="card-body p-3 pb-0">
@@ -83,7 +83,7 @@
                   <li v-if="!isps || isps.length === 0" class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                     <div class="d-flex align-items-center">
                        <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-dark text-sm">Belum ada ISP terbaru</h6>
+                        <h6 class="mb-1 text-dark text-sm">{{ $t('dashboard.no_latest_isps') }}</h6>
                       </div>
                     </div>
                   </li>
@@ -112,7 +112,7 @@
           <div class="col-12">
             <div class="card mb-4">
               <div class="card-header pb-0">
-                <h6>Perusahaan Terdaftar Terbaru</h6>
+                <h6>{{ $t('dashboard.latest_reg_companies') }}</h6>
               </div>
               <div class="card-body px-0 pt-0 pb-2">
                 <div class="table-responsive p-0">
@@ -122,22 +122,22 @@
                         <th
                           class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                         >
-                          Perusahaan ISP
+                          {{ $t('dashboard.isp_company') }}
                         </th>
                         <th
                           class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                         >
-                          Status
+                          {{ $t('common.status') }}
                         </th>
                         <th
                           class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                         >
-                          Pelanggan
+                          {{ $t('dashboard.customers') }}
                         </th>
                          <th
                           class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                         >
-                          Terdaftar Pada
+                          {{ $t('dashboard.registered_on') }}
                         </th>
                         <th class="text-secondary opacity-7"></th>
                       </tr>
@@ -145,12 +145,12 @@
                     <tbody>
                       <tr v-if="loading">
                         <td colspan="5" class="text-center py-4">
-                          <i class="fas fa-spinner fa-spin"></i> Memuat...
+                          <i class="fas fa-spinner fa-spin"></i> {{ $t('common.processing') }}
                         </td>
                       </tr>
                       <tr v-else-if="!isps || isps.length === 0">
                         <td colspan="5" class="text-center py-4">
-                          Tidak ada data ISP
+                          {{ $t('dashboard.no_isp_data') }}
                         </td>
                       </tr>
                       <tr v-for="isp in isps" :key="isp.id">
@@ -184,11 +184,11 @@
                           }}</span>
                         </td>
                         <td class="align-middle text-center">
-                          <span class="text-secondary text-xs font-weight-bold">{{ new Date(isp.created_at).toLocaleDateString('id-ID') }}</span>
+                          <span class="text-secondary text-xs font-weight-bold">{{ new Date(isp.created_at).toLocaleDateString('en-US') }}</span>
                         </td>
                         <td class="align-middle">
                           <button class="btn btn-link text-secondary mb-0" @click="$router.push('/super-admin/isp-management')">
-                            <i class="fa fa-pencil-square-o text-xs me-2"></i> Kelola
+                            <i class="fa fa-pencil-square-o text-xs me-2"></i> {{ $t('dashboard.manage') }}
                           </button>
                         </td>
                       </tr>
@@ -231,7 +231,7 @@ export default {
     const isps = ref([]);
 
     const formatCurrency = (value) => {
-      return new Intl.NumberFormat("id-ID", {
+      return new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "IDR",
         minimumFractionDigits: 0,
@@ -274,6 +274,7 @@ export default {
       stats,
       isps,
       formatCurrency,
+      chartKey,
     };
   },
 };

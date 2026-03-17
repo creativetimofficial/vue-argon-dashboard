@@ -5,14 +5,14 @@
         <div class="card">
           <div class="card-header pb-0">
             <div class="d-flex justify-content-between align-items-center">
-              <h6 class="mb-0">ISP Orders Management</h6>
+              <h6 class="mb-0">{{ $t('dashboard.isp_orders_mgt') }}</h6>
               <div class="d-flex gap-2">
                 <select v-model="filterStatus" class="form-select form-select-sm" style="width: auto;">
-                  <option value="">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="approved">Approved</option>
-                  <option value="active">Active</option>
-                  <option value="cancelled">Cancelled</option>
+                  <option value="">{{ $t('dashboard.all_status') }}</option>
+                  <option value="pending">{{ $t('dashboard.pending') }}</option>
+                  <option value="approved">{{ $t('dashboard.approved') }}</option>
+                  <option value="active">{{ $t('dashboard.active') }}</option>
+                  <option value="cancelled">{{ $t('dashboard.cancelled') }}</option>
                 </select>
               </div>
             </div>
@@ -26,15 +26,15 @@
             <div v-else class="table-responsive p-0">
               <table class="table align-items-center mb-0">
                 <thead>
-                  <tr>
+                   <tr>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ISP</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Service</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Reference</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Domain</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Created At</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.service') }}</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.reference') }}</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.domain') }}</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.price') }}</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('common.status') }}</th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.created_at') }}</th>
                     <th class="text-secondary opacity-7"></th>
                   </tr>
                 </thead>
@@ -50,7 +50,7 @@
                     </td>
                     <td class="align-middle text-center text-sm">
                       <span class="text-secondary text-xs font-weight-bold">{{ order.service?.name || order.subscription_package?.name || 'N/A' }}</span>
-                      <span v-if="order.service?.trial_days > 0" class="badge badge-sm bg-warning ms-1">Trial</span>
+                      <span v-if="order.service?.trial_days > 0" class="badge badge-sm bg-warning ms-1">{{ $t('dashboard.trial') }}</span>
                     </td>
                     <td class="align-middle text-center">
                       <p class="text-xs font-weight-bold mb-0">{{ order.reference }}</p>
@@ -78,7 +78,7 @@
                       <span class="text-secondary text-xs font-weight-bold">{{ formatDate(order.created_at) }}</span>
                     </td>
                     <td class="align-middle">
-                      <div class="d-flex gap-2 justify-content-center">
+                       <div class="d-flex gap-2 justify-content-center">
                         <button
                           v-if="order.status === 'pending'"
                           class="btn btn-success btn-sm"
@@ -86,7 +86,7 @@
                           :disabled="processing"
                         >
                           <i class="fas fa-check me-1"></i>
-                          Approve
+                          {{ $t('dashboard.approve_btn') }}
                         </button>
                         <button
                           v-if="order.status === 'pending'"
@@ -95,7 +95,7 @@
                           :disabled="processing"
                         >
                           <i class="fas fa-times me-1"></i>
-                          Reject
+                          {{ $t('dashboard.reject_btn') }}
                         </button>
                         <button
                           class="btn btn-info btn-sm"
@@ -108,7 +108,7 @@
                   </tr>
                   <tr v-if="filteredOrders.length === 0">
                     <td colspan="9" class="text-center py-4">
-                      <p class="text-muted mb-0">No orders found</p>
+                      <p class="text-muted mb-0">{{ $t('dashboard.no_orders_found') }}</p>
                     </td>
                   </tr>
                 </tbody>
@@ -129,7 +129,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Order Detail - {{ selectedOrder.reference }}</h5>
+            <h5 class="modal-title">{{ $t('dashboard.order_detail') }} - {{ selectedOrder.reference }}</h5>
             <button
               type="button"
               class="btn-close"
@@ -146,14 +146,14 @@
               <div class="row mb-3">
                 <div class="col-md-6">
                   <p class="mb-1"><strong>ISP:</strong> {{ orderDetail.isp?.company_name || orderDetail.isp?.email }}</p>
-                  <p class="mb-1"><strong>Service:</strong> {{ orderDetail.service?.name || orderDetail.subscription_package?.name || 'N/A' }}</p>
-                  <p class="mb-1"><strong>Price:</strong> {{ formatCurrency(orderDetail.price) }}</p>
-                  <p class="mb-1"><strong>Billing Cycle:</strong> {{ orderDetail.billing_cycle }}</p>
+                  <p class="mb-1"><strong>{{ $t('dashboard.service') }}:</strong> {{ orderDetail.service?.name || orderDetail.subscription_package?.name || 'N/A' }}</p>
+                  <p class="mb-1"><strong>{{ $t('dashboard.price') }}:</strong> {{ formatCurrency(orderDetail.price) }}</p>
+                  <p class="mb-1"><strong>{{ $t('dashboard.cycle') }}:</strong> {{ orderDetail.billing_cycle }}</p>
                 </div>
                 <div class="col-md-6">
-                  <p class="mb-1"><strong>Domain Type:</strong> {{ orderDetail.domain_type }}</p>
-                  <p class="mb-1"><strong>Domain:</strong> {{ orderDetail.domain || '-' }}</p>
-                  <p class="mb-1"><strong>Status:</strong> 
+                  <p class="mb-1"><strong>{{ $t('dashboard.domain_type') }}:</strong> {{ orderDetail.domain_type }}</p>
+                  <p class="mb-1"><strong>{{ $t('dashboard.domain') }}:</strong> {{ orderDetail.domain || '-' }}</p>
+                  <p class="mb-1"><strong>{{ $t('common.status') }}:</strong> 
                     <span
                       class="badge"
                       :class="{
@@ -165,11 +165,11 @@
                       {{ orderDetail.status.toUpperCase() }}
                     </span>
                   </p>
-                  <p class="mb-1"><strong>Created At:</strong> {{ formatDate(orderDetail.created_at) }}</p>
+                  <p class="mb-1"><strong>{{ $t('dashboard.created_at') }}:</strong> {{ formatDate(orderDetail.created_at) }}</p>
                 </div>
               </div>
               <div v-if="orderDetail.notes" class="mb-3">
-                <strong>Notes:</strong>
+                <strong>{{ $t('dashboard.notes') }}:</strong>
                 <p class="mb-0">{{ orderDetail.notes }}</p>
               </div>
             </div>
@@ -180,7 +180,7 @@
               class="btn btn-secondary"
               @click="selectedOrder = null"
             >
-              Close
+              {{ $t('common.cancel') }}
             </button>
             <button
               v-if="orderDetail && orderDetail.status === 'pending'"
@@ -189,7 +189,7 @@
               @click="approveOrder(orderDetail.id)"
               :disabled="processing"
             >
-              Approve Order
+              {{ $t('dashboard.approve_order') }}
             </button>
           </div>
         </div>
@@ -206,6 +206,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import api from '@/services/api'
+import notify, { confirm } from '@/utils/notify'
 
 const orders = ref([])
 const selectedOrder = ref(null)
@@ -231,21 +232,21 @@ const fetchOrders = async () => {
     orders.value = response.data
   } catch (error) {
     console.error('Error fetching orders:', error)
-    alert('Failed to load orders')
+    notify('error', 'Error', 'Failed to load orders')
   } finally {
     loading.value = false
   }
 }
 
 const approveOrder = async (orderId) => {
-  if (!confirm('Approve this order?')) return
+  if (!await confirm('Konfirmasi', 'Approve this order?', 'question')) return
 
   processing.value = true
   try {
     const response = await api.post(`/super-admin/isp-orders/${orderId}/approve`)
     
     if (response.data.success) {
-      alert('Order approved successfully!')
+      notify('success', 'Success', 'Order approved successfully!')
       await fetchOrders()
       if (selectedOrder.value && selectedOrder.value.id === orderId) {
         selectedOrder.value = null
@@ -254,7 +255,7 @@ const approveOrder = async (orderId) => {
     }
   } catch (error) {
     console.error('Error approving order:', error)
-    alert(error.response?.data?.message || 'Failed to approve order')
+    notify('error', 'Error', error.response?.data?.message || 'Failed to approve order')
   } finally {
     processing.value = false
   }
@@ -271,7 +272,7 @@ const rejectOrder = async (orderId) => {
     })
     
     if (response.data.success) {
-      alert('Order rejected successfully!')
+      notify('success', 'Success', 'Order rejected successfully!')
       await fetchOrders()
       if (selectedOrder.value && selectedOrder.value.id === orderId) {
         selectedOrder.value = null
@@ -280,7 +281,7 @@ const rejectOrder = async (orderId) => {
     }
   } catch (error) {
     console.error('Error rejecting order:', error)
-    alert(error.response?.data?.message || 'Failed to reject order')
+    notify('error', 'Error', error.response?.data?.message || 'Failed to reject order')
   } finally {
     processing.value = false
   }
@@ -294,14 +295,14 @@ const viewOrderDetail = async (orderId) => {
     orderDetail.value = response.data
   } catch (error) {
     console.error('Error fetching order detail:', error)
-    alert('Failed to load order details')
+    notify('error', 'Error', 'Failed to load order details')
   } finally {
     loadingDetail.value = false
   }
 }
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
@@ -310,6 +311,6 @@ const formatCurrency = (amount) => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleString('id-ID')
+  return new Date(date).toLocaleString('en-US')
 }
 </script>

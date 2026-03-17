@@ -5,8 +5,18 @@ import { getTenantInfo, setTenantInfo, clearTenantInfo } from '@/utils/tenant';
 
 export const useISPAdminStore = defineStore('ispAdmin', () => {
   // State
-  const user = ref(null);
   const token = ref(localStorage.getItem('isp_admin_token') || null);
+  const user = ref(null);
+  
+  // Hydrate user from localStorage if exists
+  const savedUser = localStorage.getItem('isp_admin_user');
+  if (savedUser) {
+    try {
+      user.value = JSON.parse(savedUser);
+    } catch (e) {
+      console.error('Failed to parse saved user', e);
+    }
+  }
   const tenant = ref(getTenantInfo());
   const isAuthenticated = ref(!!token.value);
   const loading = ref(false);

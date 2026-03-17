@@ -172,7 +172,7 @@ class LoginController extends Controller
             $lockedUntil = Carbon::parse($attempt->locked_until);
             
             if ($lockedUntil->isFuture()) {
-                $minutesLeft = now()->diffInMinutes($lockedUntil) + 1;
+                $minutesLeft = max(1, (int) ceil(now()->floatDiffInMinutes($lockedUntil)));
                 
                 return response()->json([
                     'message' => "Akun Anda terkunci karena terlalu banyak percobaan login gagal. Silakan coba lagi dalam {$minutesLeft} menit.",
@@ -238,5 +238,49 @@ class LoginController extends Controller
             ->where('email', $email)
             ->orWhere('ip_address', $ip)
             ->delete();
+    }
+
+    /**
+     * Update the authenticated user's profile.
+     */
+    public function updateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:20',
+        ]);
+
+        $user->update([
+            'name' => $request->name,
+            'phone' => $request->phone,
+        ]);
+
+        return response()->json([
+            'message' => 'Profile updated successfully',
+            'user' => $user->fresh()
+        ]);
+    }
+
+    /**
+     * Update the authenticated user's password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $user = $request->user();
+
+        $request->validate([
+            'current_password' => 'required|current_password',
+            'new_password' => 'required|string|min:8',
+        ]);
+
+        $user->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return response()->json([
+            'message' => 'Password changed successfully'
+        ]);
     }
 }

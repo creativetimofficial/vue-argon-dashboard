@@ -58,18 +58,31 @@ class CheckSubscriptionExpiry extends Command
             }
         }
 
-        // 2. Process Expired Orders (Grace Period Check)
-        // Apply 3-Day Grace Period: Only expire if expired_date < now() - 3 days
-        $gracePeriodDate = Carbon::now()->subDays(3);
-        
+        // 2. Process Auto-Renewals (1 day before expiry)
+        // Find orders expiring in <= 24 hours with auto_renew enabled
+        $autoRenewOrders = ISPOrder::where('status', 'active')
+            ->where('auto_renew', true)
+            ->where('expired_date', '<=', Carbon::now()->addDay())
+            ->where('expired_date', '>', Carbon::now()->subDay()) // Don't renew already expired ones here
+            ->get();
+
+        if ($autoRenewOrders->count() > 0) {
+            $this->info("Found {$autoRenewOrders->count()} orders for auto-renewal.");
+            foreach ($autoRenewOrders as $order) {
+                $this->handleAutoRenew($order);
+            }
+        }
+
+        // 3. Process Expired Orders (Immediate Check)
+        // No grace period: expire if expired_date < now()
         $expiredOrders = ISPOrder::where('status', 'active')
-            ->where('expired_date', '<', $gracePeriodDate)
+            ->where('expired_date', '<', Carbon::now())
             ->get();
 
         if ($expiredOrders->isEmpty()) {
-            $this->info('No subscriptions to expire (Grace period active).');
+            $this->info('No subscriptions to expire.');
         } else {
-            $this->info("Found {$expiredOrders->count()} subscriptions past grace period. Processing expiry...");
+            $this->info("Found {$expiredOrders->count()} expired subscriptions. Processing expiry...");
             
             $mikrotik = new MikrotikService();
 
@@ -121,7 +134,7 @@ class CheckSubscriptionExpiry extends Command
         // 2. Update Order Status
         $order->update([
             'status' => 'expired',
-            'is_active' => false, // If there's such a flag
+            'domain_active' => false,
         ]);
         
         $this->info("  - Order status updated to expired.");
@@ -134,6 +147,51 @@ class CheckSubscriptionExpiry extends Command
             }
         } catch (\Exception $e) {
              $this->error("  - Failed to send expiry email: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Handle auto-renewal for an order
+     */
+    private function handleAutoRenew($order)
+    {
+        $isp = $order->isp;
+        if (!$isp) return;
+
+        $price = $order->price;
+        
+        $this->info("Checking auto-renewal for Order #{$order->reference} (ISP: {$isp->company_name}, Price: {$price})...");
+
+        if ($isp->balance >= $price) {
+            try {
+                \Illuminate\Support\Facades\DB::transaction(function() use ($order, $isp, $price) {
+                    // Deduct balance
+                    $isp->decrement('balance', $price);
+                    
+                    // Extend expiry date
+                    $days = 30; // Default
+                    if ($order->billing_cycle === 'quarterly') $days = 90;
+                    elseif ($order->billing_cycle === 'semi_annual') $days = 180;
+                    elseif ($order->billing_cycle === 'annual') $days = 365;
+                    
+                    // Add from CURRENT expired_date to avoid losing days
+                    $currentExpiry = Carbon::parse($order->expired_date);
+                    $newExpiry = $currentExpiry->isPast() ? Carbon::now()->addDays($days) : $currentExpiry->addDays($days);
+                    
+                    $order->update([
+                        'expired_date' => $newExpiry,
+                        'last_retry_at' => now(), // Record this attempt
+                    ]);
+
+                    Log::info("Auto-renewed Order #{$order->reference} for ISP #{$isp->id}. New expiry: {$newExpiry}");
+                    $this->info("  - Auto-renewed successfully. New expiry: {$newExpiry->toDateString()}");
+                });
+            } catch (\Exception $e) {
+                $this->error("  - Auto-renewal failed: " . $e->getMessage());
+                Log::error("Auto-renew error for Order #{$order->id}: " . $e->getMessage());
+            }
+        } else {
+            $this->warn("  - Insufficient balance (Available: {$isp->balance}, Required: {$price})");
         }
     }
 }

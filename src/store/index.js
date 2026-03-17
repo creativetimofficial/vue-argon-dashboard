@@ -17,8 +17,18 @@ export default createStore({
     showFooter: true,
     showMain: true,
     layout: "default",
+    documentationSettings: {
+      help_title: 'Need Help ?',
+      help_description: 'Please check our docs',
+      docs_link: 'https://www.creative-tim.com/learning-lab/vue/overview/argon-dashboard/',
+      upgrade_link: 'https://www.creative-tim.com/product/vue-argon-dashboard-pro',
+      social_media: []
+    }
   },
   mutations: {
+    setDocumentationSettings(state, settings) {
+      state.documentationSettings = { ...state.documentationSettings, ...settings };
+    },
     toggleConfigurator(state) {
       state.showConfig = !state.showConfig;
     },

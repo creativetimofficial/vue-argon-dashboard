@@ -5,22 +5,22 @@
     <div class="col-12">
       <div class="card mb-4 min-vh-75">
         <div class="card-header pb-0">
-          <h6 class="mb-0">Services Table</h6>
+          <h6 class="mb-0">{{ $t('dashboard.services.title') }}</h6>
         </div>
         <div class="card-body px-0 pt-0 pb-2">
           <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
               <thead>
                 <tr>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Product</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Username</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Address</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Expired</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Price</th>
+                   <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.services.product') }}</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.account_user') }}</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.address_ip') }}</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.expiry') }}</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.price') }}</th>
                   <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Domain</th>
-                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Notes</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.domain') }}</th>
+                  <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.services.notes') }}</th>
                   <th class="text-secondary opacity-7"></th>
                 </tr>
               </thead>
@@ -48,7 +48,7 @@
                       :class="{ 'text-danger': isExpired(service.expired_date) }"
                     >
                       {{ formatDate(service.expired_date) }}
-                      <span v-if="isExpired(service.expired_date)" class="text-danger">(Expired)</span>
+                      <span v-if="isExpired(service.expired_date)" class="text-danger">({{ $t('dashboard.services.expired') }})</span>
                     </span>
                   </td>
                   <td class="align-middle text-center">
@@ -87,13 +87,13 @@
                       class="btn btn-info btn-sm"
                     >
                       <i class="fas fa-eye me-1"></i>
-                      Detail
+                      Details
                     </router-link>
                   </td>
                 </tr>
                 <tr v-if="services.length === 0">
                   <td colspan="10" class="text-center py-4">
-                    <p class="text-muted mb-0">No services found</p>
+                    <p class="text-muted mb-0">{{ $t('dashboard.services.no_services') }}</p>
                   </td>
                 </tr>
               </tbody>
@@ -131,7 +131,7 @@ const fetchServices = async () => {
 }
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
@@ -140,7 +140,7 @@ const formatCurrency = (amount) => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('id-ID')
+  return new Date(date).toLocaleDateString('en-US')
 }
 
 const isExpired = (date) => {

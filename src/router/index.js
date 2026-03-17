@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { h } from "vue";
 
 // Import new views
 import LandingPage from "../views/LandingPage.vue";
@@ -9,6 +10,7 @@ import ISPRegister from "../views/ISPRegister.vue";
 import SuperAdminDashboard from "../views/SuperAdminDashboard.vue";
 import VerificationSuccess from "../views/VerificationSuccess.vue";
 import ISPLandingPage from "../views/ISPLandingPage.vue";
+import ISPResetPassword from "../views/ISPResetPassword.vue";
 import { detectTenant } from "@/utils/tenant";
 
 // Import Super Admin views
@@ -18,52 +20,38 @@ import SubscriptionPackages from "../views/super-admin/SubscriptionPackages.vue"
 import ISPManagement from "../views/super-admin/ISPManagement.vue";
 import SuperAdminProfile from "../views/super-admin/Profile.vue";
 
+// Helper component to switch between main landing and ISP landing
+const HomeSwitch = {
+  name: "HomeSwitch",
+  render() {
+    const tenant = detectTenant();
+    return tenant ? h(ISPLandingPage) : h(LandingPage);
+  }
+};
+
 const routes = [
   // ===== PUBLIC ROUTES =====
   {
     path: "/",
     name: "Home",
-    component: () => {
-      const tenant = detectTenant();
-      if (tenant) {
-        return ISPLandingPage;
-      }
-      return LandingPage;
-    },
+    component: HomeSwitch,
     meta: {
       guest: true,
-      title: "ISP Billing System - Platform Manajemen ISP Terlengkap",
+      title: "Payneto - Platform Manajemen ISP Terlengkap",
     },
   },
   {
     path: "/register",
     name: "Register",
-    component: () => {
-      const tenant = detectTenant();
-      if (tenant) {
-        return ISPRegister;
-      }
-      return RegisterPage;
-    },
-    meta: { guest: true, title: "Registrasi - ISP Billing System" },
+    component: RegisterPage,
+    meta: { guest: true, title: "Registrasi - Payneto" },
   },
-  {
-    path: "/reset-password",
-    name: "ResetPassword",
-    component: () => import("../views/ISPResetPassword.vue"),
-    meta: { guest: true, title: "Reset Password" },
-  },
+
   {
     path: "/login",
     name: "Login",
-    component: () => {
-       const tenant = detectTenant();
-      if (tenant) {
-        return ISPLogin;
-      }
-      return LoginRole;
-    },
-    meta: { guest: true, title: "Login - ISP Billing System" },
+    component: LoginRole,
+    meta: { guest: true, title: "Login - Payneto" },
   },
   {
     path: "/verify-email/:token",
@@ -82,12 +70,6 @@ const routes = [
     name: "MagicLogin",
     component: () => import("../views/MagicLogin.vue"),
     meta: { guest: true, title: "Magic Login" },
-  },
-  {
-    path: "/client-area-package",
-    name: "ClientAreaPackage",
-    component: () => import("../views/ClientArea.vue"),
-    meta: { requiresAuth: true, role: "isp_admin", title: "Client Area - Pilih Paket" },
   },
   {
     path: "/client-area",
@@ -206,6 +188,12 @@ const routes = [
         component: SuperAdminProfile,
         meta: { title: "Profile Settings" },
       },
+      {
+        path: "system-settings",
+        name: "SystemSettings",
+        component: () => import("../views/super-admin/SystemSettings.vue"),
+        meta: { title: "System Settings" },
+      },
     ],
   },
 
@@ -229,67 +217,8 @@ const routes = [
   {
     path: "/forgot-password",
     name: "ForgotPassword",
-    component: () => import("../views/ISPForgotPassword.vue"),
+    component: ISPResetPassword,
     meta: { guest: true, title: "Lupa Password" },
-  },
-  {
-    path: "/isp-admin",
-    component: () => import("../layouts/ISPAdminLayout.vue"),
-    meta: { requiresAuth: true, role: "isp_admin" },
-    children: [
-      {
-        path: "",
-        redirect: "/isp-admin/dashboard",
-      },
-      {
-        path: "dashboard",
-        name: "ISPAdminDashboard",
-        component: () => import("../views/ISPAdmin/Dashboard.vue"),
-        meta: { title: "Dashboard - ISP Admin" },
-      },
-      {
-        path: "customers",
-        name: "ISPAdminCustomers",
-        component: () => import("../views/ISPAdmin/CustomerManagement.vue"),
-        meta: { title: "Managemen Pelanggan - ISP Admin" },
-      },
-      {
-        path: "packages",
-        name: "ISPAdminPackages",
-        component: () => import("../views/ISPAdmin/Packages.vue"),
-        meta: { title: "Paket Internet - ISP Admin" },
-      },
-      {
-        path: "mikrotik",
-        name: "ISPAdminMikrotik",
-        component: () => import("../views/ISPAdmin/Mikrotik.vue"),
-        meta: { title: "Managemen Mikrotik - ISP Admin" },
-      },
-      {
-        path: "tickets",
-        name: "ISPAdminTickets",
-        component: () => import("../views/ISPAdmin/Tickets.vue"),
-        meta: { title: "Tiket Support - ISP Admin" },
-      },
-      {
-        path: "invoices",
-        name: "ISPAdminInvoices",
-        component: () => import("../views/ISPAdmin/Invoices.vue"),
-        meta: { title: "Invoice - ISP Admin" },
-      },
-      {
-        path: "reports",
-        name: "ISPAdminReports",
-        component: () => import("../views/ISPAdmin/Reports.vue"),
-        meta: { title: "Laporan - ISP Admin" },
-      },
-      {
-        path: "settings",
-        name: "ISPAdminSettings",
-        component: () => import("../views/ISPAdmin/Settings.vue"),
-        meta: { title: "Pengaturan - ISP Admin" },
-      },
-    ],
   },
 
   {
@@ -300,7 +229,7 @@ const routes = [
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes,
   linkActiveClass: "active",
 });
@@ -308,7 +237,7 @@ const router = createRouter({
 // Navigation Guards
 router.beforeEach((to, from, next) => {
   // Set page title
-  document.title = to.meta.title || "ISP Billing System";
+  document.title = to.meta.title || "Payneto";
 
   // Get authentication tokens
   const ispAdminToken = localStorage.getItem("isp_admin_token");

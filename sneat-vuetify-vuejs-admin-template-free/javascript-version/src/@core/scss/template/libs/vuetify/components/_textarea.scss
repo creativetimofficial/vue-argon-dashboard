@@ -1,0 +1,9 @@
+.v-textarea {
+  textarea {
+    opacity: 0 !important;
+  }
+
+  & .v-field--active textarea {
+    opacity: 1 !important;
+  }
+}

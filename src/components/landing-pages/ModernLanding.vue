@@ -20,7 +20,7 @@
         <!-- Desktop Menu -->
         <div class="d-none d-lg-flex ms-auto align-items-center">
           <ul class="navbar-nav flex-row align-items-center mb-0">
-            <li class="nav-item"><a class="nav-link px-3 fw-medium text-secondary" href="#home">Beranda</a></li>
+            <li class="nav-item"><a class="nav-link px-3 fw-medium text-secondary" href="#home">Home</a></li>
             <li class="nav-item"><a class="nav-link px-3 fw-medium text-secondary" href="#features">Keunggulan</a></li>
             <li class="nav-item"><a class="nav-link px-3 fw-medium text-secondary" href="#pricing">Paket & Harga</a></li>
             <li class="nav-item"><a class="nav-link px-3 fw-medium text-secondary" href="#contact">Kontak</a></li>
@@ -36,7 +36,7 @@
       <div class="container-xl px-4" v-show="mobileMenuOpen">
         <div class="mobile-menu d-lg-none py-3 px-3 border-top">
           <ul class="navbar-nav">
-            <li class="nav-item mb-2"><a class="nav-link fw-medium text-secondary" href="#home" @click="mobileMenuOpen = false">Beranda</a></li>
+            <li class="nav-item mb-2"><a class="nav-link fw-medium text-secondary" href="#home" @click="mobileMenuOpen = false">Home</a></li>
             <li class="nav-item mb-2"><a class="nav-link fw-medium text-secondary" href="#features" @click="mobileMenuOpen = false">Keunggulan</a></li>
             <li class="nav-item mb-2"><a class="nav-link fw-medium text-secondary" href="#pricing" @click="mobileMenuOpen = false">Paket & Harga</a></li>
             <li class="nav-item mb-3"><a class="nav-link fw-medium text-secondary" href="#contact" @click="mobileMenuOpen = false">Kontak</a></li>
@@ -60,7 +60,7 @@
               Koneksi Tanpa Batas<br>Untuk Masa Depan
             </h1>
             <p class="lead text-secondary mb-5">
-              Nikmati pengalaman internet fiber optik yang stabil dan cepat. Cocok untuk bekerja, belajar, dan hiburan tanpa hambatan.
+              Nikmati pengalaman internet fiber optic yang stabil dan cepat. Cocok untuk bekerja, belajar, dan hiburan tanpa hambatan.
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3">
               <router-link to="/register" class="btn btn-primary btn-lg px-5 py-3 fw-bold shadow-sm hero-btn">Pasang Sekarang</router-link>
@@ -71,7 +71,7 @@
                 <div class="d-flex align-items-center">
                   <i class='bx bxs-user-check fs-2 text-primary me-2'></i>
                   <div>
-                    <h5 class="fw-bold mb-0">Reliabel</h5>
+                    <h5 class="fw-bold mb-0">Terpercaya</h5>
                     <small class="text-muted">99.9% Uptime</small>
                   </div>
                 </div>
@@ -81,7 +81,7 @@
                   <i class='bx bxs-check-shield fs-2 text-primary me-2'></i>
                   <div>
                     <h5 class="fw-bold mb-0">Aman</h5>
-                    <small class="text-muted">Proteksi DDOS</small>
+                    <small class="text-muted">Perlindungan DDOS</small>
                   </div>
                 </div>
               </div>
@@ -103,7 +103,7 @@
       <div class="container-xl py-5">
         <div class="text-center mb-5 mw-800 mx-auto">
           <h2 class="fw-bold mb-3">Mengapa Memilih Kami?</h2>
-          <p class="text-muted fs-5">Kami memberikan standar baru dalam layanan internet broadband yang fokus pada kualitas dan kepuasan pelanggan.</p>
+          <p class="text-muted fs-5">Kami menghadirkan standar baru dalam layanan internet broadband yang berfokus pada kualitas dan kepuasan pelanggan.</p>
         </div>
         
         <div class="row g-4">
@@ -113,8 +113,8 @@
                 <i class='bx bx-rocket'></i>
               </div>
               <div>
-                <h4 class="fw-bold mb-2">High Speed Fiber</h4>
-                <p class="text-secondary mb-0">Teknologi fiber optik terbaru menjamin kecepatan transfer data maksimal hingga 1Gbps.</p>
+                <h4 class="fw-bold mb-2">Fiber Kecepatan Tinggi</h4>
+                <p class="text-secondary mb-0">Teknologi fiber optic terbaru menjamin kecepatan transfer data maksimal hingga 1Gbps.</p>
               </div>
             </div>
           </div>
@@ -124,8 +124,8 @@
                 <i class='bx bx-infinite'></i>
               </div>
               <div>
-                <h4 class="fw-bold mb-2">Unlimited Quota</h4>
-                <p class="text-secondary mb-0">Bebas akses streaming, gaming, dan download sepuasnya tanpa batasan kuota (FUP).</p>
+                <h4 class="fw-bold mb-2">Kuota Tanpa Batas</h4>
+                <p class="text-secondary mb-0">Akses bebas untuk streaming, gaming, dan download sepuasnya tanpa batasan kuota (FUP).</p>
               </div>
             </div>
           </div>
@@ -135,7 +135,7 @@
                 <i class='bx bx-support'></i>
               </div>
               <div>
-                <h4 class="fw-bold mb-2">Premium Support</h4>
+                <h4 class="fw-bold mb-2">Dukungan Premium</h4>
                 <p class="text-secondary mb-0">Layanan pelanggan prioritas yang siap membantu Anda 24/7 melalui WhatsApp dan Telepon.</p>
               </div>
             </div>
@@ -160,14 +160,14 @@
                  <h5 class="fw-bold text-secondary mb-3">Starter</h5>
                  <div class="d-flex align-items-baseline mb-4">
                    <h2 class="fw-bold mb-0 text-dark">Rp 150.000</h2>
-                   <span class="text-muted ms-2">/bulan</span>
+                   <span class="text-muted ms-2">/month</span>
                  </div>
                  <ul class="list-unstyled mb-5 text-secondary">
                    <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> 10 Mbps Speed</li>
                    <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> Unlimited Quota</li>
                    <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> Basic Support</li>
                  </ul>
-                 <router-link to="/register" class="btn btn-outline-dark w-100 py-2 fw-medium">Pilih Paket</router-link>
+                 <router-link to="/register" class="btn btn-outline-dark w-100 py-2 fw-medium">Choose Package</router-link>
                </div>
              </div>
            </div>
@@ -175,20 +175,20 @@
            <!-- Pro Plan (Feautured) -->
            <div class="col-lg-4">
              <div class="card border-primary shadow h-100 p-0 overflow-hidden transform-scale-sm">
-               <div class="bg-primary text-center py-2 text-white fw-bold small text-uppercase spacing-wide">Paling Laris</div>
+               <div class="bg-primary text-center py-2 text-white fw-bold small text-uppercase spacing-wide">Best Seller</div>
                <div class="card-body p-4">
                  <h5 class="fw-bold text-dark mb-3">Family</h5>
                  <div class="d-flex align-items-baseline mb-4">
                    <h2 class="fw-bold mb-0 text-primary">Rp 250.000</h2>
-                   <span class="text-muted ms-2">/bulan</span>
+                   <span class="text-muted ms-2">/month</span>
                  </div>
                  <ul class="list-unstyled mb-5 text-secondary">
                    <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> <strong>30 Mbps</strong> Speed</li>
                    <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> Unlimited Quota</li>
-                   <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> Prioritas Support</li>
-                   <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> Free Instalasi</li>
+                   <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> Priority Support</li>
+                   <li class="mb-3 d-flex"><i class='bx bxs-check-circle text-primary me-2 mt-1'></i> Free Installation</li>
                  </ul>
-                 <router-link to="/register" class="btn btn-primary w-100 py-3 fw-bold">Pilih Paket</router-link>
+                 <router-link to="/register" class="btn btn-primary w-100 py-3 fw-bold">Choose Package</router-link>
                </div>
              </div>
            </div>
@@ -197,17 +197,17 @@
            <div class="col-lg-4">
              <div class="card border-0 shadow-sm h-100 p-3">
                <div class="card-body">
-                 <h5 class="fw-bold text-secondary mb-3">Gamer / Bisnis</h5>
+                 <h5 class="fw-bold text-secondary mb-3">Gamer / Business</h5>
                  <div class="d-flex align-items-baseline mb-4">
                    <h2 class="fw-bold mb-0 text-dark">Rp 500.000</h2>
-                   <span class="text-muted ms-2">/bulan</span>
+                   <span class="text-muted ms-2">/month</span>
                  </div>
                  <ul class="list-unstyled mb-5 text-secondary">
                    <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> 100 Mbps Speed</li>
                    <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> Unlimited Quota</li>
-                   <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> Dedicated IP Public</li>
+                   <li class="mb-3 d-flex"><i class='bx bx-check-circle text-primary me-2 mt-1'></i> Dedicated Public IP</li>
                  </ul>
-                 <router-link to="/register" class="btn btn-outline-dark w-100 py-2 fw-medium">Pilih Paket</router-link>
+                 <router-link to="/register" class="btn btn-outline-dark w-100 py-2 fw-medium">Choose Package</router-link>
                </div>
              </div>
            </div>
@@ -221,7 +221,7 @@
         <div class="row gy-4">
           <div class="col-lg-4">
             <h4 class="fw-bold mb-3">{{ ispName }}</h4>
-            <p class="text-white-50">Menghubungkan Anda dengan dunia melalui koneksi internet berkualitas tinggi dan terpercaya.</p>
+            <p class="text-white-50">Menghubungkan Anda ke dunia melalui koneksi internet berkualitas tinggi dan terpercaya.</p>
           </div>
           <div class="col-6 col-lg-2 offset-lg-2">
             <h6 class="fw-bold mb-3 text-white">Produk</h6>
@@ -231,14 +231,14 @@
             </ul>
           </div>
           <div class="col-6 col-lg-2">
-            <h6 class="fw-bold mb-3 text-white">Bantuan</h6>
+            <h6 class="fw-bold mb-3 text-white">Dukungan</h6>
             <ul class="list-unstyled text-white-50">
-              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Cek Cover area</a></li>
+              <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">Cek Area Jangkauan</a></li>
               <li class="mb-2"><a href="#" class="text-white-50 text-decoration-none">FAQ</a></li>
             </ul>
           </div>
           <div class="col-lg-2">
-            <h6 class="fw-bold mb-3 text-white">Sosial</h6>
+            <h6 class="fw-bold mb-3 text-white">Social</h6>
             <div class="d-flex gap-3">
               <a href="#" class="text-white"><i class='bx bxl-facebook fs-4'></i></a>
               <a href="#" class="text-white"><i class='bx bxl-instagram fs-4'></i></a>
@@ -247,7 +247,7 @@
           </div>
         </div>
         <div class="border-top border-secondary mt-5 pt-4 text-center text-white-50">
-          <small>&copy; {{ new Date().getFullYear() }} {{ ispName }}. Hak Cipta Dilindungi.</small>
+          <small>&copy; {{ new Date().getFullYear() }} {{ ispName }}. Hak Cipta Dilindungi Undang-Undang.</small>
         </div>
       </div>
     </footer>

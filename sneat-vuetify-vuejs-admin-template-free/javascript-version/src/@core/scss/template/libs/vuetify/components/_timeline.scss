@@ -1,0 +1,99 @@
+@use "@configured-variables" as variables;
+
+// 👉 Timeline
+.v-timeline {
+  // timeline items
+  .v-timeline-item {
+    &:not(:last-child) {
+      .v-timeline-item__body {
+        margin-block-end: 0.5rem;
+      }
+    }
+
+    .app-timeline-title {
+      line-height: 1.375rem;
+    }
+
+    .app-timeline-meta {
+      font-size: 0.8125rem;
+      font-weight: 400;
+      letter-spacing: 0.025rem;
+      line-height: 1.125rem;
+    }
+
+    .app-timeline-text {
+      font-size: 0.9375rem;
+      font-weight: 400;
+      line-height: 1.375rem;
+    }
+  }
+
+  // timeline icon only
+  &.v-timeline-icon-only {
+    .v-timeline-divider__dot {
+      .v-timeline-divider__inner-dot {
+        background: rgb(var(--v-theme-background));
+        box-shadow: none;
+      }
+    }
+  }
+
+  &:not(.v-timeline--variant-outlined) .v-timeline-divider__dot {
+    background: none !important;
+
+    .v-timeline-divider__inner-dot {
+      box-shadow: 0 0 0 0.1875rem rgb(var(--v-theme-on-surface-variant));
+
+      @each $color-name in variables.$theme-colors-name {
+
+        &.bg-#{$color-name} {
+          box-shadow: 0 0 0 0.1875rem rgba(var(--v-theme-#{$color-name}), 0.12);
+        }
+      }
+    }
+  }
+
+  &.v-timeline--variant-outlined {
+    .v-timeline-item {
+      .v-timeline-divider {
+        .v-timeline-divider__dot {
+          background: none !important;
+        }
+      }
+
+      .v-timeline-divider__after {
+        border: 1.5px dashed rgba(var(--v-border-color), var(--v-border-opacity));
+        background: none;
+      }
+
+      .v-timeline-divider__before {
+        background: none;
+      }
+    }
+  }
+
+  // we have to override the default bg-color of the timeline dot in the card
+  .v-card:not(.v-card--variant-text, .v-card--variant-plain, .v-card--variant-outlined) & {
+    &.v-timeline-icon-only {
+      .v-timeline-divider__dot {
+        .v-timeline-divider__inner-dot {
+          /* stylelint-disable-next-line no-descending-specificity */
+          background: rgb(var(--v-theme-surface));
+        }
+      }
+    }
+  }
+
+  .v-card.v-card--variant-tonal & {
+    &.v-timeline-icon-only {
+      .v-timeline-divider__dot {
+        .v-timeline-divider__inner-dot {
+          /* stylelint-disable-next-line no-descending-specificity */
+          .v-icon {
+            background: none;
+          }
+        }
+      }
+    }
+  }
+}

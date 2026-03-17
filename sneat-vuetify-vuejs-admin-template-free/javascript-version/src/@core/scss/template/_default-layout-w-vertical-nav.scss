@@ -1,0 +1,20 @@
+@use "vuetify/lib/styles/tools/elevation" as elevation;
+
+.layout-wrapper.layout-nav-type-vertical {
+  // 👉 Layout footer
+  .layout-footer {
+    $ele-layout-footer: &;
+
+    .footer-content-container {
+      // Sticky footer
+      @at-root {
+        // ℹ️ .layout-footer-sticky#{$ele-layout-footer} => .layout-footer-sticky.layout-wrapper.layout-nav-type-vertical .layout-footer
+        .layout-footer-sticky#{$ele-layout-footer} {
+          .footer-content-container {
+            @include elevation.elevation(8);
+          }
+        }
+      }
+    }
+  }
+}

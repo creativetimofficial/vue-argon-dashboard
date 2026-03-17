@@ -146,6 +146,20 @@ class IspThemeController extends Controller
      */
     public function getPublicTheme()
     {
+        // Check if tenant is detected by middleware
+        $isp = app()->bound('current_isp') ? app('current_isp') : null;
+        
+        if ($isp) {
+            $theme = IspTheme::where('isp_id', $isp->id)
+                             ->where('is_active', true)
+                             ->first();
+            
+            if ($theme) {
+                return response()->json($theme);
+            }
+        }
+
+        // Fallback to global active theme
         $theme = IspTheme::whereNull('isp_id')
                          ->where('is_active', true)
                          ->first();

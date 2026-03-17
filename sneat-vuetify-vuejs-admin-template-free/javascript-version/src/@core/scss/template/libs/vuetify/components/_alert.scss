@@ -1,0 +1,70 @@
+@use "@core/scss/base/mixins";
+@use "@configured-variables" as variables;
+@use "@core/scss/template/mixins" as templateMixins;
+
+/* 👉 Alert
+/ ℹ️ custom icon styling */
+
+$alert-prepend-icon-font-size: 1.125rem !important;
+
+.v-alert:not(.v-alert--prominent) {
+  .v-alert__prepend {
+    padding: 0.125rem;
+    border-radius: 1rem;
+    background-color: #fff;
+
+    .v-icon {
+      block-size: $alert-prepend-icon-font-size;
+      font-size: $alert-prepend-icon-font-size;
+      inline-size: $alert-prepend-icon-font-size;
+    }
+  }
+
+  .v-alert-title {
+    margin-block-end: 0.25rem;
+  }
+
+  .v-alert__close {
+    .v-btn--icon {
+      .v-icon {
+        block-size: 1.25rem;
+        font-size: 1.25rem;
+        inline-size: 1.25rem;
+      }
+
+      .v-btn__overlay,
+      .v-ripple__container {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@each $color-name in variables.$theme-colors-name {
+  .v-alert {
+
+    &:not(.v-alert--prominent).text-#{$color-name},
+    &:not(.v-alert--prominent).bg-#{$color-name} {
+      .v-alert__prepend {
+        border: 2px solid rgb(var(--v-theme-#{$color-name}-light));
+        color: rgba(var(--v-theme-#{$color-name})) !important;
+
+        @include mixins.elevation(2);
+      }
+    }
+
+    &--variant-outlined:not(.v-alert--prominent),
+    &--variant-tonal:not(.v-alert--prominent),
+    &--variant-plain:not(.v-alert--prominent) {
+      &.bg-#{$color-name},
+      &.text-#{$color-name} {
+        .v-alert__prepend {
+          border: none;
+          background-color: rgb(var(--v-theme-#{$color-name}));
+          box-shadow: 0 0 0 2px rgba(var(--v-theme-#{$color-name}), 0.16);
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}

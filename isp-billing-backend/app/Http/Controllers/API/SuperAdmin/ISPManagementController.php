@@ -4,7 +4,12 @@ namespace App\Http\Controllers\API\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ISP;
+use App\Models\User;
+use App\Models\SubscriptionPackage;
+use App\Models\ISPOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class ISPManagementController extends Controller
 {
@@ -15,9 +20,8 @@ class ISPManagementController extends Controller
     {
         $isp = ISP::findOrFail($id);
         $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
             'company_name' => 'sometimes|required|string|max:255',
-            'email' => 'sometimes|required|email|max:255|unique:isps,email,' . $isp->id,
+            'email' => 'sometimes|required|email|max:255',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
@@ -43,6 +47,8 @@ class ISPManagementController extends Controller
             'approved_by' => 'nullable|integer',
             'rejection_reason' => 'nullable|string',
             'is_active' => 'nullable|boolean',
+            'subdomain' => 'nullable|string|max:50',
+            'custom_domain' => 'nullable|string|max:255',
         ]);
 
         $isp->update($validated);
@@ -70,42 +76,93 @@ class ISPManagementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
             'company_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255|unique:isps,email',
+            'email' => 'required|email|unique:users,email|max:255',
+            'password' => 'required|string|min:8',
+            'subdomain' => 'nullable|string|unique:isps,subdomain|max:50|required_without:custom_domain',
+            'custom_domain' => 'nullable|string|unique:isps,custom_domain|max:255|required_without:subdomain',
+            'subscription_package_id' => 'required|exists:subscription_packages,id',
             'phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
             'province' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:20',
-            'logo' => 'nullable|string',
-            'website' => 'nullable|string|max:255',
-            'package_id' => 'nullable|integer',
-            'subscription_package_id' => 'nullable|integer|exists:subscription_packages,id',
-            'subscription_status' => 'nullable|string|in:trial,active,suspended,cancelled,expired',
-            'subscription_start_date' => 'nullable|date',
-            'subscription_end_date' => 'nullable|date',
-            'trial_end_date' => 'nullable|date',
-            'tax_id' => 'nullable|string|max:100',
-            'business_license' => 'nullable|string|max:255',
-            'is_verified' => 'nullable|boolean',
-            'verified_at' => 'nullable|date',
-            'current_customers_count' => 'nullable|integer',
-            'current_users_count' => 'nullable|integer',
-            'current_locations_count' => 'nullable|integer',
-            'approval_status' => 'nullable|string|in:pending,approved,rejected',
-            'approved_at' => 'nullable|date',
-            'approved_by' => 'nullable|integer',
-            'rejection_reason' => 'nullable|string',
-            'is_active' => 'nullable|boolean',
         ]);
 
-        $isp = ISP::create($validated);
+        try {
+            DB::beginTransaction();
 
-        return response()->json([
-            'message' => 'ISP created successfully',
-            'isp' => $isp
-        ], 201);
+            // 1. Get Subscription Package details
+            $package = SubscriptionPackage::findOrFail($validated['subscription_package_id']);
+            $isTrial = $package->price == 0 || ($package->trial_days ?? 0) > 0;
+            $subscriptionStatus = $isTrial ? 'trial' : 'active';
+            $activeDays = $package->active_days ?? ($package->trial_days ?? 30);
+
+            // 2. Create ISP
+            $isp = ISP::create([
+                'company_name' => $validated['company_name'],
+                'email' => $validated['email'],
+                'subdomain' => $validated['subdomain'],
+                'custom_domain' => $validated['custom_domain'] ?? null,
+                'phone' => $validated['phone'],
+                'address' => $validated['address'],
+                'city' => $validated['city'],
+                'province' => $validated['province'],
+                'postal_code' => $validated['postal_code'],
+                'subscription_package_id' => $package->id,
+                'subscription_status' => $subscriptionStatus,
+                'approval_status' => 'approved', // Manual creation is pre-approved
+                'subscription_start_date' => now(),
+                'subscription_end_date' => now()->addDays($activeDays),
+                'is_active' => true,
+                'approved_at' => now(),
+                'approved_by' => auth()->id(),
+            ]);
+
+            // 3. Create ISP Admin User
+            $user = User::create([
+                'name' => explode('@', $validated['email'])[0],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'role' => 'isp_admin',
+                'isp_id' => $isp->id,
+                'is_active' => true,
+                'email_verified_at' => now(),
+            ]);
+
+            // Set owner
+            $isp->update(['owner_id' => $user->id]);
+
+            // 4. Create Administrative Order Record
+            ISPOrder::create([
+                'isp_id' => $isp->id,
+                'subscription_package_id' => $package->id,
+                'reference' => 'ADM-' . strtoupper(\Illuminate\Support\Str::random(10)),
+                'order_type' => 'package',
+                'service_name' => 'Package: ' . $package->name,
+                'price' => $package->price,
+                'billing_cycle' => $isp->billing_cycle ?? 'monthly',
+                'status' => $subscriptionStatus,
+                'payment_status' => $isTrial ? 'unpaid' : 'paid',
+                'start_date' => now(),
+                'expired_date' => now()->addDays($activeDays),
+                'approved_at' => now(),
+                'approved_by' => auth()->id(),
+                'notes' => 'Created via Super Admin Manual ISP Addition',
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'message' => 'ISP and Admin account created successfully',
+                'isp' => $isp->load('subscriptionPackage')
+            ], 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to create ISP: ' . $e->getMessage()
+            ], 500);
+        }
     }
     public function index(Request $request)
     {

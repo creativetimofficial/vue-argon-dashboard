@@ -9,18 +9,18 @@
                 <div class="spinner-border text-success mb-4" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-                <p>Memproses pembayaran...</p>
+                <p>Processing payment...</p>
               </div>
               <div v-else-if="success">
                 <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
-                <h2 class="mb-3 text-success">Pembayaran Berhasil!</h2>
-                <p class="mb-4">Paket Anda telah berhasil diaktifkan.<br />Anda akan diarahkan ke dashboard.</p>
+                <h2 class="mb-3 text-success">Payment Successful!</h2>
+                <p class="mb-4">Your package has been successfully activated.<br />You will be redirected to the dashboard.</p>
               </div>
               <div v-else-if="errorMessage">
                 <i class="fas fa-times-circle fa-4x text-danger mb-4"></i>
-                <h2 class="mb-3 text-danger">Pembayaran Gagal</h2>
+                <h2 class="mb-3 text-danger">Payment Failed</h2>
                 <p class="mb-4">{{ errorMessage }}</p>
-                <router-link to="/client-area" class="btn btn-primary px-4 py-2">Kembali ke Client Area</router-link>
+                <router-link to="/client-area" class="btn btn-primary px-4 py-2">Back to Client Area</router-link>
               </div>
             </div>
           </div>
@@ -50,7 +50,7 @@ const processPayment = async () => {
     const params = route.query
     
     if (!params.order_id && (!params.isp_id || !params.package_id)) {
-      errorMessage.value = 'Parameter pembayaran tidak valid.'
+      errorMessage.value = 'Invalid payment parameters.'
       loading.value = false
       return
     }
@@ -85,11 +85,11 @@ const processPayment = async () => {
          }
       }, 1500)
     } else {
-      errorMessage.value = response.data.message || 'Pembayaran gagal.'
+      errorMessage.value = response.data.message || 'Payment failed.'
     }
   } catch (error) {
     console.error('Payment callback error:', error)
-    errorMessage.value = error.response?.data?.message || 'Terjadi kesalahan saat memproses pembayaran.'
+    errorMessage.value = error.response?.data?.message || 'An error occurred while processing the payment.'
   } finally {
     loading.value = false
   }

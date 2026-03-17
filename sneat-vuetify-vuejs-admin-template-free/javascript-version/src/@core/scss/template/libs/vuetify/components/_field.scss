@@ -1,0 +1,316 @@
+@use "sass:map";
+@use "@configured-variables" as variables;
+@use "@core/scss/template/mixins" as templateMixins;
+
+$v-input-density: (
+  comfortable: (
+    icon-size: 1.125rem,
+    font-size: 0.9375rem,
+    line-height: 1.5rem,
+  ),
+  default: (
+    icon-size: 1.25rem,
+    font-size: 1.0625rem,
+    line-height: 1.5rem,
+  ),
+  compact: (
+    icon-size: 1rem,
+    font-size: 0.8125rem,
+    line-height: 1.375rem,
+  ),
+);
+
+// 👉 VInput
+.v-input {
+  // 👉 VField
+  .v-field {
+    .v-field__loader {
+      .v-progress-linear {
+        .v-progress-linear__background {
+          background-color: transparent !important;
+        }
+      }
+    }
+
+    &.v-field--variant-solo,
+    &.v-field--variant-filled {
+      color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    }
+
+    // Color for text field
+    .v-field__input {
+      color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    }
+
+    // Make field border width 2px when error
+    &.v-field--error {
+      .v-field__outline {
+        --v-field-border-width: 2px;
+      }
+    }
+
+    // Label
+    &.v-field--variant-outlined {
+      .v-label {
+        &.v-field-label--floating {
+          line-height: 0.9375rem;
+          margin-block: 0;
+          margin-inline: 6px;
+        }
+      }
+    }
+
+    &:not(.v-field--focused, .v-field--error):hover .v-field__outline {
+      --v-field-border-opacity: 0.6 !important;
+    }
+
+    // Shadow on focus
+    &.v-field--variant-outlined.v-field--focused:not(.v-field--error, .v-field--success) {
+      .v-field__outline {
+        @each $color-name in variables.$theme-colors-name {
+          &.text-#{$color-name} {
+            @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+          }
+        }
+
+        &:not([class*="text-"]) {
+          @include templateMixins.custom-elevation(var(--v-theme-primary), "sm");
+        }
+      }
+    }
+  }
+
+  // Give hint messages color based on theme color
+  @each $color-name in variables.$theme-colors-name {
+    &:has( .v-field.v-field--focused .v-field__outline.text-#{$color-name}) {
+      .v-messages {
+        color: rgb(var(--v-theme-#{$color-name}));
+      }
+    }
+  }
+
+  // Loop through each density setting in the map
+  @each $density, $settings in $v-input-density {
+    &.v-input--density-#{$density} {
+      .v-input__append,
+      .v-input__prepend,
+      .v-input__details,
+      .v-field .v-field__append-inner,
+      .v-field .v-field__prepend-inner,
+      .v-field .v-field__clearable {
+        > .v-icon {
+          block-size: map.get($settings, icon-size);
+          color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+          font-size: map.get($settings, icon-size);
+          inline-size: map.get($settings, icon-size);
+          opacity: 1;
+        }
+      }
+
+      .v-field {
+        .v-field__input {
+          font-size: map.get($settings, font-size);
+          line-height: map.get($settings, line-height);
+        }
+      }
+    }
+  }
+}
+
+// 👉 TextField, Select, AutoComplete, ComboBox, Textarea
+// ℹ️ We added .v-application to increase the specificity of the selector
+
+// Styles related to our custom input components
+body {
+  .app-text-field,
+  .app-select,
+  .app-autocomplete,
+  .app-combobox,
+  .app-textarea,
+  .app-file-input,
+  .app-picker-field {
+    color: rgba(var(--v-theme-on-surface));
+
+    // making padding 0 for help text
+    .v-text-field,
+    .v-file-input {
+      .v-input__details {
+        padding-inline-start: 0;
+      }
+    }
+
+    // Placeholder
+    .v-input {
+      .v-field {
+        // Placeholder transition
+        input,
+        .v-field__input {
+          &::placeholder {
+            transition: transform 0.2s ease-out;
+          }
+        }
+
+        &.v-field--focused {
+          input,
+          .v-field__input {
+            &::placeholder {
+              transform: translateX(4px) !important;
+
+              [dir="rtl"] & {
+                transform: translateX(-4px) !important;
+              }
+            }
+          }
+        }
+      }
+
+      // padding for different density
+      &.v-input--density-default {
+        .v-field {
+          border-radius: 8px;
+
+          .v-field__input {
+            --v-field-padding-start: 20px;
+            --v-field-padding-end: 20px;
+          }
+        }
+      }
+
+      &.v-input--density-comfortable {
+        .v-field {
+          .v-field__input {
+            --v-field-padding-start: 14px;
+            --v-field-padding-end: 14px;
+          }
+        }
+      }
+
+      &.v-input--density-compact {
+        .v-field {
+          border-radius: 4px;
+
+          .v-field__input {
+            --v-field-padding-start: 12px;
+            --v-field-padding-end: 12px;
+          }
+        }
+      }
+    }
+
+    // Disabled state
+    &:has(.v-input.v-input--disabled) {
+      .v-label {
+        color: rgba(var(--v-theme-on-surface), 0.4);
+      }
+
+      .v-input {
+        .v-field.v-field--disabled {
+          background-color: rgba(var(--v-theme-on-surface), var(--v-hover-opacity));
+          opacity: 1;
+
+          .v-field__outline {
+            --v-field-border-opacity: 0.24;
+          }
+
+          .v-field__input {
+            color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+          }
+        }
+      }
+    }
+
+    // Apply color to label
+    @each $color-name in variables.$theme-colors-name {
+      .v-label {
+        color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+
+        &:has(+ .v-input .v-field.v-field--focused .v-field__outline.text-#{$color-name}) {
+          color: rgb(var(--v-theme-#{$color-name}));
+        }
+
+        &:has(+ .v-input .v-field.v-field--error) {
+          color: rgb(var(--v-theme-error));
+        }
+      }
+    }
+  }
+
+  @mixin style-selectable-component($component-name) {
+    .app-#{$component-name} {
+      .v-#{$component-name}__selection {
+        line-height: 24px;
+        margin-block: 0 !important;
+      }
+
+      // Vertical alignment of placeholder & text
+      .v-#{$component-name} .v-field .v-field__input > input {
+        align-self: center;
+      }
+
+      // Chips
+
+      .v-#{$component-name}.v-#{$component-name}--chips.v-input--dirty {
+        .v-#{$component-name}__selection {
+          margin: 0;
+        }
+
+        .v-field__input {
+          gap: 3px;
+        }
+
+        &.v-input--density-compact {
+          .v-field__input {
+            padding-inline-start: 0.5rem;
+          }
+        }
+
+        &.v-input--density-comfortable {
+          .v-field__input {
+            padding-inline-start: 0.75rem;
+          }
+        }
+
+        &.v-input--density-default {
+          .v-field__input {
+            padding-inline-start: 1rem;
+          }
+        }
+      }
+    }
+  }
+
+  @include style-selectable-component("autocomplete");
+  @include style-selectable-component("select");
+  @include style-selectable-component("combobox");
+
+  // AutoComplete
+  @at-root {
+    .app-autocomplete__content {
+      .v-list-item--active {
+        .v-autocomplete__mask {
+          background: rgba(92, 82, 192, 60%);
+        }
+      }
+
+      .v-theme--dark {
+        .v-list-item:not(.v-list-item--active) {
+          .v-autocomplete__mask {
+            background: rgba(59, 64, 92, 60%);
+          }
+        }
+      }
+    }
+  }
+}
+
+.app-inner-list {
+  // Hide checkboxes
+  .v-selection-control {
+    display: none;
+  }
+}
+
+// Hide resizer
+::-webkit-resizer {
+  background: transparent;
+}

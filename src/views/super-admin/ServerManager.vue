@@ -5,7 +5,7 @@
         <div class="card">
           <div class="card-header pb-0">
             <div class="d-flex justify-content-between align-items-center">
-              <h6 class="mb-0">Server Manager</h6>
+              <h6 class="mb-0">{{ $t('dashboard.server.title') }}</h6>
               <button
                 class="btn btn-primary btn-sm mb-0"
                 @click="openModal()"
@@ -109,7 +109,7 @@
                   </tr>
                   <tr v-if="servers.length === 0">
                     <td colspan="6" class="text-center py-4">
-                      <p class="text-muted mb-0">No servers found</p>
+                      <p class="text-muted mb-0">{{ $t('dashboard.server.no_servers') }}</p>
                     </td>
                   </tr>
                 </tbody>
@@ -130,7 +130,7 @@
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">{{ form.id ? 'Edit Server' : 'Add New Server' }}</h5>
+            <h5 class="modal-title">{{ form.id ? $t('dashboard.server.edit_server') : $t('dashboard.server.add_new_server') }}</h5>
             <button
               type="button"
               class="btn-close"
@@ -141,7 +141,7 @@
             <form @submit.prevent="submitForm">
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Server Name</label>
+                  <label class="form-label">{{ $t('dashboard.server.server_name') }}</label>
                   <input
                     v-model="form.name"
                     type="text"
@@ -151,7 +151,7 @@
                   />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Location (Optional)</label>
+                  <label class="form-label">{{ $t('dashboard.server.location') }}</label>
                   <input
                     v-model="form.location"
                     type="text"
@@ -163,7 +163,7 @@
               
               <div class="row">
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">IP Address</label>
+                  <label class="form-label">{{ $t('dashboard.server.ip_address') }}</label>
                   <input
                     v-model="form.ip_address"
                     type="text"
@@ -173,7 +173,7 @@
                   />
                 </div>
                 <div class="col-md-6 mb-3">
-                  <label class="form-label">Domain (Optional)</label>
+                  <label class="form-label">{{ $t('dashboard.server.domain') }}</label>
                   <input
                     v-model="form.domain"
                     type="text"
@@ -185,7 +185,7 @@
 
               <div class="row">
                  <div class="col-md-3 mb-3">
-                  <label class="form-label">API Port</label>
+                  <label class="form-label">{{ $t('dashboard.server.api_port') }}</label>
                   <input
                     v-model="form.api_port"
                     type="number"
@@ -194,7 +194,7 @@
                   />
                  </div>
                  <div class="col-md-3 mb-3">
-                  <label class="form-label">VPN Local IP</label>
+                  <label class="form-label">{{ $t('dashboard.server.vpn_local_ip') }}</label>
                   <input
                     v-model="form.vpn_local_address"
                     type="text"
@@ -203,7 +203,7 @@
                   />
                  </div>
                  <div class="col-md-3 mb-3">
-                  <label class="form-label">API Username</label>
+                  <label class="form-label">{{ $t('dashboard.server.api_username') }}</label>
                   <input
                     v-model="form.username"
                     type="text"
@@ -211,7 +211,7 @@
                   />
                  </div>
                  <div class="col-md-3 mb-3">
-                  <label class="form-label">API Password</label>
+                  <label class="form-label">{{ $t('dashboard.server.api_password') }}</label>
                   <input
                     v-model="form.password"
                     type="password"
@@ -221,7 +221,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Capacity (Max Users)</label>
+                <label class="form-label">{{ $t('dashboard.server.capacity') }}</label>
                 <input
                   v-model="form.capacity"
                   type="number"
@@ -230,7 +230,7 @@
               </div>
 
               <div class="mb-3">
-                <label class="form-label">Notes</label>
+                <label class="form-label">{{ $t('dashboard.server.notes') }}</label>
                 <textarea
                   v-model="form.notes"
                   class="form-control"
@@ -244,7 +244,7 @@
                   type="checkbox"
                   v-model="form.is_active"
                 />
-                <label class="form-check-label">Is Active</label>
+                <label class="form-check-label">{{ $t('dashboard.server.is_active') }}</label>
               </div>
 
               <div class="d-flex justify-content-end gap-2">
@@ -264,7 +264,7 @@
                     <i class="fas fa-spinner fa-spin me-2"></i>
                     Saving...
                   </span>
-                  <span v-else>Save Server</span>
+                  <span v-else>{{ $t('dashboard.server.save_server') }}</span>
                 </button>
               </div>
             </form>
@@ -288,7 +288,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Manual VPN Test (L2TP/SSTP)</h5>
+            <h5 class="modal-title">{{ $t('dashboard.server.manual_vpn') }}</h5>
             <button
               type="button"
               class="btn-close"
@@ -298,7 +298,7 @@
           <div class="modal-body">
             <form @submit.prevent="submitVpnTest">
               <div class="mb-3">
-                <label class="form-label">Username</label>
+                <label class="form-label">{{ $t('dashboard.server.username') }}</label>
                 <input
                   v-model="vpnForm.username"
                   type="text"
@@ -307,7 +307,7 @@
                 />
               </div>
               <div class="mb-3">
-                <label class="form-label">Password</label>
+                <label class="form-label">{{ $t('dashboard.server.password') }}</label>
                 <input
                   v-model="vpnForm.password"
                   type="text"
@@ -317,7 +317,7 @@
               </div>
               <div class="row">
                   <div class="col-6 mb-3">
-                    <label class="form-label">Local Address (Gateway)</label>
+                    <label class="form-label">{{ $t('dashboard.server.local_address') }}</label>
                     <input
                       v-model="vpnForm.local_address"
                       type="text"
@@ -326,7 +326,7 @@
                     />
                   </div>
                   <div class="col-6 mb-3">
-                    <label class="form-label">Remote Address (Client)</label>
+                    <label class="form-label">{{ $t('dashboard.server.remote_address') }}</label>
                     <input
                       v-model="vpnForm.remote_address"
                       type="text"
@@ -353,7 +353,7 @@
                     <i class="fas fa-spinner fa-spin me-2"></i>
                     Creating...
                   </span>
-                  <span v-else>Create Secret</span>
+                  <span v-else>{{ $t('dashboard.server.create_secret') }}</span>
                 </button>
               </div>
             </form>
@@ -372,6 +372,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '@/services/api'
+import notify, { confirm } from '@/utils/notify'
 
 const servers = ref([])
 const loading = ref(false)
@@ -404,7 +405,7 @@ const fetchServers = async () => {
     servers.value = response.data
   } catch (error) {
     console.error('Error fetching servers:', error)
-    alert('Failed to fetch servers')
+    notify('error', 'Error', 'Failed to fetch servers')
   } finally {
     loading.value = false
   }
@@ -443,29 +444,29 @@ const submitForm = async () => {
     
     await fetchServers()
     showModal.value = false
-    alert('Server saved successfully!')
+    notify('success', 'Success', 'Server saved successfully!')
   } catch (error) {
     console.error('Error saving server:', error)
-    alert('Failed to save server: ' + (error.response?.data?.message || error.message))
+    notify('error', 'Error', 'Failed to save server: ' + (error.response?.data?.message || error.message))
   } finally {
     processing.value = false
   }
 }
 
 const deleteServer = async (id) => {
-  if (!confirm('Are you sure you want to delete this server?')) return
+  if (!await confirm('Konfirmasi', 'Are you sure you want to delete this server?', 'warning')) return
   
   try {
     await api.delete(`/super-admin/servers/${id}`)
     await fetchServers()
   } catch (error) {
     console.error('Error deleting server:', error)
-     alert('Failed to delete server')
+     notify('error', 'Error', 'Failed to delete server')
   }
 }
 
 const formatDate = (date) => {
-  return new Date(date).toLocaleDateString('id-ID')
+  return new Date(date).toLocaleDateString('en-US')
 }
 const testingConnection = ref(null)
 const showVpnModal = ref(false)
@@ -481,10 +482,10 @@ const testConnection = async (server) => {
   testingConnection.value = server.id
   try {
     const response = await api.post(`/super-admin/servers/${server.id}/test-connection`)
-    alert(response.data.message)
+    notify('success', 'Connection Test', response.data.message)
   } catch (error) {
     console.error('Connection test failed:', error)
-    alert('Connection Failed: ' + (error.response?.data?.message || error.message))
+    notify('error', 'Connection Failed', (error.response?.data?.message || error.message))
   } finally {
     testingConnection.value = null
   }
@@ -505,11 +506,11 @@ const submitVpnTest = async () => {
     processing.value = true
     try {
         const response = await api.post(`/super-admin/servers/${vpnForm.value.server_id}/create-vpn`, vpnForm.value)
-        alert(response.data.message)
+        notify('success', 'Success', response.data.message)
         showVpnModal.value = false
     } catch (error) {
         console.error('VPN Creation failed:', error)
-        alert('Failed to create VPN: ' + (error.response?.data?.message || error.message))
+        notify('error', 'Error', 'Failed to create VPN: ' + (error.response?.data?.message || error.message))
     } finally {
         processing.value = false
     }

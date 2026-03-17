@@ -28,17 +28,29 @@ class ISPOrderObserver
      */
     public function updated(ISPOrder $order): void
     {
-        // Trigger if status changed to 'active'
+        // 1. Trigger if status changed to 'active'
         if ($order->isDirty('status') && $order->status === 'active') {
             $this->assignSubdomainToISP($order);
             $this->provisionVPN($order);
         }
         
-        // OR trigger if credentials were just assigned to an already active order
-        // (This handles the case where trials are created as 'active' then updated with credentials)
+        // 2. Trigger if credentials were just assigned to an already active order
         elseif ($order->status === 'active' && ($order->isDirty('username') || $order->isDirty('ip_address')) && !empty($order->username)) {
             $this->provisionVPN($order);
         }
+
+        // 3. Trigger if status changed to inactive (expired, suspended, cancelled)
+        elseif ($order->isDirty('status') && in_array($order->status, ['expired', 'suspended', 'cancelled'])) {
+            $this->deprovisionVPN($order);
+        }
+    }
+
+    /**
+     * Handle the ISPOrder "deleted" event.
+     */
+    public function deleted(ISPOrder $order): void
+    {
+        $this->deprovisionVPN($order);
     }
 
     /**
@@ -85,6 +97,36 @@ class ISPOrderObserver
             }
         } catch (\Exception $e) {
             Log::error("VPN Provisioning Error for Order #{$order->id}: " . $e->getMessage());
+        }
+    }
+
+    /**
+     * Remove VPN account from Mikrotik server
+     */
+    private function deprovisionVPN(ISPOrder $order): void
+    {
+        if (empty($order->username)) {
+            return;
+        }
+
+        $server = $order->server;
+        if (!$server) {
+            return;
+        }
+
+        try {
+            $mikrotik = new MikrotikService();
+            if ($mikrotik->connect($server->ip_address, $server->username, $server->password, $server->api_port ?? 8728)) {
+                if ($mikrotik->removePppSecret($order->username)) {
+                    Log::info("VPN Deprovisioned (removed) from server '{$server->name}' for Order #{$order->id}");
+                    if ($server->current_users > 0) {
+                        $server->decrement('current_users');
+                    }
+                }
+                $mikrotik->disconnect();
+            }
+        } catch (\Exception $e) {
+            Log::error("VPN Deprovisioning Error for Order #{$order->id}: " . $e->getMessage());
         }
     }
 

@@ -1,0 +1,11 @@
+@use "vuetify/lib/styles/tools/elevation" as elevation;
+@use "@configured-variables" as variables;
+
+%default-layout-vertical-nav-floating-navbar-and-sticky-elevated-navbar-scrolled {
+  // If navbar is contained => Squeeze navbar content on scroll
+  @if variables.$layout-vertical-nav-navbar-is-contained {
+    padding-inline: 1.5rem;
+
+    @include elevation.elevation(4);
+  }
+}

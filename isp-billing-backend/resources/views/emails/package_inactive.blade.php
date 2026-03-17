@@ -24,7 +24,7 @@
         <p>Jika Anda ingin mengaktifkan kembali layanan ini, silakan buat order baru atau perpanjang layanan melalui Client Area.</p>
         
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ $url }}" style="background-color: #5e72e4; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ke Client Area</a>
+            <a href="{{ $url }}" style="background-color: #2dce89; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Ke Client Area</a>
         </div>
         
         <p style="font-size: 12px; color: #888; margin-top: 30px;">

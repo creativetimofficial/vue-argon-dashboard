@@ -5,7 +5,7 @@
 </head>
 <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
     <div style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
-        <h2 style="color: #5e72e4;">Tagihan Baru Tersedia</h2>
+        <h2 style="color: #1a9e65;">Tagihan Baru Tersedia</h2>
         <p>Halo <strong>{{ $isp->name }}</strong>,</p>
         
         <p>Tagihan baru telah diterbitkan untuk layanan Anda.</p>
@@ -28,7 +28,7 @@
         <p>Silakan lakukan pembayaran sebelum tanggal jatuh tempo untuk menghindari gangguan layanan.</p>
         
         <div style="text-align: center; margin: 30px 0;">
-            <a href="{{ $url }}" style="background-color: #5e72e4; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Lihat & Bayar Tagihan</a>
+            <a href="{{ $url }}" style="background-color: #2dce89; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Lihat & Bayar Tagihan</a>
         </div>
         
         <p style="font-size: 12px; color: #888; margin-top: 30px;">

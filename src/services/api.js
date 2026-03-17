@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create axios instance
 const api = axios.create({
-  baseURL: process.env.VUE_APP_API_URL || "http://localhost:8000/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8000/api",
   timeout: 30000,
   headers: {
     "Content-Type": "application/json",
@@ -13,19 +13,28 @@ const api = axios.create({
 // Request interceptor to add token
 api.interceptors.request.use(
   (config) => {
-    let token = localStorage.getItem("auth_token");
-    if (!token) {
-      token = sessionStorage.getItem("auth_token");
-      console.log("Token from sessionStorage:", token ? "Found" : "Not found");
-    } else {
-      console.log("Token from localStorage:", token ? "Found" : "Not found");
-    }
+    const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     
+    // List of public routes that don't require an auth token
+    const publicRoutes = [
+      '/auth/login',
+      '/auth/register',
+      '/auth/login-role',
+      '/landing-page',
+      '/theme/public',
+      '/subscription-packages/public',
+      '/public-tenant-packages',
+      '/tenant-info'
+    ];
+
+    // Check if the current request URL is a public route
+    const isPublicRoute = publicRoutes.some(route => config.url && config.url.includes(route));
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
-      console.log("Authorization header set for:", config.url);
-    } else {
-      console.warn("No token found in localStorage or sessionStorage!");
+    } else if (!isPublicRoute) {
+      // Only log "no token" for protected routes
+      console.warn("no token");
     }
     return config;
   },
@@ -61,6 +70,8 @@ export const authAPI = {
   verifyResetCode: (data) => api.post("/auth/verify-reset-code", data),
   resetPassword: (data) => api.post("/auth/reset-password", data),
   getTenantInfo: () => api.get("/tenant-info"),
+  getPublicTheme: () => api.get("/theme/public"),
+  getPublicTenantPackages: () => api.get("/public-tenant-packages"),
 };
 
 // Super Admin API
@@ -82,6 +93,7 @@ export const superAdminAPI = {
 export const ispAdminAPI = {
   getDashboard: () => api.get("/isp-admin/dashboard"),
   getCustomers: (params) => api.get("/isp-admin/customers", { params }),
+  getCustomersMap: () => api.get("/isp-admin/customers-map"),
   getCustomer: (id) => api.get(`/isp-admin/customers/${id}`),
   createCustomer: (data) => api.post("/isp-admin/customers", data),
   updateCustomer: (id, data) => api.put(`/isp-admin/customers/${id}`, data),
@@ -90,6 +102,7 @@ export const ispAdminAPI = {
   // Client Area endpoints for ISP Admin
   getClientAreaStats: () => api.get("/isp-admin/client-area/stats"),
   getMyServices: () => api.get("/isp-admin/client-area/my-services"),
+  getOwnedIsps: () => api.get("/isp-admin/client-area/owned-isps"),
   getClientAreaServices: () => api.get("/isp-admin/client-area/services"),
   getClientAreaOrders: () => api.get("/isp-admin/client-area/orders"),
   createClientAreaOrder: (data) => api.post("/isp-admin/client-area/orders", data),
@@ -97,6 +110,42 @@ export const ispAdminAPI = {
   // Theme Management
   getTheme: () => api.get("/isp-admin/theme"),
   updateTheme: (data) => api.post("/isp-admin/theme", data),
+
+  // Staff Management
+  getStaff: () => api.get("/isp-admin/staff"),
+  createStaff: (data) => api.post("/isp-admin/staff", data),
+  updateStaff: (id, data) => api.put(`/isp-admin/staff/${id}`, data),
+  deleteStaff: (id) => api.delete(`/isp-admin/staff/${id}`),
+
+  // Packages & Services
+  getPackages: () => api.get("/isp-admin/packages"),
+  createPackage: (data) => api.post("/isp-admin/packages", data),
+  updatePackage: (id, data) => api.put(`/isp-admin/packages/${id}`, data),
+  deletePackage: (id) => api.delete(`/isp-admin/packages/${id}`),
+  getServices: () => api.get("/isp-admin/services"),
+
+  // Invoices & Billing
+  getInvoices: (params) => api.get("/isp-admin/invoices", { params }),
+  downloadInvoice: (id) => api.get(`/isp-admin/invoices/${id}/download`, { responseType: 'blob' }),
+  markInvoicePaid: (id) => api.post(`/isp-admin/invoices/${id}/mark-as-paid`),
+  runBillingJob: () => api.post('/isp-admin/billing/trigger'),
+
+  // Other Management
+  getReports: () => api.get("/isp-admin/reports"),
+  getMikrotik: () => api.get("/isp-admin/mikrotik"),
+  createMikrotik: (data) => api.post("/isp-admin/mikrotik", data),
+  updateMikrotik: (id, data) => api.put(`/isp-admin/mikrotik/${id}`, data),
+  deleteMikrotik: (id) => api.delete(`/isp-admin/mikrotik/${id}`),
+  getTickets: () => api.get("/isp-admin/tickets"),
+  createTicket: (data) => api.post("/isp-admin/tickets", data),
+  updateTicket: (id, data) => api.put(`/isp-admin/tickets/${id}`, data),
+  deleteTicket: (id) => api.delete(`/isp-admin/tickets/${id}`),
+
+  // Settings & Profile
+  updateProfile: (data) => api.post("/isp-admin/settings/profile", data),
+  updatePassword: (data) => api.post("/isp-admin/settings/password", data),
+  getNotificationSettings: () => api.get("/isp-admin/settings/notifications"),
+  updateNotificationSettings: (data) => api.post("/isp-admin/settings/notifications", data),
 };
 
 export default api;

@@ -1,0 +1,46 @@
+{
+  "extends": [
+    "stylelint-config-standard-scss",
+    "stylelint-config-idiomatic-order",
+    "@stylistic/stylelint-config"
+  ],
+  "plugins": [
+    "stylelint-use-logical-spec",
+    "@stylistic/stylelint-plugin"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.scss"
+      ],
+      "customSyntax": "postcss-scss"
+    },
+    {
+      "files": [
+        "**/*.vue"
+      ],
+      "customSyntax": "postcss-html"
+    }
+  ],
+  "rules": {
+    "@stylistic/max-line-length": [
+      220,
+      {
+        "ignore": "comments"
+      }
+    ],
+    "@stylistic/indentation": 2,
+    "liberty/use-logical-spec": true,
+    "selector-class-pattern": null,
+    "color-function-notation": null,
+    "annotation-no-unknown": [
+      true,
+      {
+        "ignoreAnnotations": [
+          "default"
+        ]
+      }
+    ],
+    "media-feature-range-notation": null
+  }
+}

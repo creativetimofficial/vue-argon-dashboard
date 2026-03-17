@@ -6,9 +6,9 @@
           <div class="card-header pb-0">
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h5 class="mb-0">ISP Admin Theme Customizer</h5>
+                <h5 class="mb-0">{{ $t('dashboard.theme.title') }}</h5>
                 <p class="text-sm mb-0">
-                  Customize tampilan panel untuk ISP Admin clients
+                  {{ $t('dashboard.theme.subtitle') }}
                 </p>
               </div>
               <div>
@@ -16,16 +16,16 @@
                   class="btn btn-outline-primary btn-sm me-2"
                   @click="resetToDefault"
                 >
-                  <i class="fas fa-undo me-2"></i>Reset Default
+                  <i class="fas fa-undo me-2"></i>{{ $t('dashboard.theme.reset_default') }}
                 </button>
                 <button
                   class="btn btn-outline-info btn-sm me-2"
                   @click="applySneatPreset"
                 >
-                  <i class="fas fa-magic me-2"></i>Sneat Preset
+                  <i class="fas fa-magic me-2"></i>{{ $t('dashboard.theme.sneat_preset') }}
                 </button>
                 <button class="btn btn-primary btn-sm" @click="saveTheme">
-                  <i class="fas fa-save me-2"></i>Simpan Theme
+                   <i class="fas fa-save me-2"></i>{{ $t('dashboard.theme.save_theme') }}
                 </button>
               </div>
             </div>
@@ -38,11 +38,11 @@
                 <!-- Branding -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Branding & Logo</h6>
+                    <h6>{{ $t('dashboard.theme.branding_logo') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="mb-3">
-                      <label class="form-label">System Name</label>
+                      <label class="form-label">{{ $t('dashboard.theme.system_name') }}</label>
                       <input
                         v-model="theme.system_name"
                         type="text"
@@ -50,7 +50,7 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Logo (Light Mode)</label>
+                      <label class="form-label">{{ $t('dashboard.theme.logo_light') }}</label>
                       <div class="d-flex align-items-center gap-3">
                         <img
                           v-if="theme.logo_light"
@@ -67,7 +67,7 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Logo (Dark Mode)</label>
+                      <label class="form-label">{{ $t('dashboard.theme.logo_dark') }}</label>
                       <div class="d-flex align-items-center gap-3">
                         <img
                           v-if="theme.logo_dark"
@@ -84,7 +84,7 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Favicon</label>
+                      <label class="form-label">{{ $t('dashboard.theme.favicon') }}</label>
                       <div class="d-flex align-items-center gap-3">
                         <img
                           v-if="theme.favicon"
@@ -106,12 +106,12 @@
                 <!-- Color Scheme -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Color Scheme</h6>
+                    <h6>{{ $t('dashboard.theme.color_scheme') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="row">
                       <div class="col-6 mb-3">
-                        <label class="form-label">Primary Color</label>
+                        <label class="form-label">{{ $t('dashboard.theme.primary_color') }}</label>
                         <input
                           v-model="theme.color_primary"
                           type="color"
@@ -120,7 +120,7 @@
                         <small class="text-muted">{{ theme.color_primary }}</small>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label">Secondary Color</label>
+                        <label class="form-label">{{ $t('dashboard.theme.secondary_color') }}</label>
                         <input
                           v-model="theme.color_secondary"
                           type="color"
@@ -131,7 +131,7 @@
                     </div>
                     <div class="row">
                       <div class="col-6 mb-3">
-                        <label class="form-label">Success Color</label>
+                        <label class="form-label">{{ $t('dashboard.theme.success_color') }}</label>
                         <input
                           v-model="theme.color_success"
                           type="color"
@@ -140,7 +140,7 @@
                         <small class="text-muted">{{ theme.color_success }}</small>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label">Danger Color</label>
+                        <label class="form-label">{{ $t('dashboard.theme.danger_color') }}</label>
                         <input
                           v-model="theme.color_danger"
                           type="color"
@@ -155,12 +155,12 @@
                 <!-- Button & Link Colors -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Button & Link Colors</h6>
+                    <h6>{{ $t('dashboard.theme.btn_link_colors') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="row">
                       <div class="col-6 mb-3">
-                        <label class="form-label">Button Primary</label>
+                        <label class="form-label">{{ $t('dashboard.theme.btn_primary') }}</label>
                         <input
                           v-model="theme.button_primary_color"
                           type="color"
@@ -169,7 +169,7 @@
                         <small class="text-muted">{{ theme.button_primary_color }}</small>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label">Button Secondary</label>
+                        <label class="form-label">{{ $t('dashboard.theme.btn_secondary') }}</label>
                         <input
                           v-model="theme.button_secondary_color"
                           type="color"
@@ -179,7 +179,7 @@
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Link Color</label>
+                      <label class="form-label">{{ $t('dashboard.theme.link_color') }}</label>
                       <input
                         v-model="theme.link_color"
                         type="color"
@@ -193,12 +193,12 @@
                 <!-- Text & Background Colors -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Text & Background Colors</h6>
+                    <h6>{{ $t('dashboard.theme.text_bg_colors') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="row">
                       <div class="col-6 mb-3">
-                        <label class="form-label">Text Primary</label>
+                        <label class="form-label">{{ $t('dashboard.theme.text_primary') }}</label>
                         <input
                           v-model="theme.text_primary_color"
                           type="color"
@@ -207,7 +207,7 @@
                         <small class="text-muted">{{ theme.text_primary_color }}</small>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label">Text Secondary</label>
+                        <label class="form-label">{{ $t('dashboard.theme.text_secondary') }}</label>
                         <input
                           v-model="theme.text_secondary_color"
                           type="color"
@@ -218,7 +218,7 @@
                     </div>
                     <div class="row">
                       <div class="col-6 mb-3">
-                        <label class="form-label">Navbar Background</label>
+                        <label class="form-label">{{ $t('dashboard.theme.navbar_bg') }}</label>
                         <input
                           v-model="theme.navbar_bg_color"
                           type="color"
@@ -227,7 +227,7 @@
                         <small class="text-muted">{{ theme.navbar_bg_color }}</small>
                       </div>
                       <div class="col-6 mb-3">
-                        <label class="form-label">Dashboard Background</label>
+                        <label class="form-label">{{ $t('dashboard.theme.dashboard_bg') }}</label>
                         <input
                           v-model="theme.dashboard_bg_color"
                           type="color"
@@ -242,11 +242,11 @@
                 <!-- Sidebar -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Sidebar Settings</h6>
+                    <h6>{{ $t('dashboard.theme.sidebar_settings') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="mb-3">
-                      <label class="form-label">Background Color</label>
+                      <label class="form-label">{{ $t('dashboard.theme.dashboard_bg') }}</label>
                       <input
                         v-model="theme.sidebar_bg_color"
                         type="color"
@@ -254,7 +254,7 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Text Color</label>
+                      <label class="form-label">{{ $t('dashboard.theme.text_color') }}</label>
                       <input
                         v-model="theme.sidebar_text_color"
                         type="color"
@@ -262,7 +262,7 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Active Item Color</label>
+                      <label class="form-label">{{ $t('dashboard.theme.active_item_color') }}</label>
                       <input
                         v-model="theme.sidebar_active_color"
                         type="color"
@@ -270,11 +270,11 @@
                       />
                     </div>
                     <div class="mb-3">
-                      <label class="form-label">Sidebar Type</label>
+                      <label class="form-label">{{ $t('dashboard.theme.sidebar_type') }}</label>
                       <select v-model="theme.sidebar_type" class="form-control">
-                        <option value="transparent">Transparent</option>
-                        <option value="white">White</option>
-                        <option value="dark">Dark</option>
+                        <option value="transparent">{{ $t('dashboard.theme.transparent') }}</option>
+                        <option value="white">{{ $t('dashboard.theme.white') }}</option>
+                        <option value="dark">{{ $t('dashboard.theme.dark') }}</option>
                       </select>
                     </div>
                   </div>
@@ -283,30 +283,30 @@
                 <!-- Layout & UI -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Layout & UI</h6>
+                    <h6>{{ $t('dashboard.theme.layout_ui') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="mb-3">
-                      <label class="form-label">Font Family</label>
+                      <label class="form-label">{{ $t('dashboard.theme.font_family') }}</label>
                       <input v-model="theme.font_family" type="text" class="form-control" />
                     </div>
                     <div class="row">
                        <div class="col-6 mb-3">
-                          <label class="form-label">Border Radius</label>
+                          <label class="form-label">{{ $t('dashboard.theme.border_radius') }}</label>
                           <input v-model="theme.border_radius" type="text" class="form-control" placeholder="8px" />
                        </div>
                        <div class="col-6 mb-3">
-                          <label class="form-label">Font Size</label>
+                          <label class="form-label">{{ $t('dashboard.theme.font_size') }}</label>
                           <input v-model="theme.font_size" type="text" class="form-control" placeholder="16px" />
                        </div>
                     </div>
                     <div class="form-check form-switch mb-2">
                        <input v-model="theme.dark_mode_default" class="form-check-input" type="checkbox" id="darkModeDefault" />
-                       <label class="form-check-label" for="darkModeDefault">Dark Mode Default</label>
+                       <label class="form-check-label" for="darkModeDefault">{{ $t('dashboard.theme.dark_mode_default') }}</label>
                     </div>
                     <div class="form-check form-switch mb-2">
                        <input v-model="theme.sidebar_mini" class="form-check-input" type="checkbox" id="sidebarMini" />
-                       <label class="form-check-label" for="sidebarMini">Sidebar Mini</label>
+                       <label class="form-check-label" for="sidebarMini">{{ $t('dashboard.theme.sidebar_mini') }}</label>
                     </div>
                   </div>
                 </div>
@@ -314,11 +314,11 @@
                 <!-- Custom CSS -->
                 <div class="card mb-3">
                   <div class="card-header pb-0">
-                    <h6>Custom CSS</h6>
+                    <h6>{{ $t('dashboard.theme.custom_css') }}</h6>
                   </div>
                   <div class="card-body">
                     <div class="mb-3">
-                      <label class="form-label">Additional CSS</label>
+                      <label class="form-label">{{ $t('dashboard.theme.additional_css') }}</label>
                       <textarea
                         v-model="theme.customCSS"
                         class="form-control font-monospace"
@@ -326,7 +326,7 @@
                         placeholder="/* Custom CSS here */"
                       ></textarea>
                       <small class="text-muted"
-                        >Advanced: Add custom CSS rules</small
+                        >{{ $t('dashboard.theme.advanced_css_help') }}</small
                       >
                     </div>
                   </div>
@@ -337,7 +337,7 @@
               <div class="col-md-7">
                 <div class="card bg-light" style="position: sticky; top: 20px">
                   <div class="card-header">
-                    <h6>Live Preview</h6>
+                    <h6>{{ $t('dashboard.theme.live_preview') }}</h6>
                   </div>
                   <div class="card-body p-0">
                     <!-- Mini Dashboard Preview -->
@@ -485,7 +485,7 @@
                           <!-- Table Preview -->
                           <div class="card">
                             <div class="card-header pb-0">
-                              <h6>Recent Customers</h6>
+                              <h6>{{ $t('dashboard.theme.recent_customers') }}</h6>
                             </div>
                             <div class="card-body px-0 pt-0 pb-2">
                               <table class="table align-items-center mb-0">
@@ -567,10 +567,10 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
-import axios from "axios";
+import { superAdminAPI } from "@/services/api";
+import notify, { confirm } from '@/utils/notify';
 
 const loading = ref(false);
-const API_URL = "http://localhost:8000/api";
 const themeId = ref(null);
 
 const theme = reactive({
@@ -656,7 +656,7 @@ const fetchTheme = async () => {
     }
   } catch (error) {
     console.error("Error fetching theme:", error);
-    alert("Failed to load theme: " + (error.response?.data?.message || error.message));
+    notify("error", "Error", "Failed to load theme: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -668,7 +668,7 @@ const saveTheme = async () => {
     const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     
     if (!token) {
-      alert("You are not authenticated. Please login again.");
+      notify("warning", "Unauthorized", "You are not authenticated. Please login again.");
       return;
     }
     
@@ -683,12 +683,12 @@ const saveTheme = async () => {
       themeId.value = response.data.id;
     }
     
-    alert("Theme saved successfully!");
+    notify("success", "Success", "Theme saved successfully!");
     // Reload theme to update preview
     await fetchTheme();
   } catch (error) {
     console.error("Error saving theme:", error);
-    alert("Failed to save theme: " + (error.response?.data?.message || error.message));
+    notify("error", "Error", "Failed to save theme: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -747,8 +747,8 @@ const applySneatPreset = () => {
     });
 };
 
-const resetToDefault = () => {
-  if (confirm("Reset semua settings ke default?")) {
+const resetToDefault = async () => {
+  if (await confirm('Konfirmasi', "Reset all settings to default?", 'warning')) {
     Object.assign(theme, {
       color_primary: "#5e72e4",
       color_secondary: "#8392ab",

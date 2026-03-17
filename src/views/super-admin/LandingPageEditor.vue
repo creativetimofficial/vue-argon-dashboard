@@ -8,7 +8,7 @@
               <div>
                 <h5 class="mb-0">Landing Page Editor</h5>
                 <p class="text-sm mb-0">
-                  Customize tampilan landing page promosi
+                  Customize landing page appearance
                 </p>
               </div>
               <div>
@@ -20,7 +20,7 @@
                   >Preview
                 </button>
                 <button class="btn btn-primary btn-sm" @click="saveLandingPage">
-                  <i class="fas fa-save me-2"></i>Simpan Perubahan
+                  <i class="fas fa-save me-2"></i>Save Changes
                 </button>
               </div>
             </div>
@@ -108,6 +108,8 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Hero Title</label>
                     <input
+                      id="hero_title"
+                      name="hero_title"
                       v-model="landingPage.hero_title"
                       type="text"
                       class="form-control"
@@ -116,6 +118,8 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">Hero Subtitle</label>
                     <input
+                      id="hero_subtitle"
+                      name="hero_subtitle"
                       v-model="landingPage.hero_subtitle"
                       type="text"
                       class="form-control"
@@ -126,6 +130,8 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">CTA Button Text</label>
                     <input
+                      id="hero_cta_text"
+                      name="hero_cta_text"
                       v-model="landingPage.hero_cta_text"
                       type="text"
                       class="form-control"
@@ -134,6 +140,8 @@
                   <div class="col-md-6 mb-3">
                     <label class="form-label fw-bold">CTA Button Link</label>
                     <input
+                      id="hero_cta_link"
+                      name="hero_cta_link"
                       v-model="landingPage.hero_cta_link"
                       type="text"
                       class="form-control"
@@ -189,13 +197,13 @@
                     type="checkbox"
                     id="showFeatures"
                   />
-                  <label class="form-check-label" for="showFeatures">Tampilkan Fitur</label>
+                  <label class="form-check-label" for="showFeatures">Show Features</label>
                 </div>
                 <div v-if="landingPage.show_features">
                   <div class="d-flex justify-content-between mb-3">
                     <h6>Feature Items</h6>
                     <button class="btn btn-sm btn-primary" @click="addFeature">
-                      <i class="fas fa-plus me-2"></i>Tambah Feature
+                      <i class="fas fa-plus me-2"></i>Add Feature
                     </button>
                   </div>
                   <div
@@ -228,6 +236,8 @@
                         <div class="col-md-8 mb-3">
                           <label class="form-label">Title</label>
                           <input
+                            :id="'feature_title_' + index"
+                            :name="'feature_title_' + index"
                             v-model="feature.title"
                             type="text"
                             class="form-control"
@@ -237,6 +247,8 @@
                       <div class="mb-3">
                         <label class="form-label">Description</label>
                         <textarea
+                          :id="'feature_desc_' + index"
+                          :name="'feature_desc_' + index"
                           v-model="feature.description"
                           class="form-control"
                           rows="2"
@@ -256,7 +268,7 @@
                     type="checkbox"
                     id="showPricing"
                   />
-                  <label class="form-check-label" for="showPricing">Tampilkan Harga</label>
+                  <label class="form-check-label" for="showPricing">Show Pricing</label>
                 </div>
                 <div v-if="landingPage.show_pricing">
                   <div class="d-flex justify-content-between mb-3">
@@ -265,7 +277,7 @@
                       class="btn btn-sm btn-primary"
                       @click="addPricingPlan"
                     >
-                      <i class="fas fa-plus me-2"></i>Tambah Plan
+                      <i class="fas fa-plus me-2"></i>Add Plan
                     </button>
                   </div>
                   <div
@@ -334,13 +346,13 @@
                     type="checkbox"
                     id="showTestimonials"
                   />
-                  <label class="form-check-label" for="showTestimonials">Tampilkan Testimoni</label>
+                  <label class="form-check-label" for="showTestimonials">Show Testimonials</label>
                 </div>
                 <div v-if="landingPage.show_testimonials">
                   <div class="d-flex justify-content-between mb-3">
                     <h6>Testimonials</h6>
                     <button class="btn btn-sm btn-primary" @click="addTestimonial">
-                      <i class="fas fa-plus me-2"></i>Tambah Testimonial
+                      <i class="fas fa-plus me-2"></i>Add Testimonial
                     </button>
                   </div>
                   <div
@@ -391,7 +403,7 @@
 
               <!-- Styling Tab -->
               <div v-show="activeTab === 'styling'">
-                <h6 class="mb-4">Customize Tampilan Landing Page</h6>
+                <h6 class="mb-4">Customize Landing Page Appearance</h6>
                 
                 <!-- Font Settings -->
                 <div class="card mb-4">
@@ -496,7 +508,7 @@
                     type="checkbox"
                     id="showContact"
                   />
-                  <label class="form-check-label" for="showContact">Tampilkan Kontak</label>
+                  <label class="form-check-label" for="showContact">Show Contact</label>
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
@@ -564,7 +576,7 @@
                     type="checkbox"
                     id="showLogos"
                   />
-                  <label class="form-check-label" for="showLogos">Tampilkan Logos</label>
+                  <label class="form-check-label" for="showLogos">Show Logos</label>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h6>Partner Logos</h6>
@@ -606,7 +618,7 @@
                     type="checkbox"
                     id="showFaqs"
                   />
-                  <label class="form-check-label" for="showFaqs">Tampilkan FAQs</label>
+                  <label class="form-check-label" for="showFaqs">Show FAQs</label>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <h6>Frequently Asked Questions</h6>
@@ -644,6 +656,7 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
 import axios from "axios";
+import notify from "@/utils/notify";
 
 const activeTab = ref("hero");
 const previewMode = ref(false);
@@ -670,10 +683,10 @@ const availableIcons = [
 ];
 
 const landingPage = reactive({
-  hero_title: "Platform ISP Billing Terlengkap",
-  hero_subtitle: "Kelola Bisnis ISP Anda dengan Mudah",
+  hero_title: "Complete ISP Billing Platform",
+  hero_subtitle: "Manage your ISP business with ease",
   hero_image: "",
-  hero_cta_text: "Mulai Sekarang",
+  hero_cta_text: "Get Started",
   hero_cta_link: "/register",
   hero_gradient_from: "#667eea",
   hero_gradient_to: "#764ba2",
@@ -682,7 +695,7 @@ const landingPage = reactive({
     {
       icon: "fas fa-rocket",
       title: "Fast & Reliable",
-      description: "Infrastructure yang stabil dan cepat untuk operasional ISP Anda",
+      description: "Stable and fast infrastructure for your ISP operations",
     },
   ],
   show_pricing: true,
@@ -700,7 +713,7 @@ const landingPage = reactive({
     {
       name: "John Doe",
       company: "ABC Internet Service",
-      text: "Platform ini sangat membantu!",
+      text: "This platform is very helpful!",
       avatar: "https://i.pravatar.cc/150?img=1",
       rating: 5,
     },
@@ -724,7 +737,7 @@ const landingPage = reactive({
     linkedin: "",
   },
   meta_title: "ISP Billing Pro",
-  meta_description: "Solusi Manajemen ISP",
+  meta_description: "ISP Management Solution",
   meta_keywords: "isp, billing, mikrotik",
   // Styling defaults
   font_family: "Inter",
@@ -781,7 +794,7 @@ const fetchLandingPage = async () => {
     }
   } catch (error) {
     console.error("Error fetching landing page:", error);
-    alert("Error loading landing page: " + (error.response?.data?.message || error.message));
+    notify("error", "Error", "Error loading landing page: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -806,10 +819,10 @@ const saveLandingPage = async () => {
       });
     }
     
-    alert("Landing page saved successfully!");
+    notify("success", "Success", "Landing page saved successfully!");
   } catch (error) {
     console.error("Error saving landing page:", error);
-    alert("Failed to save: " + (error.response?.data?.message || error.message));
+    notify("error", "Error", "Failed to save: " + (error.response?.data?.message || error.message));
   } finally {
     loading.value = false;
   }
@@ -833,10 +846,10 @@ const uploadLogo = async (event, index) => {
     });
     
     landingPage.logos[index].url = response.data.url;
-    alert("Logo uploaded successfully");
+    notify("success", "Success", "Logo uploaded successfully");
   } catch (error) {
     console.error("Upload failed", error);
-    alert("Upload failed: " + (error.response?.data?.message || error.message));
+    notify("error", "Upload Failed", error.response?.data?.message || error.message);
   } finally {
     loading.value = false;
   }
@@ -922,10 +935,10 @@ const uploadHeroImage = async (event) => {
     });
     
     landingPage.hero_image = response.data.url;
-    alert("Hero image uploaded successfully");
+    notify("success", "Success", "Hero image uploaded successfully");
   } catch (error) {
     console.error("Upload failed", error);
-    alert("Upload failed: " + (error.response?.data?.message || error.message));
+    notify("error", "Upload Failed", error.response?.data?.message || error.message);
   } finally {
     loading.value = false;
   }

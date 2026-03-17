@@ -1,0 +1,54 @@
+.layout-blank {
+  .auth-wrapper {
+    min-block-size: 100dvh;
+  }
+
+  .auth-card {
+    z-index: 1 !important;
+  }
+}
+
+.auth-v1-top-shape,
+.auth-v1-bottom-shape {
+  position: absolute;
+}
+
+.auth-v1-top-shape {
+  block-size: 148px;
+  inline-size: 148px;
+  inset-block-start: -3.5rem;
+  inset-inline-end: -2.5rem;
+}
+
+.auth-v1-bottom-shape {
+  block-size: 240px;
+  inline-size: 240px;
+  inset-block-end: -4.5rem;
+  inset-inline-start: -3rem;
+}
+
+.auth-illustration {
+  z-index: 1;
+}
+
+@media (min-width: 960px) {
+  .skin--bordered {
+    .auth-card-v2 {
+      border-inline-start: 1px solid rgba(var(--v-border-color), var(--v-border-opacity)) !important;
+    }
+  }
+}
+
+.auth-logo {
+  position: absolute;
+  z-index: 2;
+  inset-block-start: 2.5rem;
+  inset-inline-start: 2.5rem;
+}
+
+.auth-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15px;
+  line-height: 1.75rem;
+}

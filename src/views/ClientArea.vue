@@ -7,9 +7,9 @@
             <div class="card-header bg-gradient-success text-white text-center py-4">
               <h3 class="mb-0">
                 <i class="fas fa-shopping-cart me-2"></i>
-                Client Area - Pilih Paket Langganan
+                Client Area - Choose Subscription Package
               </h3>
-              <p class="mb-0 mt-2">Pilih paket yang sesuai dengan kebutuhan ISP Anda</p>
+              <p class="mb-0 mt-2">Choose the right package for your ISP needs</p>
             </div>
 
             <div class="card-body p-4">
@@ -17,7 +17,7 @@
                 <div class="spinner-border text-success" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="mt-3">Memuat paket...</p>
+                <p class="mt-3">Loading packages...</p>
               </div>
 
               <div v-else-if="errorMessage" class="alert alert-danger">
@@ -27,7 +27,7 @@
 
               <div v-else-if="packages.length === 0" class="text-center py-5">
                 <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
-                <p class="text-muted">Tidak ada paket yang tersedia saat ini.</p>
+                <p class="text-muted">No packages are available at this time.</p>
               </div>
 
               <div v-else class="row g-4">
@@ -49,7 +49,7 @@
                       style="z-index: 1"
                     >
                       <i class="fas fa-star me-1"></i>
-                      Paling Populer
+                      Most Popular
                     </div>
                     <div class="card-body p-4">
                       <h4 class="card-title text-center mb-3">{{ pkg.name }}</h4>
@@ -57,7 +57,7 @@
                         <h2 class="text-success mb-0">
                           {{ formatCurrency(pkg.price) }}
                         </h2>
-                        <small class="text-muted">/ {{ pkg.active_days }} Hari</small>
+                        <small class="text-muted">/ {{ pkg.active_days }} Days</small>
                       </div>
 
                       <div v-if="pkg.description" class="mb-3">
@@ -67,15 +67,15 @@
                       <ul class="list-unstyled mb-4">
                         <li class="mb-2">
                           <i class="fas fa-check text-success me-2"></i>
-                          <strong>{{ formatNumber(pkg.max_customers) }}</strong> Maksimal Pelanggan
+                          <strong>{{ formatNumber(pkg.max_customers) }}</strong> Maximum Customers
                         </li>
                         <li class="mb-2">
                           <i class="fas fa-check text-success me-2"></i>
-                          <strong>{{ formatNumber(pkg.max_users) }}</strong> Maksimal User
+                          <strong>{{ formatNumber(pkg.max_users) }}</strong> Maximum Users
                         </li>
                         <li class="mb-2">
                           <i class="fas fa-check text-success me-2"></i>
-                          <strong>{{ formatNumber(pkg.max_locations) }}</strong> Lokasi
+                          <strong>{{ formatNumber(pkg.max_locations) }}</strong> Locations
                         </li>
                         <li
                           v-if="pkg.features && pkg.features.length > 0"
@@ -100,11 +100,11 @@
                       >
                         <span v-if="selectedPackage?.id === pkg.id">
                           <i class="fas fa-check me-2"></i>
-                          Terpilih
+                          Selected
                         </span>
                         <span v-else>
                           <i class="fas fa-shopping-cart me-2"></i>
-                          Pilih Paket
+                          Choose Package
                         </span>
                       </button>
                     </div>
@@ -117,38 +117,63 @@
                   <div class="card-body p-4">
                     <h5 class="mb-3">
                       <i class="fas fa-info-circle me-2"></i>
-                      Paket yang Dipilih: {{ selectedPackage.name }}
+                      Selected Package: {{ selectedPackage.name }}
                     </h5>
                     <div class="row">
                       <div class="col-md-6">
                         <p class="mb-2">
-                          <strong>Harga:</strong>
+                          <strong>Price:</strong>
                           {{ formatCurrency(selectedPackage.price) }} / {{ selectedPackage.active_days }} Hari
                         </p>
                         <p class="mb-2">
-                          <strong>Maksimal Pelanggan:</strong>
+                          <strong>Maximum Customers:</strong>
                           {{ formatNumber(selectedPackage.max_customers) }}
                         </p>
                         <p class="mb-2">
-                          <strong>Maksimal User:</strong>
+                          <strong>Maximum Users:</strong>
                           {{ formatNumber(selectedPackage.max_users) }}
                         </p>
                       </div>
+                    </div>
+
+                    <!-- New ISP Fields -->
+                    <div v-if="intent === 'new_isp'" class="mt-4 p-3 border rounded bg-white">
+                      <h6 class="mb-3 text-primary">New ISP Unit Information</h6>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Company Name / ISP Unit</label>
+                          <input v-model="newIspData.company_name" type="text" class="form-control" placeholder="Example: Media Network Unit B" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label class="form-label">Subdomain</label>
+                          <div class="input-group">
+                            <input v-model="newIspData.subdomain" type="text" class="form-control" placeholder="unit-b" required>
+                            <span class="input-group-text">.localhost</span>
+                          </div>
+                          <small class="text-muted">This will be your dashboard address later.</small>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Renewal Info -->
+                    <div v-if="intent === 'renew' && targetIspId" class="mt-4 p-3 border rounded bg-white">
+                       <h6 class="mb-1 text-primary">Subscription Renewal</h6>
+                       <p class="text-sm text-muted mb-0">This package will be applied to ISP ID: <strong>#{{ targetIspId }}</strong></p>
                     </div>
 
                     <div class="mt-4">
                       <button
                         class="btn btn-success btn-lg w-100"
                         @click="proceedToPayment"
-                        :disabled="processing"
+                        :disabled="processing || (intent === 'new_isp' && (!newIspData.company_name || !newIspData.subdomain))"
                       >
                         <span v-if="processing">
                           <i class="fas fa-spinner fa-spin me-2"></i>
-                          Memproses...
+                          Processing...
                         </span>
                         <span v-else>
                           <i class="fas fa-credit-card me-2"></i>
-                          Lanjutkan ke Pembayaran
+                          Continue to Payment
                         </span>
                       </button>
                     </div>
@@ -165,10 +190,12 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import api from "@/services/api";
+import notify from "@/utils/notify";
 
 const router = useRouter();
+const route = useRoute();
 
 const packages = ref([]);
 const selectedPackage = ref(null);
@@ -176,7 +203,18 @@ const loading = ref(false);
 const processing = ref(false);
 const errorMessage = ref("");
 
+// Multi-ISP Handling
+const intent = ref("");
+const targetIspId = ref(null);
+const newIspData = ref({
+  company_name: "",
+  subdomain: ""
+});
+
 onMounted(async () => {
+  intent.value = route.query.intent || "";
+  targetIspId.value = route.query.isp_id;
+  
   await fetchPackages();
 });
 
@@ -185,11 +223,18 @@ const fetchPackages = async () => {
   errorMessage.value = "";
   try {
     const response = await api.get("/subscription-packages/public");
-    packages.value = response.data.filter((pkg) => pkg.is_active);
+    let allPackages = response.data.filter((pkg) => pkg.is_active);
+    
+    // If renewing, hide trial packages
+    if (intent.value === 'renew') {
+      allPackages = allPackages.filter(pkg => pkg.price > 0 && !(pkg.trial_days > 0));
+    }
+    
+    packages.value = allPackages;
   } catch (error) {
     console.error("Error fetching packages:", error);
     errorMessage.value =
-      "Gagal memuat paket. Silakan refresh halaman atau hubungi administrator.";
+      "Failed to load packages. Please refresh the page or contact the administrator.";
   } finally {
     loading.value = false;
   }
@@ -200,7 +245,7 @@ const selectPackage = (pkg) => {
 };
 
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat("id-ID", {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "IDR",
     minimumFractionDigits: 0,
@@ -209,7 +254,7 @@ const formatCurrency = (amount) => {
 
 const formatNumber = (num) => {
   if (num === -1 || num === null) return "Unlimited";
-  return new Intl.NumberFormat("id-ID").format(num);
+  return new Intl.NumberFormat("en-US").format(num);
 };
 
 const proceedToPayment = async () => {
@@ -233,7 +278,7 @@ const proceedToPayment = async () => {
     console.error("Error proceeding to payment:", error);
     errorMessage.value =
       error.response?.data?.message ||
-      "Terjadi kesalahan. Silakan coba lagi.";
+      "An error occurred. Please try again.";
   } finally {
     processing.value = false;
   }
@@ -241,13 +286,20 @@ const proceedToPayment = async () => {
 
 const requestTrialApproval = async () => {
   try {
-    const response = await api.post("/isp-admin/subscribe", {
+    const payload = {
       package_id: selectedPackage.value.id,
-    });
+      is_new_isp: intent.value === 'new_isp',
+      target_isp_id: targetIspId.value,
+      ...newIspData.value
+    };
+
+    const response = await api.post("/isp-admin/subscribe", payload);
 
     if (response.data.success) {
-      alert(
-        "Permintaan paket trial telah dikirim. Silakan tunggu persetujuan dari Super Admin."
+      notify(
+        "success",
+        "Request Sent",
+        "Trial package request has been sent. Please wait for Super Admin approval."
       );
       router.push("/client-area/dashboard");
     }
@@ -258,15 +310,20 @@ const requestTrialApproval = async () => {
 
 const createPayment = async () => {
   try {
-    const response = await api.post("/isp-admin/subscribe", {
+    const payload = {
       package_id: selectedPackage.value.id,
-    });
+      is_new_isp: intent.value === 'new_isp',
+      target_isp_id: targetIspId.value,
+      ...newIspData.value
+    };
+
+    const response = await api.post("/isp-admin/subscribe", payload);
 
     if (response.data.payment_url) {
       // Redirect to payment gateway
       window.location.href = response.data.payment_url;
     } else if (response.data.success) {
-      alert("Paket berhasil diaktifkan!");
+      notify("success", "Success", "Package activated successfully!");
       router.push("/client-area/dashboard");
     }
   } catch (error) {
@@ -274,7 +331,7 @@ const createPayment = async () => {
     if (error.response?.data?.message) {
       errorMessage.value = error.response.data.message;
     } else {
-      errorMessage.value = "Gagal membuat pembayaran. Silakan coba lagi.";
+      errorMessage.value = "Failed to create payment. Please try again.";
     }
     throw error;
   }

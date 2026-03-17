@@ -18,6 +18,7 @@ class User extends Authenticatable
         'role',
         'isp_id',
         'phone',
+        'company_name',
         'is_active',
         'email_verified_at',
     ];
@@ -31,6 +32,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_active' => 'boolean',
     ];
+
+    public function ownedIsps()
+    {
+        return $this->hasMany(ISP::class, 'owner_id');
+    }
 
     public function isp()
     {

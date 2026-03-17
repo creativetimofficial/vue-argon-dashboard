@@ -19,8 +19,9 @@ class RegisterController extends Controller
         $validated = $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
-            'whatsapp' => 'required|string|min:10|max:15', // Simplified validation
-            'recaptcha_token' => 'required|string', // reCAPTCHA token
+            'whatsapp' => 'required|string|min:10|max:15',
+            'isp_name' => 'nullable|string|max:255', // Add ISP Name field
+            'recaptcha_token' => 'required|string', 
         ]);
 
         try {
@@ -38,13 +39,12 @@ class RegisterController extends Controller
                         'response' => $validated['recaptcha_token']
                     ];
                     
-                    // Use cURL instead of file_get_contents
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $recaptchaUrl);
                     curl_setopt($ch, CURLOPT_POST, true);
                     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($recaptchaData));
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // For local development
+                    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
                     
                     $recaptchaResponse = curl_exec($ch);
                     $curlError = curl_error($ch);
@@ -52,7 +52,6 @@ class RegisterController extends Controller
                     
                     if ($curlError) {
                         \Log::error('reCAPTCHA cURL error: ' . $curlError);
-                        // Continue anyway in development
                     } else {
                         $recaptchaResult = json_decode($recaptchaResponse);
                         
@@ -60,18 +59,22 @@ class RegisterController extends Controller
                             \Log::warning('reCAPTCHA verification failed', [
                                 'errors' => $recaptchaResult->{'error-codes'} ?? []
                             ]);
-                            // Continue anyway in development
                         }
                     }
                 } catch (\Exception $e) {
                     \Log::error('reCAPTCHA verification exception: ' . $e->getMessage());
-                    // Continue anyway in development
                 }
             }
 
+            // Check for tenant to determine registration type
+            $host = $request->getHost();
+            $isp = ISP::where('subdomain', explode('.', $host)[0])
+                      ->orWhere('custom_domain', $host)
+                      ->first();
+
             DB::beginTransaction();
 
-            // Normalize WhatsApp number (convert to +62 format)
+            // Normalize WhatsApp number
             $whatsapp = $validated['whatsapp'];
             if (substr($whatsapp, 0, 1) === '0') {
                 $whatsapp = '+62' . substr($whatsapp, 1);
@@ -81,28 +84,48 @@ class RegisterController extends Controller
                 $whatsapp = '+62' . $whatsapp;
             }
 
-            // Create ISP with minimal data (email will be used as company email)
-            $isp = ISP::create([
-                'company_name' => 'ISP - ' . $validated['email'],
-                'email' => $validated['email'],
-                'phone' => null,
-                'whatsapp' => $whatsapp, // Save WhatsApp number
-                'address' => null,
-                'subscription_status' => 'trial',
-                'approval_status' => 'pending',
-                'is_active' => false,
-                'subscription_package_id' => null, // Will be set later when package is selected
-            ]);
+            if ($isp) {
+                // Customer Registration
+                $role = 'customer';
+                $packageId = $request->input('package_id');
+                
+                // Create User
+                $user = User::create([
+                    'name' => explode('@', $validated['email'])[0],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'role' => $role,
+                    'isp_id' => $isp->id,
+                    'is_active' => false,
+                ]);
 
-            // Create user
-            $user = User::create([
-                'name' => explode('@', $validated['email'])[0], // Use email prefix as name
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-                'role' => 'isp_admin',
-                'isp_id' => $isp->id,
-                'is_active' => false,
-            ]);
+                // Create Customer Record
+                \App\Models\Customer::create([
+                    'isp_id' => $isp->id,
+                    'customer_code' => 'CST-' . strtoupper(Str::random(8)),
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'phone' => $whatsapp,
+                    'address' => '-',
+                    'service_plan_id' => $packageId,
+                    'status' => 'active',
+                ]);
+            } else {
+                // ISP Admin Registration - Only create the User, DO NOT create an ISP unit yet.
+                $role = 'isp_admin';
+
+                // Create User
+                $user = User::create([
+                    'name' => explode('@', $validated['email'])[0],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                    'role' => $role,
+                    'phone' => $whatsapp,
+                    'company_name' => $validated['isp_name'] ?? null, // Save ISP name entered at registration
+                    'is_active' => false,
+                    'isp_id' => null, // No primary ISP yet
+                ]);
+            }
 
             // Generate verification token
             $token = Str::random(64);
@@ -126,8 +149,8 @@ class RegisterController extends Controller
 
             return response()->json([
                 'message' => 'Registration successful! Please check your email to verify your account.',
-                'isp_id' => $isp->id,
                 'user_id' => $user->id,
+                'role' => $role,
             ], 201);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -212,12 +235,12 @@ class RegisterController extends Controller
                 'is_active' => true, // Activate user after email verification
             ]);
 
-            // Also activate ISP if exists
-            if ($user->isp_id) {
+            // Also activate ISP if exists and user is an isp_admin
+            if ($user->isp_id && $user->role === 'isp_admin') {
                 $isp = ISP::find($user->isp_id);
-                if ($isp) {
+                if ($isp && $isp->approval_status === 'approved') {
                     $isp->update([
-                        'is_active' => true, // Activate ISP after email verification
+                        'is_active' => true, 
                     ]);
                 }
             }

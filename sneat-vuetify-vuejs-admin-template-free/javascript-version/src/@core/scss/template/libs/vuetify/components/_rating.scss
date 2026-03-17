@@ -1,0 +1,14 @@
+// 👉 Rating
+.v-rating {
+  .v-rating__wrapper {
+    .v-btn {
+      &:hover {
+        transform: none;
+      }
+
+      .v-icon {
+        --v-icon-size-multiplier: 1;
+      }
+    }
+  }
+}

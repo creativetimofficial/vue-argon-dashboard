@@ -1,0 +1,278 @@
+/* stylelint-disable no-descending-specificity */
+@use "sass:list";
+@use "sass:map";
+@use "@core/scss/template/mixins" as templateMixins;
+@use "@configured-variables" as variables;
+
+/* 👉 Button
+ Above map but opacity values as key and variant as value */
+
+body .v-btn {
+  // ℹ️ This is necessary because as we have darker overlay on hover for elevated variant, button text doesn't get dimmed
+  // This style is already applied to `.v-icon`
+  .v-btn__content {
+    z-index: 0;
+  }
+
+  transition: all 0.135s ease; /* Add transition */
+
+  &:hover {
+    transform: translateY(-1px); /* Add transition */
+  }
+
+  // box-shadow
+  @each $color-name in variables.$theme-colors-name {
+    &:not(.v-btn--disabled) {
+      &.bg-#{$color-name}.v-btn--variant-elevated {
+        &,
+        &:hover {
+          @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+        }
+
+        &:focus,
+        &:active {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+
+  // Default (elevated) button
+  &--variant-elevated,
+  &--variant-flat {
+    // We want a darken color on hover
+    &:not(.v-btn--loading, .v-btn--disabled) {
+      @each $color-name in variables.$theme-colors-name {
+        &.bg-#{$color-name} {
+          &:hover,
+          &:active,
+          &:focus {
+            background-color: rgb(var(--v-theme-#{$color-name}-darken-1)) !important;
+          }
+        }
+      }
+    }
+  }
+
+  &--variant-outlined,
+  &--variant-tonal {
+    // We want a darken color on hover
+    &:not(.v-btn--loading, .v-btn--disabled) {
+      @each $color-name in variables.$theme-colors-name {
+        &.text-#{$color-name} {
+          &:hover {
+            @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+          }
+
+          &:hover,
+          &:active,
+          &:focus {
+            border-color: rgba(var(--v-theme-#{$color-name}-darken-1));
+            background-color: rgba(var(--v-theme-#{$color-name}-darken-1));
+            color: #fff !important;
+
+            .v-btn__underlay {
+              opacity: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &--variant-text {
+    .v-btn__overlay {
+      --v-hover-opacity: 0.08;
+    }
+
+    &:active,
+    &:focus {
+      .v-btn__overlay {
+        opacity: var(--v-selected-opacity);
+      }
+    }
+  }
+
+  // Text button
+  &:not(.v-btn--icon, .v-tab) {
+    &.v-btn--variant-text,
+    &.v-btn--variant-plain {
+      &.v-btn--size-default {
+        padding-inline: 0.75rem;
+      }
+
+      &.v-btn--size-small {
+        padding-inline: 0.5rem;
+      }
+
+      &.v-btn--size-large {
+        padding-inline: 1rem;
+      }
+    }
+  }
+
+  // Button border-radius
+  &:not(.v-btn--icon).v-btn--size-x-small {
+    border-radius: 2px;
+  }
+
+  &:not(.v-btn--icon).v-btn--size-small {
+    border-radius: 4px;
+    line-height: 1.125rem;
+    padding-block: 0;
+    padding-inline: 0.75rem;
+
+    .v-icon {
+      --v-icon-size-multiplier: 0.821;
+    }
+
+    .v-btn__prepend,
+    .v-btn__content > .v-icon--start {
+      margin-inline: 0 0.375rem;
+    }
+
+    .v-btn__append,
+    .v-btn__content > .v-icon--end {
+      margin-inline: 0.375rem 0;
+    }
+  }
+
+  &:not(.v-btn--icon).v-btn--size-default {
+    .v-btn__content,
+    .v-btn__append,
+    .v-btn__prepend {
+      .v-icon {
+        --v-icon-size-multiplier: 0.7113;
+
+        block-size: 1.125rem;
+        font-size: 1.125rem;
+        inline-size: 1.125rem;
+      }
+
+      .v-icon--start {
+        margin-inline: 0 8px;
+      }
+
+      .v-icon--end {
+        margin-inline: 8px 0;
+      }
+    }
+  }
+
+  &:not(.v-btn--icon).v-btn--size-large {
+    --v-btn-height: 3rem;
+
+    border-radius: 8px;
+    line-height: 1.625rem;
+    padding-block: 0;
+    padding-inline: 1.5rem;
+
+    .v-icon {
+      --v-icon-size-multiplier: 0.7848;
+    }
+
+    .v-btn__prepend,
+    .v-btn__content > .v-icon--start {
+      margin-inline: 0 0.625rem;
+    }
+
+    .v-btn__append,
+    .v-btn__content > .v-icon--end {
+      margin-inline: 0.625rem 0;
+    }
+  }
+
+  &:not(.v-btn--icon).v-btn--size-x-large {
+    border-radius: 10px;
+  }
+
+  // icon buttons
+  &.v-btn--icon.v-btn--density-default {
+    block-size: var(--v-btn-height);
+    inline-size: var(--v-btn-height);
+
+    &.v-btn--size-default {
+      .v-icon {
+        --v-icon-size-multiplier: 0.978 !important;
+
+        block-size: 1.375rem;
+        font-size: 1.375rem;
+        inline-size: 1.375rem;
+      }
+    }
+
+    &.v-btn--size-small {
+      --v-btn-height: 2.125rem;
+
+      .v-icon {
+        block-size: 1.25rem;
+        font-size: 1.25rem;
+        inline-size: 1.25rem;
+      }
+    }
+
+    &.v-btn--size-large {
+      --v-btn-height: 2.625rem;
+
+      .v-icon {
+        block-size: 1.5rem;
+        font-size: 1.5rem;
+        inline-size: 1.5rem;
+      }
+    }
+  }
+
+  // Button group
+  &-group.v-btn-toggle {
+    .v-btn {
+      block-size: 54px !important;
+      inline-size: 54px !important;
+
+      &.v-btn--density-comfortable {
+        block-size: 46px !important;
+        inline-size: 46px !important;
+      }
+
+      &.v-btn--density-compact {
+        block-size: 38px !important;
+        inline-size: 38px !important;
+      }
+
+      &.v-btn--icon .v-icon {
+        block-size: 1.375rem;
+        color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+        font-size: 1.375rem;
+        inline-size: 1.375rem;
+      }
+
+      &.v-btn--icon.v-btn--active {
+        .v-icon {
+          color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+        }
+      }
+    }
+
+    &.v-btn-group {
+      align-items: center;
+      border: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+      border-radius: 0.5rem;
+      block-size: 54px;
+
+      .v-btn.v-btn--active {
+        .v-btn__overlay {
+          --v-activated-opacity: 0.08;
+        }
+      }
+
+      &.v-btn-group--density-compact {
+        border-radius: 0.25rem;
+        block-size: 38px;
+      }
+
+      &.v-btn-group--density-comfortable {
+        border-radius: 0.375rem;
+        block-size: 46px;
+      }
+    }
+  }
+}

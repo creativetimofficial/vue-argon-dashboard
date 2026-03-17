@@ -21,19 +21,56 @@ class ISPSubscriptionController extends Controller
     public function subscribe(Request $request)
     {
         $user = auth()->user();
-        $isp = $user->isp;
-
-        if (!$isp) {
-            return response()->json([
-                'success' => false,
-                'message' => 'ISP not found'
-            ], 404);
-        }
-
+        
         $validated = $request->validate([
             'package_id' => 'required|exists:subscription_packages,id',
             'payment_gateway_id' => 'nullable|exists:payment_gateways,id',
+            'is_new_isp' => 'nullable|boolean',
+            'company_name' => 'required_if:is_new_isp,true|string|max:255',
+            'subdomain' => 'required_if:is_new_isp,true|string|unique:isps,subdomain|max:50',
+            'target_isp_id' => 'nullable|exists:isps,id',
         ]);
+
+        // Check Company Name Uniqueness for current owner
+        if ($request->is_new_isp) {
+            $existingName = ISP::where('owner_id', $user->id)
+                ->where('company_name', $validated['company_name'])
+                ->exists();
+            if ($existingName) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Anda sudah memiliki unit ISP dengan nama "' . $validated['company_name'] . '". Silakan gunakan nama lain untuk unit baru ini.'
+                ], 422);
+            }
+        }
+
+        // Determine which ISP we are subscribing for
+        if ($request->is_new_isp) {
+            $isp = ISP::create([
+                'owner_id' => $user->id,
+                'company_name' => $validated['company_name'],
+                'subdomain' => $validated['subdomain'],
+                'email' => $user->email,
+                'subscription_status' => 'trial',
+                'approval_status' => 'pending',
+                'is_active' => false,
+            ]);
+            // If user has no primary ISP, set this one
+            if (!$user->isp_id) {
+                $user->update(['isp_id' => $isp->id]);
+            }
+        } else {
+            // Renewing/Updating existing
+            $ispId = $validated['target_isp_id'] ?? $user->isp_id;
+            $isp = ISP::find($ispId);
+
+            if (!$isp || $isp->owner_id !== $user->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'ISP not found or you do not have permission to manage this ISP.'
+                ], 403);
+            }
+        }
 
         $package = SubscriptionPackage::findOrFail($validated['package_id']);
 
@@ -44,11 +81,31 @@ class ISPSubscriptionController extends Controller
             ], 400);
         }
 
+        // Check if package is trial (price is 0 or has trial_days)
+        $isTrialRequested = $package->price == 0 || ($package->trial_days ?? 0) > 0;
+
+        if ($isTrialRequested) {
+            // Check if this ISP has ever used a trial package before
+            $hasUsedTrial = \App\Models\ISPOrder::where('isp_id', $isp->id)
+                ->where(function($query) {
+                    $query->whereHas('subscriptionPackage', function($q) {
+                        $q->where('price', 0)->orWhere('trial_days', '>', 0);
+                    });
+                })->exists();
+
+            if ($hasUsedTrial) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unit ISP ini sudah pernah menggunakan paket trial. Silakan pilih paket berbayar untuk melanjutkan.'
+                ], 400);
+            }
+        }
+
         try {
             DB::beginTransaction();
 
-            // Check if package is trial (price is 0 or has trial_days)
-            $isTrial = $package->price == 0 || ($package->trial_days ?? 0) > 0;
+            // Check if package is trial
+            $isTrial = $isTrialRequested;
 
             if ($isTrial) {
                 if ($package->requires_manual_approval) {
@@ -458,7 +515,7 @@ class ISPSubscriptionController extends Controller
         }
 
         // 3. Subscription/Package Logic
-        $this->activateSubscriptionLogic($order);
+        $order->activateSubscription();
 
         // 4. Referral Commission Logic
         if ($order->referrer_id && $order->price > 0) {
@@ -571,55 +628,106 @@ class ISPSubscriptionController extends Controller
              
              if ($server) {
                   $server->increment('current_users');
-                  
-                  // Improved IP Generation logic to avoid collision
-                  $secondOctet = ($server->id % 250) ?: 1;
-                  
-                  // Fetch all used IPs on this server
-                  $usedIps = \App\Models\ISPOrder::where('server_id', $server->id)
-                      ->whereNotNull('ip_address')
-                      ->pluck('ip_address')
-                      ->toArray();
-                  
-                  $clientIp = null;
-                  $localAddress = null;
-                  
-                  // Search for free IP in range 10.x.50.2 - 10.x.60.254 (Support ~2500 users)
-                  for ($subnet = 50; $subnet <= 60; $subnet++) {
-                      for ($host = 2; $host <= 254; $host++) {
-                          $candidate = "10.{$secondOctet}.{$subnet}.{$host}";
-                          if (!in_array($candidate, $usedIps)) {
-                              $clientIp = $candidate;
-                              $localAddress = "10.{$secondOctet}.{$subnet}.1";
-                              break 2; // Found one
-                          }
-                      }
-                  }
-                  
-                  if (!$clientIp) {
-                      // Fallback if full (unlikely)
-                      $clientIp = "10.{$secondOctet}.60.254";
-                      $localAddress = "10.{$secondOctet}.60.1";
-                      Log::warning("Server {$server->id} IP pool exhaustion warning.");
-                  }
-                  
-                  // Mikrotik Provisioning
-                  if ($serverIp) {
-                      try {
-                          $mikrotik = new \App\Services\MikrotikService();
-                          $apiUser = $server->username ?? env('MIKROTIK_USER', 'admin'); 
-                          $apiPass = $server->password ?? env('MIKROTIK_PASS', '');
-                          $apiPort = $server->api_port ?? 8728;
-                          
-                          if ($mikrotik->connect($serverIp, $apiUser, $apiPass, $apiPort)) {
-                              $mikrotik->addPppSecret($username, $password, 'any', 'default', $localAddress, $clientIp);
-                              $mikrotik->disconnect();
-                          }
-                      } catch (\Exception $e) {
-                          Log::error("Mikrotik Provisioning Error: " . $e->getMessage());
-                      }
-                  }
+                   // Use server's configured VPN local address (consistent with ISPOrderObserver)
+                   $localAddress = $server->vpn_local_address ?? '10.10.10.1';
+                   
+                   // Connect to Mikrotik early so we can read actual IPs from it
+                   $mikrotik = null;
+                   $mikrotikConnected = false;
+                   if ($serverIp) {
+                       try {
+                           $mikrotik = new \App\Services\MikrotikService();
+                           $apiUser = $server->username ?? env('MIKROTIK_USER', 'admin');
+                           $apiPass = $server->password ?? env('MIKROTIK_PASS', '');
+                           $apiPort = $server->api_port ?? 8728;
+                           $mikrotikConnected = $mikrotik->connect($serverIp, $apiUser, $apiPass, $apiPort);
+                       } catch (\Exception $e) {
+                           Log::error("Mikrotik early connect error: " . $e->getMessage());
+                       }
+                   }
+
+                   // Collect used IPs from DB
+                   $usedIpsDb = \App\Models\ISPOrder::where('server_id', $server->id)
+                       ->whereNotNull('ip_address')
+                       ->pluck('ip_address')
+                       ->toArray();
+
+                   // Also collect directly from Mikrotik (source of truth)
+                   $usedIpsMikrotik = ($mikrotikConnected && $mikrotik)
+                       ? $mikrotik->getUsedRemoteAddresses()
+                       : [];
+
+                   // Merge both sources — eliminate duplicates
+                   $usedIps = array_unique(array_merge($usedIpsDb, $usedIpsMikrotik));
+
+                   Log::info("Server #{$server->id} — DB IPs: " . count($usedIpsDb) . ", Mikrotik IPs: " . count($usedIpsMikrotik) . ", Total excluded: " . count($usedIps));
+
+                   // Dynamic IP Generation based on Local IP segment
+                   $ipParts = explode('.', $localAddress);
+                   if (count($ipParts) === 4) {
+                       $baseOctet1 = $ipParts[0];
+                       $baseOctet2 = $ipParts[1];
+                       $baseOctet3 = (int)$ipParts[2];
+                       $baseOctet4 = (int)$ipParts[3];
+
+                       $found = false;
+                       $capacity = $server->capacity ?? 1000;
+                       $checkedCount = 0;
+
+                       // Search sequentially across subnets starting from local IP's base
+                       for ($subnetOffset = 0; $subnetOffset < 20 && !$found; $subnetOffset++) {
+                           $currentSubnet = $baseOctet3 + $subnetOffset;
+                           if ($currentSubnet > 254) break;
+
+                           // Start host from .1, but skip the local IP itself
+                           for ($h = 1; $h <= 254; $h++) {
+                               $candidate = "{$baseOctet1}.{$baseOctet2}.{$currentSubnet}.{$h}";
+                               
+                               // Skip if it's the gateway (local IP)
+                               if ($candidate === $localAddress) continue;
+
+                               if (!in_array($candidate, $usedIps)) {
+                                   $clientIp = $candidate;
+                                   $found = true;
+                                   break;
+                               }
+
+                               $checkedCount++;
+                               if ($checkedCount >= $capacity + 500) break; // Safety limit
+                           }
+                       }
+                   }
+
+                   if (!$clientIp) {
+                       // Absolute fallback if everything else fails
+                       $clientIp = "10.254.254.254"; 
+                       Log::warning("Server {$server->id} IP pool exhaustion or invalid local IP config.");
+                   }
+
+             // Mikrotik Provisioning — reuse existing connection
+             if ($mikrotikConnected && $mikrotik) {
+                 try {
+                     $mikrotik->addPppSecret($username, $password, 'any', 'default', $localAddress, $clientIp);
+                     $mikrotik->disconnect();
+                 } catch (\Exception $e) {
+                     Log::error("Mikrotik Provisioning Error: " . $e->getMessage());
+                 }
+             } elseif ($serverIp) {
+                 // Fallback: try fresh connection if early connect failed
+                 try {
+                     $mkFallback = new \App\Services\MikrotikService();
+                     $apiUser = $server->username ?? env('MIKROTIK_USER', 'admin');
+                     $apiPass = $server->password ?? env('MIKROTIK_PASS', '');
+                     $apiPort = $server->api_port ?? 8728;
+                     if ($mkFallback->connect($serverIp, $apiUser, $apiPass, $apiPort)) {
+                         $mkFallback->addPppSecret($username, $password, 'any', 'default', $localAddress, $clientIp);
+                         $mkFallback->disconnect();
+                     }
+                 } catch (\Exception $e) {
+                     Log::error("Mikrotik Fallback Provisioning Error: " . $e->getMessage());
+                 }
              }
+        }
 
              $updateData['username'] = $username;
              $updateData['password'] = $password;
@@ -627,42 +735,6 @@ class ISPSubscriptionController extends Controller
              $updateData['ip_address'] = $clientIp;
              $updateData['l2tp_config'] = "/interface l2tp-client add name={$username} user={$username} password={$password} connect-to={$serverAddress} disabled=no";
              $updateData['sstp_config'] = "/interface sstp-client add name={$username} user={$username} password={$password} connect-to={$serverAddress} disabled=no";
-        }
-    }
-
-    private function activateSubscriptionLogic($order) {
-        $days = 30;
-        if ($order->service_id) {
-            $days = $order->service->trial_days ?: 30;
-        } elseif ($order->subscription_package_id) {
-            $days = $order->subscriptionPackage->active_days ?? 30;
-        }
-
-        if ($order->status === 'pending' || !$order->expired_date || $order->expired_date < now()) {
-             $newStart = now();
-             $newEnd = now()->addDays($days);
-        } else {
-             $newStart = $order->start_date;
-             $newEnd = \Carbon\Carbon::parse($order->expired_date)->addDays($days);
-        }
-
-        $order->update([
-             'start_date' => $newStart,
-             'expired_date' => $newEnd,
-        ]);
-        
-        // If it's a package subscription, update ISP status too
-        if ($order->subscription_package_id) {
-            $isp = $order->isp;
-            $isp->update([
-                'subscription_package_id' => $order->subscription_package_id,
-                'subscription_status' => 'active',
-                'approval_status' => 'approved',
-                'subscription_start_date' => $newStart,
-                'subscription_end_date' => $newEnd,
-                'is_active' => true,
-            ]);
-            $isp->users()->update(['is_active' => true]);
         }
     }
 

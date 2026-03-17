@@ -1,0 +1,110 @@
+@use "@core/scss/template/placeholders" as *;
+@use "vuetify/lib/styles/tools/elevation" as elevation;
+@use "@configured-variables" as variables;
+
+$divider-gap: 0.75rem;
+
+// vertical nav app title
+.layout-nav-type-vertical {
+  .layout-vertical-nav {
+    @include elevation.elevation(4);
+
+    // 👉 Nav header
+    .nav-header {
+      margin-block-start: variables.$vertical-nav-header-margin-top;
+
+      .app-title-wrapper {
+        h1 {
+          font-size: 28px;
+        }
+      }
+    }
+
+    // Small screen nav header actions button removed
+    @media (max-width: 1279px) {
+      &:not(.visible) {
+        .header-action {
+          opacity: 0;
+        }
+      }
+    }
+
+    .nav-items {
+      padding-block-start: 0.25rem;
+
+      // ℹ️ Reduce with width of the thumb in vertical nav menu so we can clearly see active indicator
+      .ps__thumb-y {
+        inline-size: 0.125rem;
+      }
+
+      .ps__rail-y.ps--clicking .ps__thumb-y,
+      .ps__rail-y:focus > .ps__thumb-y,
+      .ps__rail-y:hover > .ps__thumb-y {
+        inline-size: 0.375rem;
+      }
+    }
+
+    // nav-section-title's line
+    .title-text {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      column-gap: $divider-gap;
+
+      &::before {
+        flex: 0 1 calc(variables.$vertical-nav-horizontal-padding-start - $divider-gap);
+        border-block-end: 1px solid rgba(var(--v-border-color), var(--v-border-opacity));
+        content: "";
+        margin-inline-start: -#{variables.$vertical-nav-horizontal-padding-start};
+      }
+    }
+
+    // Active status indicator
+    .nav-link .router-link-exact-active,
+    .nav-group.open .nav-group-label:has(+ .nav-group-children-wrapper > .nav-group-children > .nav-link > .router-link-exact-active) {
+      &::after {
+        position: absolute;
+        background-color: rgb(var(--v-theme-primary));
+        block-size: 2.625rem;
+        border-end-start-radius: 0.375rem;
+        border-start-start-radius: 0.375rem;
+        content: "";
+        inline-size: 0.25rem;
+        inset-inline-end: - variables.$vertical-nav-horizontal-spacing;
+      }
+    }
+
+    // 👉 Vertical nav link
+    .nav-group {
+      .nav-group-children-wrapper .nav-group-children .nav-link {
+        .nav-item-icon {
+          color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+        }
+
+        .router-link-exact-active {
+          @extend %nav-link-nested-active;
+
+          &:hover::before {
+            opacity: calc(var(--v-hover-opacity) * var(--v-theme-overlay-multiplier));
+          }
+
+          // active status indicator removed
+          &::after {
+            content: none;
+          }
+        }
+      }
+
+      // Active & open states for nav group label
+      &.open {
+        /* stylelint-disable-next-line no-descending-specificity */
+        .nav-group-label {
+          &:has(+ .nav-group-children-wrapper > .nav-group-children > .nav-link > .router-link-exact-active) {
+            @extend %vertical-nav-group-active;
+          }
+        }
+      }
+    }
+  }
+}

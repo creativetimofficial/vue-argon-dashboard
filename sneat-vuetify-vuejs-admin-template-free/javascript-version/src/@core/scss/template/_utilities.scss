@@ -1,0 +1,49 @@
+.v-timeline-item {
+  .app-timeline-title {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.3125rem;
+  }
+
+  .app-timeline-meta {
+    color: rgba(var(--v-theme-on-surface), var(--v-disabled-opacity));
+    font-size: 11px;
+    line-height: 0.875rem;
+  }
+
+  .app-timeline-text {
+    color: rgba(var(--v-theme-on-surface), var(--v-medium-emphasis-opacity));
+    font-size: 13px;
+    line-height: 1.25rem;
+  }
+}
+
+// ℹ️ Temporary solution as v-spacer style is not getting applied in build version. will remove this after release.
+// VSpacer
+.v-spacer {
+  flex-grow: 1;
+}
+
+// app-logo & app-logo-title
+.app-logo {
+  display: flex;
+  align-items: center !important;
+  column-gap: 0.5rem !important;
+
+  .app-logo-title {
+    font-size: 1.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.15px !important;
+    line-height: 1.75rem !important;
+    text-transform: lowercase !important;
+  }
+}
+
+.text-white-variant {
+  color: rgba(255, 255, 255, 78%) !important;
+}
+
+.bg-custom-background {
+  background-color: rgb(var(--v-table-header-color));
+}

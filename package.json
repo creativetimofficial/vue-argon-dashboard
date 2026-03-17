@@ -14,38 +14,38 @@
     "url": "git+https://github.com/yourusername/isp-billing.git"
   },
   "scripts": {
-    "dev": "vue-cli-service serve",
-    "serve": "vue-cli-service serve",
-    "build": "cross-env CI=false; cross-env PUBLIC_URL=/ vue-cli-service build",
-    "build:production": "cross-env NODE_ENV=production vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "prettify": "prettier --write .",
-    "preview": "vite preview"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .js,.vue"
   },
   "dependencies": {
     "@popperjs/core": "2.11.8",
+    "@vueuse/core": "^10.11.1",
+    "@vueuse/math": "^10.11.1",
     "axios": "^1.6.5",
     "bootstrap": "5.3.3",
     "chart.js": "4.4.1",
     "core-js": "3.36.0",
     "dropzone": "6.0.0-beta.2",
+    "leaflet": "^1.9.4",
     "pinia": "^2.3.1",
     "quill": "1.3.7",
     "sweetalert2": "^11.10.5",
-    "vue": "3.4.19",
+    "vue": "^3.5.29",
     "vue-count-to": "1.0.13",
     "vue-flatpickr-component": "11.0.4",
+    "vue-i18n": "^9.14.5",
     "vue-router": "4.3.0",
     "vue-toastification": "^2.0.0-rc.5",
+    "vue3-perfect-scrollbar": "^2.0.0",
+    "vuetify": "^3.7.5",
     "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "7.23.10",
-    "@vue/cli-plugin-babel": "5.0.8",
-    "@vue/cli-plugin-eslint": "5.0.8",
-    "@vue/cli-plugin-router": "5.0.8",
-    "@vue/cli-service": "5.0.8",
-    "@vue/compiler-sfc": "3.4.19",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vue/compiler-sfc": "^3.5.29",
     "@vue/eslint-config-prettier": "9.0.0",
     "cross-env": "^7.0.3",
     "eslint": "8.56.0",
@@ -53,9 +53,12 @@
     "eslint-plugin-vue": "9.21.1",
     "prettier": "3.2.5",
     "sass": "1.71.1",
-    "sass-loader": "13.3.2"
+    "unplugin-auto-import": "^0.18.6",
+    "unplugin-vue-components": "^0.27.5",
+    "vite": "^5.2.0",
+    "vite-plugin-vuetify": "^2.0.3"
   },
   "engines": {
-    "node": ">=8 <=21"
+    "node": ">=18"
   }
 }

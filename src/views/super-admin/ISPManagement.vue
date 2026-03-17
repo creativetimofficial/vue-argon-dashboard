@@ -8,7 +8,7 @@
             <div class="d-flex justify-content-between">
               <div>
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
-                  Total ISPs
+                  {{ $t('dashboard.total_isps') }}
                 </p>
                 <h5 class="font-weight-bolder mb-0">{{ stats.total }}</h5>
               </div>
@@ -30,7 +30,7 @@
             <div class="d-flex justify-content-between">
               <div>
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
-                  Pending Approval
+                  {{ $t('dashboard.pending_approval') }}
                 </p>
                 <h5 class="font-weight-bolder mb-0 text-warning">
                   {{ stats.pending }}
@@ -54,7 +54,7 @@
             <div class="d-flex justify-content-between">
               <div>
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
-                  Active ISPs
+                  {{ $t('dashboard.active_isps') }}
                 </p>
                 <h5 class="font-weight-bolder mb-0 text-success">
                   {{ stats.active }}
@@ -78,7 +78,7 @@
             <div class="d-flex justify-content-between">
               <div>
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">
-                  Monthly Revenue
+                  {{ $t('dashboard.monthly_revenue') }}
                 </p>
                 <h5 class="font-weight-bolder mb-0">
                   Rp {{ formatCurrency(stats.revenue) }}
@@ -104,29 +104,29 @@
         <div class="card">
           <div class="card-header pb-0">
             <div class="d-flex justify-content-between align-items-center">
-              <h6>ISP Companies Management</h6>
+              <h6>{{ $t('dashboard.isp_companies_mgt') }}</h6>
               <div>
-                <button class="btn btn-primary btn-sm me-3" @click="openAddISP">Add ISP</button>
+                <button class="btn btn-primary btn-sm me-3" @click="openAddISP">{{ $t('dashboard.add_isp') }}</button>
                 <button
                   class="btn btn-outline-primary btn-sm me-2"
                   @click="filterStatus = 'all'"
                   :class="filterStatus === 'all' ? 'active' : ''"
                 >
-                  All
+                  {{ $t('common.all') }}
                 </button>
                 <button
                   class="btn btn-outline-warning btn-sm me-2"
                   @click="filterStatus = 'pending'"
                   :class="filterStatus === 'pending' ? 'active' : ''"
                 >
-                  Pending
+                  {{ $t('dashboard.pending') }}
                 </button>
                 <button
                   class="btn btn-outline-success btn-sm"
                   @click="filterStatus = 'approved'"
                   :class="filterStatus === 'approved' ? 'active' : ''"
                 >
-                  Approved
+                  {{ $t('dashboard.approved') }}
                 </button>
               </div>
             </div>
@@ -139,39 +139,39 @@
                     <th
                       class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      ISP Company
+                      {{ $t('dashboard.isp_company') }}
                     </th>
                     <th
                       class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                     >
-                      Subscription
+                      {{ $t('dashboard.subscription') }}
                     </th>
                     <th
                       class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
                     >
-                      Usage
+                      {{ $t('dashboard.usage') }}
                     </th>
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      Status
+                      {{ $t('common.status') }}
                     </th>
                     <th
                       class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
                     >
-                      Actions
+                      {{ $t('common.actions') }}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-if="loading">
                     <td colspan="5" class="text-center py-4">
-                      <i class="fas fa-spinner fa-spin"></i> Loading...
+                      <i class="fas fa-spinner fa-spin"></i> {{ $t('common.processing') }}
                     </td>
                   </tr>
                   <tr v-else-if="filteredISPs.length === 0">
                     <td colspan="5" class="text-center py-4">
-                      Tidak ada data ISP
+                      {{ $t('dashboard.no_isp_data') }}
                     </td>
                   </tr>
                   <tr v-else v-for="isp in filteredISPs" :key="isp.id">
@@ -184,21 +184,21 @@
                     </td>
                     <td>
                       <p class="text-sm font-weight-bold mb-0">{{ isp.package_name }}</p>
-                      <p class="text-xs text-secondary mb-0">Valid until: {{ isp.subscription_end_date }}</p>
+                      <p class="text-xs text-secondary mb-0">{{ $t('dashboard.valid_until') }}: {{ isp.subscription_end_date }}</p>
                       <span :class="getSubscriptionStatusClass(isp.subscription_status)">{{ isp.subscription_status }}</span>
                     </td>
                     <td>
-                      <p class="text-xs mb-0"><strong>Customers:</strong> {{ isp.current_customers }}/{{ isp.max_customers === -1 ? "∞" : isp.max_customers }}</p>
-                      <p class="text-xs mb-0"><strong>Users:</strong> {{ isp.current_users }}/{{ isp.max_users }}</p>
-                      <p class="text-xs mb-0"><strong>Locations:</strong> {{ isp.current_locations }}/{{ isp.max_locations }}</p>
+                      <p class="text-xs mb-0"><strong>{{ $t('dashboard.customers') }}:</strong> {{ isp.current_customers }}/{{ isp.max_customers === -1 ? "∞" : isp.max_customers }}</p>
+                      <p class="text-xs mb-0"><strong>{{ $t('dashboard.users') }}:</strong> {{ isp.current_users }}/{{ isp.max_users }}</p>
+                      <p class="text-xs mb-0"><strong>{{ $t('dashboard.locations') }}:</strong> {{ isp.current_locations }}/{{ isp.max_locations }}</p>
                     </td>
                     <td class="align-middle text-center">
                       <span :class="getApprovalStatusClass(isp.approval_status)">{{ isp.approval_status }}</span>
                     </td>
                     <td class="align-middle text-center">
-                      <button class="btn btn-info btn-sm mb-0 me-1" @click="viewDetails(isp)"><i class="fas fa-eye"></i> View</button>
-                      <button class="btn btn-dark btn-sm mb-0 me-1" @click="openEditISP(isp)"><i class="fas fa-pencil-alt"></i> Edit</button>
-                      <button class="btn btn-danger btn-sm mb-0" @click="deleteISP(isp)"><i class="fas fa-trash"></i> Delete</button>
+                      <button class="btn btn-info btn-sm mb-0 me-1" @click="viewDetails(isp)"><i class="fas fa-eye"></i> {{ $t('dashboard.view_btn') }}</button>
+                      <button class="btn btn-dark btn-sm mb-0 me-1" @click="openEditISP(isp)"><i class="fas fa-pencil-alt"></i> {{ $t('dashboard.edit_btn') }}</button>
+                      <button class="btn btn-danger btn-sm mb-0" @click="deleteISP(isp)"><i class="fas fa-trash"></i> {{ $t('dashboard.delete_btn') }}</button>
                     </td>
                   </tr>
                 </tbody>
@@ -228,46 +228,46 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Company Name</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.company_name') }}</label>
                 <p>{{ selectedISP.name }}</p>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Email</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.email') }}</label>
                 <p>{{ selectedISP.email }}</p>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Phone</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.phone') }}</label>
                 <p>{{ selectedISP.phone }}</p>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Address</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.address') }}</label>
                 <p>{{ selectedISP.address }}</p>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Subscription Package</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.subscription_package') }}</label>
                 <p>{{ selectedISP.package_name }}</p>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Registration Date</label>
+                <label class="form-label fw-bold">{{ $t('dashboard.registration_date') }}</label>
                 <p>{{ selectedISP.created_at }}</p>
               </div>
             </div>
             <div class="mt-4">
-              <h6 class="mb-3">Riwayat Langganan & Pesanan</h6>
+              <h6 class="mb-3">{{ $t('dashboard.subs_order_history') }}</h6>
               <div class="table-responsive">
                 <table class="table table-sm align-items-center mb-0">
                   <thead>
                     <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Service/Package</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Cycle</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Status</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Expires</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">{{ $t('dashboard.service_package') }}</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.price') }}</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.cycle') }}</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('common.status') }}</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">{{ $t('dashboard.expires') }}</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-if="!selectedISP.orders || selectedISP.orders.length === 0">
-                      <td colspan="5" class="text-center text-secondary text-xs py-3">No subscriptions found</td>
+                      <td colspan="5" class="text-center text-secondary text-xs py-3">{{ $t('dashboard.no_subscriptions') }}</td>
                     </tr>
                     <tr v-else v-for="order in selectedISP.orders" :key="order.id">
                       <td>
@@ -300,7 +300,7 @@
               class="btn btn-secondary"
               @click="showDetailsModal = false"
             >
-              Close
+              {{ $t('common.cancel') }}
             </button>
           </div>
         </div>
@@ -318,24 +318,64 @@
           <div class="modal-body">
             <form @submit.prevent="saveISP">
               <div class="mb-3">
-                <label class="form-label">Company Name</label>
+                <label class="form-label">{{ $t('dashboard.company_name') }}</label>
                 <input v-model="ispForm.name" type="text" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label class="form-label">Email</label>
+                <label class="form-label">{{ $t('dashboard.email') }}</label>
                 <input v-model="ispForm.email" type="email" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label class="form-label">Phone</label>
+                <label class="form-label">{{ $t('dashboard.phone') }}</label>
                 <input v-model="ispForm.phone" type="text" class="form-control" required />
               </div>
               <div class="mb-3">
-                <label class="form-label">Address</label>
+                <label class="form-label">{{ $t('dashboard.address') }}</label>
                 <input v-model="ispForm.address" type="text" class="form-control" required />
               </div>
+              <div v-if="!editMode" class="mb-3">
+                <label class="form-label">Domain Type</label>
+                <div class="d-flex gap-3">
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" v-model="ispForm.domain_type" value="subdomain" id="domainSubdomain" />
+                    <label class="form-check-label" for="domainSubdomain">Subdomain</label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" v-model="ispForm.domain_type" value="custom" id="domainCustom" />
+                    <label class="form-check-label" for="domainCustom">Custom Domain</label>
+                  </div>
+                </div>
+              </div>
+              <div v-if="!editMode && ispForm.domain_type === 'subdomain'" class="mb-3">
+                <label class="form-label">Subdomain</label>
+                <div class="input-group">
+                  <input v-model="ispForm.subdomain" type="text" class="form-control" placeholder="myisp" required />
+                  <span class="input-group-text">.{{ baseDomain }}</span>
+                </div>
+              </div>
+              <div v-if="!editMode && ispForm.domain_type === 'custom'" class="mb-3">
+                <label class="form-label">Custom Domain</label>
+                <input v-model="ispForm.custom_domain" type="text" class="form-control" placeholder="example.com" required />
+                <small class="text-muted">Make sure the domain DNS is already pointed to this server.</small>
+              </div>
+              <div v-if="!editMode" class="row">
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Password</label>
+                  <input v-model="ispForm.password" type="password" class="form-control" required />
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label class="form-label">Subscription Package</label>
+                  <select v-model="ispForm.package_id" class="form-select" required>
+                    <option value="" disabled>Select a package</option>
+                    <option v-for="pkg in packages" :key="pkg.id" :value="pkg.id">
+                      {{ pkg.name }} - {{ pkg.price > 0 ? 'Rp ' + formatCurrency(pkg.price) : 'Trial' }}
+                    </option>
+                  </select>
+                </div>
+              </div>
               <div class="text-end">
-                <button type="button" class="btn btn-secondary me-2" @click="showISPModal = false">Cancel</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="button" class="btn btn-secondary me-2" @click="showISPModal = false">{{ $t('common.cancel') }}</button>
+                <button type="submit" class="btn btn-primary">{{ $t('common.save') }}</button>
               </div>
             </form>
           </div>
@@ -347,7 +387,9 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
+import MiniStatisticsCard from "@/examples/Cards/MiniStatisticsCard.vue";
 import axios from "axios";
+import notify, { confirm } from '@/utils/notify';
 
 const API_URL = "http://localhost:8000/api";
 const loading = ref(false);
@@ -364,6 +406,7 @@ const showDetailsModal = ref(false);
 const selectedISP = ref({});
 const packages = ref([]);
 const isps = ref([]);
+const baseDomain = ref('yourdomain.com');
 
 // Tambah state/modal untuk CRUD ISP
 const showISPModal = ref(false);
@@ -373,6 +416,11 @@ const ispForm = ref({
   email: '',
   phone: '',
   address: '',
+  domain_type: 'subdomain',
+  subdomain: '',
+  custom_domain: '',
+  password: '',
+  package_id: '',
 });
 const editMode = ref(false);
 
@@ -382,7 +430,7 @@ const filteredISPs = computed(() => {
 });
 
 const formatCurrency = (value) => {
-  return new Intl.NumberFormat("id-ID").format(value);
+  return new Intl.NumberFormat("en-US").format(value);
 };
 
 const getSubscriptionStatusClass = (status) => {
@@ -402,6 +450,18 @@ const getApprovalStatusClass = (status) => {
     rejected: "badge badge-sm bg-gradient-danger",
   };
   return classes[status] || "badge badge-sm bg-gradient-secondary";
+};
+
+const fetchMainDomain = async () => {
+  try {
+    const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
+    const res = await axios.get(`${API_URL}/super-admin/settings/main-domain`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    baseDomain.value = res.data.settings?.base_domain || 'yourdomain.com';
+  } catch {
+    baseDomain.value = 'yourdomain.com';
+  }
 };
 
 const fetchStats = async () => {
@@ -440,7 +500,7 @@ const fetchISPs = async () => {
     loading.value = true;
     const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
     if (!token) {
-      alert("Please login first");
+      notify('warning', 'Unauthorized', 'Please login first');
       window.location.href = "/";
       return;
     }
@@ -476,13 +536,14 @@ const fetchISPs = async () => {
   } catch (error) {
     console.error("Error fetching ISPs:", error);
     if (error.response?.status === 401 || error.response?.status === 403) {
-      alert("Session expired. Please login again.");
+      notify('error', 'Session Expired', 'Session expired. Please login again.');
       localStorage.removeItem("auth_token");
       window.location.href = "/";
     } else {
-      alert(
-        "Failed to load ISPs: " +
-          (error.response?.data?.message || error.message),
+      notify(
+        'error',
+        'Error',
+        "Failed to load ISPs: " + (error.response?.data?.message || error.message)
       );
     }
   } finally {
@@ -510,7 +571,7 @@ const fetchPackages = async () => {
 };
 
 const approveISP = async (isp) => {
-  if (confirm(`Approve ISP: ${isp.name}?`)) {
+  if (await confirm('Konfirmasi', `Approve ISP: ${isp.name}?`, 'question')) {
     try {
       const token = localStorage.getItem("auth_token") || sessionStorage.getItem("auth_token");
       await axios.post(
@@ -520,12 +581,12 @@ const approveISP = async (isp) => {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-      alert(`ISP ${isp.name} has been approved!`);
+      notify('success', 'Approved', `ISP ${isp.name} has been approved!`);
       await fetchISPs();
       await fetchStats();
     } catch (error) {
       console.error("Error approving ISP:", error);
-      alert("Failed to approve ISP");
+      notify('error', 'Error', "Failed to approve ISP");
     }
   }
 };
@@ -544,12 +605,12 @@ const rejectISP = async (isp) => {
           headers: { Authorization: `Bearer ${token}` },
         },
       );
-      alert(`ISP ${isp.name} has been rejected.`);
+      notify('success', 'Rejected', `ISP ${isp.name} has been rejected.`);
       await fetchISPs();
       await fetchStats();
     } catch (error) {
       console.error("Error rejecting ISP:", error);
-      alert("Failed to reject ISP");
+      notify('error', 'Error', "Failed to reject ISP");
     }
   }
 };
@@ -564,7 +625,7 @@ const viewDetails = async (isp) => {
     showDetailsModal.value = true;
   } catch (error) {
     console.error("Error fetching ISP details:", error);
-    alert("Failed to load details");
+    notify('error', 'Error', "Failed to load details");
   }
 };
 
@@ -580,17 +641,17 @@ const updateSubscription = async () => {
         headers: { Authorization: `Bearer ${token}` },
       },
     );
-    alert("Subscription updated successfully!");
+    notify('success', 'Success', "Subscription updated successfully!");
     showDetailsModal.value = false;
     await fetchISPs();
   } catch (error) {
     console.error("Error updating subscription:", error);
-    alert("Failed to update subscription");
+    notify('error', 'Error', "Failed to update subscription");
   }
 };
 
 function openAddISP() {
-  ispForm.value = { id: null, name: '', email: '', phone: '', address: '' };
+  ispForm.value = { id: null, name: '', email: '', phone: '', address: '', domain_type: 'subdomain', subdomain: '', custom_domain: '', password: '', package_id: '' };
   editMode.value = false;
   showISPModal.value = true;
 }
@@ -617,42 +678,47 @@ async function saveISP() {
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert('ISP updated successfully!');
+      notify('success', 'Success', 'ISP updated successfully!');
     } else {
       await axios.post(`${API_URL}/super-admin/isp-management`, {
         company_name: ispForm.value.name,
         email: ispForm.value.email,
         phone: ispForm.value.phone,
         address: ispForm.value.address,
+        ...(ispForm.value.domain_type === 'subdomain'
+          ? { subdomain: ispForm.value.subdomain }
+          : { custom_domain: ispForm.value.custom_domain }),
+        password: ispForm.value.password,
+        subscription_package_id: ispForm.value.package_id,
       }, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      alert('ISP created successfully!');
+      notify('success', 'Success', 'ISP created successfully!');
     }
     showISPModal.value = false;
     await fetchISPs();
     await fetchStats();
   } catch (error) {
-    alert('Failed to save ISP: ' + (error.response?.data?.message || error.message));
+    notify('error', 'Error', 'Failed to save ISP: ' + (error.response?.data?.message || error.message));
   }
 }
 async function deleteISP(isp) {
-  if (!confirm(`Yakin ingin menghapus ISP: ${isp.name}?`)) return;
+  if (!await confirm('Konfirmasi', `Are you sure you want to delete ISP: ${isp.name}?`, 'warning')) return;
   const token = localStorage.getItem('auth_token') || sessionStorage.getItem('auth_token');
   try {
     await axios.delete(`${API_URL}/super-admin/isp-management/${isp.id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    alert('ISP deleted successfully!');
+    notify('success', 'Success', 'ISP deleted successfully!');
     await fetchISPs();
     await fetchStats();
   } catch (error) {
-    alert('Failed to delete ISP: ' + (error.response?.data?.message || error.message));
+    notify('error', 'Error', 'Failed to delete ISP: ' + (error.response?.data?.message || error.message));
   }
 }
 
 onMounted(async () => {
-  await Promise.all([fetchStats(), fetchISPs(), fetchPackages()]);
+  await Promise.all([fetchStats(), fetchISPs(), fetchPackages(), fetchMainDomain()]);
 });
 </script>
 

@@ -13,8 +13,11 @@ use App\Http\Controllers\API\SuperAdmin\IspThemeController;
 use App\Http\Controllers\API\SuperAdmin\DashboardController;
 use App\Http\Controllers\API\ISPAdmin\ISPSubscriptionController;
 use App\Http\Controllers\API\ISPAdmin\ClientAreaController;
+use App\Http\Controllers\API\ISPAdmin\ServiceController as ISPAdminServiceController;
 use App\Http\Controllers\API\SuperAdmin\ISPServiceController;
 use App\Http\Controllers\API\SuperAdmin\ISPOrderManagementController;
+use App\Http\Controllers\API\Shared\NotificationController;
+use App\Http\Controllers\API\ISPAdmin\InvoiceController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
@@ -69,17 +72,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/auth/user', [LoginController::class, 'user']);
     Route::put('/auth/profile', [LoginController::class, 'updateProfile']);
     Route::put('/auth/password', [LoginController::class, 'updatePassword']);
-
-    // Super Admin routes
-    Route::middleware(['role:super_admin'])->prefix('super-admin')->group(function () {
-        Route::get('dashboard/stats', [DashboardController::class, 'stats']);
-        Route::get('dashboard/recent-isps', [DashboardController::class, 'recentIsps']);
-    });
+    Route::get('/notifications', [NotificationController::class, 'index']);
 
     Route::middleware(['role:super_admin'])->prefix('super-admin')->group(function () {
         // Dashboard
         Route::get('dashboard/stats', [DashboardController::class, 'stats']);
         Route::get('dashboard/recent-isps', [DashboardController::class, 'recentIsps']);
+        Route::get('search', [DashboardController::class, 'search']);
         
         // Subscription Packages
         Route::apiResource('subscription-packages', SubscriptionPackageController::class);
@@ -107,6 +106,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         // Landing Pages
         Route::post('landing-page/upload', [LandingPageController::class, 'uploadImage']);
         Route::get('landing-page', [LandingPageController::class, 'index']); // Get active landing page
+        Route::post('landing-page', [LandingPageController::class, 'store']); // Add this for singular POST
         Route::get('landing-page/{id}', [LandingPageController::class, 'show']); // Get specific landing page
         Route::put('landing-page/{id}', [LandingPageController::class, 'update']); // Update landing page
         Route::apiResource('landing-pages', LandingPageController::class);
@@ -124,25 +124,44 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('isp-orders/{id}', [ISPOrderManagementController::class, 'show']);
         Route::post('isp-orders/{id}/approve', [ISPOrderManagementController::class, 'approve']);
         Route::post('isp-orders/{id}/reject', [ISPOrderManagementController::class, 'reject']);
+
+        // System Settings
+        Route::get('settings/documentation', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'getDocumentation']);
+        Route::post('settings/documentation', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'updateDocumentation']);
+        Route::get('settings/main-domain', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'getMainDomain']);
+        Route::post('settings/main-domain', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'updateMainDomain']);
     });
+
+    // Public/Shared Settings (Available for all authenticated users)
+    Route::get('system/documentation', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'getDocumentation']);
+    Route::get('system/main-domain', [\App\Http\Controllers\API\SuperAdmin\SystemSettingController::class, 'getMainDomain']);
+
 
     // ISP Admin routes
     Route::middleware(['role:isp_admin'])->prefix('isp-admin')->group(function () {
-        Route::get('dashboard', function () {
-            // Lazy Cleanup: Check for expired subscriptions on Dashboard load
-            try {
-                \Illuminate\Support\Facades\Artisan::call('isp:check-expiry');
-            } catch (\Exception $e) {
-                // Ignore errors to not block dashboard load
-            }
-            
-            $user = auth()->user();
-            $isp = $user->isp()->with('subscriptionPackage')->first();
-            return response()->json([
-                'user' => $user,
-                'isp' => $isp,
-                'subscription' => $isp ? $isp->subscriptionPackage : null,
-            ]);
+        Route::apiResource('staff', \App\Http\Controllers\API\ISPAdmin\StaffController::class);
+        Route::apiResource('customers', \App\Http\Controllers\API\ISPAdmin\CustomerController::class);
+        Route::get('customers-map', [\App\Http\Controllers\API\ISPAdmin\CustomerController::class, 'mapData']);
+        Route::apiResource('services', ISPAdminServiceController::class);
+        
+        // Billing & Invoices
+        Route::post('billing/trigger', function() {
+            $isp = auth()->user()->isp;
+            $count = (new \App\Services\BillingService())->generateRecurringInvoices($isp);
+            return response()->json(['message' => "Successfully generated {$count} invoices.", 'count' => $count]);
+        });
+        Route::get('invoices/{id}/download', [InvoiceController::class, 'downloadPDF']);
+        Route::post('invoices/{id}/mark-as-paid', [InvoiceController::class, 'markAsPaid']);
+        Route::apiResource('invoices', InvoiceController::class);
+        Route::get('dashboard', [\App\Http\Controllers\API\ISPAdmin\DashboardController::class, 'stats']);
+        Route::get('search', [\App\Http\Controllers\API\ISPAdmin\DashboardController::class, 'search'])->middleware('role:isp_admin,customer');
+        
+        // Settings Management
+        Route::prefix('settings')->group(function () {
+            Route::post('profile', [\App\Http\Controllers\API\ISPAdmin\SettingsController::class, 'updateProfile']);
+            Route::post('password', [\App\Http\Controllers\API\ISPAdmin\SettingsController::class, 'updatePassword']);
+            Route::get('notifications', [\App\Http\Controllers\API\ISPAdmin\SettingsController::class, 'getNotifications']);
+            Route::post('notifications', [\App\Http\Controllers\API\ISPAdmin\SettingsController::class, 'updateNotifications']);
         });
         
         // Subscription
@@ -159,7 +178,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::post('orders/{id}/cancel', [ClientAreaController::class, 'cancelOrder']);
             Route::delete('orders/{id}', [ClientAreaController::class, 'deleteOrder']);
             Route::get('my-services', [ClientAreaController::class, 'myServices']);
+            Route::get('owned-isps', [ClientAreaController::class, 'ownedIsps']);
             Route::get('services/{id}', [ClientAreaController::class, 'serviceDetail']);
+            Route::put('services/{id}', [ClientAreaController::class, 'updateService']);
             Route::get('invoices', [ClientAreaController::class, 'invoices']);
             Route::get('invoices/{id}', [ClientAreaController::class, 'invoiceDetail']);
             Route::get('invoices/{id}/download', [ClientAreaController::class, 'downloadInvoice']);
@@ -171,6 +192,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
             Route::put('profile', [ClientAreaController::class, 'updateProfile']);
             Route::get('balance', [ClientAreaController::class, 'balance']);
             Route::get('topup-history', [ClientAreaController::class, 'topupHistory']);
+            Route::post('verify-bank', [ClientAreaController::class, 'verifyBankAccount']);
             Route::post('withdraw', [ClientAreaController::class, 'withdrawRequest']);
             Route::get('withdrawal-history', [ClientAreaController::class, 'withdrawalHistory']);
             Route::put('referral-code', [ClientAreaController::class, 'updateReferralCode']);
@@ -189,16 +211,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
 // Public routes
 Route::get('/subscription-packages/public', [SubscriptionPackageController::class, 'index']);
-Route::get('/landing-page', [LandingPageController::class, 'index']);
-Route::get('/theme/public', [IspThemeController::class, 'getPublicTheme']);
-
-Route::get('/notifications', function() {
-    return response()->json(['data' => []]);
-});
+Route::get('/landing-page', [LandingPageController::class, 'index'])->middleware('detect.tenant');
+Route::get('/theme/public', [IspThemeController::class, 'getPublicTheme'])->middleware('detect.tenant');
+Route::get('/public-tenant-packages', [\App\Http\Controllers\API\Public\TenantPackageController::class, 'getPackages'])->middleware('detect.tenant');
 
 Route::post('/payment-callback', [ISPSubscriptionController::class, 'paymentCallback']); // Legacy/Midtrans
 Route::post('/callback/midtrans', [ISPSubscriptionController::class, 'paymentCallback']);
 Route::post('/callback/xendit', [ISPSubscriptionController::class, 'callbackXendit']);
+Route::post('/callback/xendit/disbursement', [ClientAreaController::class, 'xenditDisbursementCallback']);
 Route::post('/callback/tripay', [ISPSubscriptionController::class, 'callbackTripay']);
 Route::post('/callback/duitku', [ISPSubscriptionController::class, 'callbackDuitku']);
 

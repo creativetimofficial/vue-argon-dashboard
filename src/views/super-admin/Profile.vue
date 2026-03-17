@@ -5,15 +5,15 @@
         <div class="card">
           <div class="card-header pb-0">
             <div class="d-flex align-items-center">
-              <h6 class="mb-0">Profile Settings</h6>
+              <h6 class="mb-0">{{ $t('dashboard.profile.title') }}</h6>
             </div>
           </div>
           <div class="card-body">
-            <p class="text-uppercase text-sm">User Information</p>
+            <p class="text-uppercase text-sm">{{ $t('dashboard.profile.user_info') }}</p>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="name" class="form-control-label">Full Name</label>
+                  <label for="name" class="form-control-label">{{ $t('dashboard.profile.full_name') }}</label>
                   <input
                     id="name"
                     v-model="profile.name"
@@ -25,7 +25,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="email" class="form-control-label">Email</label>
+                  <label for="email" class="form-control-label">{{ $t('dashboard.email') }}</label>
                   <input
                     id="email"
                     v-model="profile.email"
@@ -38,7 +38,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="phone" class="form-control-label">Phone</label>
+                  <label for="phone" class="form-control-label">{{ $t('dashboard.phone') }}</label>
                   <input
                     id="phone"
                     v-model="profile.phone"
@@ -50,7 +50,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="role" class="form-control-label">Role</label>
+                  <label for="role" class="form-control-label">{{ $t('dashboard.profile.role') }}</label>
                   <input
                     id="role"
                     v-model="profile.role"
@@ -64,11 +64,11 @@
 
             <hr class="horizontal dark" />
 
-            <p class="text-uppercase text-sm">Change Password</p>
+            <p class="text-uppercase text-sm">{{ $t('dashboard.profile.change_password') }}</p>
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="current_password" class="form-control-label">Current Password</label>
+                  <label for="current_password" class="form-control-label">{{ $t('dashboard.profile.current_password') }}</label>
                   <input
                     id="current_password"
                     v-model="passwordForm.current_password"
@@ -80,7 +80,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="new_password" class="form-control-label">New Password</label>
+                  <label for="new_password" class="form-control-label">{{ $t('dashboard.profile.new_password') }}</label>
                   <input
                     id="new_password"
                     v-model="passwordForm.new_password"
@@ -92,7 +92,7 @@
               </div>
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="confirm_password" class="form-control-label">Confirm Password</label>
+                  <label for="confirm_password" class="form-control-label">{{ $t('dashboard.profile.confirm_password') }}</label>
                   <input
                     id="confirm_password"
                     v-model="passwordForm.confirm_password"
@@ -112,7 +112,7 @@
                 :disabled="loading"
               >
                 <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
-                Update Profile
+                {{ $t('dashboard.profile.update_profile') }}
               </button>
               <button
                 type="button"
@@ -121,7 +121,7 @@
                 :disabled="loading || !passwordForm.current_password"
               >
                 <span v-if="loading" class="spinner-border spinner-border-sm me-1"></span>
-                Change Password
+                {{ $t('dashboard.profile.change_password') }}
               </button>
             </div>
           </div>
@@ -134,6 +134,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import notify from '@/utils/notify';
 
 export default {
   name: 'SuperAdminProfile',
@@ -175,7 +176,7 @@ export default {
       try {
         const token = localStorage.getItem('auth_token');
         const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/profile`,
+          `${import.meta.env.VITE_API_URL}/auth/profile`,
           {
             name: profile.value.name,
             phone: profile.value.phone,
@@ -191,10 +192,10 @@ export default {
         user.phone = profile.value.phone;
         localStorage.setItem('user', JSON.stringify(user));
 
-        alert('Profile updated successfully!');
+        notify('success', 'Profile Updated', 'Profile updated successfully!');
       } catch (error) {
         console.error('Error updating profile:', error);
-        alert(error.response?.data?.message || 'Failed to update profile');
+        notify('error', 'Error', error.response?.data?.message || 'Failed to update profile');
       } finally {
         loading.value = false;
       }
@@ -202,12 +203,12 @@ export default {
 
     const updatePassword = async () => {
       if (passwordForm.value.new_password !== passwordForm.value.confirm_password) {
-        alert('New password and confirm password do not match!');
+        notify('warning', 'Mismatch', 'New password and confirm password do not match!');
         return;
       }
 
       if (passwordForm.value.new_password.length < 8) {
-        alert('Password must be at least 8 characters!');
+        notify('warning', 'Invalid Password', 'Password must be at least 8 characters!');
         return;
       }
 
@@ -215,7 +216,7 @@ export default {
       try {
         const token = localStorage.getItem('auth_token');
         await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/profile/password`,
+          `${import.meta.env.VITE_API_URL}/auth/password`,
           {
             current_password: passwordForm.value.current_password,
             new_password: passwordForm.value.new_password,
@@ -232,10 +233,10 @@ export default {
           confirm_password: '',
         };
 
-        alert('Password changed successfully!');
+        notify('success', 'Success', 'Password changed successfully!');
       } catch (error) {
         console.error('Error changing password:', error);
-        alert(error.response?.data?.message || 'Failed to change password');
+        notify('error', 'Error', error.response?.data?.message || 'Failed to change password');
       } finally {
         loading.value = false;
       }

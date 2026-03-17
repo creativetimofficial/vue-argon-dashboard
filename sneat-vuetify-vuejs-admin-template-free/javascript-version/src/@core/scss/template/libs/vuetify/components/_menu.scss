@@ -1,0 +1,33 @@
+// Style list differently when it's used in a components like select, menu etc
+.v-menu {
+  // Adjust padding of list item inside menu
+  .v-list-item {
+    padding-block: 8px !important;
+    padding-inline: 20px !important;
+  }
+}
+
+// 👉 Menu
+// Menu custom style
+.v-menu.v-overlay {
+  .v-overlay__content {
+    .v-list {
+      .v-list-item {
+        margin-block-end: 0.125rem;
+        min-block-size: 2.375rem;
+
+        &:first-child {
+          margin-block-start: 0;
+        }
+
+        &:last-child {
+          margin-block-end: 0;
+        }
+      }
+
+      .v-list-item--density-default:not(.v-list-item--nav).v-list-item--one-line {
+        padding-block: 0.5rem;
+      }
+    }
+  }
+}

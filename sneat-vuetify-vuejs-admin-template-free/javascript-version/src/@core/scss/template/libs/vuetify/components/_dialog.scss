@@ -1,0 +1,24 @@
+@use "@layouts/styles/mixins" as layoutsMixins;
+
+// 👉 Dialog
+body .v-dialog {
+  // dialog custom close btn
+  .v-dialog-close-btn {
+    border-radius: 0.25rem;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    transform: translate(0.5rem, -0.5rem);
+
+    @include layoutsMixins.rtl {
+      transform: translate(-0.5rem, -0.5rem);
+    }
+
+    &:hover {
+      transform: translate(0.3125rem, -0.3125rem);
+
+      @include layoutsMixins.rtl {
+        transform: translate(-0.3125rem, -0.3125rem);
+      }
+    }
+  }
+}

@@ -1,0 +1,34 @@
+@use "@core/scss/base/utils";
+@use "@configured-variables" as variables;
+
+// 👉 Body
+
+// set body font size 15px
+body {
+  font-size: 15px !important;
+
+  // 👉 Button outline with default color border color
+  .v-alert--variant-outlined,
+  .v-avatar--variant-outlined,
+  .v-btn.v-btn--variant-outlined,
+  .v-card--variant-outlined,
+  .v-chip--variant-outlined,
+  .v-list-item--variant-outlined {
+    &:not([class*="text-"]) {
+      border-color: rgba(var(--v-border-color), 0.22);
+    }
+
+    &.text-default {
+      border-color: rgba(var(--v-border-color), 0.22);
+    }
+  }
+
+  // We reduced this margin to get 40px input height
+  .v-input--density-compact {
+    --v-input-chips-margin-bottom: 1px;
+  }
+}
+
+.text-caption {
+  color: rgba(var(--v-theme-on-background), var(--v-disabled-opacity));
+}

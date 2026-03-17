@@ -9,19 +9,19 @@
                 <div class="spinner-border text-success mb-4" role="status">
                   <span class="visually-hidden">Loading...</span>
                 </div>
-                <p>Memverifikasi email Anda...</p>
+                <p>Verifying your email...</p>
               </div>
               <div v-else-if="success">
                 <i class="fas fa-check-circle fa-4x text-success mb-4"></i>
-                <h2 class="mb-3 text-success">Verifikasi Berhasil!</h2>
-                <p class="mb-4">Email Anda telah berhasil diverifikasi.<br />Silakan login untuk mulai menggunakan layanan.</p>
-                <router-link to="/login" class="btn btn-success px-4 py-2">Login Sekarang</router-link>
+                <h2 class="mb-3 text-success">Verification Successful!</h2>
+                <p class="mb-4">Your email has been successfully verified.<br />Please log in to start using the service.</p>
+                <router-link to="/login" class="btn btn-success px-4 py-2">Log in Now</router-link>
               </div>
               <div v-else-if="errorMessage">
                 <i class="fas fa-times-circle fa-4x text-danger mb-4"></i>
-                <h2 class="mb-3 text-danger">Verifikasi Gagal</h2>
+                <h2 class="mb-3 text-danger">Verification Failed</h2>
                 <p class="mb-4">{{ errorMessage }}</p>
-                <router-link to="/login" class="btn btn-primary px-4 py-2">Kembali ke Login</router-link>
+                <router-link to="/login" class="btn btn-primary px-4 py-2">Back to Login</router-link>
               </div>
             </div>
           </div>
@@ -66,14 +66,14 @@ const verifyEmail = async (token) => {
         router.push('/login')
       }, 4000)
     } else {
-      errorMessage.value = response.data.message || 'Token verifikasi tidak valid atau sudah kadaluarsa.'
+      errorMessage.value = response.data.message || 'Verification token is invalid or has expired.'
       setTimeout(() => {
         router.push('/login?verify=failed')
       }, 3000)
     }
   } catch (error) {
     console.error('Verification error:', error)
-    errorMessage.value = error.response?.data?.message || 'Token verifikasi tidak valid atau sudah kadaluarsa.'
+    errorMessage.value = error.response?.data?.message || 'Verification token is invalid or has expired.'
     setTimeout(() => {
       router.push('/login?verify=failed')
     }, 3000)

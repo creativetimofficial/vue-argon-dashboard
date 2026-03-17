@@ -1,0 +1,122 @@
+// 👉 Chip
+.v-chip {
+  line-height: 1.25rem;
+
+  .v-chip__close {
+    margin-inline: 4px -6px !important;
+
+    .v-icon {
+      opacity: 0.7;
+    }
+  }
+
+  .v-chip__content {
+    .v-icon {
+      block-size: 20px;
+      font-size: 20px;
+      inline-size: 20px;
+    }
+  }
+
+  &:not(.v-chip--variant-elevated) {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  }
+
+  &.v-chip--variant-elevated {
+    background-color: rgba(var(--v-theme-on-surface), var(--v-activated-opacity));
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+  }
+
+  &:not([class*="text-"]) {
+    --v-activated-opacity: 0.08;
+  }
+
+  // common style for all sizes
+  &.v-chip--size-default,
+  &.v-chip--size-small {
+    .v-icon--start {
+      margin-inline: -6px 4px !important;
+    }
+
+    .v-icon--end {
+      margin-inline: 4px -6px !important;
+    }
+
+    .v-avatar--start {
+      margin-inline-end: 4px !important;
+    }
+
+    .v-avatar--end {
+      margin-inline-start: 4px !important;
+    }
+  }
+
+  // small size
+  &:not(.v-chip--pill).v-chip--size-small {
+    --v-chip-height: 24px;
+
+    font-size: 13px;
+    padding-inline: 0.625rem;
+
+    &.v-chip--label {
+      border-radius: 0.25rem;
+    }
+
+    .v-avatar {
+      --v-avatar-height: 16px;
+    }
+
+    .v-chip__close {
+      font-size: 16px;
+      max-block-size: 16px;
+      max-inline-size: 16px;
+    }
+
+    .v-chip__content {
+      .v-icon {
+        block-size: 16px;
+        font-size: 16px;
+        inline-size: 16px;
+      }
+    }
+  }
+
+  // extra small size
+  &:not(.v-chip--pill).v-chip--size-x-small {
+    --v-chip-height: 20px;
+
+    &.v-chip--label {
+      border-radius: 0.25rem;
+      padding-inline: 0.625rem;
+    }
+
+    font-size: 13px;
+
+    .v-avatar {
+      --v-avatar-height: 16px;
+    }
+
+    .v-chip__close {
+      font-size: 16px;
+      max-block-size: 16px;
+      max-inline-size: 16px;
+    }
+  }
+
+  // default size
+  &:not(.v-chip--pill).v-chip--size-default {
+    padding-inline: 0.75rem;
+
+    .v-avatar {
+      --v-avatar-height: 20px;
+    }
+
+    .v-avatar--start {
+      margin-inline: -6px 4px;
+    }
+
+    .v-avatar--end {
+      margin-inline: 4px -6px;
+    }
+  }
+}

@@ -97,7 +97,7 @@ const toggleMenu = () => {
 
 const handleLogout = async () => {
   await ispAdminStore.logout();
-  router.push('/isp-admin/login');
+  router.push('/login');
 };
 </script>
 

@@ -1,0 +1,6 @@
+@use "sass:map";
+@use "@configured-variables" as variables;
+
+@mixin custom-elevation($color, $size) {
+  box-shadow: (map.get(variables.$shadow-params, $size) rgba($color, map.get(variables.$shadow-opacity, $size)));
+}

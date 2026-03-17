@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, ref, onMounted } from "vue";
 import { useStore } from "vuex";
 import SidenavList from "./SidenavList.vue";
 import logo from "@/assets/img/logo-ct-dark.png";
@@ -10,6 +10,12 @@ const isRTL = computed(() => store.state.isRTL);
 const layout = computed(() => store.state.layout);
 const sidebarType = computed(() => store.state.sidebarType);
 const darkMode = computed(() => store.state.darkMode);
+
+const user = ref(null);
+onMounted(() => {
+  const userData = localStorage.getItem("user") || sessionStorage.getItem("user");
+  if (userData) user.value = JSON.parse(userData);
+});
 </script>
 <template>
   <div
@@ -33,14 +39,17 @@ const darkMode = computed(() => store.state.darkMode);
         id="iconSidenav"
       ></i>
 
-      <router-link class="m-0 navbar-brand" to="/">
+      <router-link 
+        class="m-0 navbar-brand d-flex align-items-center justify-content-center" 
+        :to="user?.role === 'super_admin' ? '/super-admin/dashboard' : '/client-area/dashboard'"
+      >
         <img
-          :src="darkMode || sidebarType === 'bg-default' ? logoWhite : logo"
+          src="/favicon.png"
           class="navbar-brand-img h-100"
           alt="main_logo"
+          style="margin-right: -8px;"
         />
-
-        <span class="ms-2 font-weight-bold me-2">Argon Dashboard 2</span>
+        <span class="ms-1 font-weight-bold" style="font-size: 1.3rem; color: #2dce89;">ayneto</span>
       </router-link>
     </div>
 

@@ -5,7 +5,13 @@
       <div class="col-12">
         <div class="card mb-4">
           <div class="card-header pb-0">
-            <h6>Invoices Table</h6>
+            <div class="d-flex justify-content-between align-items-center">
+              <h6>{{ $t('dashboard.invoices.title') }}</h6>
+              <button class="btn btn-link text-primary p-0 mb-0" @click="manualRefresh" :disabled="isLoading">
+                <i class="fas fa-sync-alt" :class="{ 'fa-spin': isLoading }"></i>
+                <span class="ms-1 d-none d-sm-inline">{{ $t('dashboard.invoices.refresh') }}</span>
+              </button>
+            </div>
           </div>
           <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
@@ -16,16 +22,16 @@
                       ID
                     </th>
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
-                      TOTAL
+                      {{ $t('dashboard.invoices.total').toUpperCase() }}
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                      STATUS
+                      {{ $t('common.status').toUpperCase() }}
+                    </th>
+                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                      {{ $t('dashboard.invoices.method').toUpperCase() }}
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                      METHOD
-                    </th>
-                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                      CREATED AT
+                      {{ $t('dashboard.orders.date').toUpperCase() }}
                     </th>
                     <th class="text-secondary opacity-7"></th>
                   </tr>
@@ -36,6 +42,7 @@
                       <div class="d-flex px-2 py-1">
                         <div class="d-flex flex-column justify-content-center">
                           <h6 class="mb-0 text-sm">{{ invoice.invoice_number || invoice.id }}</h6>
+                          <p class="text-xs text-secondary mb-0">Unit: {{ invoice.billable?.company_name || '-' }}</p>
                         </div>
                       </div>
                     </td>
@@ -53,7 +60,7 @@
                           'bg-gradient-danger': invoice.payment_status === 'overdue',
                         }"
                       >
-                        {{ invoice.status === 'cancelled' ? 'CANCELLED' : invoice.payment_status.toUpperCase() }}
+                        {{ invoice.status === 'cancelled' ? 'CANCELLED' : (invoice.payment_status === 'paid' ? 'PAID' : (invoice.payment_status === 'unpaid' ? 'UNPAID' : (invoice.payment_status === 'overdue' ? 'OVERDUE' : invoice.payment_status.toUpperCase()))) }}
                       </span>
                     </td>
                     <td class="align-middle text-center">
@@ -82,7 +89,7 @@
                           </span>
                           <span v-else>
                             <i class="fas fa-credit-card me-1"></i>
-                            Pay Now
+                            {{ $t('dashboard.invoices.pay_now') }}
                           </span>
                         </button>
                         
@@ -92,7 +99,7 @@
                           @click="cancelInvoice(invoice.id)"
                         >
                           <i class="fas fa-times me-1"></i>
-                          Cancel
+                          {{ $t('common.cancel') }}
                         </button>
                         
                         <button
@@ -101,7 +108,7 @@
                           @click="viewInvoice(invoice.id)"
                         >
                           <i class="fas fa-eye me-1"></i>
-                          View
+                          {{ $t('dashboard.invoices.view') }}
                         </button>
                         
                         <button
@@ -110,14 +117,14 @@
                           @click="downloadInvoice(invoice.id)"
                         >
                           <i class="fas fa-download me-1"></i>
-                          PDF
+                          {{ $t('dashboard.invoices.download_pdf') }}
                         </button>
                       </div>
                     </td>
                   </tr>
                   <tr v-if="invoices.length === 0">
                     <td colspan="6" class="text-center py-4">
-                      <p class="text-muted mb-0">No data available in table</p>
+                      <p class="text-muted mb-0">{{ $t('dashboard.invoices.no_invoices') }}</p>
                     </td>
                   </tr>
                 </tbody>
@@ -138,12 +145,12 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-between align-items-center">
-          <h5 class="modal-title m-0">Select Payment Method</h5>
+          <h5 class="modal-title m-0">{{ $t('dashboard.invoices.select_payment') }}</h5>
           <button type="button" class="btn-close text-dark" @click="closePaymentModal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div v-if="selectedMethodInvoice" class="text-center mb-4">
-            <p class="text-muted mb-1">Total to Pay</p>
+            <p class="text-muted mb-1">{{ $t('dashboard.invoices.total_payment') }}</p>
             <h3 class="font-weight-bolder text-primary">{{ formatCurrency(selectedMethodInvoice.total) }}</h3>
           </div>
 
@@ -163,25 +170,25 @@
                         <i class="fas fa-wallet text-white opacity-10" style="margin-top: -3px;"></i>
                       </div>
                       <div>
-                        <h6 class="mb-0 text-dark">Pay with Balance</h6>
+                        <h6 class="mb-0 text-dark">{{ $t('dashboard.invoices.pay_balance') }}</h6>
                         <span class="text-xs text-success font-weight-bold">
-                          <i class="fas fa-check-circle me-1"></i> No Admin Fee & Instant
+                          <i class="fas fa-check-circle me-1"></i> {{ $t('dashboard.invoices.no_fee') }}
                         </span>
                       </div>
                     </div>
                     <div class="text-end">
-                      <span class="badge bg-success" v-if="canPayWithBalance">Recommended</span>
+                      <span class="badge bg-success" v-if="canPayWithBalance">{{ $t('dashboard.invoices.recommended') }}</span>
                     </div>
                   </div>
                   <hr class="horizontal dark my-2">
                   <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted">Your Balance: <strong>{{ formatCurrency(balance) }}</strong></small>
+                    <small class="text-muted">{{ $t('dashboard.invoices.your_balance') }}: <strong>{{ formatCurrency(balance) }}</strong></small>
                     <button 
                       class="btn btn-sm btn-success mb-0" 
                       :disabled="!canPayWithBalance"
                       @click.stop="canPayWithBalance ? payWithBalance(selectedMethodInvoice) : null"
                     >
-                      {{ canPayWithBalance ? 'Pay Now' : 'Insufficient Balance' }}
+                      {{ $t(canPayWithBalance ? 'dashboard.invoices.pay_now' : 'dashboard.invoices.insufficient') }}
                     </button>
                   </div>
                 </div>
@@ -202,7 +209,7 @@
                         <i class="fas fa-globe text-white opacity-10" style="margin-top: -3px;"></i>
                       </div>
                       <div>
-                        <h6 class="mb-0 text-dark">Payment Gateway</h6>
+                        <h6 class="mb-0 text-dark">{{ $t('dashboard.invoices.payment_gateway') }}</h6>
                         <span class="text-xs text-muted">Bank Transfer, E-Wallet, QRIS</span>
                       </div>
                     </div>
@@ -227,7 +234,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header d-flex justify-content-between align-items-center">
-          <h5 class="modal-title m-0">Invoice Detail - {{ selectedInvoice.invoice_number }}</h5>
+          <h5 class="modal-title m-0">{{ $t('dashboard.invoices.invoice_details') }} - {{ selectedInvoice.invoice_number }}</h5>
           <button
             type="button"
             class="btn-close text-dark"
@@ -244,12 +251,12 @@
           <div v-else-if="invoiceDetail">
             <div class="row mb-3">
               <div class="col-md-6">
-                <p class="mb-1"><strong>Invoice Number:</strong> {{ invoiceDetail.invoice_number }}</p>
-                <p class="mb-1"><strong>Issue Date:</strong> {{ formatDate(invoiceDetail.issue_date) }}</p>
-                <p class="mb-1"><strong>Due Date:</strong> {{ formatDate(invoiceDetail.due_date) }}</p>
+                <p class="mb-1"><strong>{{ $t('dashboard.invoices.invoice_number') }}:</strong> {{ invoiceDetail.invoice_number }}</p>
+                <p class="mb-1"><strong>{{ $t('dashboard.invoices.issue_date') }}:</strong> {{ formatDate(invoiceDetail.issue_date) }}</p>
+                <p class="mb-1"><strong>{{ $t('dashboard.invoices.due_date') }}:</strong> {{ formatDate(invoiceDetail.due_date) }}</p>
               </div>
               <div class="col-md-6">
-                <p class="mb-1"><strong>Status:</strong> 
+                <p class="mb-1"><strong>{{ $t('common.status') }}:</strong> 
                   <span
                     class="badge"
                     :class="{
@@ -262,7 +269,7 @@
                     {{ invoiceDetail.payment_status.toUpperCase() }}
                   </span>
                 </p>
-                <p class="mb-1"><strong>Payment Method:</strong> {{ invoiceDetail.payment?.payment_method || '-' }}</p>
+                <p class="mb-1"><strong>{{ $t('dashboard.invoices.payment_method') }}:</strong> {{ invoiceDetail.payment?.payment_method || '-' }}</p>
               </div>
             </div>
 
@@ -270,10 +277,10 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th>Description</th>
-                    <th>Quantity</th>
-                    <th>Unit Price</th>
-                    <th>Total</th>
+                    <th>{{ $t('dashboard.invoices.description') }}</th>
+                    <th>{{ $t('dashboard.invoices.quantity') }}</th>
+                    <th>{{ $t('dashboard.invoices.unit_price') }}</th>
+                    <th>{{ $t('dashboard.invoices.total') }}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -286,19 +293,19 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="3" class="text-end"><strong>Subtotal:</strong></td>
+                    <td colspan="3" class="text-end"><strong>{{ $t('dashboard.invoices.subtotal') }}:</strong></td>
                     <td><strong>{{ formatCurrency(invoiceDetail.subtotal) }}</strong></td>
                   </tr>
                   <tr v-if="invoiceDetail.tax > 0">
-                    <td colspan="3" class="text-end"><strong>Tax:</strong></td>
+                    <td colspan="3" class="text-end"><strong>{{ $t('dashboard.invoices.tax') }}:</strong></td>
                     <td><strong>{{ formatCurrency(invoiceDetail.tax) }}</strong></td>
                   </tr>
                   <tr v-if="invoiceDetail.discount > 0">
-                    <td colspan="3" class="text-end"><strong>Discount:</strong></td>
+                    <td colspan="3" class="text-end"><strong>{{ $t('dashboard.invoices.discount') }}:</strong></td>
                     <td><strong>-{{ formatCurrency(invoiceDetail.discount) }}</strong></td>
                   </tr>
                   <tr>
-                    <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                    <td colspan="3" class="text-end"><strong>{{ $t('dashboard.invoices.total') }}:</strong></td>
                     <td><strong>{{ formatCurrency(invoiceDetail.total) }}</strong></td>
                   </tr>
                 </tfoot>
@@ -306,11 +313,11 @@
             </div>
 
             <div v-if="invoiceDetail.payment" class="mb-3">
-              <h6>Payment Details</h6>
-              <p class="mb-1"><strong>Payment Code:</strong> {{ invoiceDetail.payment.payment_code }}</p>
-              <p class="mb-1"><strong>Amount:</strong> {{ formatCurrency(invoiceDetail.payment.amount) }}</p>
+              <h6>{{ $t('dashboard.invoices.payment_details') }}</h6>
+              <p class="mb-1"><strong>{{ $t('dashboard.invoices.payment_code') }}:</strong> {{ invoiceDetail.payment.payment_code }}</p>
+              <p class="mb-1"><strong>Quantity:</strong> {{ formatCurrency(invoiceDetail.payment.amount) }}</p>
               <p class="mb-1"><strong>Status:</strong> {{ invoiceDetail.payment.status }}</p>
-              <p class="mb-1"><strong>Payment Date:</strong> {{ formatDate(invoiceDetail.payment.payment_date) }}</p>
+              <p class="mb-1"><strong>{{ $t('dashboard.invoices.payment_date') }}:</strong> {{ formatDate(invoiceDetail.payment.payment_date) }}</p>
             </div>
           </div>
         </div>
@@ -488,10 +495,10 @@ const payWithBalance = async (invoice) => {
      })
      
      if (response.data.success) {
-       notify('success', 'Payment Successful', 'Invoice paid using balance!')
+       notify('success', 'Payment Successful', 'Invoice has been paid using balance!')
        showPaymentModal.value = false // Close modal
-       fetchInvoices()
-       fetchBalance()
+       await fetchInvoices()
+       await fetchBalance()
        if (selectedInvoice.value) selectedInvoice.value = null
      }
   } catch (error) {
@@ -519,7 +526,7 @@ const payInvoice = async (invoice) => {
              await loadSnap(data.client_key);
         } else if (!window.snap) {
              // Fallback to Env if no key returned (Legacy)
-             await loadSnap(process.env.VUE_APP_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-TestKey');
+             await loadSnap(import.meta.env.VITE_MIDTRANS_CLIENT_KEY || 'SB-Mid-client-TestKey');
         }
 
         // Use Snap Popup
@@ -534,14 +541,32 @@ const payInvoice = async (invoice) => {
                     amount: result.gross_amount, 
                     payment_type: result.payment_type
                 });
-                notify('success', 'Payment Successful', 'Invoice updated.');
+                notify('success', 'Payment Successful', 'Invoice is being updated...');
+                
+                // Polling for status update
+                let attempts = 0;
+                const pollInterval = setInterval(async () => {
+                    attempts++;
+                    await fetchInvoices();
+                    await fetchBalance();
+                    
+                    // Check if current payment is now marked as success in our local state
+                    const updatedInvoice = invoices.value.find(inv => inv.id === invoice.id);
+                    if (updatedInvoice && updatedInvoice.payment_status === 'paid') {
+                        clearInterval(pollInterval);
+                        notify('success', 'Status Updated', 'Payment has been verified.');
+                    } else if (attempts > 5) {
+                        clearInterval(pollInterval);
+                    }
+                }, 2000);
+
             } catch (e) {
                 console.error('Failed to update status:', e);
                 const errorMsg = e.response?.data?.message || e.message || 'Unknown error';
-                notify('warning', 'Payment Successful', 'Payment success but update failed: ' + errorMsg);
+                notify('warning', 'Pembayaran Berhasil', 'Failed to update status: ' + errorMsg);
+                await fetchInvoices();
+                await fetchBalance();
             }
-            fetchInvoices();
-            fetchBalance(); 
           },
           onPending: function(result) {
             notify('info', 'Payment Pending', 'Waiting for payment!');
@@ -583,8 +608,12 @@ const loadSnap = (clientKey) => {
         oldScript.remove();
     }
 
+    const scriptUrl = clientKey && clientKey.startsWith('SB-') 
+        ? 'https://app.sandbox.midtrans.com/snap/snap.js' 
+        : 'https://app.midtrans.com/snap/snap.js';
+
     const script = document.createElement('script');
-    script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+    script.src = scriptUrl;
     script.setAttribute('data-client-key', clientKey);
     script.onload = () => resolve();
     script.onerror = () => reject(new Error('Failed to load Snap JS'));
@@ -657,8 +686,14 @@ const downloadInvoice = async (invoiceId) => {
   }
 }
 
+const manualRefresh = async () => {
+  await fetchInvoices()
+  await fetchBalance()
+  notify('success', 'Sync Complete', 'Invoice data has been updated.')
+}
+
 const formatCurrency = (amount) => {
-  return new Intl.NumberFormat('id-ID', {
+  return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'IDR',
     minimumFractionDigits: 0,
@@ -667,6 +702,6 @@ const formatCurrency = (amount) => {
 
 const formatDate = (date) => {
   if (!date) return '-'
-  return new Date(date).toLocaleDateString('id-ID')
+  return new Date(date).toLocaleDateString('en-US')
 }
 </script>

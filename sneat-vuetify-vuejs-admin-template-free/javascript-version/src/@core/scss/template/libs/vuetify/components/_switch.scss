@@ -1,0 +1,68 @@
+@use "@configured-variables" as variables;
+@use "@core/scss/template/mixins" as templateMixins;
+@use "@core/scss/base/mixins";
+
+// 👉 switch
+.v-switch {
+  &.v-switch--inset {
+    .v-selection-control {
+      .v-switch__track {
+        transition: all 0.1s;
+      }
+
+      &.v-selection-control--disabled {
+        --v-disabled-opacity: 0.45;
+      }
+
+      &.v-selection-control--dirty {
+        @each $color-name in variables.$theme-colors-name {
+          .v-switch__track.bg-#{$color-name} {
+            @include templateMixins.custom-elevation(var(--v-theme-#{$color-name}), "sm");
+          }
+        }
+      }
+
+      &:not(.v-selection-control--dirty) {
+        .v-switch__track {
+          box-shadow: 0 0 4px 0 rgba(0, 0, 0, 16%) inset;
+        }
+      }
+    }
+
+    .v-selection-control__wrapper {
+      block-size: 36px;
+    }
+
+    .v-selection-control__input {
+      transform: translateX(-6px) !important;
+
+      --v-selection-control-size: 0.875rem;
+
+      .v-switch__thumb {
+        @include mixins.elevation(2);
+
+        transform: scale(1);
+      }
+    }
+
+    .v-selection-control--dirty {
+      .v-selection-control__input {
+        transform: translateX(6px) !important;
+      }
+    }
+  }
+
+  .v-label {
+    color: rgba(var(--v-theme-on-surface), var(--v-high-emphasis-opacity));
+    line-height: 1.375rem !important;
+  }
+}
+
+.v-switch.v-input,
+.v-checkbox-btn,
+.v-radio-btn,
+.v-radio {
+  --v-input-control-height: auto;
+
+  flex: unset;
+}

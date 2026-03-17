@@ -27,9 +27,9 @@
         <div class="d-none d-lg-flex ms-auto align-items-center">
           <ul class="navbar-nav flex-row align-items-center mb-0">
             <li class="nav-item"><a class="nav-link px-3" href="#home">Home</a></li>
-            <li class="nav-item"><a class="nav-link px-3" href="#features">Features</a></li>
-            <li class="nav-item"><a class="nav-link px-3" href="#pricing">Pricing</a></li>
-            <li class="nav-item"><a class="nav-link px-3" href="#contact">Contact</a></li>
+            <li class="nav-item"><a class="nav-link px-3" href="#features">Fitur</a></li>
+            <li class="nav-item"><a class="nav-link px-3" href="#pricing">Harga</a></li>
+            <li class="nav-item"><a class="nav-link px-3" href="#contact">Kontak</a></li>
           </ul>
           <div class="d-flex ms-3" style="padding-top: 12px;">
             <router-link to="/login" class="btn btn-outline-light rounded-pill px-4 me-2">Masuk</router-link>
@@ -43,9 +43,9 @@
         <div class="mobile-menu backdrop-blur rounded-3 d-lg-none py-3 px-3 border-top border-white-50">
           <ul class="navbar-nav">
             <li class="nav-item mb-2"><a class="nav-link" href="#home" @click="mobileMenuOpen = false">Home</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="#features" @click="mobileMenuOpen = false">Features</a></li>
-            <li class="nav-item mb-2"><a class="nav-link" href="#pricing" @click="mobileMenuOpen = false">Pricing</a></li>
-            <li class="nav-item mb-3"><a class="nav-link" href="#contact" @click="mobileMenuOpen = false">Contact</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="#features" @click="mobileMenuOpen = false">Fitur</a></li>
+            <li class="nav-item mb-2"><a class="nav-link" href="#pricing" @click="mobileMenuOpen = false">Harga</a></li>
+            <li class="nav-item mb-3"><a class="nav-link" href="#contact" @click="mobileMenuOpen = false">Kontak</a></li>
           </ul>
           <div class="d-flex gap-2 mt-2">
             <router-link to="/login" class="btn btn-outline-light rounded-pill flex-fill" @click="mobileMenuOpen = false">Masuk</router-link>
@@ -62,8 +62,8 @@
         <div class="row align-items-center">
           <div class="col-lg-7">
             <h1 class="display-2 fw-black mb-4 lh-sm">
-              Experience the <br>
-              <span class="text-gradient">Fastest Internet</span>
+              Rasakan <br>
+              <span class="text-gradient">Internet Tercepat</span>
             </h1>
             <p class="lead text-white-75 mb-5 mw-md-500">
               Jelajahi dunia maya tanpa batas dengan kecepatan cahaya. 
@@ -78,15 +78,15 @@
             <div class="row mt-5">
               <div class="col-auto">
                 <h3 class="fw-bold mb-0">1Gbps</h3>
-                <small class="text-white-50">Max Speed</small>
+                <small class="text-white-50">Kec. Maks</small>
               </div>
               <div class="col-auto border-start border-white-50 ps-4 mx-4">
                 <h3 class="fw-bold mb-0">0%</h3>
                 <small class="text-white-50">Lag</small>
               </div>
               <div class="col-auto border-start border-white-50 ps-4">
-                <h3 class="fw-bold mb-0">24h</h3>
-                <small class="text-white-50">Support</small>
+                <h3 class="fw-bold mb-0">24 Jam</h3>
+                <small class="text-white-50">Dukungan</small>
               </div>
             </div>
           </div>
@@ -95,8 +95,8 @@
                 <div class="d-flex align-items-center mb-3">
                    <div class="avatar bg-success rounded-circle p-2 me-3"><i class='bx bx-wifi text-white'></i></div>
                    <div>
-                      <h6 class="mb-0 fw-bold">Connected</h6>
-                      <small class="text-success">Signal Excellent</small>
+                      <h6 class="mb-0 fw-bold">Terhubung</h6>
+                      <small class="text-success">Sinyal Sangat Baik</small>
                    </div>
                 </div>
                 <div class="progress" style="height: 6px; width: 200px;">
@@ -121,7 +121,7 @@
                         <div class="icon-box mb-3 mx-auto bg-gradient rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 60px; height: 60px;">
                             <i class='bx bx-rocket fs-3'></i>
                         </div>
-                        <h4>Ultra Fast</h4>
+                        <h4>Ultra Cepat</h4>
                         <p class="text-white-50">Download file besar dalam hitungan detik.</p>
                     </div>
                 </div>
@@ -130,7 +130,7 @@
                         <div class="icon-box mb-3 mx-auto bg-gradient rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 60px; height: 60px;">
                             <i class='bx bx-shield-quarter fs-3'></i>
                         </div>
-                        <h4>Secure</h4>
+                        <h4>Aman</h4>
                         <p class="text-white-50">Privasi Anda adalah prioritas utama kami.</p>
                     </div>
                 </div>
@@ -139,8 +139,8 @@
                         <div class="icon-box mb-3 mx-auto bg-gradient rounded-circle d-flex align-items-center justify-content-center shadow-lg" style="width: 60px; height: 60px;">
                             <i class='bx bx-headphone fs-3'></i>
                         </div>
-                        <h4>24/7 Support</h4>
-                        <p class="text-white-50">Bantuan teknis kapanpun Anda butuhkan.</p>
+                        <h4>Dukungan 24/7</h4>
+                        <p class="text-white-50">Bantuan teknis kapan pun Anda butuhkan.</p>
                     </div>
                 </div>
             </div>
@@ -158,11 +158,12 @@
             <div class="col-md-4">
                 <div class="card bg-dark border-0 rounded-4 overflow-hidden h-100 shadow-lg hover-lift">
                     <div class="card-body p-4 position-relative z-index-1">
-                        <h5 class="fw-bold text-white-50">Basic</h5>
+                        <h5 class="fw-bold text-white-50">Dasar</h5>
+c:\Users\inter\Documents\Billing\vue-argon-dashboard\src\components\landing-pages\CreativeLanding.vue
                         <h2 class="fw-bold display-5 my-3">150k</h2>
                         <ul class="list-unstyled mb-4 text-white-75">
                             <li class="mb-2"><i class='bx bx-check text-success me-2'></i> 10 Mbps</li>
-                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Unlimited Data</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Data Tanpa Batas</li>
                         </ul>
                         <router-link to="/register" class="btn btn-outline-light w-100 rounded-pill">Pilih</router-link>
                     </div>
@@ -177,8 +178,8 @@
                         <h2 class="fw-bold display-5 my-3 text-white">250k</h2>
                         <ul class="list-unstyled mb-4 text-white">
                             <li class="mb-2"><i class='bx bxs-check-circle text-white me-2'></i> 30 Mbps</li>
-                            <li class="mb-2"><i class='bx bxs-check-circle text-white me-2'></i> Low Latency</li>
-                            <li class="mb-2"><i class='bx bxs-check-circle text-white me-2'></i> Priority Support</li>
+                            <li class="mb-2"><i class='bx bxs-check-circle text-white me-2'></i> Latency Rendah</li>
+                            <li class="mb-2"><i class='bx bxs-check-circle text-white me-2'></i> Dukungan Prioritas</li>
                         </ul>
                         <router-link to="/register" class="btn btn-white w-100 rounded-pill text-dark fw-bold">Pilih</router-link>
                     </div>
@@ -192,7 +193,7 @@
                         <h2 class="fw-bold display-5 my-3">500k</h2>
                         <ul class="list-unstyled mb-4 text-white-75">
                             <li class="mb-2"><i class='bx bx-check text-success me-2'></i> 100 Mbps</li>
-                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> Dedicated IP</li>
+                            <li class="mb-2"><i class='bx bx-check text-success me-2'></i> IP Dedicated</li>
                         </ul>
                          <router-link to="/register" class="btn btn-outline-light w-100 rounded-pill">Pilih</router-link>
                     </div>
@@ -204,7 +205,7 @@
 
      <!-- Footer -->
     <footer id="contact" class="py-4 text-center text-white-50">
-        <small>© {{ new Date().getFullYear() }} {{ ispName }}. Designed with Passion.</small>
+        <small>© {{ new Date().getFullYear() }} {{ ispName }}. Didesain dengan Semangat.</small>
     </footer>
 
   </div>

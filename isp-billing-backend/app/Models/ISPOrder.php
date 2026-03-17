@@ -121,17 +121,79 @@ class ISPOrder extends Model
 
     public function activateDomain()
     {
-        // Ensure credentials exist before activation
-        if (empty($this->username)) {
+        // Ensure credentials AND a unique IP address exist before activation
+        if (empty($this->username) || empty($this->ip_address)) {
             $this->generateCredentials();
         }
 
+        $this->activateSubscription();
+    }
+
+    /**
+     * Unified logic to activate a subscription order
+     * Handles: Fair Extension, ISP Model Update, and Consolidation (Superseding)
+     */
+    public function activateSubscription()
+    {
+        // Guard: Don't activate if already active AND paid (prevent double counting days)
+        // Benefit: Makes this method idempotent
+        if ($this->status === 'active' && $this->payment_status === 'paid' && !empty($this->expired_date)) {
+            \Illuminate\Support\Facades\Log::info("Order #{$this->id} already active and paid. Skipping redundant activation.");
+            return $this;
+        }
+
+        $days = 30;
+        if ($this->service_id) {
+            $days = $this->service->trial_days ?: 30;
+        } elseif ($this->subscription_package_id) {
+            $days = $this->subscriptionPackage->active_days ?? 30;
+        }
+
+        $isp = $this->isp;
+        
+        // --- FAIR EXTENSION LOGIC ---
+        // If ISP already has an active subscription, extend from the current end date
+        if ($isp && $isp->subscription_end_date && \Carbon\Carbon::parse($isp->subscription_end_date)->isFuture()) {
+            $newStart = $isp->subscription_start_date ?? now();
+            $newEnd = \Carbon\Carbon::parse($isp->subscription_end_date)->addDays($days);
+        } else {
+            // Otherwise start from now
+            $newStart = now();
+            $newEnd = now()->addDays($days);
+        }
+
+        // Update Order
         $this->update([
             'status' => 'active',
             'payment_status' => 'paid',
             'domain_active' => true,
-            'start_date' => now(),
+            'start_date' => $newStart,
+            'expired_date' => $newEnd,
+            'approved_at' => $this->approved_at ?: now(),
         ]);
+
+        // Update ISP Model (If package-based)
+        if ($this->subscription_package_id) {
+            $isp->update([
+                'subscription_package_id' => $this->subscription_package_id,
+                'subscription_status' => 'active',
+                'subscription_start_date' => $newStart,
+                'subscription_end_date' => $newEnd,
+                'is_active' => true,
+            ]);
+            
+            // Also ensure all ISP users are active
+            $isp->users()->update(['is_active' => true]);
+        }
+
+        // --- CONSOLIDATION LOGIC ---
+        // Mark all other active/approved/trial orders for the SAME ISP as superseded
+        static::where('isp_id', $this->isp_id)
+            ->where('id', '!=', $this->id)
+            ->whereIn('status', ['active', 'approved', 'trial'])
+            ->update(['status' => 'superseded']);
+        
+        return $this;
     }
 
     /**
@@ -139,8 +201,8 @@ class ISPOrder extends Model
      */
     public function generateCredentials()
     {
-        $username = date('YmdHis') . rand(100, 999);
-        $password = \Illuminate\Support\Str::random(10);
+        $username = $this->username ?: date('YmdHis') . rand(100, 999);
+        $password = $this->password ?: \Illuminate\Support\Str::random(10);
         
         // Use assigned server or find an active one
         $serverAddress = 'server-not-found';
@@ -181,31 +243,56 @@ class ISPOrder extends Model
     }
 
     /**
-     * Generate a unique private IP address
+     * Generate a unique private IP address from the server's VPN segment
      */
     public function generateUniqueIp()
     {
-        $maxAttempts = 100;
-        $subnets = [50, 51, 52, 53];
-        
-        for ($i = 0; $i < $maxAttempts; $i++) {
-            $subnet = $subnets[array_rand($subnets)];
-            $ip = "10.{$subnet}." . rand(2, 254) . '.' . rand(2, 254);
-            
-            // Allow reusing IPs from expired/failed/cancelled orders to prevent exhaustion
-            // We only block IPs currently assigned to "living" orders
-            $exists = static::where('ip_address', $ip)
-                ->whereIn('status', ['active', 'trial', 'pending', 'pending_payment'])
-                ->exists();
+        if ($this->ip_address) return $this->ip_address;
+
+        $server = $this->server;
+        if (!$server) {
+            $server = Server::where('is_active', true)->inRandomOrder()->first();
+            if ($server) $this->server_id = $server->id;
+        }
+
+        if (!$server) return '10.254.254.254';
+
+        $localAddress = $server->vpn_local_address ?? '10.10.10.1';
+        $ipParts = explode('.', $localAddress);
+        if (count($ipParts) !== 4) return '10.10.10.254';
+
+        $baseOctet1 = $ipParts[0];
+        $baseOctet2 = $ipParts[1];
+        $baseOctet3 = (int)$ipParts[2];
+
+        // Gather used IPs across DB
+        $usedIps = static::where('server_id', $server->id)
+            ->whereNotNull('ip_address')
+            ->pluck('ip_address')
+            ->toArray();
+
+        $capacity = $server->capacity ?? 1000;
+        $checkedCount = 0;
+
+        for ($subnetOffset = 0; $subnetOffset < 20; $subnetOffset++) {
+            $currentSubnet = $baseOctet3 + $subnetOffset;
+            if ($currentSubnet > 254) break;
+
+            for ($h = 1; $h <= 254; $h++) {
+                $candidate = "{$baseOctet1}.{$baseOctet2}.{$currentSubnet}.{$h}";
                 
-            if (!$exists) {
-                return $ip;
+                if ($candidate === $localAddress) continue;
+
+                if (!in_array($candidate, $usedIps)) {
+                    return $candidate;
+                }
+
+                $checkedCount++;
+                if ($checkedCount >= $capacity + 500) break;
             }
         }
         
-        // Final fallback if many collisions (unlikely with 250k pool)
-        $subnet = $subnets[array_rand($subnets)];
-        return "10.{$subnet}." . rand(2, 254) . '.' . rand(2, 254);
+        return '10.254.254.254';
     }
 
     public function canRetryPayment()

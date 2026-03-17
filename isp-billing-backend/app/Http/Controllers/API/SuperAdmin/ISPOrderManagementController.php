@@ -65,27 +65,16 @@ class ISPOrderManagementController extends Controller
                 
                 $endDate = $totalDays ? $startDate->copy()->addDays($totalDays) : null;
 
-                // Generate service credentials
-                $username = date('YmdHis') . rand(1000, 9999);
-                $password = Str::random(10);
-
-                // Generate configs
-                $serverAddress = 'binetsg1.perwiramedia.com'; // TODO: Get from service config
-                $l2tpConfig = "/interface l2tp-client add name={$username} user={$username} password={$password} connect-to={$serverAddress} disabled=no";
-                $sstpConfig = "/interface sstp-client add name={$username} user={$username} password={$password} connect-to={$serverAddress} disabled=no";
+                // Generate service credentials (unique IP included)
+                $order->generateCredentials();
 
                 $order->update([
-                    'status' => 'active', 
+                    'status' => 'active',
                     'payment_status' => $isTrial ? 'paid' : $order->payment_status,
                     'approved_at' => now(),
                     'approved_by' => auth()->id(),
                     'start_date' => $startDate,
                     'expired_date' => $endDate,
-                    'username' => $username,
-                    'password' => $password,
-                    'server_address' => $serverAddress,
-                    'l2tp_config' => $l2tpConfig,
-                    'sstp_config' => $sstpConfig,
                 ]);
             } elseif ($order->subscription_package_id) {
                 // Handle Package Order

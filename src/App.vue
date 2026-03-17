@@ -16,7 +16,7 @@ Coded by www.creative-tim.com
 import { computed, watch } from "vue";
 import { useStore } from "vuex";
 import { useRoute } from "vue-router";
-import Sidenav from "./examples/Sidenav";
+import Sidenav from "./examples/Sidenav/index.vue";
 import Configurator from "@/examples/Configurator.vue";
 import Navbar from "@/examples/Navbars/Navbar.vue";
 import AppFooter from "@/examples/Footer.vue";
@@ -55,8 +55,8 @@ watch(
     store.state.showNavbar = !isPublic && !isISPAdminRoute;
     store.state.showFooter = !isPublic && !isISPAdminRoute;
 
-    // IMPORTANT: Force 'default' layout for Client Area to show the green header background
-    if (newPath.startsWith('/client-area')) {
+    // IMPORTANT: Force 'default' layout for Super Admin and Client Area to show the green header background
+    if (newPath.startsWith('/client-area') || newPath.startsWith('/super-admin')) {
       store.state.layout = 'default';
     }
   },
@@ -87,7 +87,7 @@ const navClasses = computed(() => {
 </script>
 <template>
   <!-- Public Pages Layout (No Sidebar/Navbar) -->
-  <div v-if="isPublicPage" class="public-layout" :style="cssVars">
+  <div v-if="isPublicPage" class="public-layout">
     <router-view />
   </div>
 
